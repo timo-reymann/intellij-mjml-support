@@ -6,10 +6,8 @@
     <description><![CDATA[
     MJML support for the IntelliJ Platform.
 
-    Features include:
+    <h2>Features</h2>
     <ul>
-        <li>0.0.1
-        <ul>
             <li>MJML file icons</li>
             <li>Syntax highlighting and auto complete for mjml files</li>
             <li>Auto complete for built in mjml tags</li>
@@ -17,12 +15,24 @@
             <li>path completion for mj-includes</li>
             <li>class usage for css-class attribute</li>
             <li>url references</li>
-        </ul>
+    </ul>
+
+    <h2>Changelog</h2>
+    <ul>
+        <li>0.0.1
+            <ul>
+                <li>Basic completion</li>
+            </ul>
+        </li>
+        <li>0.0.2
+            <ul>
+                <li>Fix completion path provider and reference collision</li>
+            </ul>
         </li>
     </ul>
     ]]></description>
 
-    <idea-version since-build="192" />
+    <idea-version since-build="203"/>
     <depends>com.intellij.modules.platform</depends>
     <depends>com.intellij.modules.lang</depends>
     <depends>com.intellij.modules.xml</depends>
@@ -45,10 +55,11 @@
         <xml.xmlExtension implementation="de.timo_reymann.mjml_support.xml.MjmlXmlExtension"
                           order="first"/>
 
-        <completion.contributor language="mjml"
-                                implementationClass="de.timo_reymann.mjml_support.completion.MjmlPathAttributeTypeCompletionContributor"/>
         <psi.referenceContributor language="mjml"
                                   implementation="de.timo_reymann.mjml_support.reference.MjmlPathAttributeTypeReferenceContributor"/>
+        <completion.contributor language="mjml"
+                                order="first"
+                                implementationClass="de.timo_reymann.mjml_support.completion.MjmlPathAttributeTypeCompletionContributor"/>
 
         <psi.referenceContributor language="mjml"
                                   implementation="de.timo_reymann.mjml_support.reference.MjmlUrlAttributeTypeReferenceContributor"/>

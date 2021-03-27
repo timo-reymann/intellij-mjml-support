@@ -1,10 +1,14 @@
 package de.timo_reymann.mjml_support.reference
 
 import com.intellij.openapi.util.TextRange
+import com.intellij.openapi.vfs.VfsUtilCore
+import com.intellij.openapi.vfs.VirtualFileManager
 import com.intellij.patterns.PlatformPatterns.psiElement
 import com.intellij.psi.*
 import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReference
 import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReferenceSet
+import com.intellij.psi.search.FilenameIndex
+import com.intellij.psi.search.ProjectScope
 import com.intellij.psi.util.parentOfType
 import com.intellij.psi.xml.XmlAttribute
 import com.intellij.psi.xml.XmlAttributeValue
@@ -26,6 +30,10 @@ class MjmlPathAttributeTypeReferenceContributor : PsiReferenceContributor() {
                     if(mjmlAttribute?.type != MjmlAttributeType.PATH) {
                         return arrayOf()
                     }
+                    val scope = ProjectScope.getProjectScope(element.project)
+                    val filename = attribute.value ?: return arrayOf()
+
+                    VfsUtilCore.findRelativeFile(filename, element.containingFile.virtualFile) ?: return arrayOf()
 
                     return arrayOf(
                         FileReference(
