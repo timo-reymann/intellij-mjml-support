@@ -22,8 +22,7 @@
     </ul>
     ]]></description>
 
-    <!-- please see https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
-         on how to target different products -->
+    <idea-version since-build="192" />
     <depends>com.intellij.modules.platform</depends>
     <depends>com.intellij.modules.lang</depends>
     <depends>com.intellij.modules.xml</depends>
@@ -41,7 +40,6 @@
         <lang.documentationProvider language="mjml"
                                     implementationClass="de.timo_reymann.mjml_support.documentation.MjmlDocumentationProvider"/>
 
-        <multiHostInjector implementation="de.timo_reymann.mjml_support.injection.MjStyleCssInjector"/>
         <xml.tagNameProvider implementation="de.timo_reymann.mjml_support.xml.MjmlTagNameProvider"/>
         <xml.elementDescriptorProvider implementation="de.timo_reymann.mjml_support.xml.MjmlTagNameProvider"/>
         <xml.xmlExtension implementation="de.timo_reymann.mjml_support.xml.MjmlXmlExtension"
