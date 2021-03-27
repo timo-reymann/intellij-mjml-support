@@ -1,0 +1,70 @@
+<idea-plugin>
+    <id>de.timo_reymann.intellij-mjml-support</id>
+    <name>MJML Support</name>
+    <vendor email="mail@timo-reymann.de" url="https://timo-reymann.de">Timo Reymann</vendor>
+
+    <description><![CDATA[
+    MJML support for the IntelliJ Platform.
+
+    Features include:
+    <ul>
+        <li>0.0.1
+        <ul>
+            <li>MJML file icons</li>
+            <li>Syntax highlighting and auto complete for mjml files</li>
+            <li>Auto complete for built in mjml tags</li>
+            <li>Syntax highlighting for custom tags and css</li>
+            <li>path completion for mj-includes</li>
+            <li>class usage for css-class attribute</li>
+            <li>url references</li>
+        </ul>
+        </li>
+    </ul>
+    ]]></description>
+
+    <!-- please see https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+         on how to target different products -->
+    <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.modules.lang</depends>
+    <depends>com.intellij.modules.xml</depends>
+
+    <depends optional="true" config-file="css-plugin.xml">com.intellij.css</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <fileType name="MJML"
+                  implementationClass="de.timo_reymann.mjml_support.lang.MjmlHtmlFileType"
+                  fieldName="INSTANCE"
+                  language="mjml"
+                  extensions="mjml"/>
+        <lang.parserDefinition language="mjml"
+                               implementationClass="de.timo_reymann.mjml_support.lang.MjmlHtmlParserDefinition"/>
+        <lang.documentationProvider language="mjml"
+                                    implementationClass="de.timo_reymann.mjml_support.documentation.MjmlDocumentationProvider"/>
+
+        <multiHostInjector implementation="de.timo_reymann.mjml_support.injection.MjStyleCssInjector"/>
+        <xml.tagNameProvider implementation="de.timo_reymann.mjml_support.xml.MjmlTagNameProvider"/>
+        <xml.elementDescriptorProvider implementation="de.timo_reymann.mjml_support.xml.MjmlTagNameProvider"/>
+        <xml.xmlExtension implementation="de.timo_reymann.mjml_support.xml.MjmlXmlExtension"
+                          order="first"/>
+
+        <completion.contributor language="mjml"
+                                implementationClass="de.timo_reymann.mjml_support.completion.MjmlPathAttributeTypeCompletionContributor"/>
+        <psi.referenceContributor language="mjml"
+                                  implementation="de.timo_reymann.mjml_support.reference.MjmlPathAttributeTypeReferenceContributor"/>
+
+        <psi.referenceContributor language="mjml"
+                                  implementation="de.timo_reymann.mjml_support.reference.MjmlUrlAttributeTypeReferenceContributor"/>
+
+        <completion.contributor language="mjml"
+                                implementationClass="de.timo_reymann.mjml_support.completion.MjmlPixelAttributeTypeCompletionContributor"/>
+
+        <colorProvider
+                implementation="de.timo_reymann.mjml_support.completion.MjmlColorAttributeTypeElementColorProvider"/>
+        <completion.contributor language="mjml"
+                                implementationClass="de.timo_reymann.mjml_support.completion.MjmlColorAttributeTypeCompletionContributor"/>
+    </extensions>
+
+    <actions>
+        <!-- Add your actions here -->
+    </actions>
+</idea-plugin>

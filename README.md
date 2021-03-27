@@ -1,0 +1,46 @@
+intellij-mjml-support
+===
+
+[![GitHub Release](https://img.shields.io/github/v/tag/timo-reymann/intellij-mjml-support.svg?label=version)](https://github.com/timo-reymann/intellij-mjml-support/releases)
+[![JetBrains Plugins](https://img.shields.io/badge/JetBrains-Plugins-orange)](https://plugins.jetbrains.com/)
+
+MJML support for the IntelliJ Platform.
+
+## Whats in the box?
+
+- MJML file icons
+- Syntax highlighting and auto complete for mjml files
+- Auto complete for built in mjml tags
+- Syntax highlighting for custom tags and css
+- Path completion for mj-includes
+- Class usage for css-class attribute
+- Url references
+
+## How can I use it?
+
+1. Install it from the plugin repository
+2. Restart your IDE to initially load the plugin
+4. You are done, enjoy the magic!
+
+## Roadmap / Milestones
+
+1. Basic Support
+    - [x] higlighting of tags and css
+    - [x] basic auto completion for tags and attributes
+    - [x] documentation in the editor for mjml components with link to docs
+    - [x] import ALL tags (currently till mj-accordion)
+2. Extended assistance
+    - [x] auto completion for mj-include
+    - [x] path validation for mj-include
+    - [x] css class usage
+    - [x] auto complete for units / default attributes
+    - [x] color annotation
+3. MJML Validation & Live preview
+    - [ ] code inspection with validation of attributes
+    - [ ] show live preview like for markdown with rendered template
+    - [ ] build errors
+4. Custom Component Support
+    - [ ] mjml config with json schema
+    - [ ] ide configuration with mjml config file
+    - [ ] support for custom components (?)
+    
