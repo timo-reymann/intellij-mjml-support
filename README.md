@@ -43,7 +43,7 @@ MJML support for the IntelliJ Platform.
     - [x] auto complete for units / default attributes
     - [x] color annotation
 3. MJML Validation & Live preview
-    - [ ] code inspection with validation of attributes
+    - [x] code inspection with validation of attributes
     - [ ] show live preview like for markdown with rendered template
     - [ ] build errors
 4. Custom Component Support
