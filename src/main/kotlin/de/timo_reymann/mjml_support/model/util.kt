@@ -8,11 +8,14 @@ import com.intellij.psi.xml.XmlTag
 
 private val EMPTY_PAIR = Pair<MjmlTagInformation?, MjmlAttributeInformation?>(null, null)
 
-fun getMjmlInfoFromAttribute(attribute: XmlAttribute): Pair<MjmlTagInformation?, MjmlAttributeInformation?> {
-    val tag = attribute.parentOfType<XmlTag>() ?: return EMPTY_PAIR
-    val mjmlTag = MjmlTagProvider.getByXmlElement(tag) ?: return EMPTY_PAIR
-    val mjmlAttribute = mjmlTag.getAttributeByName(attribute.name) ?: return EMPTY_PAIR
+fun getMjmlTagFromAttribute(attribute: XmlAttribute): MjmlTagInformation? {
+    val tag = attribute.parentOfType<XmlTag>() ?: return null
+    return MjmlTagProvider.getByXmlElement(tag)
+}
 
+fun getMjmlInfoFromAttribute(attribute: XmlAttribute): Pair<MjmlTagInformation?, MjmlAttributeInformation?> {
+    val mjmlTag = getMjmlTagFromAttribute(attribute) ?: return EMPTY_PAIR
+    val mjmlAttribute = mjmlTag.getAttributeByName(attribute.name) ?: return EMPTY_PAIR
     return Pair(mjmlTag, mjmlAttribute)
 }
 
