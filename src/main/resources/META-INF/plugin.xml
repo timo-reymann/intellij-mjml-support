@@ -4,10 +4,10 @@
     <vendor email="mail@timo-reymann.de" url="https://timo-reymann.de">Timo Reymann</vendor>
 
     <description><![CDATA[
-    MJML support for the IntelliJ Platform.
+        MJML support for the IntelliJ Platform.
 
-    <h2>Features</h2>
-    <ul>
+        <h2>Features</h2>
+        <ul>
             <li>MJML file icons</li>
             <li>Syntax highlighting and auto complete for mjml files</li>
             <li>Auto complete for built in mjml tags</li>
@@ -17,28 +17,30 @@
             <li>url references</li>
             <li>color annotation and detection for attributes</li>
             <li>code inspections to highlight common errors</li>
-    </ul>
+        </ul>
 
-    <h2>Changelog</h2>
-    <ul>
-        <li>0.0.1
-            <ul>
-                <li>Basic completion</li>
-            </ul>
-        </li>
-        <li>0.0.2
-            <ul>
-                <li>Fix completion path provider and reference collision</li>
-            </ul>
-        </li>
-        <li>0.0.3
-            <ul>
-                <li>Add inspection for unknown attributes</li>
-                <li>Add inspection for invalid path attribute</li>
-            </ul>
-        </li>
-    </ul>
-    ]]></description>
+        <h2>Changelog</h2>
+        <ul>
+            <li>0.0.1
+                <ul>
+                    <li>Basic completion</li>
+                </ul>
+            </li>
+            <li>0.0.2
+                <ul>
+                    <li>Fix completion path provider and reference collision</li>
+                </ul>
+            </li>
+            <li>0.0.3
+                <ul>
+                    <li>Add inspection for unknown attributes</li>
+                    <li>Add inspection for invalid path attribute</li>
+                    <li>Add inspection for invalid pixel attribute</li>
+                    <li>
+                </ul>
+            </li>
+        </ul>
+        ]]></description>
 
     <idea-version since-build="203"/>
     <depends>com.intellij.modules.platform</depends>
@@ -90,6 +92,11 @@
                          enabledByDefault="true"
                          groupName="MJML"
                          displayName="Invalid value for mjml attribute of type path"/>
+        <localInspection implementationClass="de.timo_reymann.mjml_support.inspection.InvalidPixelAttributeInspection"
+                         language="mjml"
+                         enabledByDefault="true"
+                         groupName="MJML"
+                         displayName="Invalid value for mjml attribute of type pixel"/>
     </extensions>
 
     <actions>
