@@ -1,4 +1,4 @@
-package de.timo_reymann.mjml_support.inspections
+package de.timo_reymann.mjml_support.inspection
 
 import com.intellij.codeInspection.LocalQuickFix
 import com.intellij.codeInspection.ProblemDescriptor
@@ -11,14 +11,14 @@ import de.timo_reymann.mjml_support.model.getMjmlTagFromAttribute
 
 class UnknownAttributeInspection : HtmlLocalInspectionTool() {
     override fun checkAttribute(attribute: XmlAttribute, holder: ProblemsHolder, isOnTheFly: Boolean) {
-        val tag = getMjmlTagFromAttribute(attribute) ?: return
-        if (tag.getAttributeByName(attribute.name) != null) {
+        val mjmlTag = getMjmlTagFromAttribute(attribute) ?: return
+        if (mjmlTag.getAttributeByName(attribute.name) != null) {
             return
         }
 
         holder.registerProblem(
             attribute,
-            "Unknown attribute ${attribute.name} for mjml tag ${tag.tagName}",
+            "Unknown attribute ${attribute.name} for mjml tag ${mjmlTag.tagName}",
             ProblemHighlightType.WARNING,
             RemoveUnknownAttributeQuickFix()
         )
@@ -27,9 +27,7 @@ class UnknownAttributeInspection : HtmlLocalInspectionTool() {
 }
 
 class RemoveUnknownAttributeQuickFix : LocalQuickFix {
-    override fun getFamilyName(): String {
-        return "Remove unknown attribute"
-    }
+    override fun getFamilyName(): String = "Remove unknown attribute"
 
     override fun applyFix(project: Project, descriptor: ProblemDescriptor) {
         if(descriptor.psiElement !is XmlAttribute) {

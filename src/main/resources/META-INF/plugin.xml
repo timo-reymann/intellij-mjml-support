@@ -34,6 +34,7 @@
         <li>0.0.3
             <ul>
                 <li>Add inspection for unknown attributes</li>
+                <li>Add inspection for invalid path attribute</li>
             </ul>
         </li>
     </ul>
@@ -79,11 +80,16 @@
         <completion.contributor language="mjml"
                                 implementationClass="de.timo_reymann.mjml_support.completion.MjmlColorAttributeTypeCompletionContributor"/>
 
-        <localInspection implementationClass="de.timo_reymann.mjml_support.inspections.UnknownAttributeInspection"
+        <localInspection implementationClass="de.timo_reymann.mjml_support.inspection.UnknownAttributeInspection"
                          language="mjml"
                          enabledByDefault="true"
                          groupName="MJML"
                          displayName="Unknown attributes in mjml tags"/>
+        <localInspection implementationClass="de.timo_reymann.mjml_support.inspection.InvalidPathAttributeInspection"
+                         language="mjml"
+                         enabledByDefault="true"
+                         groupName="MJML"
+                         displayName="Invalid value for mjml attribute of type path"/>
     </extensions>
 
     <actions>

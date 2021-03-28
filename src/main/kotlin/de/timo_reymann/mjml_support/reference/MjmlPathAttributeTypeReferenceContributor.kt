@@ -30,10 +30,14 @@ class MjmlPathAttributeTypeReferenceContributor : PsiReferenceContributor() {
                     if(mjmlAttribute?.type != MjmlAttributeType.PATH) {
                         return arrayOf()
                     }
-                    val scope = ProjectScope.getProjectScope(element.project)
-                    val filename = attribute.value ?: return arrayOf()
 
-                    VfsUtilCore.findRelativeFile(filename, element.containingFile.virtualFile) ?: return arrayOf()
+                    val filename = attribute.value ?: return arrayOf()
+                    val virtualFile =
+                        VfsUtilCore.findRelativeFile(filename, element.containingFile.virtualFile) ?: return arrayOf()
+
+                    if(virtualFile.isDirectory) {
+                        return arrayOf()
+                    }
 
                     return arrayOf(
                         FileReference(
