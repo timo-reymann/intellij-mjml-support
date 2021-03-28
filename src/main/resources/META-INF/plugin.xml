@@ -36,7 +36,7 @@
                     <li>Add inspection for unknown attributes</li>
                     <li>Add inspection for invalid path attribute</li>
                     <li>Add inspection for invalid pixel attribute</li>
-                    <li>
+                    <li>Add inspection for invalid color attribute</li>
                 </ul>
             </li>
         </ul>
@@ -97,6 +97,11 @@
                          enabledByDefault="true"
                          groupName="MJML"
                          displayName="Invalid value for mjml attribute of type pixel"/>
+        <localInspection implementationClass="de.timo_reymann.mjml_support.inspection.InvalidColorAttributeInspection"
+                         language="mjml"
+                         enabledByDefault="true"
+                         groupName="MJML"
+                         displayName="Invalid value for mjml attribute of type color" />
     </extensions>
 
     <actions>
