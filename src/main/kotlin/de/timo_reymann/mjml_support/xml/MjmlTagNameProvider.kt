@@ -3,6 +3,8 @@ package de.timo_reymann.mjml_support.xml
 import com.intellij.codeInsight.completion.XmlTagInsertHandler
 import com.intellij.codeInsight.lookup.LookupElement
 import com.intellij.codeInsight.lookup.LookupElementBuilder
+import com.intellij.icons.AllIcons
+import com.intellij.icons.AllIcons.Nodes.Tag
 import com.intellij.psi.impl.source.xml.XmlElementDescriptorProvider
 import com.intellij.psi.xml.XmlTag
 import com.intellij.xml.XmlElementDescriptor
@@ -22,8 +24,8 @@ class MjmlTagNameProvider : XmlTagNameProvider, XmlElementDescriptorProvider {
 
         MjmlTagProvider.getAll().entries.mapTo(elements) {
             LookupElementBuilder.create(it.value.tagName)
-                .withTypeText("mjml builtin component")
-                .withIcon(MjmlIcons.COLORED)
+                .withTypeText("MJML component")
+                .withIcon(Tag)
                 .withInsertHandler(XmlTagInsertHandler.INSTANCE)
         }
     }

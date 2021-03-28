@@ -13,15 +13,17 @@ MJML support for the IntelliJ Platform.
 >
 > You are missing something? - Feel free to file a PR/issue or open a discussion on GitHub!
 
-## Whats in the box?
+## What's in the box?
 
 - MJML file icons
 - Syntax highlighting and auto complete for mjml files
 - Auto complete for built in mjml tags
 - Syntax highlighting for custom tags and css
-- Path completion for mj-includes
-- Class usage for css-class attribute
-- Url references
+- path completion for mj-includes
+- class usage for css-class attribute
+- url references
+- color annotation and detection for attributes
+- code inspections to highlight common errors
 
 ## How can I use it?
 

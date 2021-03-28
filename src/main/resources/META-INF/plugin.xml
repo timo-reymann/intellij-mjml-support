@@ -38,6 +38,8 @@
                     <li>Add inspection for invalid pixel attribute</li>
                     <li>Add inspection for invalid color attribute</li>
                     <li>Add inspection for invalid url attribute</li>
+                    <li>Change file icon to colored mjml logo</li>
+                    <li>Change icon for completions to tag icon</li>
                 </ul>
             </li>
         </ul>
