@@ -37,6 +37,7 @@
                     <li>Add inspection for invalid path attribute</li>
                     <li>Add inspection for invalid pixel attribute</li>
                     <li>Add inspection for invalid color attribute</li>
+                    <li>Add inspection for invalid url attribute</li>
                 </ul>
             </li>
         </ul>
@@ -101,7 +102,12 @@
                          language="mjml"
                          enabledByDefault="true"
                          groupName="MJML"
-                         displayName="Invalid value for mjml attribute of type color" />
+                         displayName="Invalid value for mjml attribute of type color"/>
+        <localInspection implementationClass="de.timo_reymann.mjml_support.inspection.InvalidUrlAttributeInspection"
+                         language="mjml"
+                         enabledByDefault="true"
+                         groupName="MJML"
+                         displayName="Invalid value for mjml attribute of type url"/>
     </extensions>
 
     <actions>

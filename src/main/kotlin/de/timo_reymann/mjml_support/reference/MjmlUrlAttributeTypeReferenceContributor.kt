@@ -28,12 +28,6 @@ class MjmlUrlAttributeTypeReferenceContributor : PsiReferenceContributor() {
 
                     return super.getReferencesByElement(element, context)
                 }
-
             })
-        /*registrar.registerReferenceProvider(object : PsiElementPattern.Capture<PsiElement?>(PsiElement::class.java) {
-            override fun accepts(o: Any?, context: ProcessingContext): Boolean {
-                return o is PsiLiteralValue && o.value is String
-            }
-        }, ArbitraryPlaceUrlReferenceProvider(), PsiReferenceRegistrar.LOWER_PRIORITY)*/
     }
 }
