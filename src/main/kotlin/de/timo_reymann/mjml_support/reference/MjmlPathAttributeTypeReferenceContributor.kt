@@ -42,7 +42,7 @@ class MjmlPathAttributeTypeReferenceContributor : PsiReferenceContributor() {
                     return arrayOf(
                         FileReference(
                             FileReferenceSet.createSet(element, false, false, false),
-                            TextRange(0, attribute.value!!.length), 0, attribute.value
+                            TextRange(0, attribute.value!!.length + 1), 0, attribute.value
                         )
                     )
                 }

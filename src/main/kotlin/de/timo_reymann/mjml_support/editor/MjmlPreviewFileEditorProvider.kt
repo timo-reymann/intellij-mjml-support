@@ -26,8 +26,7 @@ class MjmlPreviewFileEditorProvider : WeighedFileEditorProvider() {
     }
 
     override fun createEditor(project: Project, file: VirtualFile): FileEditor {
-        // TODO Implement own
-        return MarkdownPreviewFileEditor(project, file)
+        return MjmlPreviewFileEditor(project, file)
     }
 
     override fun getEditorTypeId(): String {
