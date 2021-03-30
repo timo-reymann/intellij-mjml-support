@@ -2,6 +2,13 @@ package de.timo_reymann.mjml_support.editor
 
 import com.intellij.CommonBundle
 import com.intellij.codeHighlighting.BackgroundEditorHighlighter
+import com.intellij.execution.configurations.GeneralCommandLine
+import com.intellij.execution.process.OSProcessHandler
+import com.intellij.execution.process.ProcessAdapter
+import com.intellij.execution.process.ProcessEvent
+import com.intellij.javascript.nodejs.interpreter.NodeCommandLineConfigurator
+import com.intellij.javascript.nodejs.interpreter.NodeJsInterpreter
+import com.intellij.javascript.nodejs.interpreter.NodeJsInterpreterRef
 import com.intellij.openapi.application.ModalityState
 import com.intellij.openapi.editor.Document
 import com.intellij.openapi.editor.Editor
@@ -12,20 +19,22 @@ import com.intellij.openapi.fileEditor.impl.EditorHistoryManager
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.Messages
 import com.intellij.openapi.util.Disposer
+import com.intellij.openapi.util.Key
 import com.intellij.openapi.util.UserDataHolderBase
 import com.intellij.openapi.vfs.VirtualFile
-import com.intellij.ui.jcef.JBCefApp
 import com.intellij.ui.jcef.JCEFHtmlPanel
 import com.intellij.util.Alarm
-import org.intellij.plugins.markdown.ui.preview.MarkdownHtmlPanel
 import org.intellij.plugins.markdown.ui.split.SplitFileEditor
 import java.awt.BorderLayout
 import java.awt.event.ComponentAdapter
 import java.awt.event.ComponentEvent
 import java.beans.PropertyChangeListener
+import java.time.LocalDateTime
 import java.util.*
+import java.util.concurrent.atomic.AtomicInteger
 import javax.swing.JComponent
 import javax.swing.JPanel
+
 
 class MjmlPreviewFileEditor(private val myProject: Project, private val myFile: VirtualFile) :
     UserDataHolderBase(), FileEditor {
@@ -37,14 +46,8 @@ class MjmlPreviewFileEditor(private val myProject: Project, private val myFile: 
     private val REQUESTS_LOCK = Any()
     private var myLastScrollRequest: Runnable? = null
     private var myLastHtmlOrRefreshRequest: Runnable? = null
-    private val myHtmlPanelProviderInfo =
-        if (JBCefApp.isSupported())
-            JCEFHtmlPanelProvider().getProviderInfo()
-        else
-            MjmlHtmlPanelProvider.ProviderInfo(
-                "Unavailable",
-                "Unavailable"
-            )
+    private val nodeJsInterpreterRef = NodeJsInterpreterRef.createProjectRef()
+    private var nodeJsInterpreter: NodeJsInterpreter? = null
 
     @Volatile
     private var myLastScrollOffset = 0
@@ -53,6 +56,17 @@ class MjmlPreviewFileEditor(private val myProject: Project, private val myFile: 
 
     fun setMainEditor(editor: Editor?) {
         mainEditor = editor
+        nodeJsInterpreter = nodeJsInterpreterRef.resolve(mainEditor!!.project!!)
+        // TODO handle
+        if (nodeJsInterpreter == null) {
+            Messages.showMessageDialog(
+                myHtmlPanelWrapper,
+                "Node.js not configured",
+                CommonBundle.getErrorTitle(),
+                Messages.getErrorIcon()
+            )
+        }
+
     }
 
     fun scrollToSrcOffset(offset: Int) {
@@ -109,7 +123,7 @@ class MjmlPreviewFileEditor(private val myProject: Project, private val myFile: 
     }
 
     private fun retrievePanelProvider(): MjmlHtmlPanelProvider {
-        var provider = JCEFHtmlPanelProvider()
+        val provider = JCEFHtmlPanelProvider()
         if (provider.isAvailable() !== MjmlHtmlPanelProvider.AvailabilityInfo.AVAILABLE) {
             Messages.showMessageDialog(
                 myHtmlPanelWrapper,
@@ -119,22 +133,43 @@ class MjmlPreviewFileEditor(private val myProject: Project, private val myFile: 
             )
         }
 
+
         return JCEFHtmlPanelProvider()
+    }
+
+    private fun renderWithNode(text: String): String {
+        nodeJsInterpreter ?: return "<p>Node not configured</p>"
+        val line = AtomicInteger(0)
+        val commandLineConfigurator = NodeCommandLineConfigurator.find(nodeJsInterpreter!!)
+        val commandLine = GeneralCommandLine("node", "--version")
+        commandLineConfigurator.configure(commandLine)
+        val processHandler = OSProcessHandler(commandLine)
+        val buffer = StringBuffer()
+        processHandler.addProcessListener(object : ProcessAdapter() {
+            override fun onTextAvailable(event: ProcessEvent, outputType: Key<*>) {
+                // First line is command output, remove it
+                if (line.incrementAndGet() == 1) {
+                    return
+                }
+                buffer.append(event.text)
+            }
+        })
+        processHandler.startNotify()
+        processHandler.waitFor()
+        buffer.append("\n")
+        buffer.append("Last call")
+        buffer.append(LocalDateTime.now())
+        return buffer.toString()
     }
 
     // Is always run from pooled thread
     private fun updateHtml() {
-        if (myPanel == null || myDocument == null || !myFile.isValid || Disposer.isDisposed(this)) {
+        if (myPanel == null || myDocument == null || !myFile.isValid || Disposer.isDisposed(this) || mainEditor == null) {
             return
         }
 
-        // TODO Actually set content
-        val html = "<p>Hello World</p>"
+        val html = renderWithNode(mainEditor!!.document.text)
 
-        // EA-75860: The lines to the top may be processed slowly; Since we're in pooled thread, we can be disposed already.
-        if (!myFile.isValid || Disposer.isDisposed(this)) {
-            return
-        }
         synchronized(REQUESTS_LOCK) {
             if (myLastHtmlOrRefreshRequest != null) {
                 mySwingAlarm.cancelRequest(myLastHtmlOrRefreshRequest!!)
@@ -168,6 +203,7 @@ class MjmlPreviewFileEditor(private val myProject: Project, private val myFile: 
 
     private fun attachHtmlPanel() {
         myPanel = retrievePanelProvider().createHtmlPanel()
+
         myHtmlPanelWrapper.add(myPanel!!.component, BorderLayout.CENTER)
         myHtmlPanelWrapper.repaint()
         myLastRenderedHtml = ""
@@ -182,7 +218,6 @@ class MjmlPreviewFileEditor(private val myProject: Project, private val myFile: 
     companion object {
         private const val PARSING_CALL_TIMEOUT_MS = 50L
         private const val RENDERING_DELAY_MS = 20L
-        private var ourIsDefaultMarkdownPreviewSettings: Boolean? = null
         private fun isPreviewShown(project: Project, file: VirtualFile): Boolean {
             val state = EditorHistoryManager.getInstance(project).getState(file, MjmlPreviewFileEditorProvider())
             return if (state !is SplitFileEditor.MyFileEditorState) {
