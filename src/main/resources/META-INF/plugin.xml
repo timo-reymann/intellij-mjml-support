@@ -50,7 +50,7 @@
     <depends>com.intellij.modules.lang</depends>
     <depends>com.intellij.modules.xml</depends>
     <depends>JavaScript</depends>
-    <!-- TODO Remove after own implementation -->
+    <!-- uses components from markdown plugin -->
     <depends>org.intellij.plugins.markdown</depends>
 
     <depends optional="true" config-file="css-plugin.xml">com.intellij.css</depends>

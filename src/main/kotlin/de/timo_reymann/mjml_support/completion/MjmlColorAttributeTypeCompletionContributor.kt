@@ -20,7 +20,7 @@ class MjmlColorAttributeTypeCompletionContributor : CompletionContributor() {
                     result: CompletionResultSet
                 ) {
                     val target = parameters.position
-                    val (mjmlTag, mjmlAttribute) = getMjmlInfoFromAttributeValue(target)
+                    val (_, mjmlAttribute) = getMjmlInfoFromAttributeValue(target)
                     if (mjmlAttribute?.type != MjmlAttributeType.COLOR) {
                         return
                     }

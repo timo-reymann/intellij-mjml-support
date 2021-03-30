@@ -1,5 +1,7 @@
 package de.timo_reymann.mjml_support.editor
 
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.intellij.CommonBundle
 import com.intellij.codeHighlighting.BackgroundEditorHighlighter
 import com.intellij.execution.configurations.GeneralCommandLine
@@ -24,11 +26,14 @@ import com.intellij.openapi.util.UserDataHolderBase
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.ui.jcef.JCEFHtmlPanel
 import com.intellij.util.Alarm
+import de.timo_reymann.mjml_support.util.FilePluginUtil
+import kotlinx.serialization.json.Json
 import org.intellij.plugins.markdown.ui.split.SplitFileEditor
 import java.awt.BorderLayout
 import java.awt.event.ComponentAdapter
 import java.awt.event.ComponentEvent
 import java.beans.PropertyChangeListener
+import java.io.File
 import java.time.LocalDateTime
 import java.util.*
 import java.util.concurrent.atomic.AtomicInteger
@@ -36,16 +41,16 @@ import javax.swing.JComponent
 import javax.swing.JPanel
 
 
-class MjmlPreviewFileEditor(private val myProject: Project, private val myFile: VirtualFile) :
+class MjmlPreviewFileEditor(private val project: Project, private val virtualFile: VirtualFile) :
     UserDataHolderBase(), FileEditor {
-    private val myDocument: Document? = FileDocumentManager.getInstance().getDocument(myFile)
-    private val myHtmlPanelWrapper: JPanel
-    private var myPanel: JCEFHtmlPanel? = null
-    private val myPooledAlarm = Alarm(Alarm.ThreadToUse.POOLED_THREAD, this)
-    private val mySwingAlarm = Alarm(Alarm.ThreadToUse.SWING_THREAD, this)
+    private val document: Document? = FileDocumentManager.getInstance().getDocument(virtualFile)
+    private val htmlPanelWrapper: JPanel
+    private var panel: JCEFHtmlPanel? = null
+    private val pooledAlarm = Alarm(Alarm.ThreadToUse.POOLED_THREAD, this)
+    private val swingAlarm = Alarm(Alarm.ThreadToUse.SWING_THREAD, this)
     private val REQUESTS_LOCK = Any()
-    private var myLastScrollRequest: Runnable? = null
-    private var myLastHtmlOrRefreshRequest: Runnable? = null
+    private var lastScrollRequest: Runnable? = null
+    private var lastHtmlOrRefreshRequest: Runnable? = null
     private val nodeJsInterpreterRef = NodeJsInterpreterRef.createProjectRef()
     private var nodeJsInterpreter: NodeJsInterpreter? = null
 
@@ -56,56 +61,55 @@ class MjmlPreviewFileEditor(private val myProject: Project, private val myFile: 
 
     fun setMainEditor(editor: Editor?) {
         mainEditor = editor
-        nodeJsInterpreter = nodeJsInterpreterRef.resolve(mainEditor!!.project!!)
-        // TODO handle
+
+        nodeJsInterpreter = nodeJsInterpreterRef.resolve(project)
         if (nodeJsInterpreter == null) {
             Messages.showMessageDialog(
-                myHtmlPanelWrapper,
-                "Node.js not configured",
+                htmlPanelWrapper,
+                "Node.js not configured, preview is not available",
                 CommonBundle.getErrorTitle(),
                 Messages.getErrorIcon()
             )
         }
-
     }
 
     fun scrollToSrcOffset(offset: Int) {
-        if (myPanel == null) return
+        if (panel == null) return
 
         // Do not scroll if html update request is online
         // This will restrain preview from glitches on editing
-        if (!myPooledAlarm.isEmpty) {
+        if (!pooledAlarm.isEmpty) {
             myLastScrollOffset = offset
             return
         }
+
         synchronized(REQUESTS_LOCK) {
-            if (myLastScrollRequest != null) {
-                mySwingAlarm.cancelRequest(myLastScrollRequest!!)
+            if (lastScrollRequest != null) {
+                swingAlarm.cancelRequest(lastScrollRequest!!)
             }
-            myLastScrollRequest = Runnable {
-                if (myPanel != null) {
+            lastScrollRequest = Runnable {
+                if (panel != null) {
                     myLastScrollOffset = offset
-                    synchronized(REQUESTS_LOCK) { myLastScrollRequest = null }
+                    synchronized(REQUESTS_LOCK) { lastScrollRequest = null }
                 }
             }
-            mySwingAlarm.addRequest(
-                myLastScrollRequest!!,
+            swingAlarm.addRequest(
+                lastScrollRequest!!,
                 RENDERING_DELAY_MS,
                 ModalityState.stateForComponent(component)
             )
         }
     }
 
-
-    override fun getPreferredFocusedComponent(): JComponent? = myPanel?.component
+    override fun getPreferredFocusedComponent(): JComponent? = panel?.component
 
     override fun selectNotify() {
-        if (myPanel != null) {
+        if (panel != null) {
             updateHtmlPooled()
         }
     }
 
-    override fun getComponent(): JComponent = myHtmlPanelWrapper
+    override fun getComponent(): JComponent = htmlPanelWrapper
     override fun getName(): String = "MJML Preview Editor"
     override fun setState(state: FileEditorState) {}
     override fun isModified(): Boolean = false
@@ -117,8 +121,8 @@ class MjmlPreviewFileEditor(private val myProject: Project, private val myFile: 
     override fun getCurrentLocation(): FileEditorLocation? = null
 
     override fun dispose() {
-        if (myPanel != null) {
-            Disposer.dispose(myPanel!!)
+        if (panel != null) {
+            Disposer.dispose(panel!!)
         }
     }
 
@@ -126,13 +130,12 @@ class MjmlPreviewFileEditor(private val myProject: Project, private val myFile: 
         val provider = JCEFHtmlPanelProvider()
         if (provider.isAvailable() !== MjmlHtmlPanelProvider.AvailabilityInfo.AVAILABLE) {
             Messages.showMessageDialog(
-                myHtmlPanelWrapper,
+                htmlPanelWrapper,
                 "Failed to load mjml preview, please make sure you have jcef support enabled",
                 CommonBundle.getErrorTitle(),
                 Messages.getErrorIcon()
             )
         }
-
 
         return JCEFHtmlPanelProvider()
     }
@@ -141,7 +144,8 @@ class MjmlPreviewFileEditor(private val myProject: Project, private val myFile: 
         nodeJsInterpreter ?: return "<p>Node not configured</p>"
         val line = AtomicInteger(0)
         val commandLineConfigurator = NodeCommandLineConfigurator.find(nodeJsInterpreter!!)
-        val commandLine = GeneralCommandLine("node", "--version")
+        val commandLine = GeneralCommandLine("node", FilePluginUtil.getFile("render.js").absolutePath)
+        commandLine.workDirectory = File(project.basePath!!)
         commandLineConfigurator.configure(commandLine)
         val processHandler = OSProcessHandler(commandLine)
         val buffer = StringBuffer()
@@ -154,39 +158,43 @@ class MjmlPreviewFileEditor(private val myProject: Project, private val myFile: 
                 buffer.append(event.text)
             }
         })
+
         processHandler.startNotify()
         processHandler.waitFor()
         buffer.append("\n")
         buffer.append("Last call")
         buffer.append(LocalDateTime.now())
-        return buffer.toString()
+
+        val mapper = jacksonObjectMapper()
+        val renderResult : MjmlRenderResult = mapper.readValue(buffer.toString(), MjmlRenderResult::class.java)
+        return renderResult.html
     }
 
     // Is always run from pooled thread
     private fun updateHtml() {
-        if (myPanel == null || myDocument == null || !myFile.isValid || Disposer.isDisposed(this) || mainEditor == null) {
+        if (panel == null || document == null || !virtualFile.isValid || Disposer.isDisposed(this) || mainEditor == null) {
             return
         }
 
         val html = renderWithNode(mainEditor!!.document.text)
 
         synchronized(REQUESTS_LOCK) {
-            if (myLastHtmlOrRefreshRequest != null) {
-                mySwingAlarm.cancelRequest(myLastHtmlOrRefreshRequest!!)
+            if (lastHtmlOrRefreshRequest != null) {
+                swingAlarm.cancelRequest(lastHtmlOrRefreshRequest!!)
             }
 
-            myLastHtmlOrRefreshRequest = Runnable {
-                if (myPanel == null) return@Runnable
+            lastHtmlOrRefreshRequest = Runnable {
+                if (panel == null) return@Runnable
                 val currentHtml = "<html><head></head>$html</html>"
                 if (currentHtml != myLastRenderedHtml) {
                     myLastRenderedHtml = currentHtml
-                    myPanel!!.setHtml(myLastRenderedHtml)
+                    panel!!.setHtml(myLastRenderedHtml)
                 }
-                synchronized(REQUESTS_LOCK) { myLastHtmlOrRefreshRequest = null }
+                synchronized(REQUESTS_LOCK) { lastHtmlOrRefreshRequest = null }
             }
 
-            mySwingAlarm.addRequest(
-                myLastHtmlOrRefreshRequest!!,
+            swingAlarm.addRequest(
+                lastHtmlOrRefreshRequest!!,
                 RENDERING_DELAY_MS,
                 ModalityState.stateForComponent(component)
             )
@@ -194,25 +202,25 @@ class MjmlPreviewFileEditor(private val myProject: Project, private val myFile: 
     }
 
     private fun detachHtmlPanel() {
-        if (myPanel != null) {
-            myHtmlPanelWrapper.remove(myPanel!!.component)
-            Disposer.dispose(myPanel!!)
-            myPanel = null
+        if (panel != null) {
+            htmlPanelWrapper.remove(panel!!.component)
+            Disposer.dispose(panel!!)
+            panel = null
         }
     }
 
     private fun attachHtmlPanel() {
-        myPanel = retrievePanelProvider().createHtmlPanel()
+        panel = retrievePanelProvider().createHtmlPanel()
 
-        myHtmlPanelWrapper.add(myPanel!!.component, BorderLayout.CENTER)
-        myHtmlPanelWrapper.repaint()
+        htmlPanelWrapper.add(panel!!.component, BorderLayout.CENTER)
+        htmlPanelWrapper.repaint()
         myLastRenderedHtml = ""
         updateHtmlPooled()
     }
 
     private fun updateHtmlPooled() {
-        myPooledAlarm.cancelAllRequests()
-        myPooledAlarm.addRequest({ updateHtml() }, 0)
+        pooledAlarm.cancelAllRequests()
+        pooledAlarm.addRequest({ updateHtml() }, 0)
     }
 
     companion object {
@@ -229,34 +237,34 @@ class MjmlPreviewFileEditor(private val myProject: Project, private val myFile: 
     }
 
     init {
-        myDocument?.addDocumentListener(object : DocumentListener {
+        document?.addDocumentListener(object : DocumentListener {
             override fun beforeDocumentChange(e: DocumentEvent) {
-                myPooledAlarm.cancelAllRequests()
+                pooledAlarm.cancelAllRequests()
             }
 
             override fun documentChanged(e: DocumentEvent) {
-                myPooledAlarm.addRequest({ updateHtml() }, PARSING_CALL_TIMEOUT_MS)
+                pooledAlarm.addRequest({ updateHtml() }, PARSING_CALL_TIMEOUT_MS)
             }
         }, this)
-        myHtmlPanelWrapper = JPanel(BorderLayout())
-        myHtmlPanelWrapper.addComponentListener(object : ComponentAdapter() {
+        htmlPanelWrapper = JPanel(BorderLayout())
+        htmlPanelWrapper.addComponentListener(object : ComponentAdapter() {
             override fun componentShown(e: ComponentEvent) {
-                mySwingAlarm.addRequest({
-                    if (myPanel == null) {
+                swingAlarm.addRequest({
+                    if (panel == null) {
                         attachHtmlPanel()
                     }
                 }, 0, ModalityState.stateForComponent(component))
             }
 
             override fun componentHidden(e: ComponentEvent) {
-                mySwingAlarm.addRequest({
-                    if (myPanel != null) {
+                swingAlarm.addRequest({
+                    if (panel != null) {
                         detachHtmlPanel()
                     }
                 }, 0, ModalityState.stateForComponent(component))
             }
         })
-        if (isPreviewShown(myProject, myFile)) {
+        if (isPreviewShown(project, virtualFile)) {
             attachHtmlPanel()
         }
     }

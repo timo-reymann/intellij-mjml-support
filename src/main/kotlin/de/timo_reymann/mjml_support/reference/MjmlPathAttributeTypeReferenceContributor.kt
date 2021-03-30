@@ -26,7 +26,7 @@ class MjmlPathAttributeTypeReferenceContributor : PsiReferenceContributor() {
                 ): Array<PsiReference> {
                     val attribute = element.parentOfType<XmlAttribute>() ?: return arrayOf()
 
-                    val (mjmlTag, mjmlAttribute) = getMjmlInfoFromAttribute(attribute)
+                    val (_, mjmlAttribute) = getMjmlInfoFromAttribute(attribute)
                     if(mjmlAttribute?.type != MjmlAttributeType.PATH) {
                         return arrayOf()
                     }
