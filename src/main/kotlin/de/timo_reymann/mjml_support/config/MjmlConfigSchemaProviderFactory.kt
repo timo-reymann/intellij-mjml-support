@@ -22,4 +22,3 @@ class MjmlConfigSchemaProviderFactory : JsonSchemaProviderFactory {
         return mutableListOf(provider)
     }
 }
-

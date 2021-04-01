@@ -47,6 +47,7 @@
             <li>0.2.0
                 <ul>
                     <li>Add mjml config schema</li>
+                    <li>Fix issue with color picker where applied color differs from picked</li>
                 </ul>
             </li>
         </ul>

@@ -33,5 +33,5 @@ object ColorUtil {
         }
     }
 
-    fun toHexString(color: Color) = String.format("#%02x%02x%02x", color.red, color.blue, color.green).toUpperCase()
+    fun toHexString(color: Color) = String.format("#%02x%02x%02x", color.red, color.green, color.blue).toUpperCase()
 }
