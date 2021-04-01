@@ -5,7 +5,7 @@ import com.intellij.util.io.Decompressor
 import de.timo_reymann.mjml_support.util.FilePluginUtil
 import org.apache.commons.lang.math.RandomUtils.nextInt
 
-class MjmlJCEFHtmlPanel() : JCEFHtmlPanel(getClassUrl()) {
+class MjmlJCEFHtmlPanel : JCEFHtmlPanel(getClassUrl()) {
 
     init {
         copyFiles()

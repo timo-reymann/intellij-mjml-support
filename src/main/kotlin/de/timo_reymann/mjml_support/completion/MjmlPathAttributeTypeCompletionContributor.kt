@@ -35,7 +35,7 @@ class MjmlPathAttributeTypeCompletionContributor : CompletionContributor() {
         ) {
             val target = parameters.position
             val (_, mjmlAttribute) = getMjmlInfoFromAttributeValue(target)
-            if(mjmlAttribute?.type != MjmlAttributeType.PATH) {
+            if (mjmlAttribute?.type != MjmlAttributeType.PATH) {
                 return
             }
 
@@ -43,35 +43,33 @@ class MjmlPathAttributeTypeCompletionContributor : CompletionContributor() {
             val rootFile = target.containingFile.originalFile.virtualFile
             val resultNames: MutableSet<String> = TreeSet()
 
-            processAllNames(project, Processor { fileName: String ->
-                if (filenameMatchesPrefixOrType(
-                        fileName, parameters.invocationCount
-                    )
-                ) {
+            processAllNames(project) { fileName: String ->
+                if (filenameMatchesPrefixOrType(fileName, parameters.invocationCount)) {
                     resultNames.add(fileName)
                 }
                 true
-            })
+            }
 
             val scope = ProjectScope.getProjectScope(project)
 
             for (resultName in resultNames) {
                 // ProgressManager.checkCanceled();
 
-                val files = FilenameIndex.getFilesByName(project, resultName, scope);
+                val files = FilenameIndex.getFilesByName(project, resultName, scope)
 
                 if (files.isEmpty()) {
-                    continue;
+                    continue
                 }
 
                 for (psiFile in files) {
-                   // ProgressManager.checkCanceled()
+                    // ProgressManager.checkCanceled()
                     val virtualFile: VirtualFile = psiFile.virtualFile ?: continue
                     if (virtualFile == rootFile) {
                         continue
                     }
 
-                    val filePath : String =virtualFile.toNioPath().toFile().relativeTo(rootFile.parent.toNioPath().toFile()).toString()
+                    val filePath: String =
+                        virtualFile.toNioPath().toFile().relativeTo(rootFile.parent.toNioPath().toFile()).toString()
                     resultSet.addElement(LookupElementBuilder.create(filePath).withIcon(MjmlIcons.COLORED))
                 }
             }

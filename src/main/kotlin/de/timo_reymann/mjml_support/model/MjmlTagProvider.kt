@@ -1,9 +1,5 @@
 package de.timo_reymann.mjml_support.model
 
-import PARENT_ANY
-import PARENT_HEAD_ONLY
-import PARENT_NONE
-import PARENT_TOP_LEVEL_ONLY
 import com.intellij.psi.xml.XmlTag
 
 

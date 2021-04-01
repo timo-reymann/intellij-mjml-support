@@ -2,8 +2,7 @@ package de.timo_reymann.mjml_support.completion
 
 import com.intellij.codeInsight.completion.*
 import com.intellij.codeInsight.lookup.LookupElementBuilder
-import com.intellij.patterns.PlatformPatterns
-import com.intellij.patterns.PlatformPatterns.*
+import com.intellij.patterns.PlatformPatterns.psiElement
 import com.intellij.psi.xml.XmlAttributeValue
 import com.intellij.util.ProcessingContext
 import de.timo_reymann.mjml_support.model.MjmlAttributeType

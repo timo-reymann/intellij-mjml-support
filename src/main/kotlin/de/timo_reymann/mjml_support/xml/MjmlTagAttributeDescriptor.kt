@@ -7,7 +7,7 @@ import com.intellij.xml.impl.BasicXmlAttributeDescriptor
 class MjmlTagAttributeDescriptor(private val attributeName: String, private val tag: XmlTag) : BasicXmlAttributeDescriptor() {
     override fun isFixed() = false
 
-    override fun getDefaultValue() = null
+    override fun getDefaultValue(): String? = null
 
     override fun isEnumerated() = false
 

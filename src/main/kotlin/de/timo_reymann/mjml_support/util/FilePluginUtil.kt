@@ -8,7 +8,7 @@ import java.nio.file.Files
 import java.nio.file.StandardCopyOption
 
 object FilePluginUtil {
-    val PLUGIN_HOME: File = PluginPathManager.getPluginHome("mjml-support")
+    private val PLUGIN_HOME: File = PluginPathManager.getPluginHome("mjml-support")
 
     fun copyFile(path: String, fileName: String) {
         Files.copy(

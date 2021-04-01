@@ -6,7 +6,6 @@ import com.intellij.openapi.util.text.StringUtil
 import com.intellij.psi.PsiElement
 import com.intellij.psi.xml.XmlAttribute
 import com.intellij.psi.xml.XmlTag
-import de.timo_reymann.mjml_support.model.MjmlTagInformation
 import de.timo_reymann.mjml_support.model.MjmlTagProvider
 
 class MjmlDocumentationProvider : DocumentationProvider {

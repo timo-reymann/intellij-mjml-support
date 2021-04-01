@@ -4,12 +4,9 @@ import com.intellij.psi.PsiElement
 import com.intellij.psi.impl.source.xml.XmlDescriptorUtil
 import com.intellij.psi.xml.XmlAttribute
 import com.intellij.psi.xml.XmlTag
-import com.intellij.util.containers.toArray
 import com.intellij.xml.XmlAttributeDescriptor
 import com.intellij.xml.XmlElementDescriptor
-import com.intellij.xml.impl.BasicXmlAttributeDescriptor
 import com.intellij.xml.impl.schema.AnyXmlAttributeDescriptor
-import de.timo_reymann.mjml_support.getXmlName
 import de.timo_reymann.mjml_support.model.MjmlTagProvider
 
 class MjmlTagDescriptor(private val tagName: String, private val xmlTag: XmlTag) : XmlElementDescriptor {
@@ -45,7 +42,7 @@ class MjmlTagDescriptor(private val tagName: String, private val xmlTag: XmlTag)
         }.toTypedArray()
     }
 
-    override fun getAttributeDescriptor(attributeName: String?, context: XmlTag?): XmlAttributeDescriptor? {
+    override fun getAttributeDescriptor(attributeName: String?, context: XmlTag?): XmlAttributeDescriptor {
         return AnyXmlAttributeDescriptor(attributeName)
     }
 

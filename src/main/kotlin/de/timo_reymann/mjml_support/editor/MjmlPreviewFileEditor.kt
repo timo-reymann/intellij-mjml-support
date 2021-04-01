@@ -157,7 +157,7 @@ class MjmlPreviewFileEditor(private val project: Project, private val virtualFil
 
         val errors = renderResult.errors
             .filter { it.formattedMessage != null }
-        if (!errors.isEmpty()) {
+        if (errors.isNotEmpty()) {
             val message = errors
                 .joinToString("\n<br />") {
                     """

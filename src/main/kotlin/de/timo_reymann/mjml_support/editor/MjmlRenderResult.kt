@@ -12,8 +12,6 @@ class MjmlRenderResultError {
     var tagName: String? = null
     var formattedMessage: String? = null
 
-    constructor(){}
-
     constructor(message : String) {
         this.message = message
     }

@@ -12,13 +12,11 @@ import de.timo_reymann.mjml_support.lang.MjmlHtmlLanguage
 
 class MjmlPreviewFileEditorProvider : WeighedFileEditorProvider() {
     override fun accept(project: Project, file: VirtualFile): Boolean {
-
-
         val fileType = file.fileType
 
         return fileType === MjmlHtmlFileType.INSTANCE ||
                 ScratchUtil.isScratch(file) &&
-                LanguageUtil.getLanguageForPsi(project, file, fileType) === MjmlHtmlLanguage.INSTANCE
+                LanguageUtil.getLanguageForPsi(project, file) === MjmlHtmlLanguage.INSTANCE
     }
 
     override fun createEditor(project: Project, file: VirtualFile): FileEditor {
