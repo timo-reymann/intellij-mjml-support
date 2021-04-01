@@ -45,3 +45,7 @@ the [plugin.xml](./src/main/resources/META-INF/plugin.xml).
     - [x] mjml config with json schema
     - [x] ide configuration with mjml config file
     - [x] support for custom components [PARTIAL with configuration]
+
+## Notes about implementation
+- The preview editor support is adapted from the official markdown plugin
+- Preview uses bundled node_modules for mjml rendering currently

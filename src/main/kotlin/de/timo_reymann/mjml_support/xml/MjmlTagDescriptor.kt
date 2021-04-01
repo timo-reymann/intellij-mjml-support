@@ -46,7 +46,7 @@ class MjmlTagDescriptor(private val tagName: String, private val xmlTag: XmlTag)
         return AnyXmlAttributeDescriptor(attributeName)
     }
 
-    override fun getAttributeDescriptor(attribute: XmlAttribute): XmlAttributeDescriptor? {
+    override fun getAttributeDescriptor(attribute: XmlAttribute): XmlAttributeDescriptor {
         return getAttributeDescriptor(attribute.name, attribute.parent)
     }
 

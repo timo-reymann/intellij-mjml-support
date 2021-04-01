@@ -44,8 +44,6 @@ intellij {
     setPlugins(
         "CSS",
         "HtmlTools",
-        // TODO Remove after own implementation
-        "org.intellij.plugins.markdown",
         "JavaScript"
     )
 }

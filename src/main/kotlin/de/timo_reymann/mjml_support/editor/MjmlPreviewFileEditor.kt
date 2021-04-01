@@ -31,7 +31,6 @@ import com.intellij.ui.jcef.JCEFHtmlPanel
 import com.intellij.util.Alarm
 import de.timo_reymann.mjml_support.util.FilePluginUtil
 import de.timo_reymann.mjml_support.util.MessageBusUtil
-import org.intellij.plugins.markdown.ui.split.SplitFileEditor
 import java.awt.BorderLayout
 import java.awt.event.ComponentAdapter
 import java.awt.event.ComponentEvent
@@ -254,11 +253,11 @@ class MjmlPreviewFileEditor(private val project: Project, private val virtualFil
         private const val RENDERING_DELAY_MS = 40L
         private fun isPreviewShown(project: Project, file: VirtualFile): Boolean {
             val state = EditorHistoryManager.getInstance(project).getState(file, MjmlPreviewFileEditorProvider())
-            return if (state !is SplitFileEditor.MyFileEditorState) {
+            return if (state !is MyFileEditorState) {
                 true
             } else
-                SplitFileEditor.SplitEditorLayout.valueOf(state.splitLayout!!) !=
-                        SplitFileEditor.SplitEditorLayout.FIRST
+                SplitEditorLayout.valueOf(state.splitLayout!!) !=
+                        SplitEditorLayout.FIRST
         }
     }
 

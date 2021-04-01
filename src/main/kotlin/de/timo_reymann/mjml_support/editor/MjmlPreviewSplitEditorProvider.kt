@@ -3,7 +3,6 @@ package de.timo_reymann.mjml_support.editor
 import com.intellij.openapi.fileEditor.FileEditor
 import com.intellij.openapi.fileEditor.TextEditor
 import com.intellij.openapi.fileEditor.impl.text.PsiAwareTextEditorProvider
-import org.intellij.plugins.markdown.ui.split.SplitTextEditorProvider
 
 class MjmlPreviewSplitEditorProvider : SplitTextEditorProvider(PsiAwareTextEditorProvider(), MjmlPreviewFileEditorProvider()) {
 

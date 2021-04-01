@@ -52,6 +52,11 @@
                     <li>Add inspection for containing test validation</li>
                 </ul>
             </li>
+            <li>1.1.0
+                <ul>
+                    <li>Removed dependency on markdown plugin</li>
+                </ul>
+            </li>
         </ul>
         ]]></description>
 
@@ -59,9 +64,6 @@
     <depends>com.intellij.modules.platform</depends>
     <depends>com.intellij.modules.lang</depends>
     <depends>com.intellij.modules.xml</depends>
-
-    <!-- uses components from markdown plugin -->
-    <depends>org.intellij.plugins.markdown</depends>
 
     <depends optional="true" config-file="css-plugin.xml">com.intellij.css</depends>
     <depends optional="true" config-file="javascript-plugin.xml">JavaScript</depends>

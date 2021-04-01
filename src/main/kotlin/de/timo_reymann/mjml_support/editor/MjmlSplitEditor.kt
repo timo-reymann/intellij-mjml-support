@@ -2,12 +2,12 @@ package de.timo_reymann.mjml_support.editor
 
 import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.fileEditor.TextEditor
+import com.intellij.openapi.fileEditor.TextEditorWithPreview
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.pom.Navigatable
-import org.intellij.plugins.markdown.ui.split.SplitFileEditor
 
-class MjmlSplitEditor(mainEditor: TextEditor, secondEditor: MjmlPreviewFileEditor) :
-    SplitFileEditor<TextEditor?, MjmlPreviewFileEditor?>(mainEditor, secondEditor),
+class MjmlSplitEditor(val mainEditor: TextEditor, secondEditor: MjmlPreviewFileEditor) :
+    TextEditorWithPreview(mainEditor, secondEditor),
     TextEditor {
 
     override fun getName(): String = "MJML Split Editor"
