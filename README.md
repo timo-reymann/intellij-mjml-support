@@ -46,8 +46,8 @@ MJML support for the IntelliJ Platform.
     - [x] color annotation
 3. MJML Validation & Live preview
     - [x] code inspection with validation of attributes
-    - [ ] show live preview like for markdown with rendered template
-    - [ ] build errors
+    - [x] show live preview like for markdown with rendered template
+    - [x] build errors
 4. Custom Component Support
     - [ ] mjml config with json schema
     - [ ] ide configuration with mjml config file
