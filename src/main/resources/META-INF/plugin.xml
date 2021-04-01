@@ -44,6 +44,11 @@
                     <li>Add mjml preview, based on markdown plugin</li>
                 </ul>
             </li>
+            <li>0.2.0
+                <ul>
+                    <li>Add mjml config schema</li>
+                </ul>
+            </li>
         </ul>
         ]]></description>
 
@@ -117,10 +122,15 @@
                          groupName="MJML"
                          displayName="Invalid value for mjml attribute of type url"/>
 
-        <notificationGroup displayType="NONE" id="MJML Support" />
+        <notificationGroup displayType="NONE"
+                           id="MJML Support"/>
+
+        <fileType name="JSON"
+                  language="JSON"
+                  fileNames=".mjmlconfig"/>
     </extensions>
 
-    <actions>
-        <!-- Add your actions here -->
-    </actions>
+    <extensions defaultExtensionNs="JavaScript.JsonSchema">
+        <ProviderFactory implementation="de.timo_reymann.mjml_support.config.MjmlConfigSchemaProviderFactory"/>
+    </extensions>
 </idea-plugin>

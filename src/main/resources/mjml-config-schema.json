@@ -1,0 +1,77 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "config": {
+      "type": "object",
+      "properties": {
+        "fonts": {
+          "description": "Default fonts imported in the HTML rendered by HTML",
+          "type": "object",
+          "default": {
+            "Open Sans": "https://fonts.googleapis.com/css?family=Open+Sans:300,400,500,700",
+            "Droid Sans": "https://fonts.googleapis.com/css?family=Droid+Sans:300,400,500,700",
+            "Lato": "https://fonts.googleapis.com/css?family=Lato:300,400,500,700",
+            "Roboto": "https://fonts.googleapis.com/css?family=Roboto:300,400,500,700",
+            "Ubuntu": "https://fonts.googleapis.com/css?family=Ubuntu:300,400,500,700"
+          }
+        },
+        "keepComments": {
+          "description": "Option to keep comments in the HTML output",
+          "type": "boolean",
+          "default": true
+        },
+        "ignoreIncludes": {
+          "description": "Option to ignore mj-includes",
+          "type": "boolean",
+          "default": false
+        },
+        "beautify": {
+          "description": "Option to beautify the HTML output",
+          "type": "boolean",
+          "default": false
+        },
+        "minify": {
+          "description": "Option to minify the HTML output",
+          "type": "boolean",
+          "default": false
+        },
+        "validationLevel": {
+          "description": "Value for the validator",
+          "type": "string",
+          "enum": [
+            "strict",
+            "soft",
+            "skip"
+          ],
+          "default": "soft"
+        },
+        "filePath": {
+          "description": "Path of file, used for relative paths in mj-includes",
+          "type": "string",
+          "default": "."
+        },
+        "juicePreserveTags": {
+          "description": "Preserve some tags when inlining css, see mjml-cli documentation for more info",
+          "type": "object"
+        },
+        "minifyOptions": {
+          "description": "Options for html minifier, see mjml-cli documentation for more info",
+          "type": "object"
+        }
+      }
+    },
+    "packages": {
+      "description": "List with paths to mjml custom components",
+      "type": "array",
+      "items": [
+        {
+          "type": "string"
+        }
+      ]
+    }
+  },
+  "required": [
+    "packages"
+  ]
+}

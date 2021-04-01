@@ -49,6 +49,6 @@ MJML support for the IntelliJ Platform.
     - [x] show live preview like for markdown with rendered template
     - [x] build errors
 4. Custom Component Support
-    - [ ] mjml config with json schema
-    - [ ] ide configuration with mjml config file
-    - [ ] support for custom components (?)
+    - [x] mjml config with json schema
+    - [x] ide configuration with mjml config file
+    - [x] support for custom components [PARTIAL with configuration]
