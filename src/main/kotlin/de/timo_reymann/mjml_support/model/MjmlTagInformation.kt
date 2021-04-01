@@ -4,8 +4,13 @@ data class MjmlTagInformation(
     val tagName: String,
     val description: String,
     val notes: Array<String> = arrayOf(),
-    val attributes: Array<MjmlAttributeInformation> = arrayOf()
+    val attributes: Array<MjmlAttributeInformation> = arrayOf(),
+    val allowedParentTags: List<String>
 ) {
+    fun getAttributeByName(name: String): MjmlAttributeInformation? {
+        return attributes.filter { it.name == name }.firstOrNull()
+    }
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
@@ -16,6 +21,7 @@ data class MjmlTagInformation(
         if (description != other.description) return false
         if (!notes.contentEquals(other.notes)) return false
         if (!attributes.contentEquals(other.attributes)) return false
+        if (allowedParentTags != other.allowedParentTags) return false
 
         return true
     }
@@ -25,10 +31,7 @@ data class MjmlTagInformation(
         result = 31 * result + description.hashCode()
         result = 31 * result + notes.contentHashCode()
         result = 31 * result + attributes.contentHashCode()
+        result = 31 * result + allowedParentTags.hashCode()
         return result
-    }
-
-    fun getAttributeByName(name : String): MjmlAttributeInformation? {
-        return attributes.filter { it.name == name }.firstOrNull()
     }
 }

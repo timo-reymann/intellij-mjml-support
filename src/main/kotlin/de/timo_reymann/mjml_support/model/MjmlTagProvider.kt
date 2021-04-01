@@ -1,9 +1,10 @@
 package de.timo_reymann.mjml_support.model
 
-import com.intellij.psi.xml.XmlElement
+import PARENT_ANY
+import PARENT_HEAD_ONLY
+import PARENT_NONE
+import PARENT_TOP_LEVEL_ONLY
 import com.intellij.psi.xml.XmlTag
-import com.sun.jna.platform.unix.solaris.LibKstat
-import de.timo_reymann.mjml_support.xml.MjmlTagAttributeDescriptor
 
 
 object MjmlTagProvider {
@@ -19,7 +20,7 @@ object MjmlTagProvider {
         return _tags[tagName]
     }
 
-    fun getByXmlElement(element : XmlTag): MjmlTagInformation? {
+    fun getByXmlElement(element: XmlTag): MjmlTagInformation? {
         return getByTagName(element.name)
     }
 
@@ -31,11 +32,13 @@ object MjmlTagProvider {
         register(
             MjmlTagInformation(
                 "mjml",
-                "A MJML document starts with a <mjml> tag, it can contain only mj-head and mj-body tags. Both have the same purpose of head and body in a HTML document."
+                "A MJML document starts with a <mjml> tag, it can contain only mj-head and mj-body tags. Both have the same purpose of head and body in a HTML document.",
+                allowedParentTags = PARENT_NONE
             ),
             MjmlTagInformation(
                 "mj-head",
-                "mj-head contains head components, related to the document such as style and meta elements (see <a href='https://mjml.io/documentation/#standard-head-components'>head components</a>)."
+                "mj-head contains head components, related to the document such as style and meta elements (see <a href='https://mjml.io/documentation/#standard-head-components'>head components</a>).",
+                allowedParentTags = PARENT_TOP_LEVEL_ONLY
             ),
             MjmlTagInformation(
                 "mj-body",
@@ -47,7 +50,8 @@ object MjmlTagProvider {
                     ATTRIBUTE_BACKGROUND_COLOR,
                     ATTRIBUTE_CSS_CLASS,
                     MjmlAttributeInformation("width", MjmlAttributeType.PIXEL, "email's width")
-                )
+                ),
+                allowedParentTags = PARENT_TOP_LEVEL_ONLY
             ),
             MjmlTagInformation(
                 "mj-include",
@@ -61,7 +65,8 @@ object MjmlTagProvider {
                 ),
                 attributes = arrayOf(
                     MjmlAttributeInformation("path", MjmlAttributeType.PATH, "path to mjml file that will be included")
-                )
+                ),
+                allowedParentTags = PARENT_ANY
             ),
             MjmlTagInformation(
                 "mj-attributes",
@@ -69,14 +74,16 @@ object MjmlTagProvider {
                 notes = arrayOf(
                     "You can use mj-all to set default attributes for every components inside your MJML document",
                     "Note that the apply order of attributes is: inline attributes, then classes, then default mj-attributes and then defaultMJMLDefinition"
-                )
+                ),
+                allowedParentTags = PARENT_HEAD_ONLY
             ),
             MjmlTagInformation(
                 "mj-breakpoint",
                 "This tag allows you to control on which breakpoint the layout should go desktop/mobile.",
                 attributes = arrayOf(
                     MjmlAttributeInformation("width", MjmlAttributeType.PIXEL, "breakpoint's value")
-                )
+                ),
+                allowedParentTags = PARENT_ANY
             ),
             MjmlTagInformation(
                 "mj-font",
@@ -84,11 +91,13 @@ object MjmlTagProvider {
                 attributes = arrayOf(
                     ATTRIBUTE_HREF,
                     MjmlAttributeInformation("name", MjmlAttributeType.STRING, "name of the font")
-                )
+                ),
+                allowedParentTags = PARENT_ANY
             ),
             MjmlTagInformation(
                 "mj-preview",
-                "This tag allows you to set the preview that will be displayed in the inbox of the recipient."
+                "This tag allows you to set the preview that will be displayed in the inbox of the recipient.",
+                allowedParentTags = PARENT_HEAD_ONLY
             ),
             MjmlTagInformation(
                 "mj-style",
@@ -103,11 +112,13 @@ object MjmlTagProvider {
                 ),
                 notes = arrayOf(
                     " Mjml generates multiple html elements from a single mjml element. For optimal flexibility, the `css-class` will be applied to the most outer html element, so if you want to target a specific sub-element with a css selector, you may need to look at the generated html to see which exact selector you need."
-                )
+                ),
+                allowedParentTags = PARENT_HEAD_ONLY
             ),
             MjmlTagInformation(
                 "mj-title",
-                "This tag allows you to set the title of an MJML document"
+                "This tag allows you to set the title of an MJML document",
+                allowedParentTags = PARENT_HEAD_ONLY
             ),
             MjmlTagInformation(
                 "mj-accordion",
@@ -135,7 +146,8 @@ object MjmlTagProvider {
                     ATTRIBUTE_PADDING_LEFT,
                     ATTRIBUTE_PADDING_RIGHT,
                     ATTRIBUTE_PADDING_TOP
-                )
+                ),
+                allowedParentTags = listOf("mj-attributes", "mj-column", "mj-hero")
             ),
             MjmlTagInformation(
                 "mj-accordion-element",
@@ -152,7 +164,8 @@ object MjmlTagProvider {
                     ATTRIBUTE_ICON_WIDTH,
                     ATTRIBUTE_ICON_WRAPPED_ALT,
                     ATTRIBUTE_ICON_WRAPPED_URL
-                )
+                ),
+                allowedParentTags = listOf("mj-accordion", "mj-attributes")
             ),
             MjmlTagInformation(
                 "mj-accordion-title",
@@ -173,7 +186,8 @@ object MjmlTagProvider {
                     ATTRIBUTE_PADDING_LEFT,
                     ATTRIBUTE_PADDING_RIGHT,
                     ATTRIBUTE_PADDING_TOP
-                )
+                ),
+                allowedParentTags = listOf("mj-accordion", "mj-attributes")
             ),
             MjmlTagInformation(
                 "mj-accordion-text",
@@ -194,7 +208,8 @@ object MjmlTagProvider {
                     ATTRIBUTE_PADDING_LEFT,
                     ATTRIBUTE_PADDING_RIGHT,
                     ATTRIBUTE_PADDING_TOP
-                )
+                ),
+                allowedParentTags = listOf("mj-accordion-element", "mj-attributes")
             ),
             MjmlTagInformation(
                 "mj-button",
@@ -288,7 +303,8 @@ object MjmlTagProvider {
                         "middle"
                     ),
                     ATTRIBUTE_WIDTH
-                )
+                ),
+                allowedParentTags = listOf("mj-attributes", "mj-column", "mj-hero")
             ),
             MjmlTagInformation(
                 "mj-carousel",
@@ -353,7 +369,8 @@ object MjmlTagProvider {
                         "should the thumbnails be visible or not",
                         "hidden"
                     )
-                )
+                ),
+                allowedParentTags = listOf("mj-attributes", "mj-column", "mj-hero")
             ),
             MjmlTagInformation(
                 "mj-carousel-image",
@@ -375,7 +392,8 @@ object MjmlTagProvider {
                         "image source to have a thumbnail different than the image it's linked to"
                     ),
                     ATTRIBUTE_TITLE
-                )
+                ),
+                allowedParentTags = listOf("mj-attributes", "mj-carousel")
             ),
             MjmlTagInformation(
                 "mj-column",
@@ -448,7 +466,8 @@ object MjmlTagProvider {
                     ATTRIBUTE_PADDING_LEFT,
                     ATTRIBUTE_PADDING_RIGHT,
                     ATTRIBUTE_CSS_CLASS
-                )
+                ),
+                allowedParentTags = listOf("mj-attributes", "mj-group", "mj-section")
             ),
             MjmlTagInformation(
                 "mj-divider",
@@ -493,7 +512,8 @@ object MjmlTagProvider {
                         "divider width",
                         "100%"
                     )
-                )
+                ),
+                allowedParentTags = listOf("mj-attributes", "mj-column", "mj-hero")
             ),
             MjmlTagInformation(
                 "mj-group",
@@ -525,7 +545,8 @@ object MjmlTagProvider {
                         "ltr"
                     ),
                     ATTRIBUTE_CSS_CLASS
-                )
+                ),
+                allowedParentTags = listOf("mj-attributes", "mj-section")
             ),
             MjmlTagInformation(
                 "mj-hero",
@@ -592,7 +613,8 @@ object MjmlTagProvider {
                         "hero container width",
                         "parent elemenent width"
                     )
-                )
+                ),
+                allowedParentTags = PARENT_ANY
             ),
             MjmlTagInformation(
                 "mj-image",
@@ -652,7 +674,8 @@ object MjmlTagProvider {
                         "reference to image map, be careful, it isn't supported everywhere\t"
                     ),
                     ATTRIBUTE_WIDTH
-                )
+                ),
+                allowedParentTags = PARENT_ANY
             ),
             MjmlTagInformation(
                 "mj-navbar",
@@ -760,7 +783,8 @@ object MjmlTagProvider {
                         MjmlAttributeType.STRING,
                         "hamburger icon text transformation none/capitalize/uppercase/lowercase (hamburger mode required)\t"
                     )
-                )
+                ),
+                allowedParentTags = listOf("mj-attributes", "mj-column", "mj-hero")
             ),
             MjmlTagInformation(
                 "mj-navbar-link",
@@ -805,7 +829,8 @@ object MjmlTagProvider {
                         "capitalize/uppercase/lowercase/none",
                         "uppercase"
                     )
-                )
+                ),
+                allowedParentTags = listOf("mj-attributes", "mj-navbar")
             ),
             MjmlTagInformation(
                 "mj-raw",
@@ -813,7 +838,8 @@ object MjmlTagProvider {
                     Displays raw HTML that is not going to be parsed by the MJML engine. Anything left inside this tag should be raw, responsive HTML. If placed inside <mj-head>, its content will be added at the end of the <head>.
                     
                     If you use mj-raw to add templating language, and use the minify option, you might get a Parsing error, especially when using the < character. You can tell the minifier to ignore some content by wrapping it between two <!-- htmlmin:ignore --> tags.
-                """.trimIndent()
+                """.trimIndent(),
+                allowedParentTags = PARENT_ANY
             ),
             MjmlTagInformation(
                 "mj-section",
@@ -875,7 +901,8 @@ object MjmlTagProvider {
                         "css text align",
                         "center"
                     )
-                )
+                ),
+                allowedParentTags = listOf("mj-attributes", "mj-body", "mj-wrapper")
             ),
             MjmlTagInformation(
                 "mj-social",
@@ -937,7 +964,8 @@ object MjmlTagProvider {
                         MjmlAttributeType.STRING,
                         "underline/overline/none"
                     )
-                )
+                ),
+                allowedParentTags = listOf("mj-attributes", "mj-column", "mj-hero")
             ),
             MjmlTagInformation(
                 "mj-social-element",
@@ -1018,7 +1046,8 @@ object MjmlTagProvider {
                         "top/middle/bottom",
                         "middle"
                     )
-                )
+                ),
+                allowedParentTags = listOf("mj-attributes", "mj-social")
             ),
             MjmlTagInformation(
                 "mj-spacer",
@@ -1037,7 +1066,8 @@ object MjmlTagProvider {
                     ATTRIBUTE_PADDING_RIGHT,
                     ATTRIBUTE_PADDING_TOP,
                     ATTRIBUTE_WIDTH
-                )
+                ),
+                allowedParentTags = PARENT_ANY
             ),
             MjmlTagInformation(
                 "mj-table",
@@ -1088,7 +1118,8 @@ object MjmlTagProvider {
                         "table width",
                         "100%"
                     )
-                )
+                ),
+                allowedParentTags = listOf("mj-attributes", "mj-column", "mj-hero")
             ),
             MjmlTagInformation(
                 "mj-text",
@@ -1142,7 +1173,8 @@ object MjmlTagProvider {
                     ATTRIBUTE_PADDING_RIGHT,
                     ATTRIBUTE_PADDING_TOP,
                     ATTRIBUTE_CSS_CLASS
-                )
+                ),
+                allowedParentTags = listOf("mj-attributes", "mj-column", "mj-hero")
             ),
             MjmlTagInformation(
                 "mj-wrapper",
@@ -1161,7 +1193,7 @@ object MjmlTagProvider {
                     ),
                     MjmlAttributeInformation(
                         "background-size",
-                         MjmlAttributeType.STRING,
+                        MjmlAttributeType.STRING,
                         "css background size",
                         "auto"
                     ),
@@ -1194,7 +1226,8 @@ object MjmlTagProvider {
                         "css text align",
                         "center"
                     )
-                )
+                ),
+                allowedParentTags = listOf("mj-attributes", "mj-column", "mj-hero")
             )
         )
     }

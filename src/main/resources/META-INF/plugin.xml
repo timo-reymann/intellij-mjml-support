@@ -18,6 +18,7 @@
             <li>color annotation and detection for attributes</li>
             <li>code inspections to highlight common errors</li>
             <li>mjml live preview (if you have javascript support enabled + markdown plugin)</li>
+            <li>inspections for containing tags</li>
         </ul>
 
         <h2>Changelog</h2>
@@ -48,6 +49,7 @@
                 <ul>
                     <li>Add mjml config schema</li>
                     <li>Fix issue with color picker where applied color differs from picked</li>
+                    <li>Add inspection for containing test validation</li>
                 </ul>
             </li>
         </ul>
@@ -122,6 +124,11 @@
                          enabledByDefault="true"
                          groupName="MJML"
                          displayName="Invalid value for mjml attribute of type url"/>
+        <localInspection implementationClass="de.timo_reymann.mjml_support.inspection.InvalidParentTagInspection"
+                         language="mjml"
+                         enabledByDefault="true"
+                         groupName="MJML"
+                         displayName="Invalid parent tag"/>
 
         <notificationGroup displayType="NONE"
                            id="MJML Support"/>

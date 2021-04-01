@@ -147,8 +147,14 @@ class MjmlPreviewFileEditor(private val project: Project, private val virtualFil
         buffer.append(LocalDateTime.now())
 
         val mapper = jacksonObjectMapper()
+        val renderResult: MjmlRenderResult
 
-        val renderResult: MjmlRenderResult = mapper.readValue(buffer.toString(), MjmlRenderResult::class.java)
+        try {
+            renderResult = mapper.readValue(buffer.toString(), MjmlRenderResult::class.java)
+        } catch (e: Exception) {
+            return "failed to render"
+        }
+
         val errors = renderResult.errors
             .filter { it.formattedMessage != null }
         if (!errors.isEmpty()) {

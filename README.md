@@ -15,15 +15,8 @@ MJML support for the IntelliJ Platform.
 
 ## What's in the box?
 
-- MJML file icons
-- Syntax highlighting and auto complete for mjml files
-- Auto complete for built in mjml tags
-- Syntax highlighting for custom tags and css
-- path completion for mj-includes
-- class usage for css-class attribute
-- url references
-- color annotation and detection for attributes
-- code inspections to highlight common errors
+Fore more details please look up the plugin description in the marketplace or directly in
+the [plugin.xml](./src/main/resources/META-INF/plugin.xml).
 
 ## How can I use it?
 
