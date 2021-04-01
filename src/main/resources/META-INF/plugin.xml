@@ -40,6 +40,7 @@
                     <li>Add inspection for invalid url attribute</li>
                     <li>Change file icon to colored mjml logo</li>
                     <li>Change icon for completions to tag icon</li>
+                    <li>Add mjml preview, based on markdown plugin</li>
                 </ul>
             </li>
         </ul>

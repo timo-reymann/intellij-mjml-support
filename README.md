@@ -2,7 +2,7 @@ intellij-mjml-support
 ===
 
 [![GitHub Release](https://img.shields.io/github/v/tag/timo-reymann/intellij-mjml-support.svg?label=version)](https://github.com/timo-reymann/intellij-mjml-support/releases)
-[![JetBrains Plugins](https://img.shields.io/badge/JetBrains-Plugins-orange)](https://plugins.jetbrains.com/https://plugins.jetbrains.com/plugin/16418-mjml-support)
+[![JetBrains Plugins](https://img.shields.io/badge/JetBrains-Plugins-orange)](https://plugins.jetbrains.com/plugin/16418-mjml-support)
 
 MJML support for the IntelliJ Platform.
 
