@@ -1,5 +1,6 @@
 package de.timo_reymann.mjml_support.editor
 
+import com.fasterxml.jackson.databind.MapperFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.intellij.CommonBundle
@@ -34,6 +35,8 @@ import java.awt.event.ComponentAdapter
 import java.awt.event.ComponentEvent
 import java.beans.PropertyChangeListener
 import java.io.File
+import java.nio.charset.StandardCharsets
+import java.nio.file.Files
 import java.time.LocalDateTime
 import java.util.*
 import java.util.concurrent.atomic.AtomicInteger
@@ -44,6 +47,7 @@ import javax.swing.JPanel
 class MjmlPreviewFileEditor(private val project: Project, private val virtualFile: VirtualFile) :
     UserDataHolderBase(), FileEditor {
     private val document: Document? = FileDocumentManager.getInstance().getDocument(virtualFile)
+    private val tempFile = File.createTempFile("abc", "def")
     private val htmlPanelWrapper: JPanel
     private var panel: JCEFHtmlPanel? = null
     private val pooledAlarm = Alarm(Alarm.ThreadToUse.POOLED_THREAD, this)
@@ -141,12 +145,16 @@ class MjmlPreviewFileEditor(private val project: Project, private val virtualFil
     }
 
     private fun renderWithNode(text: String): String {
+        Files.writeString(tempFile.toPath(), text, StandardCharsets.UTF_8)
         nodeJsInterpreter ?: return "<p>Node not configured</p>"
         val line = AtomicInteger(0)
         val commandLineConfigurator = NodeCommandLineConfigurator.find(nodeJsInterpreter!!)
-        val commandLine = GeneralCommandLine("node", FilePluginUtil.getFile("render.js").absolutePath)
-        commandLine.workDirectory = File(project.basePath!!)
+        val commandLine = GeneralCommandLine("node", FilePluginUtil.getFile("renderer/index.js").absolutePath)
+            .withInput(tempFile)
+            .withWorkDirectory(File(project.basePath!!))
+
         commandLineConfigurator.configure(commandLine)
+
         val processHandler = OSProcessHandler(commandLine)
         val buffer = StringBuffer()
         processHandler.addProcessListener(object : ProcessAdapter() {
@@ -166,7 +174,8 @@ class MjmlPreviewFileEditor(private val project: Project, private val virtualFil
         buffer.append(LocalDateTime.now())
 
         val mapper = jacksonObjectMapper()
-        val renderResult : MjmlRenderResult = mapper.readValue(buffer.toString(), MjmlRenderResult::class.java)
+
+        val renderResult: MjmlRenderResult = mapper.readValue(buffer.toString(), MjmlRenderResult::class.java)
         return renderResult.html
     }
 

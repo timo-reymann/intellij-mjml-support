@@ -1,6 +1,7 @@
 package de.timo_reymann.mjml_support.editor
 
 import com.intellij.ui.jcef.JCEFHtmlPanel
+import com.intellij.util.io.Decompressor
 import de.timo_reymann.mjml_support.util.FilePluginUtil
 import org.apache.commons.lang.math.RandomUtils.nextInt
 
@@ -11,7 +12,10 @@ class MjmlJCEFHtmlPanel() : JCEFHtmlPanel(getClassUrl()) {
     }
 
     private fun copyFiles() {
-        FilePluginUtil.copyFile("node", "render.js")
+        FilePluginUtil.copyFile("node", "renderer.zip")
+        val rendererZip = FilePluginUtil.getFile("renderer.zip")
+        Decompressor.Zip(rendererZip).extract(FilePluginUtil.getFile("renderer"))
+        rendererZip.delete()
     }
 
     companion object {
