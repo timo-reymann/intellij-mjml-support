@@ -18,7 +18,7 @@ class MjmlColorAttributeTypeElementColorProvider : ElementColorProvider {
             return null
         }
         val xmlAttribute = element.parent as XmlAttribute
-        val (mjmlTag, mjmlAttribute) = getMjmlInfoFromAttribute(xmlAttribute)
+        val (_, mjmlAttribute) = getMjmlInfoFromAttribute(xmlAttribute)
         if (mjmlAttribute?.type != MjmlAttributeType.COLOR) {
             return null
         }

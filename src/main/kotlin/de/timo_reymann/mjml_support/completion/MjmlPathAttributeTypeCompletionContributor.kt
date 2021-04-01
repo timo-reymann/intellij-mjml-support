@@ -34,7 +34,7 @@ class MjmlPathAttributeTypeCompletionContributor : CompletionContributor() {
             resultSet: CompletionResultSet
         ) {
             val target = parameters.position
-            val (mjmlTag, mjmlAttribute) = getMjmlInfoFromAttributeValue(target)
+            val (_, mjmlAttribute) = getMjmlInfoFromAttributeValue(target)
             if(mjmlAttribute?.type != MjmlAttributeType.PATH) {
                 return
             }

@@ -1,0 +1,14 @@
+{
+  "name": "intellij-mjml-support-renderer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "mjml": "^4.9.0"
+  },
+  "scripts": {
+    "build": "zip -FSr ../src/main/resources/node/renderer.zip ."
+  },
+  "author": "",
+  "license": "MIT"
+}
