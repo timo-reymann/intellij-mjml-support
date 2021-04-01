@@ -31,7 +31,7 @@
                     <li>Fix completion path provider and reference collision</li>
                 </ul>
             </li>
-            <li>0.0.3
+            <li>0.1.0
                 <ul>
                     <li>Add inspection for unknown attributes</li>
                     <li>Add inspection for invalid path attribute</li>
