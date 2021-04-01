@@ -113,6 +113,8 @@
                          enabledByDefault="true"
                          groupName="MJML"
                          displayName="Invalid value for mjml attribute of type url"/>
+
+        <notificationGroup displayType="NONE" id="MJML Support" />
         <fileEditorProvider implementation="de.timo_reymann.mjml_support.editor.MjmlPreviewSplitEditorProvider" />
     </extensions>
 

@@ -18,7 +18,7 @@ class MjStyleCssInjector : MultiHostInjector {
         val host = context as PsiLanguageInjectionHost
         when (host.parent) {
             is XmlTag -> {
-                if ((host.parent as HtmlTag).name == "mj-style") {
+                if ((host.parent as XmlTag).name == "mj-style") {
                     highlight(registrar, host, false)
                 }
             }

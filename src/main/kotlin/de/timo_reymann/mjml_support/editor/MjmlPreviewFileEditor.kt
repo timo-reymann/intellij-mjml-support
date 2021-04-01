@@ -1,7 +1,5 @@
 package de.timo_reymann.mjml_support.editor
 
-import com.fasterxml.jackson.databind.MapperFeature
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.intellij.CommonBundle
 import com.intellij.codeHighlighting.BackgroundEditorHighlighter
@@ -12,6 +10,9 @@ import com.intellij.execution.process.ProcessEvent
 import com.intellij.javascript.nodejs.interpreter.NodeCommandLineConfigurator
 import com.intellij.javascript.nodejs.interpreter.NodeJsInterpreter
 import com.intellij.javascript.nodejs.interpreter.NodeJsInterpreterRef
+import com.intellij.notification.Notification
+import com.intellij.notification.NotificationListener
+import com.intellij.notification.NotificationType
 import com.intellij.openapi.application.ModalityState
 import com.intellij.openapi.editor.Document
 import com.intellij.openapi.editor.Editor
@@ -24,11 +25,12 @@ import com.intellij.openapi.ui.Messages
 import com.intellij.openapi.util.Disposer
 import com.intellij.openapi.util.Key
 import com.intellij.openapi.util.UserDataHolderBase
+import com.intellij.openapi.vfs.VfsUtil
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.ui.jcef.JCEFHtmlPanel
 import com.intellij.util.Alarm
 import de.timo_reymann.mjml_support.util.FilePluginUtil
-import kotlinx.serialization.json.Json
+import de.timo_reymann.mjml_support.util.MessageBusUtil
 import org.intellij.plugins.markdown.ui.split.SplitFileEditor
 import java.awt.BorderLayout
 import java.awt.event.ComponentAdapter
@@ -42,6 +44,7 @@ import java.util.*
 import java.util.concurrent.atomic.AtomicInteger
 import javax.swing.JComponent
 import javax.swing.JPanel
+import javax.swing.event.HyperlinkEvent
 
 
 class MjmlPreviewFileEditor(private val project: Project, private val virtualFile: VirtualFile) :
@@ -53,13 +56,11 @@ class MjmlPreviewFileEditor(private val project: Project, private val virtualFil
     private val pooledAlarm = Alarm(Alarm.ThreadToUse.POOLED_THREAD, this)
     private val swingAlarm = Alarm(Alarm.ThreadToUse.SWING_THREAD, this)
     private val REQUESTS_LOCK = Any()
-    private var lastScrollRequest: Runnable? = null
     private var lastHtmlOrRefreshRequest: Runnable? = null
     private val nodeJsInterpreterRef = NodeJsInterpreterRef.createProjectRef()
     private var nodeJsInterpreter: NodeJsInterpreter? = null
+    private var previousText = ""
 
-    @Volatile
-    private var myLastScrollOffset = 0
     private var myLastRenderedHtml = ""
     private var mainEditor: Editor? = null
 
@@ -73,34 +74,6 @@ class MjmlPreviewFileEditor(private val project: Project, private val virtualFil
                 "Node.js not configured, preview is not available",
                 CommonBundle.getErrorTitle(),
                 Messages.getErrorIcon()
-            )
-        }
-    }
-
-    fun scrollToSrcOffset(offset: Int) {
-        if (panel == null) return
-
-        // Do not scroll if html update request is online
-        // This will restrain preview from glitches on editing
-        if (!pooledAlarm.isEmpty) {
-            myLastScrollOffset = offset
-            return
-        }
-
-        synchronized(REQUESTS_LOCK) {
-            if (lastScrollRequest != null) {
-                swingAlarm.cancelRequest(lastScrollRequest!!)
-            }
-            lastScrollRequest = Runnable {
-                if (panel != null) {
-                    myLastScrollOffset = offset
-                    synchronized(REQUESTS_LOCK) { lastScrollRequest = null }
-                }
-            }
-            swingAlarm.addRequest(
-                lastScrollRequest!!,
-                RENDERING_DELAY_MS,
-                ModalityState.stateForComponent(component)
             )
         }
     }
@@ -151,7 +124,7 @@ class MjmlPreviewFileEditor(private val project: Project, private val virtualFil
         val commandLineConfigurator = NodeCommandLineConfigurator.find(nodeJsInterpreter!!)
         val commandLine = GeneralCommandLine("node", FilePluginUtil.getFile("renderer/index.js").absolutePath)
             .withInput(tempFile)
-            .withWorkDirectory(File(project.basePath!!))
+            .withWorkDirectory(File(virtualFile.path).parentFile)
 
         commandLineConfigurator.configure(commandLine)
 
@@ -176,16 +149,54 @@ class MjmlPreviewFileEditor(private val project: Project, private val virtualFil
         val mapper = jacksonObjectMapper()
 
         val renderResult: MjmlRenderResult = mapper.readValue(buffer.toString(), MjmlRenderResult::class.java)
-        return renderResult.html
+        val errors = renderResult.errors
+            .filter { it.formattedMessage != null }
+        if (!errors.isEmpty()) {
+            val message = errors
+                .joinToString("\n<br />") {
+                    """
+                        <a href="${virtualFile.path}:${it.line ?: 0}">${
+                        virtualFile.toNioPath().toFile().relativeTo(File(project.basePath!!))
+                    }:${it.line}</a>: ${it.message}
+                    """.trimIndent()
+                }
+
+            MessageBusUtil.NOTIFICATION_GROUP
+                .createNotification(
+                    "<html><strong>Errors while rendering MJML</strong></html>",
+                    "<html>\n${message}</html>",
+                    NotificationType.WARNING,
+                    object : NotificationListener {
+                        override fun hyperlinkUpdate(notification: Notification, event: HyperlinkEvent) {
+                            if (event.eventType != HyperlinkEvent.EventType.ACTIVATED) {
+                                return
+                            }
+
+                            val fields = event.description.split(":")
+                            val file = VfsUtil.findFile(File(fields[0]).toPath(), true)
+                            FileEditorManager.getInstance(project)
+                                .openTextEditor(OpenFileDescriptor(project, file!!, fields[1].toInt(), 0), true)
+                            println(event)
+                        }
+                    })
+                .notify(project)
+        }
+
+        return renderResult.html ?: ""
     }
 
     // Is always run from pooled thread
     private fun updateHtml() {
-        if (panel == null || document == null || !virtualFile.isValid || Disposer.isDisposed(this) || mainEditor == null) {
+        if (panel == null || document == null || !virtualFile.isValid || Disposer.isDisposed(this) || mainEditor == null || virtualFile == null) {
+            return
+        }
+        val currentText = mainEditor!!.document.text
+        if (myLastRenderedHtml != "" && currentText == previousText) {
             return
         }
 
-        val html = renderWithNode(mainEditor!!.document.text)
+        previousText = currentText
+        val html = renderWithNode(currentText)
 
         synchronized(REQUESTS_LOCK) {
             if (lastHtmlOrRefreshRequest != null) {
@@ -234,7 +245,7 @@ class MjmlPreviewFileEditor(private val project: Project, private val virtualFil
 
     companion object {
         private const val PARSING_CALL_TIMEOUT_MS = 50L
-        private const val RENDERING_DELAY_MS = 20L
+        private const val RENDERING_DELAY_MS = 40L
         private fun isPreviewShown(project: Project, file: VirtualFile): Boolean {
             val state = EditorHistoryManager.getInstance(project).getState(file, MjmlPreviewFileEditorProvider())
             return if (state !is SplitFileEditor.MyFileEditorState) {

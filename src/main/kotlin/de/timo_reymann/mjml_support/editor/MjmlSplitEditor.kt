@@ -1,9 +1,6 @@
 package de.timo_reymann.mjml_support.editor
 
 import com.intellij.openapi.editor.Editor
-import com.intellij.openapi.editor.event.VisibleAreaEvent
-import com.intellij.openapi.editor.event.VisibleAreaListener
-import com.intellij.openapi.editor.ex.util.EditorUtil
 import com.intellij.openapi.fileEditor.TextEditor
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.pom.Navigatable
@@ -23,21 +20,7 @@ class MjmlSplitEditor(mainEditor: TextEditor, secondEditor: MjmlPreviewFileEdito
 
     override fun navigateTo(navigatable: Navigatable) = mainEditor.navigateTo(navigatable)
 
-    private inner class MyVisibleAreaListener : VisibleAreaListener {
-        private var previousLine = 0
-        override fun visibleAreaChanged(event: VisibleAreaEvent) {
-            val editor = event.editor
-            val currentLine = EditorUtil.yPositionToLogicalLine(editor, editor.scrollingModel.verticalScrollOffset)
-            if (currentLine == previousLine) {
-                return
-            }
-            previousLine = currentLine
-            secondEditor.scrollToSrcOffset(EditorUtil.getVisualLineEndOffset(editor, currentLine))
-        }
-    }
-
     init {
         secondEditor.setMainEditor(mainEditor.editor)
-        mainEditor.editor.scrollingModel.addVisibleAreaListener(MyVisibleAreaListener())
     }
 }

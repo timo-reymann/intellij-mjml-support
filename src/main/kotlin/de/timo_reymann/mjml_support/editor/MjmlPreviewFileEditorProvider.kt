@@ -9,14 +9,10 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
 import de.timo_reymann.mjml_support.lang.MjmlHtmlFileType
 import de.timo_reymann.mjml_support.lang.MjmlHtmlLanguage
-import org.intellij.plugins.markdown.ui.preview.MarkdownHtmlPanelProvider
-import org.intellij.plugins.markdown.ui.preview.MarkdownPreviewFileEditor
 
 class MjmlPreviewFileEditorProvider : WeighedFileEditorProvider() {
     override fun accept(project: Project, file: VirtualFile): Boolean {
-        if (!MarkdownHtmlPanelProvider.hasAvailableProviders()) {
-            return false
-        }
+
 
         val fileType = file.fileType
 
