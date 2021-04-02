@@ -26,7 +26,5 @@ class MjmlPathAttributeTypeCompletionContributorTest : MjmlPluginBaseTestCase() 
         verifyCompletion("style.css", "stuff.txt", shouldInclude = false)
     }
 
-    override fun getTestDataPath(): String {
-        return "testData/completion/path"
-    }
+    override fun getTestDataPath(): String = super.getTestDataPath() + "completion/path"
 }

@@ -1,0 +1,3 @@
+<mj-body>
+    <warning descr="mjml cannot be used inside mj-body, only inside top level document"><mjml></mjml></warning>
+</mj-body>

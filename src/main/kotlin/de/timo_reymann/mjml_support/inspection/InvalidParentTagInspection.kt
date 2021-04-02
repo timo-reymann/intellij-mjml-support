@@ -11,13 +11,23 @@ class InvalidParentTagInspection : HtmlLocalInspectionTool() {
         val mjmlTag = MjmlTagProvider.getByXmlElement(tag) ?: return
         if (tag.parent is XmlTag) {
             val parentTagName = (tag.parent as XmlTag).name
-            if (!mjmlTag.allowedParentTags.contains(parentTagName)) {
-                holder.registerProblem(
-                    tag,
-                    "${mjmlTag.tagName} cannot be used inside ${parentTagName}, only inside ${mjmlTag.allowedParentTags.joinToString(", ")}",
-                    ProblemHighlightType.WARNING
-                )
+            val allowedParentTags = mjmlTag.allowedParentTags
+
+            if (allowedParentTags.contains("*") || allowedParentTags.contains(parentTagName)) {
+                return
             }
+
+            val inspectionAllowedTagsText = when {
+                allowedParentTags.isEmpty() -> "top level document"
+                else -> allowedParentTags.joinToString(", ")
+            }
+
+            holder.registerProblem(
+                tag,
+                "${mjmlTag.tagName} cannot be used inside ${parentTagName}, only inside ${inspectionAllowedTagsText}",
+                ProblemHighlightType.WARNING
+            )
+
         }
     }
 }

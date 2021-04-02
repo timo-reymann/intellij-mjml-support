@@ -1,0 +1,3 @@
+<mj-section
+    <error descr="Invalid color specification, either the color name, hex or rgb notation can be used">background-color="#ff"</error>
+></mj-section>

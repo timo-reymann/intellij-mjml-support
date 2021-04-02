@@ -9,11 +9,13 @@ import com.jetbrains.jsonSchema.extension.JsonSchemaProviderFactory
 class MjmlConfigSchemaProviderFactory : JsonSchemaProviderFactory {
     companion object {
         const val SCHEMA_FILE_NAME = "mjml-config-schema.json"
+        const val SCHEMA_NAME = "MJML configuration"
     }
 
     override fun getProviders(project: Project): MutableList<JsonSchemaFileProvider> {
         val provider = object : EmbeddedJsonSchemaFileProvider(
-            SCHEMA_FILE_NAME, "MJML configuration",
+            SCHEMA_FILE_NAME,
+            SCHEMA_NAME,
             "http://json.schemastore.org/prettierrc",
             MjmlConfigSchemaProviderFactory::class.java, "/"
         ) {

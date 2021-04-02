@@ -1,0 +1,3 @@
+<mj-include
+ <error descr="_include.txt is not resolving to a valid mjml file">path="_include.txt"</error>
+/>

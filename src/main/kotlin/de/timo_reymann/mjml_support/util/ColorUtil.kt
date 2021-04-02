@@ -25,7 +25,11 @@ object ColorUtil {
     }
 
     private fun fromRgbString(rgbText: String): Color {
-        val rgb = rgbText.split(",").map { it.trim() }
+        val rgb = rgbText
+            .replace("rgb(", "")
+            .replace(")", "")
+            .split(",")
+            .map { it.trim() }
         return try {
             rgb.map { it.toInt() }.let { Color(it[0], it[1], it[2]) }
         } catch (e: NumberFormatException) {

@@ -60,6 +60,7 @@
             <li>WIP
                 <ul>
                     <li>Adjusted pixel attributes to make pixel unit optional</li>
+                    <li>Add more clear error message when top level tag is nested</li>
                 </ul>
             </li>
         </ul>
