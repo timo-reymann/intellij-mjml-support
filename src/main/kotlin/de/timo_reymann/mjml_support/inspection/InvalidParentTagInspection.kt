@@ -5,6 +5,7 @@ import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.codeInspection.htmlInspections.HtmlLocalInspectionTool
 import com.intellij.psi.xml.XmlTag
 import de.timo_reymann.mjml_support.model.MjmlTagProvider
+import de.timo_reymann.mjml_support.model.PARENT_ANY
 
 class InvalidParentTagInspection : HtmlLocalInspectionTool() {
     override fun checkTag(tag: XmlTag, holder: ProblemsHolder, isOnTheFly: Boolean) {
@@ -13,7 +14,7 @@ class InvalidParentTagInspection : HtmlLocalInspectionTool() {
             val parentTagName = (tag.parent as XmlTag).name
             val allowedParentTags = mjmlTag.allowedParentTags
 
-            if (allowedParentTags.contains("*") || allowedParentTags.contains(parentTagName)) {
+            if (allowedParentTags == PARENT_ANY || allowedParentTags.contains(parentTagName)) {
                 return
             }
 

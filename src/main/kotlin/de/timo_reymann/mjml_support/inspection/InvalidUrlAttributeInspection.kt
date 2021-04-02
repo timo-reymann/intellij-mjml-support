@@ -33,7 +33,7 @@ class InvalidUrlAttributeInspection : HtmlLocalInspectionTool() {
                 GlobalPathReferenceProvider.startsWithAllowedPrefix(attribute.value)
 
         // Everything fine
-        if (!isValidPrefix || !isValidUrl) {
+        if (!isValidPrefix && !isValidUrl) {
             holder.registerProblem(
                 attribute,
                 "Attribute doesnt seem to contain a valid url",

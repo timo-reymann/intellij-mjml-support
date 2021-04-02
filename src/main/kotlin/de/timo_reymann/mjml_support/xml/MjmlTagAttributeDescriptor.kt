@@ -17,9 +17,7 @@ class MjmlTagAttributeDescriptor(private val attributeName: String, private val 
 
     override fun getName(): String = attributeName
 
-    override fun init(element: PsiElement?) {
-
-    }
+    override fun init(element: PsiElement?) = Unit
 
     override fun isRequired() = false
 

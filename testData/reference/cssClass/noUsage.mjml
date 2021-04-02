@@ -1,0 +1,4 @@
+<mj-style>
+    .class<caret> {}
+</mj-style>
+<mj-section css-class="other" />
