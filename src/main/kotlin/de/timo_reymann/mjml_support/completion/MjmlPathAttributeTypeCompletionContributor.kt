@@ -21,6 +21,7 @@ import de.timo_reymann.mjml_support.icons.MjmlIcons
 import de.timo_reymann.mjml_support.lang.MjmlHtmlFileType
 import de.timo_reymann.mjml_support.model.MjmlAttributeType
 import de.timo_reymann.mjml_support.model.getMjmlInfoFromAttributeValue
+import java.io.File
 import java.lang.Exception
 import java.util.*
 
@@ -68,8 +69,7 @@ class MjmlPathAttributeTypeCompletionContributor : CompletionContributor() {
                         continue
                     }
 
-                    val filePath: String =
-                        virtualFile.toNioPath().toFile().relativeTo(rootFile.parent.toNioPath().toFile()).toString()
+                    val filePath: String = File(virtualFile.path).relativeTo(File(rootFile.parent.path)).toString()
                     resultSet.addElement(LookupElementBuilder.create(filePath).withIcon(MjmlIcons.COLORED))
                 }
             }

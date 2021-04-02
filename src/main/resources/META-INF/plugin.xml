@@ -57,6 +57,11 @@
                     <li>Removed dependency on markdown plugin</li>
                 </ul>
             </li>
+            <li>WIP
+                <ul>
+                    <li>Adjusted pixel attributes to make pixel unit optional</li>
+                </ul>
+            </li>
         </ul>
         ]]></description>
 
@@ -92,9 +97,6 @@
 
         <psi.referenceContributor language="mjml"
                                   implementation="de.timo_reymann.mjml_support.reference.MjmlUrlAttributeTypeReferenceContributor"/>
-
-        <completion.contributor language="mjml"
-                                implementationClass="de.timo_reymann.mjml_support.completion.MjmlPixelAttributeTypeCompletionContributor"/>
 
         <colorProvider
                 implementation="de.timo_reymann.mjml_support.completion.MjmlColorAttributeTypeElementColorProvider"/>

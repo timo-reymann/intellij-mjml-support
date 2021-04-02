@@ -30,7 +30,7 @@ repositories {
 
 dependencies {
     implementation(kotlin("stdlib"))
-    testCompile("junit", "junit", "4.12")
+    testImplementation("junit", "junit", "4.12")
 }
 
 // See https://github.com/JetBrains/gradle-intellij-plugin/
@@ -46,6 +46,15 @@ intellij {
         "HtmlTools",
         "JavaScript"
     )
+}
+
+tasks.withType<Test> {
+    testLogging {
+        exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
+    }
+
+    // Prevent "File access outside allowed roots" in multi module tests, because modules each have an .iml
+    environment("NO_FS_ROOTS_ACCESS_CHECK", "1")
 }
 
 tasks.getByName<org.jetbrains.intellij.tasks.PatchPluginXmlTask>("patchPluginXml") {
