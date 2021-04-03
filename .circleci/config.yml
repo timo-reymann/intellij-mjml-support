@@ -17,10 +17,10 @@ commands:
           paths:
             - ~/.gradle/wrapper
           key: v1-gradle-wrapper-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
-                 - save_cache:
-                 paths:
-                   - ~/.gradle/caches
-                 key: v1-gradle-cache-{{ checksum "build.gradle.kts" }}
+      - save_cache:
+          paths:
+            - ~/.gradle/caches
+          key: v1-gradle-cache-{{ checksum "build.gradle.kts" }}
 
 jobs:
   test:
