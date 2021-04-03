@@ -75,6 +75,11 @@
                     <li>Make preview editor default to view only text version</li>
                 </ul>
             </li>
+            <li>1.3.0
+                <ul>
+                    <li>Add file template for new mjml files</li>
+                </ul>
+            </li>
         </ul>
         ]]></description>
 
@@ -161,6 +166,8 @@
         <fileType name="JSON"
                   language="JSON"
                   fileNames=".mjmlconfig"/>
+
+        <createFromTemplateHandler implementation="de.timo_reymann.mjml_support.actions.MjmlCreateFromTemplateHandler"/>
     </extensions>
 
     <extensions defaultExtensionNs="JavaScript.JsonSchema">

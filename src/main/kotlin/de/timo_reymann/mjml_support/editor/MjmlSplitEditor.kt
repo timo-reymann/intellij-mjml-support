@@ -8,7 +8,7 @@ import com.intellij.pom.Navigatable
 import de.timo_reymann.mjml_support.bundle.MjmlBundle
 
 class MjmlSplitEditor(val mainEditor: TextEditor, secondEditor: MjmlPreviewFileEditor) :
-    TextEditorWithPreview(mainEditor, secondEditor,MjmlBundle.message("mjml_preview.name"), Layout.SHOW_EDITOR),
+    TextEditorWithPreview(mainEditor, secondEditor,"TextEditorWithPreview", Layout.SHOW_EDITOR),
     TextEditor {
 
     override fun getName(): String = MjmlBundle.message("mjml_preview.name")
