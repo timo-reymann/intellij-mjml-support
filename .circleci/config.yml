@@ -37,6 +37,7 @@ jobs:
           path: build/test-results/test
           when: always
       - create_or_update_cache
+
   build:
     executor: gradle
     steps:
@@ -47,12 +48,38 @@ jobs:
           command: ./gradlew buildPlugin
       - store_artifacts:
           path: build/distributions
+      - persist_to_workspace:
+          name: Persist plugin file
+          root: .
+          paths:
+            - build/distributions
       - create_or_update_cache
 
+  publish:
+    executor: gradle
+    steps:
+      - checkout
+      - retrieve_cache
+      - attach_workspace:
+          at: .
+          name: Retrieve plugin file
+      - run:
+          name: Publish plugin
+          command: ./gradlew publishPlugin
+
 workflows:
-  build:
+  continious:
     jobs:
       - test
       - build:
           requires:
             - test
+      - publish:
+          requires:
+            - test
+            - build
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /.*/
