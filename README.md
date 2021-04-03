@@ -47,7 +47,7 @@ the [plugin.xml](./src/main/resources/META-INF/plugin.xml).
     - [x] support for custom components [PARTIAL with configuration]
 5. Additional (nice to have features)
    - [x] new file template
-   - [ ] run tests via ci
+   - [x] run tests via ci
    - [ ] deploy plugin with cd (pipeline)
 
 ## Notes about implementation
