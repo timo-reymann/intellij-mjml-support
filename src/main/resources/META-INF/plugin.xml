@@ -70,6 +70,11 @@
                     <li>Add message bundle</li>
                 </ul>
             </li>
+            <li>1.2.1
+                <ul>
+                    <li>Make preview editor default to view only text version</li>
+                </ul>
+            </li>
         </ul>
         ]]></description>
 

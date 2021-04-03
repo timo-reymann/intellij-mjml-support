@@ -2,18 +2,17 @@ package de.timo_reymann.mjml_support.completion
 
 import com.intellij.codeInsight.completion.*
 import com.intellij.codeInsight.lookup.LookupElementBuilder
-import com.intellij.openapi.vfs.VirtualFile
-import com.intellij.patterns.PlatformPatterns.psiElement
-import com.intellij.psi.xml.XmlAttributeValue
-import com.intellij.util.ProcessingContext
-import com.intellij.codeInsight.completion.CompletionParameters
 import com.intellij.navigation.ChooseByNameContributor
 import com.intellij.navigation.ChooseByNameContributorEx
 import com.intellij.openapi.fileTypes.FileTypeManager
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.io.FileUtilRt
+import com.intellij.openapi.vfs.VirtualFile
+import com.intellij.patterns.PlatformPatterns.psiElement
 import com.intellij.psi.search.FilenameIndex
 import com.intellij.psi.search.ProjectScope
+import com.intellij.psi.xml.XmlAttributeValue
+import com.intellij.util.ProcessingContext
 import com.intellij.util.Processor
 import com.intellij.util.containers.ContainerUtil
 import com.intellij.util.indexing.FindSymbolParameters
@@ -22,7 +21,6 @@ import de.timo_reymann.mjml_support.lang.MjmlHtmlFileType
 import de.timo_reymann.mjml_support.model.MjmlAttributeType
 import de.timo_reymann.mjml_support.model.getMjmlInfoFromAttributeValue
 import java.io.File
-import java.lang.Exception
 import java.util.*
 
 

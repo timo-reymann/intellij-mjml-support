@@ -1,14 +1,17 @@
 package de.timo_reymann.mjml_support.reference
 
 import com.intellij.patterns.PlatformPatterns
-import com.intellij.psi.*
+import com.intellij.psi.PsiElement
+import com.intellij.psi.PsiReference
+import com.intellij.psi.PsiReferenceContributor
+import com.intellij.psi.PsiReferenceRegistrar
 import com.intellij.psi.impl.source.resolve.reference.ArbitraryPlaceUrlReferenceProvider
 import com.intellij.psi.util.parentOfType
 import com.intellij.psi.xml.XmlAttribute
 import com.intellij.psi.xml.XmlAttributeValue
 import com.intellij.util.ProcessingContext
-import de.timo_reymann.mjml_support.model.getMjmlInfoFromAttribute
 import de.timo_reymann.mjml_support.model.MjmlAttributeType
+import de.timo_reymann.mjml_support.model.getMjmlInfoFromAttribute
 
 class MjmlUrlAttributeTypeReferenceContributor : PsiReferenceContributor() {
     override fun registerReferenceProviders(registrar: PsiReferenceRegistrar) {
