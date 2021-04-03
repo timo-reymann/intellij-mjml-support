@@ -37,8 +37,22 @@ jobs:
           path: build/test-results/test
           when: always
       - create_or_update_cache
+  build:
+    executor: gradle
+    steps:
+      - checkout
+      - retrieve_cache
+      - run:
+          name: Build plugin
+          command: ./gradlew buildPlugin
+      - store_artifacts:
+          path: build/distributions
+      - create_or_update_cache
 
 workflows:
   build:
     jobs:
       - test
+      - build:
+          requires:
+            - test

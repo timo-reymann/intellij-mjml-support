@@ -62,7 +62,11 @@ tasks.withType<Test> {
 }
 
 tasks.getByName<org.jetbrains.intellij.tasks.PatchPluginXmlTask>("patchPluginXml") {
-    setVersion(gitInfo.lastTag)
+    if(gitInfo.isCleanTag) {
+        setVersion(gitInfo.lastTag)
+    } else {
+        setVersion(gitInfo.version)
+    }
 }
 
 tasks.getByName<org.jetbrains.intellij.tasks.PublishTask>("publishPlugin") {
