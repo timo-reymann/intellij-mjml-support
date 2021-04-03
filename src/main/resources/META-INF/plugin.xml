@@ -57,7 +57,7 @@
                     <li>Removed dependency on markdown plugin</li>
                 </ul>
             </li>
-            <li>1.1.1
+            <li>1.1.2
                 <ul>
                     <li>Adjusted pixel attributes to make pixel unit optional</li>
                     <li>Add more clear error message when top level tag is nested</li>
