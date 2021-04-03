@@ -8,17 +8,20 @@ import org.apache.commons.lang.math.RandomUtils.nextInt
 class MjmlJCEFHtmlPanel : JCEFHtmlPanel(getClassUrl()) {
 
     init {
-        copyFiles()
+        initRendererFiles()
     }
 
-    private fun copyFiles() {
-        FilePluginUtil.copyFile("node", "renderer.zip")
-        val rendererZip = FilePluginUtil.getFile("renderer.zip")
-        Decompressor.Zip(rendererZip).extract(FilePluginUtil.getFile("renderer"))
+    private fun initRendererFiles() {
+        FilePluginUtil.copyFile("node", RENDERER_ARCHIVE_NAME)
+        val rendererZip = FilePluginUtil.getFile(RENDERER_ARCHIVE_NAME)
+        Decompressor.Zip(rendererZip)
+            .extract(FilePluginUtil.getFile("renderer"))
         rendererZip.delete()
     }
 
     companion object {
+        internal const val RENDERER_ARCHIVE_NAME = "renderer.zip"
+
         private fun getClassUrl(): String {
             val url = try {
                 val cls = MjmlJCEFHtmlPanel::class.java

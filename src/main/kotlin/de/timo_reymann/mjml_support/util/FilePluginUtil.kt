@@ -11,9 +11,11 @@ object FilePluginUtil {
     private val PLUGIN_HOME: File = PluginPathManager.getPluginHome("mjml-support")
 
     fun copyFile(path: String, fileName: String) {
+        val destinationFile = getFile(fileName)
+        destinationFile.parentFile.mkdirs()
         Files.copy(
             ResourceUtil.getResourceAsStream(MjmlJCEFHtmlPanel::class.java.classLoader, path, fileName),
-            getFile(fileName).toPath(),
+            destinationFile.toPath(),
             StandardCopyOption.REPLACE_EXISTING
         )
     }
