@@ -70,10 +70,20 @@ jobs:
 workflows:
   continious:
     jobs:
-      - test
+      - test:
+          filters:
+            branches:
+              only: /.*/
+            tags:
+              only: /.*/
       - build:
           requires:
             - test
+          filters:
+            branches:
+              only: /.*/
+            tags:
+              only: /.*/
       - publish:
           requires:
             - test
