@@ -55,7 +55,7 @@ jobs:
             - build/distributions
       - create_or_update_cache
 
-  publish:
+  publish_to_marketplace:
     executor: gradle
     steps:
       - checkout
@@ -66,6 +66,34 @@ jobs:
       - run:
           name: Publish plugin
           command: ./gradlew publishPlugin
+
+  github_release:
+    executor: gradle
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
+          name: Retrieve plugin file
+      - run:
+          name: Create github release
+          command: |
+            go get github.com/github-release/github-release
+            git config user.name $CIRCLE_PROJECT_USERNAME
+            github-release release \
+                --user $CIRCLE_PROJECT_USERNAME \
+                --repo $CIRCLE_PROJECT_REPONAME \
+                --tag $CIRCLE_TAG \
+                --name "Release $CIRCLE_TAG"
+            for filename in build/distributions/*
+            do
+                github-release upload \
+                  --replace \
+                  --user $CIRCLE_PROJECT_USERNAME \
+                  --repo $CIRCLE_PROJECT_REPONAME \
+                  --tag $CIRCLE_TAG \
+                  --name "$(basename "$filename")" \
+                  --file $filename
+            done
 
 workflows:
   continious:
@@ -84,9 +112,16 @@ workflows:
               only: /.*/
             tags:
               only: /.*/
-      - publish:
+      - github_release:
           requires:
-            - test
+            - build
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /.*/
+      - publish_to_marketplace:
+          requires:
             - build
           filters:
             branches:
