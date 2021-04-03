@@ -26,6 +26,7 @@ jobs:
   test:
     executor: gradle
     steps:
+      - checkout
       - retrieve_cache
       - run:
           name: Run tests
