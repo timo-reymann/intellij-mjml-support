@@ -1,0 +1,43 @@
+version: '2.1'
+executors:
+  gradle:
+    docker:
+      - image: circleci/openjdk:11.0.3-jdk-stretch
+
+commands:
+  retrieve_cache:
+    steps:
+      - restore_cache:
+          key: v1-gradle-wrapper-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
+                 - restore_cache:
+                 key: v1-gradle-cache-{{ checksum "build.gradle.kts" }}
+  create_or_update_cache:
+    steps:
+      - save_cache:
+          paths:
+            - ~/.gradle/wrapper
+          key: v1-gradle-wrapper-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
+                 - save_cache:
+                 paths:
+                   - ~/.gradle/caches
+                 key: v1-gradle-cache-{{ checksum "build.gradle.kts" }}
+
+jobs:
+  test:
+    executor: gradle
+    steps:
+      - retrieve_cache
+      - run:
+          name: Run tests
+          command: ./gradlew test
+      - store_test_results:
+          path: build/test-results/test
+      - store_artifacts:
+          path: build/test-results/test
+          when: always
+      - create_or_update_cache
+
+workflows:
+  build:
+    jobs:
+      - test

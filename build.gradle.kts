@@ -1,6 +1,7 @@
 plugins {
     id("org.jetbrains.intellij") version "0.7.2"
     id("com.palantir.git-version") version "0.12.2"
+    id("com.adarshr.test-logger") version "3.0.0"
     java
     kotlin("jvm") version "1.4.31"
 }
@@ -33,6 +34,7 @@ dependencies {
     testImplementation("junit", "junit", "4.12")
 }
 
+
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {
     version = "IU-LATEST-EAP-SNAPSHOT"
@@ -52,6 +54,8 @@ tasks.withType<Test> {
     testLogging {
         exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
     }
+
+    useJUnit()
 
     // Prevent "File access outside allowed roots" in multi module tests, because modules each have an .iml
     environment("NO_FS_ROOTS_ACCESS_CHECK", "1")
