@@ -19,15 +19,9 @@ class MjmlPreviewFileEditorProvider : WeighedFileEditorProvider() {
                 LanguageUtil.getLanguageForPsi(project, file) === MjmlHtmlLanguage.INSTANCE
     }
 
-    override fun createEditor(project: Project, file: VirtualFile): FileEditor {
-        return MjmlPreviewFileEditor(project, file)
-    }
+    override fun createEditor(project: Project, file: VirtualFile): FileEditor = MjmlPreviewFileEditor(project, file)
 
-    override fun getEditorTypeId(): String {
-        return "mjml-preview-editor"
-    }
+    override fun getEditorTypeId(): String = "mjml-preview-editor"
 
-    override fun getPolicy(): FileEditorPolicy {
-        return FileEditorPolicy.PLACE_AFTER_DEFAULT_EDITOR
-    }
+    override fun getPolicy(): FileEditorPolicy = FileEditorPolicy.PLACE_AFTER_DEFAULT_EDITOR
 }

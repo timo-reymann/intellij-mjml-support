@@ -64,6 +64,12 @@
                     <li>Fix editor helper creation that crashed the editor</li>
                 </ul>
             </li>
+            <li>1.2.0
+                <ul>
+                    <li>Improve error handling for preview</li>
+                    <li>Add message bundle</li>
+                </ul>
+            </li>
         </ul>
         ]]></description>
 

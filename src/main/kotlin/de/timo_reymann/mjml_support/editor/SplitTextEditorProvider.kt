@@ -47,7 +47,7 @@ abstract class SplitTextEditorProvider(
         }
 
         val attribute = sourceElement.getAttribute(SPLIT_LAYOUT)
-        val layoutName: String? = attribute?.value
+        val layoutName: String = attribute?.value ?: FIRST_EDITOR
         return MyFileEditorState(layoutName, firstState, secondState)
     }
 

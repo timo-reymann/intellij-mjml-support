@@ -6,10 +6,10 @@ class JCEFHtmlPanelProvider : MjmlHtmlPanelProvider() {
     override fun createHtmlPanel(): MjmlJCEFHtmlPanel = MjmlJCEFHtmlPanel()
 
     override fun isAvailable(): AvailabilityInfo =
-        if (JBCefApp.isSupported())
-            AvailabilityInfo.AVAILABLE
-        else
-            AvailabilityInfo.UNAVAILABLE
+        when {
+            JBCefApp.isSupported() -> AvailabilityInfo.AVAILABLE
+            else -> AvailabilityInfo.UNAVAILABLE
+        }
 
     override fun getProviderInfo(): ProviderInfo = ProviderInfo("JCEF Browser", JCEFHtmlPanelProvider::class.java.name)
 }

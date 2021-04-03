@@ -17,10 +17,10 @@ abstract class MjmlHtmlPanelProvider {
         var className: String = className
             private set
 
-        override fun equals(o: Any?): Boolean {
-            if (this === o) return true
-            if (o == null || javaClass != o.javaClass) return false
-            val info = o as ProviderInfo
+        override fun equals(other: Any?): Boolean {
+            if (this === other) return true
+            if (other == null || javaClass != other.javaClass) return false
+            val info = other as ProviderInfo
             if (name != info.name) return false
             return className == info.className
         }

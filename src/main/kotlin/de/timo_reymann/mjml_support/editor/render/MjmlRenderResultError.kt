@@ -1,10 +1,4 @@
-package de.timo_reymann.mjml_support.editor
-
-// @JsonIgnoreProperties(ignoreUnknown = true)
-class MjmlRenderResult {
-    var html: String? = null
-    lateinit var errors: Array<MjmlRenderResultError>
-}
+package de.timo_reymann.mjml_support.editor.render
 
 class MjmlRenderResultError {
     var line: Int? = null

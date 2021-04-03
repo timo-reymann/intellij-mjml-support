@@ -1,22 +1,10 @@
 package de.timo_reymann.mjml_support.editor
 
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.intellij.CommonBundle
 import com.intellij.codeHighlighting.BackgroundEditorHighlighter
-import com.intellij.execution.configurations.GeneralCommandLine
-import com.intellij.execution.process.OSProcessHandler
-import com.intellij.execution.process.ProcessAdapter
-import com.intellij.execution.process.ProcessEvent
-import com.intellij.javascript.nodejs.interpreter.NodeCommandLineConfigurator
-import com.intellij.javascript.nodejs.interpreter.NodeJsInterpreter
-import com.intellij.javascript.nodejs.interpreter.NodeJsInterpreterRef
-import com.intellij.notification.Notification
-import com.intellij.notification.NotificationListener
-import com.intellij.notification.NotificationType
 import com.intellij.openapi.application.ModalityState
 import com.intellij.openapi.editor.Document
 import com.intellij.openapi.editor.Editor
-import com.intellij.openapi.editor.colors.EditorColorsManager
 import com.intellij.openapi.editor.event.DocumentEvent
 import com.intellij.openapi.editor.event.DocumentListener
 import com.intellij.openapi.fileEditor.*
@@ -24,59 +12,41 @@ import com.intellij.openapi.fileEditor.impl.EditorHistoryManager
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.Messages
 import com.intellij.openapi.util.Disposer
-import com.intellij.openapi.util.Key
 import com.intellij.openapi.util.UserDataHolderBase
-import com.intellij.openapi.vfs.VfsUtil
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.ui.jcef.JCEFHtmlPanel
 import com.intellij.util.Alarm
 import de.timo_reymann.mjml_support.bundle.MjmlBundle
-import de.timo_reymann.mjml_support.util.ColorUtil
-import de.timo_reymann.mjml_support.util.FilePluginUtil
-import de.timo_reymann.mjml_support.util.MessageBusUtil
+import de.timo_reymann.mjml_support.editor.render.MjmlRenderer
 import java.awt.BorderLayout
 import java.awt.event.ComponentAdapter
 import java.awt.event.ComponentEvent
 import java.beans.PropertyChangeListener
-import java.io.File
-import java.nio.charset.StandardCharsets
-import java.nio.file.Files
 import java.util.*
-import java.util.concurrent.atomic.AtomicInteger
 import javax.swing.JComponent
 import javax.swing.JPanel
-import javax.swing.event.HyperlinkEvent
 
 
 class MjmlPreviewFileEditor(private val project: Project, private val virtualFile: VirtualFile) :
     UserDataHolderBase(), FileEditor {
     private val document: Document? = FileDocumentManager.getInstance().getDocument(virtualFile)
-    private val tempFile = File.createTempFile("abc", "def")
+
     private val htmlPanelWrapper: JPanel
     private var panel: JCEFHtmlPanel? = null
+    private var mainEditor: Editor? = null
+
     private val pooledAlarm = Alarm(Alarm.ThreadToUse.POOLED_THREAD, this)
     private val swingAlarm = Alarm(Alarm.ThreadToUse.SWING_THREAD, this)
-    private val REQUESTS_LOCK = Any()
     private var lastHtmlOrRefreshRequest: Runnable? = null
-    private val nodeJsInterpreterRef = NodeJsInterpreterRef.createProjectRef()
-    private var nodeJsInterpreter: NodeJsInterpreter? = null
-    private var previousText = ""
+    private val REQUESTS_LOCK = Any()
 
+    private val mjmlRenderer = MjmlRenderer(project, virtualFile)
+
+    private var previousText = ""
     private var myLastRenderedHtml = ""
-    private var mainEditor: Editor? = null
 
     fun setMainEditor(editor: Editor?) {
         mainEditor = editor
-
-        nodeJsInterpreter = nodeJsInterpreterRef.resolve(project)
-        if (nodeJsInterpreter == null) {
-            Messages.showMessageDialog(
-                htmlPanelWrapper,
-                "Node.js not configured, preview is not available",
-                CommonBundle.getErrorTitle(),
-                Messages.getErrorIcon()
-            )
-        }
     }
 
     override fun getPreferredFocusedComponent(): JComponent? = panel?.component
@@ -118,102 +88,19 @@ class MjmlPreviewFileEditor(private val project: Project, private val virtualFil
         return JCEFHtmlPanelProvider()
     }
 
-    private fun renderWithNode(text: String): String {
-        Files.writeString(tempFile.toPath(), text, StandardCharsets.UTF_8)
-        nodeJsInterpreter ?: return renderError(
-            MjmlBundle.message("mjml_preview.node_not_configured"),
-            MjmlBundle.message("mjml_preview.unavailable")
-        )
-        val line = AtomicInteger(0)
-        val commandLineConfigurator = NodeCommandLineConfigurator.find(nodeJsInterpreter!!)
-        val commandLine = GeneralCommandLine("node", FilePluginUtil.getFile("renderer/index.js").absolutePath)
-            .withInput(tempFile)
-            .withWorkDirectory(File(virtualFile.path).parentFile)
-
-        commandLineConfigurator.configure(commandLine)
-
-        val processHandler = OSProcessHandler(commandLine)
-        val buffer = StringBuffer()
-        processHandler.addProcessListener(object : ProcessAdapter() {
-            override fun onTextAvailable(event: ProcessEvent, outputType: Key<*>) {
-                // First line is command output, remove it
-                if (line.incrementAndGet() == 1) {
-                    return
-                }
-                buffer.append(event.text)
-            }
-        })
-
-        processHandler.startNotify()
-        processHandler.waitFor()
-
-        if (processHandler.exitCode != 0) {
-            return renderError(
-                MjmlBundle.message("mjml_preview.render_failed"),
-                "<pre>$buffer</pre>"
-            )
-        }
-
-        val mapper = jacksonObjectMapper()
-        val renderResult: MjmlRenderResult
-
-        try {
-            renderResult = mapper.readValue(buffer.toString(), MjmlRenderResult::class.java)
-        } catch (e: Exception) {
-            return renderError(
-                MjmlBundle.message("mjml_preview.unavailable"),
-                "Either your mjml is invalid or node.js is not set up properly"
-            )
-        }
-
-        val errors = renderResult.errors
-            .filter { it.formattedMessage != null }
-        if (errors.isNotEmpty()) {
-            val message = errors
-                .joinToString("\n<br />") {
-                    """
-                        <a href="${virtualFile.path}:${it.line ?: 0}">${
-                        virtualFile.toNioPath().toFile().relativeTo(File(project.basePath!!))
-                    }:${it.line}</a>: ${it.message}
-                    """.trimIndent()
-                }
-
-            MessageBusUtil.NOTIFICATION_GROUP
-                .createNotification(
-                    "<html><strong>${MjmlBundle.message("mjml_preview.render_failed")}</strong></html>",
-                    "<html>\n${message}</html>",
-                    NotificationType.WARNING,
-                    object : NotificationListener {
-                        override fun hyperlinkUpdate(notification: Notification, event: HyperlinkEvent) {
-                            if (event.eventType != HyperlinkEvent.EventType.ACTIVATED) {
-                                return
-                            }
-
-                            val fields = event.description.split(":")
-                            val file = VfsUtil.findFile(File(fields[0]).toPath(), true)
-                            FileEditorManager.getInstance(project)
-                                .openTextEditor(OpenFileDescriptor(project, file!!, fields[1].toInt(), 0), true)
-                            println(event)
-                        }
-                    })
-                .notify(project)
-        }
-
-        return renderResult.html ?: ""
-    }
-
     // Is always run from pooled thread
     private fun updateHtml() {
         if (panel == null || document == null || !virtualFile.isValid || Disposer.isDisposed(this) || mainEditor == null) {
             return
         }
+
         val currentText = mainEditor!!.document.text
         if (myLastRenderedHtml != "" && currentText == previousText) {
             return
         }
 
         previousText = currentText
-        val html = renderWithNode(currentText)
+        val html = mjmlRenderer.render(currentText)
 
         synchronized(REQUESTS_LOCK) {
             if (lastHtmlOrRefreshRequest != null) {
