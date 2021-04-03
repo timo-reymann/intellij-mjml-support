@@ -4,16 +4,16 @@ import com.intellij.psi.xml.XmlTag
 
 
 object MjmlTagProvider {
-    private var _tags: MutableMap<String, MjmlTagInformation> = mutableMapOf()
+    private var tags: MutableMap<String, MjmlTagInformation> = mutableMapOf()
 
     fun register(vararg informations: MjmlTagInformation) {
         informations.forEach {
-            _tags[it.tagName] = it
+            tags[it.tagName] = it
         }
     }
 
     fun getByTagName(tagName: String): MjmlTagInformation? {
-        return _tags[tagName]
+        return tags[tagName]
     }
 
     fun getByXmlElement(element: XmlTag): MjmlTagInformation? {
@@ -21,7 +21,7 @@ object MjmlTagProvider {
     }
 
     fun getAll(): Map<String, MjmlTagInformation> {
-        return this._tags
+        return this.tags
     }
 
     init {
@@ -1223,7 +1223,7 @@ object MjmlTagProvider {
                         "center"
                     )
                 ),
-                allowedParentTags = listOf("mj-attributes", "mj-column", "mj-hero")
+                allowedParentTags = listOf("mj-body", "mj-attributes", "mj-column", "mj-hero")
             )
         )
     }

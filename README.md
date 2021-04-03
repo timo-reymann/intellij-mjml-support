@@ -46,7 +46,7 @@ the [plugin.xml](./src/main/resources/META-INF/plugin.xml).
     - [x] ide configuration with mjml config file
     - [x] support for custom components [PARTIAL with configuration]
 5. Additional (nice to have features)
-   - [ ] new file template
+   - [x] new file template
    - [ ] run tests via ci
    - [ ] deploy plugin with cd (pipeline)
 

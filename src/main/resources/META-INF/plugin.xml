@@ -75,6 +75,14 @@
     <depends optional="true" config-file="css-plugin.xml">com.intellij.css</depends>
     <depends optional="true" config-file="javascript-plugin.xml">JavaScript</depends>
 
+    <actions>
+        <action class="de.timo_reymann.mjml_support.actions.MjmlCreateTemplateAction" id="MjmlCreateTemplateAction">
+            <add-to-group group-id="NewGroup"
+                          anchor="before"
+                          relative-to-action="NewStylesheetFile" />
+        </action>
+    </actions>
+
     <extensions defaultExtensionNs="com.intellij">
         <fileType name="MJML"
                   implementationClass="de.timo_reymann.mjml_support.lang.MjmlHtmlFileType"
