@@ -9,8 +9,8 @@ commands:
     steps:
       - restore_cache:
           key: v1-gradle-wrapper-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
-                 - restore_cache:
-                 key: v1-gradle-cache-{{ checksum "build.gradle.kts" }}
+      - restore_cache:
+          key: v1-gradle-cache-{{ checksum "build.gradle.kts" }}
   create_or_update_cache:
     steps:
       - save_cache:
