@@ -16,6 +16,8 @@ import de.timo_reymann.mjml_support.model.MjmlTagInformation
 import de.timo_reymann.mjml_support.model.MjmlTagProvider
 import de.timo_reymann.mjml_support.model.PARENT_ANY
 
+const val ROOT_TAG = "mjml"
+
 class MjmlTagNameProvider : XmlTagNameProvider, XmlElementDescriptorProvider {
     override fun addTagNameVariants(elements: MutableList<LookupElement>, tag: XmlTag, prefix: String?) {
         if (!isInMjmlFile(tag)) {
@@ -27,11 +29,14 @@ class MjmlTagNameProvider : XmlTagNameProvider, XmlElementDescriptorProvider {
 
         var filter = fun(tag: MjmlTagInformation): Boolean = true
 
-        if (tag.parent is XmlTag) {
-            filter = fun(tagInfo: MjmlTagInformation): Boolean = tagInfo.allowedParentTags == PARENT_ANY ||
-                tagInfo.allowedParentTags.contains((tag.parent as XmlTag).name)
-        } else if (tag.parent is PsiElement && tag.parent.elementType == XmlElementType.HTML_DOCUMENT) {
-            filter = fun(tagInfo : MjmlTagInformation) : Boolean = tagInfo.tagName == "mjml"
+        when {
+            tag.parent is XmlTag -> {
+                filter = fun(tagInfo: MjmlTagInformation): Boolean = tagInfo.allowedParentTags == PARENT_ANY ||
+                        tagInfo.allowedParentTags.contains((tag.parent as XmlTag).name)
+            }
+            tag.parent is PsiElement && tag.parent.elementType == XmlElementType.HTML_DOCUMENT -> {
+                filter = fun(tagInfo: MjmlTagInformation): Boolean = tagInfo.tagName == ROOT_TAG
+            }
         }
 
         MjmlTagProvider.getAll()

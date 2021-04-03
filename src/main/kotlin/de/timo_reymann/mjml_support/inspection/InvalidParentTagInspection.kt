@@ -4,6 +4,8 @@ import com.intellij.codeInspection.ProblemHighlightType
 import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.codeInspection.htmlInspections.HtmlLocalInspectionTool
 import com.intellij.psi.xml.XmlTag
+import com.jetbrains.rd.util.string.print
+import de.timo_reymann.mjml_support.bundle.MjmlBundle
 import de.timo_reymann.mjml_support.model.MjmlTagProvider
 import de.timo_reymann.mjml_support.model.PARENT_ANY
 
@@ -25,7 +27,12 @@ class InvalidParentTagInspection : HtmlLocalInspectionTool() {
 
             holder.registerProblem(
                 tag,
-                "${mjmlTag.tagName} cannot be used inside ${parentTagName}, only inside ${inspectionAllowedTagsText}",
+                MjmlBundle.message(
+                    "inspections.invalid_parent",
+                    mjmlTag.tagName,
+                    parentTagName,
+                    inspectionAllowedTagsText
+                ),
                 ProblemHighlightType.WARNING
             )
 

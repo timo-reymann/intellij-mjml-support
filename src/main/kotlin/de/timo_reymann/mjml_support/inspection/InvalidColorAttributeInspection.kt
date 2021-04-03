@@ -4,6 +4,7 @@ import com.intellij.codeInspection.ProblemHighlightType
 import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.codeInspection.htmlInspections.HtmlLocalInspectionTool
 import com.intellij.psi.xml.XmlAttribute
+import de.timo_reymann.mjml_support.bundle.MjmlBundle
 
 import de.timo_reymann.mjml_support.model.MjmlAttributeType
 import de.timo_reymann.mjml_support.model.getMjmlTagFromAttribute
@@ -21,7 +22,7 @@ class InvalidColorAttributeInspection : HtmlLocalInspectionTool() {
         if(color == null) {
             holder.registerProblem(
                 attribute,
-                "Invalid color specification, either the color name, hex or rgb notation can be used",
+                MjmlBundle.message("inspections.invalid_color"),
                 ProblemHighlightType.ERROR,
             )
         }

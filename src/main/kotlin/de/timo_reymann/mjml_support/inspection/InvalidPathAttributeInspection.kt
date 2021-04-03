@@ -11,6 +11,7 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VfsUtil
 import com.intellij.openapi.vfs.VfsUtilCore
 import com.intellij.psi.xml.XmlAttribute
+import de.timo_reymann.mjml_support.bundle.MjmlBundle
 import de.timo_reymann.mjml_support.lang.MjmlHtmlFileType
 import de.timo_reymann.mjml_support.model.MjmlAttributeType
 import de.timo_reymann.mjml_support.model.getMjmlTagFromAttribute
@@ -26,10 +27,10 @@ class InvalidPathAttributeInspection : HtmlLocalInspectionTool() {
         }
         val filename = attribute.value
 
-        if(filename == null) {
+        if (filename == null) {
             holder.registerProblem(
                 attribute,
-                "MJML file to include must be specified",
+                MjmlBundle.message("inspections.undefined_include"),
                 ProblemHighlightType.ERROR,
             )
             return
@@ -45,7 +46,7 @@ class InvalidPathAttributeInspection : HtmlLocalInspectionTool() {
 
             holder.registerProblem(
                 attribute,
-                attribute.value + " is not resolving to a valid mjml file",
+                MjmlBundle.message("inspections.invalid_mjml_file", attribute.value!!),
                 ProblemHighlightType.ERROR,
                 *fixes
             )
@@ -75,6 +76,5 @@ class CreateMjmlFileQuickFix : LocalQuickFix {
                 "Error message: ${e.message}"
             )
         }
-
     }
 }

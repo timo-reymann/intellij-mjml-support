@@ -5,12 +5,13 @@ import com.intellij.openapi.fileEditor.TextEditor
 import com.intellij.openapi.fileEditor.TextEditorWithPreview
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.pom.Navigatable
+import de.timo_reymann.mjml_support.bundle.MjmlBundle
 
 class MjmlSplitEditor(val mainEditor: TextEditor, secondEditor: MjmlPreviewFileEditor) :
     TextEditorWithPreview(mainEditor, secondEditor),
     TextEditor {
 
-    override fun getName(): String = "MJML Split Editor"
+    override fun getName(): String = MjmlBundle.message("mjml_preview.name")
 
     override fun getFile(): VirtualFile? = mainEditor.file
 

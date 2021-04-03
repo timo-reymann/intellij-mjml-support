@@ -16,6 +16,7 @@ import com.intellij.notification.NotificationType
 import com.intellij.openapi.application.ModalityState
 import com.intellij.openapi.editor.Document
 import com.intellij.openapi.editor.Editor
+import com.intellij.openapi.editor.colors.EditorColorsManager
 import com.intellij.openapi.editor.event.DocumentEvent
 import com.intellij.openapi.editor.event.DocumentListener
 import com.intellij.openapi.fileEditor.*
@@ -29,6 +30,8 @@ import com.intellij.openapi.vfs.VfsUtil
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.ui.jcef.JCEFHtmlPanel
 import com.intellij.util.Alarm
+import de.timo_reymann.mjml_support.bundle.MjmlBundle
+import de.timo_reymann.mjml_support.util.ColorUtil
 import de.timo_reymann.mjml_support.util.FilePluginUtil
 import de.timo_reymann.mjml_support.util.MessageBusUtil
 import java.awt.BorderLayout
@@ -38,7 +41,6 @@ import java.beans.PropertyChangeListener
 import java.io.File
 import java.nio.charset.StandardCharsets
 import java.nio.file.Files
-import java.time.LocalDateTime
 import java.util.*
 import java.util.concurrent.atomic.AtomicInteger
 import javax.swing.JComponent
@@ -86,7 +88,7 @@ class MjmlPreviewFileEditor(private val project: Project, private val virtualFil
     }
 
     override fun getComponent(): JComponent = htmlPanelWrapper
-    override fun getName(): String = "MJML Preview Editor"
+    override fun getName(): String = MjmlBundle.message("mjml_preview.name")
     override fun setState(state: FileEditorState) {}
     override fun isModified(): Boolean = false
     override fun isValid(): Boolean = true
@@ -107,7 +109,7 @@ class MjmlPreviewFileEditor(private val project: Project, private val virtualFil
         if (provider.isAvailable() !== MjmlHtmlPanelProvider.AvailabilityInfo.AVAILABLE) {
             Messages.showMessageDialog(
                 htmlPanelWrapper,
-                "Failed to load mjml preview, please make sure you have jcef support enabled",
+                MjmlBundle.message("mjml_preview.jcef_disabled"),
                 CommonBundle.getErrorTitle(),
                 Messages.getErrorIcon()
             )
@@ -118,7 +120,10 @@ class MjmlPreviewFileEditor(private val project: Project, private val virtualFil
 
     private fun renderWithNode(text: String): String {
         Files.writeString(tempFile.toPath(), text, StandardCharsets.UTF_8)
-        nodeJsInterpreter ?: return "<p>Node not configured</p>"
+        nodeJsInterpreter ?: return renderError(
+            MjmlBundle.message("mjml_preview.node_not_configured"),
+            MjmlBundle.message("mjml_preview.unavailable")
+        )
         val line = AtomicInteger(0)
         val commandLineConfigurator = NodeCommandLineConfigurator.find(nodeJsInterpreter!!)
         val commandLine = GeneralCommandLine("node", FilePluginUtil.getFile("renderer/index.js").absolutePath)
@@ -141,9 +146,13 @@ class MjmlPreviewFileEditor(private val project: Project, private val virtualFil
 
         processHandler.startNotify()
         processHandler.waitFor()
-        buffer.append("\n")
-        buffer.append("Last call")
-        buffer.append(LocalDateTime.now())
+
+        if (processHandler.exitCode != 0) {
+            return renderError(
+                MjmlBundle.message("mjml_preview.render_failed"),
+                "<pre>$buffer</pre>"
+            )
+        }
 
         val mapper = jacksonObjectMapper()
         val renderResult: MjmlRenderResult
@@ -151,7 +160,10 @@ class MjmlPreviewFileEditor(private val project: Project, private val virtualFil
         try {
             renderResult = mapper.readValue(buffer.toString(), MjmlRenderResult::class.java)
         } catch (e: Exception) {
-            return "failed to render"
+            return renderError(
+                MjmlBundle.message("mjml_preview.unavailable"),
+                "Either your mjml is invalid or node.js is not set up properly"
+            )
         }
 
         val errors = renderResult.errors
@@ -168,7 +180,7 @@ class MjmlPreviewFileEditor(private val project: Project, private val virtualFil
 
             MessageBusUtil.NOTIFICATION_GROUP
                 .createNotification(
-                    "<html><strong>Errors while rendering MJML</strong></html>",
+                    "<html><strong>${MjmlBundle.message("mjml_preview.render_failed")}</strong></html>",
                     "<html>\n${message}</html>",
                     NotificationType.WARNING,
                     object : NotificationListener {
@@ -192,7 +204,7 @@ class MjmlPreviewFileEditor(private val project: Project, private val virtualFil
 
     // Is always run from pooled thread
     private fun updateHtml() {
-        if (panel == null || document == null || !virtualFile.isValid || Disposer.isDisposed(this) || mainEditor == null || virtualFile == null) {
+        if (panel == null || document == null || !virtualFile.isValid || Disposer.isDisposed(this) || mainEditor == null) {
             return
         }
         val currentText = mainEditor!!.document.text

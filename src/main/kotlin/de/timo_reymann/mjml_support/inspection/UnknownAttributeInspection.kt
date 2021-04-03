@@ -7,6 +7,7 @@ import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.codeInspection.htmlInspections.HtmlLocalInspectionTool
 import com.intellij.openapi.project.Project
 import com.intellij.psi.xml.XmlAttribute
+import de.timo_reymann.mjml_support.bundle.MjmlBundle
 import de.timo_reymann.mjml_support.model.getMjmlTagFromAttribute
 
 class UnknownAttributeInspection : HtmlLocalInspectionTool() {
@@ -18,7 +19,7 @@ class UnknownAttributeInspection : HtmlLocalInspectionTool() {
 
         holder.registerProblem(
             attribute,
-            "Unknown attribute ${attribute.name} for mjml tag ${mjmlTag.tagName}",
+            MjmlBundle.message("inspections.unknown_attribute", attribute.name, mjmlTag.tagName),
             ProblemHighlightType.WARNING,
             RemoveUnknownAttributeQuickFix()
         )
@@ -30,7 +31,7 @@ class RemoveUnknownAttributeQuickFix : LocalQuickFix {
     override fun getFamilyName(): String = "Remove unknown attribute"
 
     override fun applyFix(project: Project, descriptor: ProblemDescriptor) {
-        if(descriptor.psiElement !is XmlAttribute) {
+        if (descriptor.psiElement !is XmlAttribute) {
             return
         }
         descriptor.psiElement.delete()

@@ -8,6 +8,8 @@ import com.intellij.psi.util.parentOfType
 import com.intellij.psi.xml.XmlAttribute
 import com.intellij.psi.xml.XmlAttributeValue
 
+const val CLASS_ATTRIBUTE = "css-class"
+
 class MjmlCssClassUsageProvider : CssClassOrIdReferenceBasedUsagesProvider() {
     override fun acceptElement(candidate: PsiElement): Boolean {
         if(candidate !is XmlAttributeValue) {
@@ -15,7 +17,7 @@ class MjmlCssClassUsageProvider : CssClassOrIdReferenceBasedUsagesProvider() {
         }
 
         val attribute = candidate.parentOfType<XmlAttribute>() ?: return false
-        return attribute.name == "css-class"
+        return attribute.name == CLASS_ATTRIBUTE
     }
 
     override fun isUsage(selectorSuffix: CssSelectorSuffix, candidate: PsiElement, offsetInCandidate: Int): Boolean {

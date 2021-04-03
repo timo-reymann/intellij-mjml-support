@@ -6,6 +6,7 @@ import com.intellij.openapi.util.text.StringUtil
 import com.intellij.psi.PsiElement
 import com.intellij.psi.xml.XmlAttribute
 import com.intellij.psi.xml.XmlTag
+import de.timo_reymann.mjml_support.bundle.MjmlBundle
 import de.timo_reymann.mjml_support.model.MjmlTagProvider
 
 class MjmlDocumentationProvider : DocumentationProvider {
@@ -30,7 +31,7 @@ class MjmlDocumentationProvider : DocumentationProvider {
         }) ?: return mutableListOf()
 
         val mjmlTag = MjmlTagProvider.getByTagName(tagName) ?: return mutableListOf()
-        return mutableListOf("https://mjml.io/documentation/#" + mjmlTag.tagName)
+        return mutableListOf(MjmlBundle.message("documentation.url_pattern", mjmlTag.tagName))
     }
 
     private fun generateAttributeDocumentation(tagName: String, attributeName: String): String? {
@@ -84,7 +85,7 @@ class MjmlDocumentationProvider : DocumentationProvider {
         // Description
         buf
             .append(DocumentationMarkup.CONTENT_START)
-            .append(StringUtil.capitalize(mjmlTag.description.replace("\n","<br />")))
+            .append(StringUtil.capitalize(mjmlTag.description.replace("\n", "<br />")))
             .append(DocumentationMarkup.CONTENT_END)
 
         if (mjmlTag.notes.isNotEmpty()) {
