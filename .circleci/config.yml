@@ -3,6 +3,9 @@ executors:
   gradle:
     docker:
       - image: circleci/openjdk:11.0.3-jdk-stretch
+  go:
+    docker:
+      - image: circleci/golang:1.15
 
 commands:
   retrieve_cache:
@@ -68,7 +71,7 @@ jobs:
           command: ./gradlew publishPlugin
 
   github_release:
-    executor: gradle
+    executor: go
     steps:
       - checkout
       - attach_workspace:
