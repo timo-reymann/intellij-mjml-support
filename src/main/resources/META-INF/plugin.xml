@@ -80,6 +80,11 @@
                     <li>Add file template for new mjml files</li>
                 </ul>
             </li>
+            <li>1.3.1
+                <ul>
+                    <li>Add missing mj-class attribute</li>
+                </ul>
+            </li>
         </ul>
         ]]></description>
 
