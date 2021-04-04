@@ -225,3 +225,9 @@ val ATTRIBUTE_BACKGROUND_URL = MjmlAttributeInformation(
     MjmlAttributeType.URL,
     "absolute background url"
 )
+
+val ATTRIBUTE_MJ_CLASS = MjmlAttributeInformation(
+    "mj-class",
+    MjmlAttributeType.STRING,
+    "mj-class"
+)

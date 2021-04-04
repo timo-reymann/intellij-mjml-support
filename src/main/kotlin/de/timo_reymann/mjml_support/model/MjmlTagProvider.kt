@@ -45,6 +45,7 @@ object MjmlTagProvider {
                 attributes = arrayOf(
                     ATTRIBUTE_BACKGROUND_COLOR,
                     ATTRIBUTE_CSS_CLASS,
+                    ATTRIBUTE_MJ_CLASS,
                     MjmlAttributeInformation("width", MjmlAttributeType.PIXEL, "email's width")
                 ),
                 allowedParentTags = PARENT_TOP_LEVEL_ONLY
@@ -123,6 +124,7 @@ object MjmlTagProvider {
                     ATTRIBUTE_BORDER,
                     ATTRIBUTE_CONTAINER_BACKGROUND_COLOR,
                     ATTRIBUTE_CSS_CLASS,
+                    ATTRIBUTE_MJ_CLASS,
                     ATTRIBUTE_FONT_FAMILY,
                     ATTRIBUTE_ICON_ALIGN,
                     ATTRIBUTE_ICON_HEIGHT,
@@ -151,6 +153,7 @@ object MjmlTagProvider {
                 attributes = arrayOf(
                     ATTRIBUTE_BACKGROUND_COLOR,
                     ATTRIBUTE_CSS_CLASS,
+                    ATTRIBUTE_MJ_CLASS,
                     ATTRIBUTE_FONT_FAMILY,
                     ATTRIBUTE_ICON_ALIGN,
                     ATTRIBUTE_ICON_HEIGHT,
@@ -170,6 +173,7 @@ object MjmlTagProvider {
                     ATTRIBUTE_BACKGROUND_COLOR,
                     ATTRIBUTE_COLOR,
                     ATTRIBUTE_CSS_CLASS,
+                    ATTRIBUTE_MJ_CLASS,
                     ATTRIBUTE_FONT_FAMILY,
                     ATTRIBUTE_FONT_SIZE,
                     MjmlAttributeInformation(
@@ -192,6 +196,7 @@ object MjmlTagProvider {
                     ATTRIBUTE_BACKGROUND_COLOR,
                     ATTRIBUTE_COLOR,
                     ATTRIBUTE_CSS_CLASS,
+                    ATTRIBUTE_MJ_CLASS,
                     ATTRIBUTE_FONT_FAMILY,
                     ATTRIBUTE_FONT_SIZE,
                     MjmlAttributeInformation(
@@ -236,6 +241,7 @@ object MjmlTagProvider {
                         "button container background color"
                     ),
                     ATTRIBUTE_CSS_CLASS,
+                    ATTRIBUTE_MJ_CLASS,
                     ATTRIBUTE_FONT_FAMILY,
                     ATTRIBUTE_FONT_SIZE,
                     ATTRIBUTE_FONT_STYLE,
@@ -319,6 +325,7 @@ object MjmlTagProvider {
                     ATTRIBUTE_BACKGROUND_COLOR,
                     ATTRIBUTE_BORDER_RADIUS,
                     ATTRIBUTE_CSS_CLASS,
+                    ATTRIBUTE_MJ_CLASS,
                     ATTRIBUTE_ICON_WIDTH,
                     MjmlAttributeInformation(
                         "left-icon",
@@ -374,6 +381,7 @@ object MjmlTagProvider {
                 attributes = arrayOf(
                     ATTRIBUTE_ALT,
                     ATTRIBUTE_CSS_CLASS,
+                    ATTRIBUTE_MJ_CLASS,
                     ATTRIBUTE_HREF,
                     ATTRIBUTE_REL,
                     MjmlAttributeInformation(
@@ -461,7 +469,8 @@ object MjmlTagProvider {
                     ATTRIBUTE_PADDING_BOTTOM,
                     ATTRIBUTE_PADDING_LEFT,
                     ATTRIBUTE_PADDING_RIGHT,
-                    ATTRIBUTE_CSS_CLASS
+                    ATTRIBUTE_CSS_CLASS,
+                    ATTRIBUTE_MJ_CLASS
                 ),
                 allowedParentTags = listOf("mj-attributes", "mj-group", "mj-section")
             ),
@@ -492,6 +501,7 @@ object MjmlTagProvider {
                         "inner element background color"
                     ),
                     ATTRIBUTE_CSS_CLASS,
+                    ATTRIBUTE_MJ_CLASS,
                     MjmlAttributeInformation(
                         "padding",
                         MjmlAttributeType.COMPLEX,
@@ -540,7 +550,8 @@ object MjmlTagProvider {
                         "set the display order of direct children",
                         "ltr"
                     ),
-                    ATTRIBUTE_CSS_CLASS
+                    ATTRIBUTE_CSS_CLASS,
+                    ATTRIBUTE_MJ_CLASS
                 ),
                 allowedParentTags = listOf("mj-attributes", "mj-section")
             ),
@@ -574,6 +585,7 @@ object MjmlTagProvider {
                         "parent element width"
                     ),
                     ATTRIBUTE_CSS_CLASS,
+                    ATTRIBUTE_MJ_CLASS,
                     ATTRIBUTE_HEIGHT,
                     MjmlAttributeInformation(
                         "height",
@@ -627,6 +639,7 @@ object MjmlTagProvider {
                     ATTRIBUTE_BORDER_RADIUS,
                     ATTRIBUTE_CONTAINER_BACKGROUND_COLOR,
                     ATTRIBUTE_CSS_CLASS,
+                    ATTRIBUTE_MJ_CLASS,
                     MjmlAttributeInformation(
                         "fluid-on-mobile",
                         MjmlAttributeType.STRING,
@@ -692,6 +705,7 @@ object MjmlTagProvider {
                         "base url for children components"
                     ),
                     ATTRIBUTE_CSS_CLASS,
+                    ATTRIBUTE_MJ_CLASS,
                     MjmlAttributeInformation(
                         "hamburger",
                         MjmlAttributeType.STRING,
@@ -791,6 +805,7 @@ object MjmlTagProvider {
                 attributes = arrayOf(
                     ATTRIBUTE_COLOR,
                     ATTRIBUTE_CSS_CLASS,
+                    ATTRIBUTE_MJ_CLASS,
                     ATTRIBUTE_FONT_FAMILY,
                     ATTRIBUTE_FONT_SIZE,
                     ATTRIBUTE_FONT_STYLE,
@@ -870,6 +885,7 @@ object MjmlTagProvider {
                     ATTRIBUTE_BORDER_RIGHT,
                     ATTRIBUTE_BORDER_TOP,
                     ATTRIBUTE_CSS_CLASS,
+                    ATTRIBUTE_MJ_CLASS,
                     MjmlAttributeInformation(
                         "direction",
                         MjmlAttributeType.STRING,
@@ -913,6 +929,7 @@ object MjmlTagProvider {
                     ATTRIBUTE_BORDER_RADIUS,
                     ATTRIBUTE_COLOR,
                     ATTRIBUTE_CSS_CLASS,
+                    ATTRIBUTE_MJ_CLASS,
                     ATTRIBUTE_CONTAINER_BACKGROUND_COLOR,
                     ATTRIBUTE_FONT_FAMILY,
                     ATTRIBUTE_FONT_SIZE,
@@ -981,6 +998,7 @@ object MjmlTagProvider {
                     ATTRIBUTE_BORDER_RADIUS,
                     ATTRIBUTE_COLOR,
                     ATTRIBUTE_CSS_CLASS,
+                    ATTRIBUTE_MJ_CLASS,
                     ATTRIBUTE_FONT_FAMILY,
                     ATTRIBUTE_FONT_SIZE,
                     ATTRIBUTE_FONT_STYLE,
@@ -1051,6 +1069,7 @@ object MjmlTagProvider {
                 attributes = arrayOf(
                     ATTRIBUTE_CONTAINER_BACKGROUND_COLOR,
                     ATTRIBUTE_CSS_CLASS,
+                    ATTRIBUTE_MJ_CLASS,
                     ATTRIBUTE_HEIGHT,
                     MjmlAttributeInformation(
                         "padding",
@@ -1089,6 +1108,7 @@ object MjmlTagProvider {
                     ATTRIBUTE_COLOR,
                     ATTRIBUTE_CONTAINER_BACKGROUND_COLOR,
                     ATTRIBUTE_CSS_CLASS,
+                    ATTRIBUTE_MJ_CLASS,
                     ATTRIBUTE_FONT_FAMILY,
                     ATTRIBUTE_FONT_SIZE,
                     ATTRIBUTE_FONT_STYLE,
@@ -1168,7 +1188,8 @@ object MjmlTagProvider {
                     ATTRIBUTE_PADDING_LEFT,
                     ATTRIBUTE_PADDING_RIGHT,
                     ATTRIBUTE_PADDING_TOP,
-                    ATTRIBUTE_CSS_CLASS
+                    ATTRIBUTE_CSS_CLASS,
+                    ATTRIBUTE_MJ_CLASS
                 ),
                 allowedParentTags = listOf("mj-attributes", "mj-column", "mj-hero")
             ),
@@ -1201,6 +1222,7 @@ object MjmlTagProvider {
                     ATTRIBUTE_BORDER_RIGHT,
                     ATTRIBUTE_BORDER_TOP,
                     ATTRIBUTE_CSS_CLASS,
+                    ATTRIBUTE_MJ_CLASS,
                     MjmlAttributeInformation(
                         "full-width",
                         MjmlAttributeType.STRING,
