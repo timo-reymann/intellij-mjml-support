@@ -13,7 +13,7 @@ private val EMPTY_PAIR = Pair<MjmlTagInformation?, MjmlAttributeInformation?>(nu
 
 fun getMjmlTagFromAttribute(attribute: XmlAttribute): MjmlTagInformation? {
     val tag = attribute.parentOfType<XmlTag>() ?: return null
-    return MjmlTagProvider.getByXmlElement(attribute.project, tag)
+    return MjmlTagProvider.getByXmlElement(tag)
 }
 
 fun getMjmlInfoFromAttribute(attribute: XmlAttribute): Pair<MjmlTagInformation?, MjmlAttributeInformation?> {
