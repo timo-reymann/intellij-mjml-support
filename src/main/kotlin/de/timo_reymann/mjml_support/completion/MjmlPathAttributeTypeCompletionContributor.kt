@@ -18,7 +18,7 @@ import com.intellij.util.containers.ContainerUtil
 import com.intellij.util.indexing.FindSymbolParameters
 import de.timo_reymann.mjml_support.icons.MjmlIcons
 import de.timo_reymann.mjml_support.lang.MjmlHtmlFileType
-import de.timo_reymann.mjml_support.model.MjmlAttributeType
+import de.timo_reymann.mjml_support.api.MjmlAttributeType
 import de.timo_reymann.mjml_support.model.getMjmlInfoFromAttributeValue
 import java.io.File
 import java.util.*

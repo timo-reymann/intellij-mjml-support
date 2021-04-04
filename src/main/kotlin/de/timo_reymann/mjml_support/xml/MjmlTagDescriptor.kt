@@ -35,7 +35,7 @@ class MjmlTagDescriptor(private val tagName: String, private val xmlTag: XmlTag)
             return arrayOf()
         }
 
-        val tag = MjmlTagProvider.getByTagName(context.name) ?: return arrayOf()
+        val tag = MjmlTagProvider.getByTagName(context.project, context.name) ?: return arrayOf()
 
         return tag.attributes.map {
             MjmlTagAttributeDescriptor(it.name, context)

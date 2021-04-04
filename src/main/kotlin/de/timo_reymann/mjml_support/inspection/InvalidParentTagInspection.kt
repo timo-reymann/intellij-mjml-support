@@ -10,7 +10,7 @@ import de.timo_reymann.mjml_support.model.PARENT_ANY
 
 class InvalidParentTagInspection : HtmlLocalInspectionTool() {
     override fun checkTag(tag: XmlTag, holder: ProblemsHolder, isOnTheFly: Boolean) {
-        val mjmlTag = MjmlTagProvider.getByXmlElement(tag) ?: return
+        val mjmlTag = MjmlTagProvider.getByXmlElement(tag.project,tag) ?: return
         if (tag.parent is XmlTag) {
             val parentTagName = (tag.parent as XmlTag).name
             val allowedParentTags = mjmlTag.allowedParentTags

@@ -1,10 +1,35 @@
-package de.timo_reymann.mjml_support.model
+package de.timo_reymann.mjml_support.api
 
+/**
+ * Information about mjml tag
+ */
 data class MjmlTagInformation(
+    /**
+     * Name of the tag
+     */
     val tagName: String,
+
+    /**
+     * Description for tool tips
+     */
     val description: String,
+
+    /**
+     * Notes about the element, anything special or warnings go here
+     */
     val notes: Array<String> = arrayOf(),
+
+    /**
+     * List with valid attributes on this element
+     */
     val attributes: Array<MjmlAttributeInformation> = arrayOf(),
+
+    /**
+     * Allowed parent tags, following magic values are supported:
+     *
+     * - `*` star allows any parent tag
+     * - empty list allows no parent excerpt the top level document
+     */
     val allowedParentTags: List<String>
 ) {
     fun getAttributeByName(name: String): MjmlAttributeInformation? {

@@ -1,5 +1,8 @@
 package de.timo_reymann.mjml_support.model
 
+import de.timo_reymann.mjml_support.api.MjmlAttributeInformation
+import de.timo_reymann.mjml_support.api.MjmlAttributeType
+
 val ATTRIBUTE_CSS_CLASS = MjmlAttributeInformation(
     "css-class",
     MjmlAttributeType.STRING,

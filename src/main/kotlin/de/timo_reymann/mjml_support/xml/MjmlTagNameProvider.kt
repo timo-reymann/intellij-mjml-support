@@ -12,7 +12,7 @@ import com.intellij.psi.xml.XmlTag
 import com.intellij.xml.XmlElementDescriptor
 import com.intellij.xml.XmlTagNameProvider
 import de.timo_reymann.mjml_support.isInMjmlFile
-import de.timo_reymann.mjml_support.model.MjmlTagInformation
+import de.timo_reymann.mjml_support.api.MjmlTagInformation
 import de.timo_reymann.mjml_support.model.MjmlTagProvider
 import de.timo_reymann.mjml_support.model.PARENT_ANY
 
@@ -39,9 +39,7 @@ class MjmlTagNameProvider : XmlTagNameProvider, XmlElementDescriptorProvider {
             }
         }
 
-        MjmlTagProvider.getAll()
-            .entries
-            .map { it.value }
+        MjmlTagProvider.getAll(tag.project)
             .filter { filter(it) }
             .mapTo(elements) {
                 LookupElementBuilder.create(it.tagName)

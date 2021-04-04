@@ -1,16 +1,19 @@
 package de.timo_reymann.mjml_support.model
 
+import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiElement
 import com.intellij.psi.util.parentOfType
 import com.intellij.psi.xml.XmlAttribute
 import com.intellij.psi.xml.XmlAttributeValue
 import com.intellij.psi.xml.XmlTag
+import de.timo_reymann.mjml_support.api.MjmlAttributeInformation
+import de.timo_reymann.mjml_support.api.MjmlTagInformation
 
 private val EMPTY_PAIR = Pair<MjmlTagInformation?, MjmlAttributeInformation?>(null, null)
 
 fun getMjmlTagFromAttribute(attribute: XmlAttribute): MjmlTagInformation? {
     val tag = attribute.parentOfType<XmlTag>() ?: return null
-    return MjmlTagProvider.getByXmlElement(tag)
+    return MjmlTagProvider.getByXmlElement(attribute.project, tag)
 }
 
 fun getMjmlInfoFromAttribute(attribute: XmlAttribute): Pair<MjmlTagInformation?, MjmlAttributeInformation?> {

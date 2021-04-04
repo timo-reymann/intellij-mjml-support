@@ -2,6 +2,7 @@ package de.timo_reymann.mjml_support.documentation
 
 import com.intellij.lang.documentation.DocumentationMarkup
 import com.intellij.lang.documentation.DocumentationProvider
+import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.text.StringUtil
 import com.intellij.psi.PsiElement
 import com.intellij.psi.xml.XmlAttribute
@@ -11,10 +12,11 @@ import de.timo_reymann.mjml_support.model.MjmlTagProvider
 
 class MjmlDocumentationProvider : DocumentationProvider {
     override fun generateDoc(element: PsiElement?, originalElement: PsiElement?): String? {
+
         if (element is XmlTag) {
-            return generateTagDocumentation(element.name)
+            return generateTagDocumentation(element.project,element.name)
         } else if (element is XmlAttribute) {
-            return generateAttributeDocumentation(element.parent.name, element.name)
+            return generateAttributeDocumentation(element.project, element.parent.name, element.name)
         }
         return null
     }
@@ -30,12 +32,12 @@ class MjmlDocumentationProvider : DocumentationProvider {
             else -> null
         }) ?: return mutableListOf()
 
-        val mjmlTag = MjmlTagProvider.getByTagName(tagName) ?: return mutableListOf()
+        val mjmlTag = MjmlTagProvider.getByTagName(element.project, tagName) ?: return mutableListOf()
         return mutableListOf(MjmlBundle.message("documentation.url_pattern", mjmlTag.tagName))
     }
 
-    private fun generateAttributeDocumentation(tagName: String, attributeName: String): String? {
-        val mjmlTag = MjmlTagProvider.getByTagName(tagName) ?: return null
+    private fun generateAttributeDocumentation(project: Project, tagName: String, attributeName: String): String? {
+        val mjmlTag = MjmlTagProvider.getByTagName(project, tagName) ?: return null
         val attributesMatched = mjmlTag.attributes.filter { it.name == attributeName }
         if (attributesMatched.size != 1) {
             return null
@@ -72,8 +74,8 @@ class MjmlDocumentationProvider : DocumentationProvider {
         return buf.toString()
     }
 
-    private fun generateTagDocumentation(tagName: String): String? {
-        val mjmlTag = MjmlTagProvider.getByTagName(tagName) ?: return null
+    private fun generateTagDocumentation(project: Project,tagName: String): String? {
+        val mjmlTag = MjmlTagProvider.getByTagName(project, tagName) ?: return null
 
         val buf = StringBuilder()
 

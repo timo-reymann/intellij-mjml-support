@@ -13,7 +13,7 @@ import com.intellij.openapi.vfs.VfsUtilCore
 import com.intellij.psi.xml.XmlAttribute
 import de.timo_reymann.mjml_support.bundle.MjmlBundle
 import de.timo_reymann.mjml_support.lang.MjmlHtmlFileType
-import de.timo_reymann.mjml_support.model.MjmlAttributeType
+import de.timo_reymann.mjml_support.api.MjmlAttributeType
 import de.timo_reymann.mjml_support.model.getMjmlTagFromAttribute
 import de.timo_reymann.mjml_support.util.MessageBusUtil
 import java.io.IOException

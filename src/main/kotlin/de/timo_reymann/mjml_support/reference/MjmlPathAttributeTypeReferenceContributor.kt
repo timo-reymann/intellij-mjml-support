@@ -10,7 +10,7 @@ import com.intellij.psi.util.parentOfType
 import com.intellij.psi.xml.XmlAttribute
 import com.intellij.psi.xml.XmlAttributeValue
 import com.intellij.util.ProcessingContext
-import de.timo_reymann.mjml_support.model.MjmlAttributeType
+import de.timo_reymann.mjml_support.api.MjmlAttributeType
 import de.timo_reymann.mjml_support.model.getMjmlInfoFromAttribute
 
 class MjmlPathAttributeTypeReferenceContributor : PsiReferenceContributor() {

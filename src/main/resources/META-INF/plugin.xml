@@ -85,6 +85,11 @@
                     <li>Add missing mj-class attribute</li>
                 </ul>
             </li>
+            <li>1.4.0
+                <ul>
+                    <li>Add extension point support</li>
+                </ul>
+            </li>
         </ul>
         ]]></description>
 
@@ -96,13 +101,26 @@
     <depends optional="true" config-file="css-plugin.xml">com.intellij.css</depends>
     <depends optional="true" config-file="javascript-plugin.xml">JavaScript</depends>
 
+    <extensionPoints>
+        <extensionPoint name="tagInformationProvider"
+                        dynamic="true"
+                        interface="de.timo_reymann.mjml_support.api.MjmlTagInformationProvider" />
+    </extensionPoints>
+
+    <resource-bundle>messages.MjmlBundle</resource-bundle>
+
     <actions>
-        <action class="de.timo_reymann.mjml_support.actions.MjmlCreateTemplateAction" id="MjmlCreateTemplateAction">
+        <action class="de.timo_reymann.mjml_support.actions.MjmlCreateTemplateAction"
+                id="MjmlCreateTemplateAction">
             <add-to-group group-id="NewGroup"
                           anchor="before"
                           relative-to-action="NewStylesheetFile" />
         </action>
     </actions>
+
+    <extensions defaultExtensionNs="de.timo_reymann.intellij-mjml-support">
+        <tagInformationProvider implementation="de.timo_reymann.mjml_support.model.BuiltInMjmlTagInformationProvider" />
+    </extensions>
 
     <extensions defaultExtensionNs="com.intellij">
         <fileType name="MJML"
@@ -166,7 +184,7 @@
                          displayName="Invalid parent tag"/>
 
         <notificationGroup displayType="NONE"
-                           id="MJML Support"/>
+                           id="MJML Support" />
 
         <fileType name="JSON"
                   language="JSON"
