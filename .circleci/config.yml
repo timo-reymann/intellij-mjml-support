@@ -95,7 +95,7 @@ jobs:
                   --repo $CIRCLE_PROJECT_REPONAME \
                   --tag $CIRCLE_TAG \
                   --name "$(basename "$filename")" \
-                  --file $filename
+                  --file "$filename"
             done
 
 workflows:
