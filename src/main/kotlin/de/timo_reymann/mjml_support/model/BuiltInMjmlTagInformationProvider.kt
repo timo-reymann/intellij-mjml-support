@@ -700,7 +700,7 @@ class BuiltInMjmlTagInformationProvider : MjmlTagInformationProvider() {
                         "center"
                     ),
                     MjmlAttributeInformation(
-                        "base url",
+                        "base-url",
                         MjmlAttributeType.STRING,
                         "base url for children components"
                     ),

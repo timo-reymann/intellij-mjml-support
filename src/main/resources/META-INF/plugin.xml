@@ -90,6 +90,11 @@
                     <li>Add extension point support</li>
                 </ul>
             </li>
+            <li>1.4.1
+                <ul>
+                    <li>Fix some attributes/tags - mjml documentation is very inconsistent here</li>
+                </ul>
+            </li>
         </ul>
         ]]></description>
 

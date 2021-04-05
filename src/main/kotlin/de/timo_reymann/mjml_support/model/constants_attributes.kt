@@ -169,7 +169,7 @@ val ATTRIBUTE_HEIGHT = MjmlAttributeInformation(
 
 val ATTRIBUTE_WIDTH = MjmlAttributeInformation(
     "width",
-    MjmlAttributeType.PIXEL,
+    MjmlAttributeType.STRING,
     "width for element"
 )
 
