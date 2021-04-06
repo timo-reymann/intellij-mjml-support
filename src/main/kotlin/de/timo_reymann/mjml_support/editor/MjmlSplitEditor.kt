@@ -8,13 +8,16 @@ import com.intellij.openapi.fileEditor.TextEditorWithPreview
 import com.intellij.openapi.project.DumbAware
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.pom.Navigatable
+import com.intellij.ui.JBSplitter
 import de.timo_reymann.mjml_support.bundle.MjmlBundle
+import de.timo_reymann.mjml_support.icons.EditorIcons
+import java.awt.Dimension
 import javax.swing.Icon
 
-class MjmlSplitEditor(val mainEditor: TextEditor, val secondEditor: MjmlPreviewFileEditor) :
+open class MjmlSplitEditor(val mainEditor: TextEditor, val secondEditor: MjmlPreviewFileEditor) :
     TextEditorWithPreview(mainEditor, secondEditor, "TextEditorWithPreview", Layout.SHOW_EDITOR),
     TextEditor {
-    protected var previewWidthStatus = PreviewWidthStatus.TABLET
+    protected var previewWidthStatus = PreviewWidthStatus.DESKTOP
 
     override fun getName(): String = MjmlBundle.message("mjml_preview.name")
 
@@ -32,12 +35,12 @@ class MjmlSplitEditor(val mainEditor: TextEditor, val secondEditor: MjmlPreviewF
         showPreviewAction,
         Separator.create(),
         PreviewWidthChangeAction(PreviewWidthStatus.DESKTOP),
-        PreviewWidthChangeAction(PreviewWidthStatus.TABLET),
         PreviewWidthChangeAction(PreviewWidthStatus.MOBILE)
     )
 
     init {
         secondEditor.setMainEditor(mainEditor.editor)
+        PreviewWidthChangeAction(previewWidthStatus).select()
     }
 
     inner class PreviewWidthChangeAction(private val myPreviewWidthStatus: PreviewWidthStatus) :
@@ -46,22 +49,23 @@ class MjmlSplitEditor(val mainEditor: TextEditor, val secondEditor: MjmlPreviewF
 
         override fun isSelected(e: AnActionEvent): Boolean = myPreviewWidthStatus == previewWidthStatus
 
-        override fun setSelected(e: AnActionEvent, state: Boolean) {
-            if (!state) {
-                return
-            }
-
+        fun select() {
             // TODO Change preview width / trigger rerender
+            val comp = secondEditor.getPanel()?.component ?: return
+            comp.size = Dimension(myPreviewWidthStatus.width, comp.size.height)
+            comp.preferredSize = Dimension(myPreviewWidthStatus.width, comp.preferredSize.height)
             previewWidthStatus = myPreviewWidthStatus
+        }
+
+        override fun setSelected(e: AnActionEvent, state: Boolean) {
+            if (state) {
+                select()
+            }
         }
     }
 }
 
-enum class PreviewWidthStatus(val text: String, val description: String, val icon: Icon) {
-    // TODO Set right icons
-    MOBILE("Mobile Preview", "Show preview for mobile devices", AllIcons.Xml.Browsers.Firefox),
-    TABLET("Tablet Preview", "Show preview for table devices", AllIcons.Xml.Browsers.Chromium),
-    DESKTOP("Desktop Preview", "Show desktop preview", AllIcons.Xml.Browsers.Edge);
+enum class PreviewWidthStatus(val text: String, val description: String, val width: Int, val icon: Icon) {
+    MOBILE("Mobile Preview", "Show preview for mobile devices", 320, EditorIcons.SMARTPHONE),
+    DESKTOP("Desktop Preview", "Show desktop preview", 800, EditorIcons.DESKTOP);
 }
-
-

@@ -7,8 +7,8 @@ import com.intellij.openapi.vfs.VirtualFile
 import org.jdom.Element
 
 abstract class SplitTextEditorProvider(
-    protected val myFirstProvider: FileEditorProvider,
-    protected val mySecondProvider: FileEditorProvider
+    private val myFirstProvider: FileEditorProvider,
+    private val mySecondProvider: FileEditorProvider
 ) :
     AsyncFileEditorProvider, DumbAware {
     private val myEditorTypeId: String =
@@ -75,9 +75,7 @@ abstract class SplitTextEditorProvider(
 
     protected abstract fun createSplitEditor(firstEditor: FileEditor, secondEditor: FileEditor): FileEditor
 
-    override fun getPolicy(): FileEditorPolicy {
-        return FileEditorPolicy.HIDE_DEFAULT_EDITOR
-    }
+    override fun getPolicy(): FileEditorPolicy = FileEditorPolicy.HIDE_DEFAULT_EDITOR
 
     companion object {
         private const val FIRST_EDITOR = "first_editor"

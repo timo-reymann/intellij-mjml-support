@@ -11,5 +11,6 @@ class JCEFHtmlPanelProvider : MjmlHtmlPanelProvider() {
             else -> AvailabilityInfo.UNAVAILABLE
         }
 
+
     override fun getProviderInfo(): ProviderInfo = ProviderInfo("JCEF Browser", JCEFHtmlPanelProvider::class.java.name)
 }
