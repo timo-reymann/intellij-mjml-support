@@ -23,14 +23,65 @@
 
         <h2>Changelog</h2>
         <ul>
-            <li>0.0.1
+            <li>1.4.2
                 <ul>
-                    <li>Basic completion</li>
+                    <li>Improve performance on MacOS by moving render initialization to plugin load time</li>
+                    <li>Add json schema remote url for mjmlconfig</li>
                 </ul>
             </li>
-            <li>0.0.2
+            <li>1.4.1
                 <ul>
-                    <li>Fix completion path provider and reference collision</li>
+                    <li>Fix some attributes/tags - mjml documentation is very inconsistent here</li>
+                </ul>
+            </li>
+            <li>1.4.0
+                <ul>
+                    <li>Add extension point support</li>
+                </ul>
+            </li>
+            <li>1.3.1
+                <ul>
+                    <li>Add missing mj-class attribute</li>
+                </ul>
+            </li>
+            <li>1.3.0
+                <ul>
+                    <li>Add file template for new mjml files</li>
+                </ul>
+            </li>
+            <li>1.2.1
+                <ul>
+                    <li>Make preview editor default to view only text version</li>
+                </ul>
+            </li>
+            <li>1.2.0
+                <ul>
+                    <li>Improve error handling for preview</li>
+                    <li>Add message bundle</li>
+                </ul>
+            </li>
+            <li>1.1.2
+                <ul>
+                    <li>Adjusted pixel attributes to make pixel unit optional</li>
+                    <li>Add more clear error message when top level tag is nested</li>
+                    <li>Fix editor helper creation that crashed the editor</li>
+                </ul>
+            </li>
+            <li>1.1.1
+                <ul>
+                    <li>Fix bug with preview crashing the plugin in some cases</li>
+                </ul>
+            </li>
+            <li>1.1.0
+                <ul>
+                    <li>Removed dependency on markdown plugin</li>
+                </ul>
+            </li>
+            <li>1.0.0
+                <ul>
+                    <li>Add mjml config schema</li>
+                    <li>Fix issue with color picker where applied color differs from picked</li>
+                    <li>Add inspection for containing test validation</li>
                 </ul>
             </li>
             <li>0.1.0
@@ -45,54 +96,14 @@
                     <li>Add mjml preview, based on markdown plugin</li>
                 </ul>
             </li>
-            <li>1.0.0
+            <li>0.0.2
                 <ul>
-                    <li>Add mjml config schema</li>
-                    <li>Fix issue with color picker where applied color differs from picked</li>
-                    <li>Add inspection for containing test validation</li>
+                    <li>Fix completion path provider and reference collision</li>
                 </ul>
             </li>
-            <li>1.1.0
+            <li>0.0.1
                 <ul>
-                    <li>Removed dependency on markdown plugin</li>
-                </ul>
-            </li>
-            <li>1.1.2
-                <ul>
-                    <li>Adjusted pixel attributes to make pixel unit optional</li>
-                    <li>Add more clear error message when top level tag is nested</li>
-                    <li>Fix editor helper creation that crashed the editor</li>
-                </ul>
-            </li>
-            <li>1.2.0
-                <ul>
-                    <li>Improve error handling for preview</li>
-                    <li>Add message bundle</li>
-                </ul>
-            </li>
-            <li>1.2.1
-                <ul>
-                    <li>Make preview editor default to view only text version</li>
-                </ul>
-            </li>
-            <li>1.3.0
-                <ul>
-                    <li>Add file template for new mjml files</li>
-                </ul>
-            </li>
-            <li>1.3.1
-                <ul>
-                    <li>Add missing mj-class attribute</li>
-                </ul>
-            </li>
-            <li>1.4.0
-                <ul>
-                    <li>Add extension point support</li>
-                </ul>
-            </li>
-            <li>1.4.1
-                <ul>
-                    <li>Fix some attributes/tags - mjml documentation is very inconsistent here</li>
+                    <li>Basic completion</li>
                 </ul>
             </li>
         </ul>

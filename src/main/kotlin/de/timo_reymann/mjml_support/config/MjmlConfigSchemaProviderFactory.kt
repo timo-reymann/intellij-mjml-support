@@ -17,7 +17,7 @@ class MjmlConfigSchemaProviderFactory : JsonSchemaProviderFactory {
         val provider = object : EmbeddedJsonSchemaFileProvider(
             SCHEMA_FILE_NAME,
             SCHEMA_NAME,
-            null,
+            "https://raw.githubusercontent.com/timo-reymann/intellij-mjml-support/main/src/main/resources/mjml-config-schema.json",
             MjmlConfigSchemaProviderFactory::class.java, "/"
         ) {
             override fun isAvailable(file: VirtualFile): Boolean = file.name == ".mjmlconfig"
