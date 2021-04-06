@@ -4,6 +4,7 @@
   "properties": {
     "config": {
       "type": "object",
+      "description": "Configuration properties for mjml rendering",
       "properties": {
         "fonts": {
           "description": "Default fonts imported in the HTML rendered by HTML",

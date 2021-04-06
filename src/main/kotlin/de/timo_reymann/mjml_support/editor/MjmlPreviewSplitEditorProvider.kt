@@ -13,4 +13,5 @@ class MjmlPreviewSplitEditorProvider : SplitTextEditorProvider(PsiAwareTextEdito
             secondEditor
         )
     }
+
 }

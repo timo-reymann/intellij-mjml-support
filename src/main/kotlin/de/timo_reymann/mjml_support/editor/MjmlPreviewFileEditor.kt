@@ -18,13 +18,17 @@ import com.intellij.ui.jcef.JCEFHtmlPanel
 import com.intellij.util.Alarm
 import de.timo_reymann.mjml_support.bundle.MjmlBundle
 import de.timo_reymann.mjml_support.editor.render.MjmlRenderer
-import java.awt.BorderLayout
+import java.awt.*
 import java.awt.event.ComponentAdapter
 import java.awt.event.ComponentEvent
 import java.beans.PropertyChangeListener
 import java.util.*
 import javax.swing.JComponent
 import javax.swing.JPanel
+
+import javax.swing.BoxLayout
+import javax.swing.JLabel
+import javax.swing.BorderFactory
 
 
 class MjmlPreviewFileEditor(private val project: Project, private val virtualFile: VirtualFile) :
@@ -51,13 +55,19 @@ class MjmlPreviewFileEditor(private val project: Project, private val virtualFil
 
     override fun getPreferredFocusedComponent(): JComponent? = panel?.component
 
+    fun getPanel(): JCEFHtmlPanel? {
+        return this.panel
+    }
+
     override fun selectNotify() {
         if (panel != null) {
             updateHtmlPooled()
         }
     }
 
-    override fun getComponent(): JComponent = htmlPanelWrapper
+    override fun getComponent(): JComponent {
+        return htmlPanelWrapper
+    }
     override fun getName(): String = MjmlBundle.message("mjml_preview.name")
     override fun setState(state: FileEditorState) {}
     override fun isModified(): Boolean = false
@@ -135,8 +145,11 @@ class MjmlPreviewFileEditor(private val project: Project, private val virtualFil
 
     private fun attachHtmlPanel() {
         panel = retrievePanelProvider().createHtmlPanel()
-
-        htmlPanelWrapper.add(panel!!.component, BorderLayout.CENTER)
+        val c = GridBagConstraints()
+        c.fill = GridBagConstraints.VERTICAL;
+        c.weightx = 0.0;
+        c.weighty = 1.0;
+        htmlPanelWrapper.add(panel!!.component, c)
         htmlPanelWrapper.repaint()
         myLastRenderedHtml = ""
         updateHtmlPooled()
@@ -170,7 +183,10 @@ class MjmlPreviewFileEditor(private val project: Project, private val virtualFil
                 pooledAlarm.addRequest({ updateHtml() }, PARSING_CALL_TIMEOUT_MS)
             }
         }, this)
-        htmlPanelWrapper = JPanel(BorderLayout())
+        htmlPanelWrapper = JPanel(GridBagLayout())
+        htmlPanelWrapper.minimumSize = Dimension(800,0)
+        htmlPanelWrapper.preferredSize = Dimension(800,0)
+
         htmlPanelWrapper.addComponentListener(object : ComponentAdapter() {
             override fun componentShown(e: ComponentEvent) {
                 swingAlarm.addRequest({
