@@ -27,6 +27,11 @@
 
         <h2>Changelog</h2>
         <ul>
+            <li>1.6.0
+                <ul>
+                    <li>Smoother preview for switching between mobile and desktop</li>
+                </ul>
+            </li>
             <li>1.5.0
                 <ul>
                     <li>Add controls to switch between mobile and desktop preview</li>

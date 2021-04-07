@@ -17,7 +17,6 @@ import javax.swing.Icon
 open class MjmlSplitEditor(val mainEditor: TextEditor, val secondEditor: MjmlPreviewFileEditor) :
     TextEditorWithPreview(mainEditor, secondEditor, "TextEditorWithPreview", Layout.SHOW_EDITOR),
     TextEditor {
-    protected var previewWidthStatus = PreviewWidthStatus.DESKTOP
 
     override fun getName(): String = MjmlBundle.message("mjml_preview.name")
 
@@ -40,21 +39,16 @@ open class MjmlSplitEditor(val mainEditor: TextEditor, val secondEditor: MjmlPre
 
     init {
         secondEditor.setMainEditor(mainEditor.editor)
-        PreviewWidthChangeAction(previewWidthStatus).select()
     }
 
     inner class PreviewWidthChangeAction(private val myPreviewWidthStatus: PreviewWidthStatus) :
         ToggleAction(myPreviewWidthStatus.text, myPreviewWidthStatus.description, myPreviewWidthStatus.icon),
         DumbAware {
 
-        override fun isSelected(e: AnActionEvent): Boolean = myPreviewWidthStatus == previewWidthStatus
+        override fun isSelected(e: AnActionEvent): Boolean = myPreviewWidthStatus == secondEditor.previewWidthStatus
 
-        fun select() {
-            // TODO Change preview width / trigger rerender
-            val comp = secondEditor.getPanel()?.component ?: return
-            comp.size = Dimension(myPreviewWidthStatus.width, comp.size.height)
-            comp.preferredSize = Dimension(myPreviewWidthStatus.width, comp.preferredSize.height)
-            previewWidthStatus = myPreviewWidthStatus
+        private fun select() {
+            secondEditor.setPreviewWidth(myPreviewWidthStatus)
         }
 
         override fun setSelected(e: AnActionEvent, state: Boolean) {
@@ -66,6 +60,6 @@ open class MjmlSplitEditor(val mainEditor: TextEditor, val secondEditor: MjmlPre
 }
 
 enum class PreviewWidthStatus(val text: String, val description: String, val width: Int, val icon: Icon) {
-    MOBILE("Mobile Preview", "Show preview for mobile devices", 320, EditorIcons.SMARTPHONE),
+    MOBILE("Mobile Preview", "Show preview for mobile devices", 400, EditorIcons.SMARTPHONE),
     DESKTOP("Desktop Preview", "Show desktop preview", 800, EditorIcons.DESKTOP);
 }

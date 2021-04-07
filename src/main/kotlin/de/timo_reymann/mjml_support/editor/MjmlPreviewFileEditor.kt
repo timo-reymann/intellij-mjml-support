@@ -14,6 +14,7 @@ import com.intellij.openapi.ui.Messages
 import com.intellij.openapi.util.Disposer
 import com.intellij.openapi.util.UserDataHolderBase
 import com.intellij.openapi.vfs.VirtualFile
+import com.intellij.ui.JBSplitter
 import com.intellij.ui.jcef.JCEFHtmlPanel
 import com.intellij.util.Alarm
 import de.timo_reymann.mjml_support.bundle.MjmlBundle
@@ -26,10 +27,6 @@ import java.util.*
 import javax.swing.JComponent
 import javax.swing.JPanel
 
-import javax.swing.BoxLayout
-import javax.swing.JLabel
-import javax.swing.BorderFactory
-
 
 class MjmlPreviewFileEditor(private val project: Project, private val virtualFile: VirtualFile) :
     UserDataHolderBase(), FileEditor {
@@ -38,6 +35,7 @@ class MjmlPreviewFileEditor(private val project: Project, private val virtualFil
     private val htmlPanelWrapper: JPanel
     private var panel: JCEFHtmlPanel? = null
     private var mainEditor: Editor? = null
+    internal var previewWidthStatus: PreviewWidthStatus? = null
 
     private val pooledAlarm = Alarm(Alarm.ThreadToUse.POOLED_THREAD, this)
     private val swingAlarm = Alarm(Alarm.ThreadToUse.SWING_THREAD, this)
@@ -53,11 +51,30 @@ class MjmlPreviewFileEditor(private val project: Project, private val virtualFil
         mainEditor = editor
     }
 
+    fun setPreviewWidth(previewWidthStatus: PreviewWidthStatus) {
+        this.previewWidthStatus = previewWidthStatus
+        this.updatePreviewWidth()
+    }
+
+    private fun updatePreviewWidth() {
+
+        (htmlPanelWrapper.parent as JBSplitter?)?.let {
+            it.proportion = 1f
+            it.setResizeEnabled(false)
+        }
+
+        val comp = getPanel()?.component ?: return
+        val size = Dimension(previewWidthStatus!!.width + 5, comp.size.height)
+        comp.size = size
+        comp.preferredSize = size
+
+        htmlPanelWrapper.minimumSize = size
+        htmlPanelWrapper.preferredSize = size
+    }
+
     override fun getPreferredFocusedComponent(): JComponent? = panel?.component
 
-    fun getPanel(): JCEFHtmlPanel? {
-        return this.panel
-    }
+    fun getPanel(): JCEFHtmlPanel? = this.panel
 
     override fun selectNotify() {
         if (panel != null) {
@@ -65,9 +82,7 @@ class MjmlPreviewFileEditor(private val project: Project, private val virtualFil
         }
     }
 
-    override fun getComponent(): JComponent {
-        return htmlPanelWrapper
-    }
+    override fun getComponent(): JComponent = htmlPanelWrapper
     override fun getName(): String = MjmlBundle.message("mjml_preview.name")
     override fun setState(state: FileEditorState) {}
     override fun isModified(): Boolean = false
@@ -137,6 +152,7 @@ class MjmlPreviewFileEditor(private val project: Project, private val virtualFil
 
     private fun detachHtmlPanel() {
         if (panel != null) {
+            previewWidthStatus = DEFAULT_PREVIEW_WIDTH
             htmlPanelWrapper.remove(panel!!.component)
             Disposer.dispose(panel!!)
             panel = null
@@ -144,14 +160,19 @@ class MjmlPreviewFileEditor(private val project: Project, private val virtualFil
     }
 
     private fun attachHtmlPanel() {
+        previewWidthStatus = DEFAULT_PREVIEW_WIDTH
         panel = retrievePanelProvider().createHtmlPanel()
-        val c = GridBagConstraints()
-        c.fill = GridBagConstraints.VERTICAL;
-        c.weightx = 0.0;
-        c.weighty = 1.0;
-        htmlPanelWrapper.add(panel!!.component, c)
-        htmlPanelWrapper.repaint()
         myLastRenderedHtml = ""
+
+        val c = GridBagConstraints()
+        c.fill = GridBagConstraints.VERTICAL
+        c.weightx = 0.0
+        c.weighty = 1.0
+        c.anchor = GridBagConstraints.EAST
+        htmlPanelWrapper.add(panel!!.component, c)
+
+        updatePreviewWidth()
+        htmlPanelWrapper.repaint()
         updateHtmlPooled()
     }
 
@@ -161,15 +182,15 @@ class MjmlPreviewFileEditor(private val project: Project, private val virtualFil
     }
 
     companion object {
+        private val DEFAULT_PREVIEW_WIDTH = PreviewWidthStatus.DESKTOP
         private const val PARSING_CALL_TIMEOUT_MS = 50L
         private const val RENDERING_DELAY_MS = 40L
         private fun isPreviewShown(project: Project, file: VirtualFile): Boolean {
             val state = EditorHistoryManager.getInstance(project).getState(file, MjmlPreviewFileEditorProvider())
-            return if (state !is MyFileEditorState) {
-                true
-            } else
-                SplitEditorLayout.valueOf(state.splitLayout!!) !=
-                        SplitEditorLayout.FIRST
+            return when (state) {
+                !is MyFileEditorState -> true
+                else -> SplitEditorLayout.valueOf(state.splitLayout!!) != SplitEditorLayout.FIRST
+            }
         }
     }
 
@@ -184,26 +205,21 @@ class MjmlPreviewFileEditor(private val project: Project, private val virtualFil
             }
         }, this)
         htmlPanelWrapper = JPanel(GridBagLayout())
-        htmlPanelWrapper.minimumSize = Dimension(800,0)
-        htmlPanelWrapper.preferredSize = Dimension(800,0)
 
         htmlPanelWrapper.addComponentListener(object : ComponentAdapter() {
-            override fun componentShown(e: ComponentEvent) {
-                swingAlarm.addRequest({
-                    if (panel == null) {
-                        attachHtmlPanel()
-                    }
-                }, 0, ModalityState.stateForComponent(component))
-            }
+            override fun componentShown(e: ComponentEvent) = swingAlarm.addRequest({
+                if (panel == null) {
+                    attachHtmlPanel()
+                }
+            }, 0, ModalityState.stateForComponent(component))
 
-            override fun componentHidden(e: ComponentEvent) {
-                swingAlarm.addRequest({
-                    if (panel != null) {
-                        detachHtmlPanel()
-                    }
-                }, 0, ModalityState.stateForComponent(component))
-            }
+            override fun componentHidden(e: ComponentEvent) = swingAlarm.addRequest({
+                if (panel != null) {
+                    detachHtmlPanel()
+                }
+            }, 0, ModalityState.stateForComponent(component))
         })
+
         if (isPreviewShown(project, virtualFile)) {
             attachHtmlPanel()
         }
