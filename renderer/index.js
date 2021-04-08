@@ -1,12 +1,15 @@
-const mjml2html = require("mjml")
-const fs = require('fs');
-const data = fs.readFileSync(0, 'utf-8');
-
 let result;
 
 try {
-    let {html, errors} = mjml2html(data, {
-        useMjmlConfigOptions: true
+    const mjml2html = require("mjml")
+    const fs = require('fs');
+    const stdin = fs.readFileSync(0, 'utf-8');
+
+    const {directory, content} = JSON.parse(stdin)
+
+    let {html, errors} = mjml2html(content, {
+        useMjmlConfigOptions: true,
+        mjmlConfigPath: directory
     })
     result = {html, errors}
 } catch (e) {
@@ -15,7 +18,7 @@ try {
         errors: [
             {
                 line: -1,
-                message:  e.toString(),
+                message:  (e || "unknown").toString(),
                 tagName: "",
                 formattedMessage: `Invaldi mjml: ${e.toString()}`
             }

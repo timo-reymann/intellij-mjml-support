@@ -6,7 +6,6 @@ import com.intellij.execution.process.OSProcessHandler
 import com.intellij.execution.process.ProcessAdapter
 import com.intellij.execution.process.ProcessEvent
 import com.intellij.javascript.nodejs.interpreter.NodeCommandLineConfigurator
-import com.intellij.javascript.nodejs.interpreter.NodeJsInterpreter
 import com.intellij.javascript.nodejs.interpreter.NodeJsInterpreterRef
 import com.intellij.notification.Notification
 import com.intellij.notification.NotificationListener
@@ -23,31 +22,37 @@ import de.timo_reymann.mjml_support.bundle.MjmlBundle
 import de.timo_reymann.mjml_support.editor.renderError
 import de.timo_reymann.mjml_support.util.FilePluginUtil
 import de.timo_reymann.mjml_support.util.MessageBusUtil
-import org.jetbrains.annotations.NotNull
 import java.io.File
-import java.nio.charset.StandardCharsets
-import java.nio.file.Files
 import java.util.*
 import java.util.concurrent.atomic.AtomicInteger
 import javax.swing.event.HyperlinkEvent
 
-class MjmlRenderer(private val project: Project, private val virtualFile: VirtualFile) {
-    private val nodeJsInterpreterRef = NodeJsInterpreterRef.createProjectRef()
-    private val tempFile = File.createTempFile(UUID.randomUUID().toString(), "mjml")
-    private val tempFilePath = tempFile.toPath()
-
-    private fun resolveInterpreter(): NodeJsInterpreter? {
-        return nodeJsInterpreterRef.resolve(project)
+class MjmlRenderer(
+    private val project: Project,
+    private val virtualFile: VirtualFile,
+    private val rendererScript: String = DEFAULT_RENDERER_SCRIPT
+) {
+    companion object {
+        val DEFAULT_RENDERER_SCRIPT: String = FilePluginUtil.getFile("renderer/index.js").absolutePath
     }
 
-    private fun generateCommandLine(nodeJsInterpreter: NodeJsInterpreter): @NotNull GeneralCommandLine {
-        val commandLineConfigurator = NodeCommandLineConfigurator.find(nodeJsInterpreter)
-        val commandLine = GeneralCommandLine("node", FilePluginUtil.getFile("renderer/index.js").absolutePath)
+    private val tempFile = File.createTempFile(UUID.randomUUID().toString(), "json")
+    private val objectMapper = jacksonObjectMapper()
+    private val mjmlRenderParameters = MjmlRenderParameters(project.basePath ?: File(virtualFile.path).parentFile.toString(), "")
+    private val commandLine = generateCommandLine()
+
+    private fun updateTempFile(content: String) {
+        mjmlRenderParameters.content = content
+        objectMapper.writeValue(tempFile, mjmlRenderParameters)
+    }
+
+    private fun generateCommandLine(): GeneralCommandLine? {
+        val nodeJsInterpreter = NodeJsInterpreterRef.createProjectRef().resolve(project) ?: return null
+        val commandLine = GeneralCommandLine("node", rendererScript)
             .withInput(tempFile)
             .withWorkDirectory(File(virtualFile.path).parentFile)
-
+        val commandLineConfigurator = NodeCommandLineConfigurator.find(nodeJsInterpreter)
         commandLineConfigurator.configure(commandLine)
-
         return commandLine
     }
 
@@ -77,21 +82,19 @@ class MjmlRenderer(private val project: Project, private val virtualFile: Virtua
         try {
             renderResult = mapper.readValue(rawJson, MjmlRenderResult::class.java)
         } catch (e: Exception) {
-            getLogger<MjmlRenderer>().error("Error parsing result form stdout: $rawJson",e)
+            getLogger<MjmlRenderer>().error("Error parsing result from stdout: $rawJson", e)
             return null
         }
         return renderResult
     }
 
     fun render(text: String): String {
-        Files.writeString(tempFilePath, text, StandardCharsets.UTF_8)
-        val nodeJsInterpreter = resolveInterpreter()
-        nodeJsInterpreter ?: return renderError(
+        updateTempFile(text)
+        commandLine ?: return renderError(
             MjmlBundle.message("mjml_preview.node_not_configured"),
             MjmlBundle.message("mjml_preview.unavailable")
         )
 
-        val commandLine = generateCommandLine(nodeJsInterpreter)
         val (exitCode, output) = captureOutput(commandLine);
 
         if (exitCode != 0) {
@@ -122,7 +125,7 @@ class MjmlRenderer(private val project: Project, private val virtualFile: Virtua
                 """
                             <a href="${virtualFile.path}:${it.line ?: 0}">${
                     virtualFile.toNioPath().toFile().relativeTo(File(project.basePath!!))
-                }:${it.line}</a>: ${it.message}
+                }:${it.line ?: 0}</a>: ${it.message ?: "no error message available"}
                         """.trimIndent()
             }
 

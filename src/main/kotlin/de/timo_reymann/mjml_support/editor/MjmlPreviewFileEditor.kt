@@ -3,7 +3,6 @@ package de.timo_reymann.mjml_support.editor
 import com.intellij.CommonBundle
 import com.intellij.codeHighlighting.BackgroundEditorHighlighter
 import com.intellij.openapi.application.ModalityState
-import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.editor.Document
 import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.editor.event.DocumentEvent
@@ -22,6 +21,8 @@ import de.timo_reymann.mjml_support.bundle.MjmlBundle
 import de.timo_reymann.mjml_support.editor.provider.JCEFHtmlPanelProvider
 import de.timo_reymann.mjml_support.editor.provider.MjmlPreviewFileEditorProvider
 import de.timo_reymann.mjml_support.editor.render.MjmlRenderer
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.awt.*
 import java.awt.event.ComponentAdapter
 import java.awt.event.ComponentEvent
@@ -59,7 +60,6 @@ class MjmlPreviewFileEditor(private val project: Project, private val virtualFil
     }
 
     private fun updatePreviewWidth() {
-
         (htmlPanelWrapper.parent as JBSplitter?)?.let {
             it.proportion = 1f
             it.setResizeEnabled(false)
@@ -155,12 +155,14 @@ class MjmlPreviewFileEditor(private val project: Project, private val virtualFil
     }
 
     private fun detachHtmlPanel() {
-        if (panel != null) {
-            previewWidthStatus = DEFAULT_PREVIEW_WIDTH
-            htmlPanelWrapper.remove(panel!!.component)
-            Disposer.dispose(panel!!)
-            panel = null
+        if (panel == null) {
+            return
         }
+
+        previewWidthStatus = DEFAULT_PREVIEW_WIDTH
+        htmlPanelWrapper.remove(panel!!.component)
+        Disposer.dispose(panel!!)
+        panel = null
     }
 
     private fun attachHtmlPanel() {
@@ -190,10 +192,10 @@ class MjmlPreviewFileEditor(private val project: Project, private val virtualFil
         private const val PARSING_CALL_TIMEOUT_MS = 50L
         private const val RENDERING_DELAY_MS = 40L
         private fun isPreviewShown(project: Project, file: VirtualFile): Boolean {
-            val state = EditorHistoryManager.getInstance(project).getState(file, MjmlPreviewFileEditorProvider())
-            return when (state) {
+            val editorState = EditorHistoryManager.getInstance(project).getState(file, MjmlPreviewFileEditorProvider())
+            return when (editorState) {
                 !is MyFileEditorState -> true
-                else -> SplitEditorLayout.valueOf(state.splitLayout!!) != SplitEditorLayout.FIRST
+                else -> SplitEditorLayout.valueOf(editorState.splitLayout!!) != SplitEditorLayout.FIRST
             }
         }
     }
@@ -225,7 +227,9 @@ class MjmlPreviewFileEditor(private val project: Project, private val virtualFil
         })
 
         if (isPreviewShown(project, virtualFile)) {
-            attachHtmlPanel()
+            GlobalScope.launch {
+                attachHtmlPanel()
+            }
         }
     }
 }
