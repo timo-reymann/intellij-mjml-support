@@ -31,6 +31,7 @@ repositories {
 
 dependencies {
     implementation(kotlin("stdlib"))
+    implementation(kotlin("reflect"))
     testImplementation("junit", "junit", "4.12")
 }
 

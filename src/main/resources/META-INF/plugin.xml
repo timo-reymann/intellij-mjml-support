@@ -229,6 +229,11 @@
         <createFromTemplateHandler implementation="de.timo_reymann.mjml_support.actions.MjmlCreateFromTemplateHandler"/>
         
         <postStartupActivity implementation="de.timo_reymann.mjml_support.editor.MjmlPreviewStartupActivity" />
+
+        <projectConfigurable id="de.timo_reymann.mjml_support.settings.MjmlSettingsConfigurable"
+                             groupId="tools"
+                             instance="de.timo_reymann.mjml_support.settings.MjmlSettingsConfigurable" />
+        <projectService serviceImplementation="de.timo_reymann.mjml_support.settings.MjmlSettings" />
     </extensions>
 
     <extensions defaultExtensionNs="JavaScript.JsonSchema">

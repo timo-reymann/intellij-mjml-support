@@ -45,6 +45,7 @@ class MjmlPreviewFileEditor(private val project: Project, private val virtualFil
     private var lastHtmlOrRefreshRequest: Runnable? = null
     private val REQUESTS_LOCK = Any()
 
+    // TODO Use configuration for
     private val mjmlRenderer = MjmlRenderer(project, virtualFile)
 
     private var previousText = ""
