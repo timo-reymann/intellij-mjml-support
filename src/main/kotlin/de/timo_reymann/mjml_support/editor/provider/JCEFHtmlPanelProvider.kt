@@ -1,6 +1,8 @@
-package de.timo_reymann.mjml_support.editor
+package de.timo_reymann.mjml_support.editor.provider
 
 import com.intellij.ui.jcef.JBCefApp
+import de.timo_reymann.mjml_support.editor.MjmlHtmlPanelProvider
+import de.timo_reymann.mjml_support.editor.MjmlJCEFHtmlPanel
 
 class JCEFHtmlPanelProvider : MjmlHtmlPanelProvider() {
     override fun createHtmlPanel(): MjmlJCEFHtmlPanel = MjmlJCEFHtmlPanel()

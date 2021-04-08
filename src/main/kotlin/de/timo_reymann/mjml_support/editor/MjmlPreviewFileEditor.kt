@@ -3,6 +3,7 @@ package de.timo_reymann.mjml_support.editor
 import com.intellij.CommonBundle
 import com.intellij.codeHighlighting.BackgroundEditorHighlighter
 import com.intellij.openapi.application.ModalityState
+import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.editor.Document
 import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.editor.event.DocumentEvent
@@ -18,12 +19,13 @@ import com.intellij.ui.JBSplitter
 import com.intellij.ui.jcef.JCEFHtmlPanel
 import com.intellij.util.Alarm
 import de.timo_reymann.mjml_support.bundle.MjmlBundle
+import de.timo_reymann.mjml_support.editor.provider.JCEFHtmlPanelProvider
+import de.timo_reymann.mjml_support.editor.provider.MjmlPreviewFileEditorProvider
 import de.timo_reymann.mjml_support.editor.render.MjmlRenderer
 import java.awt.*
 import java.awt.event.ComponentAdapter
 import java.awt.event.ComponentEvent
 import java.beans.PropertyChangeListener
-import java.util.*
 import javax.swing.JComponent
 import javax.swing.JPanel
 
@@ -142,11 +144,13 @@ class MjmlPreviewFileEditor(private val project: Project, private val virtualFil
                 synchronized(REQUESTS_LOCK) { lastHtmlOrRefreshRequest = null }
             }
 
-            swingAlarm.addRequest(
-                lastHtmlOrRefreshRequest!!,
-                RENDERING_DELAY_MS,
-                ModalityState.stateForComponent(component)
-            )
+            if (!swingAlarm.isDisposed) {
+                swingAlarm.addRequest(
+                    lastHtmlOrRefreshRequest!!,
+                    RENDERING_DELAY_MS,
+                    ModalityState.stateForComponent(component)
+                )
+            }
         }
     }
 

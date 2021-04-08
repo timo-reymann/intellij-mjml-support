@@ -1,9 +1,10 @@
-package de.timo_reymann.mjml_support.editor
+package de.timo_reymann.mjml_support.editor.provider
 
 import com.intellij.openapi.fileEditor.*
 import com.intellij.openapi.project.DumbAware
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
+import de.timo_reymann.mjml_support.editor.MyFileEditorState
 import org.jdom.Element
 
 abstract class SplitTextEditorProvider(

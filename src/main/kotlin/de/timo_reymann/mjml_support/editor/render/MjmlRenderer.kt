@@ -17,6 +17,8 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.Key
 import com.intellij.openapi.vfs.VfsUtil
 import com.intellij.openapi.vfs.VirtualFile
+import com.jetbrains.rd.util.error
+import com.jetbrains.rd.util.getLogger
 import de.timo_reymann.mjml_support.bundle.MjmlBundle
 import de.timo_reymann.mjml_support.editor.renderError
 import de.timo_reymann.mjml_support.util.FilePluginUtil
@@ -32,6 +34,7 @@ import javax.swing.event.HyperlinkEvent
 class MjmlRenderer(private val project: Project, private val virtualFile: VirtualFile) {
     private val nodeJsInterpreterRef = NodeJsInterpreterRef.createProjectRef()
     private val tempFile = File.createTempFile(UUID.randomUUID().toString(), "mjml")
+    private val tempFilePath = tempFile.toPath()
 
     private fun resolveInterpreter(): NodeJsInterpreter? {
         return nodeJsInterpreterRef.resolve(project)
@@ -74,13 +77,14 @@ class MjmlRenderer(private val project: Project, private val virtualFile: Virtua
         try {
             renderResult = mapper.readValue(rawJson, MjmlRenderResult::class.java)
         } catch (e: Exception) {
+            getLogger<MjmlRenderer>().error("Error parsing result form stdout: $rawJson",e)
             return null
         }
         return renderResult
     }
 
     fun render(text: String): String {
-        Files.writeString(tempFile.toPath(), text, StandardCharsets.UTF_8)
+        Files.writeString(tempFilePath, text, StandardCharsets.UTF_8)
         val nodeJsInterpreter = resolveInterpreter()
         nodeJsInterpreter ?: return renderError(
             MjmlBundle.message("mjml_preview.node_not_configured"),
@@ -137,7 +141,6 @@ class MjmlRenderer(private val project: Project, private val virtualFile: Virtua
                         val file = VfsUtil.findFile(File(fields[0]).toPath(), true)
                         FileEditorManager.getInstance(project)
                             .openTextEditor(OpenFileDescriptor(project, file!!, fields[1].toInt(), 0), true)
-                        println(event)
                     }
                 })
             .notify(project)

@@ -1,5 +1,5 @@
 <idea-plugin>
     <extensions defaultExtensionNs="com.intellij">
-        <fileEditorProvider implementation="de.timo_reymann.mjml_support.editor.MjmlPreviewSplitEditorProvider" />
+        <fileEditorProvider implementation="de.timo_reymann.mjml_support.editor.provider.MjmlPreviewSplitEditorProvider" />
     </extensions>
 </idea-plugin>

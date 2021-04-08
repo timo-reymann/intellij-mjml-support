@@ -1,4 +1,4 @@
-package de.timo_reymann.mjml_support.editor
+package de.timo_reymann.mjml_support.editor.provider
 
 import com.intellij.ide.scratch.ScratchUtil
 import com.intellij.lang.LanguageUtil
@@ -7,6 +7,7 @@ import com.intellij.openapi.fileEditor.FileEditorPolicy
 import com.intellij.openapi.fileEditor.WeighedFileEditorProvider
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
+import de.timo_reymann.mjml_support.editor.MjmlPreviewFileEditor
 import de.timo_reymann.mjml_support.lang.MjmlHtmlFileType
 import de.timo_reymann.mjml_support.lang.MjmlHtmlLanguage
 

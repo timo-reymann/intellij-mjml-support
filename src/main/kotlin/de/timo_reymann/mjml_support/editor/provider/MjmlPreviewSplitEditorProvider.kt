@@ -1,8 +1,10 @@
-package de.timo_reymann.mjml_support.editor
+package de.timo_reymann.mjml_support.editor.provider
 
 import com.intellij.openapi.fileEditor.FileEditor
 import com.intellij.openapi.fileEditor.TextEditor
 import com.intellij.openapi.fileEditor.impl.text.PsiAwareTextEditorProvider
+import de.timo_reymann.mjml_support.editor.MjmlPreviewFileEditor
+import de.timo_reymann.mjml_support.editor.MjmlSplitEditor
 
 class MjmlPreviewSplitEditorProvider : SplitTextEditorProvider(PsiAwareTextEditorProvider(), MjmlPreviewFileEditorProvider()) {
 
