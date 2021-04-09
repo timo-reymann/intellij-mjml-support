@@ -20,6 +20,7 @@ import com.jetbrains.rd.util.error
 import com.jetbrains.rd.util.getLogger
 import de.timo_reymann.mjml_support.bundle.MjmlBundle
 import de.timo_reymann.mjml_support.editor.renderError
+import de.timo_reymann.mjml_support.settings.MjmlSettings
 import de.timo_reymann.mjml_support.util.FilePluginUtil
 import de.timo_reymann.mjml_support.util.MessageBusUtil
 import java.io.File
@@ -38,8 +39,10 @@ class MjmlRenderer(
 
     private val tempFile = File.createTempFile(UUID.randomUUID().toString(), "json")
     private val objectMapper = jacksonObjectMapper()
-    private val mjmlRenderParameters = MjmlRenderParameters(project.basePath ?: File(virtualFile.path).parentFile.toString(), "")
+    private val mjmlRenderParameters =
+        MjmlRenderParameters(project.basePath ?: File(virtualFile.path).parentFile.toString(), "")
     private val commandLine = generateCommandLine()
+    private val mjmlSettings = MjmlSettings.getInstance(project)
 
     private fun updateTempFile(content: String) {
         mjmlRenderParameters.content = content
@@ -48,7 +51,7 @@ class MjmlRenderer(
 
     private fun generateCommandLine(): GeneralCommandLine? {
         val nodeJsInterpreter = NodeJsInterpreterRef.createProjectRef().resolve(project) ?: return null
-        val commandLine = GeneralCommandLine("node", rendererScript)
+        val commandLine = GeneralCommandLine("node")
             .withInput(tempFile)
             .withWorkDirectory(File(virtualFile.path).parentFile)
         val commandLineConfigurator = NodeCommandLineConfigurator.find(nodeJsInterpreter)
@@ -72,7 +75,6 @@ class MjmlRenderer(
 
         processHandler.startNotify()
         processHandler.waitFor()
-
         return Pair(processHandler.exitCode!!, buffer.toString())
     }
 
@@ -95,6 +97,12 @@ class MjmlRenderer(
             MjmlBundle.message("mjml_preview.unavailable")
         )
 
+        var script = DEFAULT_RENDERER_SCRIPT
+        if (!mjmlSettings.useBuiltInRenderer) {
+            script = mjmlSettings.renderScriptPath
+        }
+        commandLine.withParameters(script)
+
         val (exitCode, output) = captureOutput(commandLine);
 
         if (exitCode != 0) {
@@ -105,10 +113,14 @@ class MjmlRenderer(
         }
 
         val renderResult = parseResult(output)
-            ?: return renderError(
+        if (renderResult == null) {
+            propagateErrorsToUser(listOf(MjmlRenderResultError(output)))
+            return renderError(
                 MjmlBundle.message("mjml_preview.unavailable"),
-                "Either your mjml is invalid or node.js is not set up properly"
+                "Either your mjml is invalid, node.js is not set up properly, or the rendering script crashed"
             )
+        }
+
 
         val errors = renderResult.errors
             .filter { it.formattedMessage != null }

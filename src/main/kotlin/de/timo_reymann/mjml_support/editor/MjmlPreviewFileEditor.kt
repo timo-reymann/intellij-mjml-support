@@ -7,7 +7,10 @@ import com.intellij.openapi.editor.Document
 import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.editor.event.DocumentEvent
 import com.intellij.openapi.editor.event.DocumentListener
-import com.intellij.openapi.fileEditor.*
+import com.intellij.openapi.fileEditor.FileDocumentManager
+import com.intellij.openapi.fileEditor.FileEditor
+import com.intellij.openapi.fileEditor.FileEditorLocation
+import com.intellij.openapi.fileEditor.FileEditorState
 import com.intellij.openapi.fileEditor.impl.EditorHistoryManager
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.Messages
@@ -23,7 +26,9 @@ import de.timo_reymann.mjml_support.editor.provider.MjmlPreviewFileEditorProvide
 import de.timo_reymann.mjml_support.editor.render.MjmlRenderer
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import java.awt.*
+import java.awt.Dimension
+import java.awt.GridBagConstraints
+import java.awt.GridBagLayout
 import java.awt.event.ComponentAdapter
 import java.awt.event.ComponentEvent
 import java.beans.PropertyChangeListener
@@ -45,7 +50,6 @@ class MjmlPreviewFileEditor(private val project: Project, private val virtualFil
     private var lastHtmlOrRefreshRequest: Runnable? = null
     private val REQUESTS_LOCK = Any()
 
-    // TODO Use configuration for
     private val mjmlRenderer = MjmlRenderer(project, virtualFile)
 
     private var previousText = ""

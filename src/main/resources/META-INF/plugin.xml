@@ -31,6 +31,7 @@
                 <ul>
                     <li>Load preview files on startup of the ide</li>
                     <li>Harden preview for already disposed previews</li>
+                    <li>Add support for custom rendering script</li>
                 </ul>
             </li>
             <li>1.6.0
