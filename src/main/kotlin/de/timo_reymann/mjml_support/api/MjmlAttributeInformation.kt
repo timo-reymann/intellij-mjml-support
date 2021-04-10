@@ -5,6 +5,10 @@ data class MjmlAttributeInformation(
      * Name of the attribute
      */
     val name: String,
+
+    /**
+     * Type of the attribute
+     */
     val type: MjmlAttributeType,
 
     /**

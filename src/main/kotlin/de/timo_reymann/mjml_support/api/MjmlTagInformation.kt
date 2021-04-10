@@ -32,9 +32,7 @@ data class MjmlTagInformation(
      */
     val allowedParentTags: List<String>
 ) {
-    fun getAttributeByName(name: String): MjmlAttributeInformation? {
-        return attributes.firstOrNull { it.name == name }
-    }
+    fun getAttributeByName(name: String): MjmlAttributeInformation? = attributes.firstOrNull { it.name == name }
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

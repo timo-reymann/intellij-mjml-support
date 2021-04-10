@@ -22,9 +22,7 @@ abstract class MjmlTagInformationProvider {
      *
      * @param xmlTag Xml tag to resolve
      */
-    fun getByXmlTag(xmlTag: XmlTag): MjmlTagInformation? {
-        return getByTagName(xmlTag.project, xmlTag.name)
-    }
+    fun getByXmlTag(xmlTag: XmlTag): MjmlTagInformation? = getByTagName(xmlTag.project, xmlTag.name)
 
     /**
      * Return all available tags for provider
