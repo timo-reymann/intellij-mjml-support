@@ -27,7 +27,7 @@
 
         <h2>Changelog</h2>
         <ul>
-            <li>TBD
+            <li>1.7.0
                 <ul>
                     <li>Load preview files on startup of the ide</li>
                     <li>Harden preview for already disposed previews</li>
