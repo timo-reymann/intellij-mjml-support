@@ -1,5 +1,6 @@
 package de.timo_reymann.mjml_support.settings
 
+import com.intellij.lang.javascript.JavaScriptFileType
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory
 import com.intellij.openapi.options.Configurable
@@ -32,8 +33,9 @@ class MjmlSettingsConfigurable(project: Project) : Configurable {
                     textFieldWithBrowseButton(
                         prop = state::renderScriptPath,
                         browseDialogTitle = "Select script",
-                        fileChooserDescriptor = FileChooserDescriptorFactory.createSingleFileOrExecutableAppDescriptor()
+                        fileChooserDescriptor = FileChooserDescriptorFactory.createSingleFileDescriptor(JavaScriptFileType.INSTANCE)
                     ).enableIf(useBuiltIn.selected.not())
+                        .comment("The selected script will be executed with Node.JS")
                 }
             }
         }
