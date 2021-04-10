@@ -251,10 +251,6 @@ class MjmlPreviewFileEditor(private val project: Project, private val virtualFil
     }
 
     override fun onChanged(settings: MjmlSettings) {
-        ApplicationManager.getApplication().invokeLater {
-            ApplicationManager.getApplication().runReadAction {
-                updateHtml(true)
-            }
-        }
+        updateHtmlPooled(true)
     }
 }

@@ -45,10 +45,6 @@ class MjmlSettingsConfigurable(project: Project) : Configurable {
     override fun isModified(): Boolean = panel.isModified()
 
     override fun apply() {
-        val file = File(state.renderScriptPath)
-        if (!file.exists()) {
-            throw RuntimeException("Custom script does not exist")
-        }
         panel.apply()
 
         ApplicationManager.getApplication()
