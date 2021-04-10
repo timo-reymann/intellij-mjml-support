@@ -6,7 +6,7 @@ class MjmlRenderResultError {
     var tagName: String? = null
     var formattedMessage: String? = null
 
-    constructor(message : String) {
+    constructor(message: String) {
         this.message = message
     }
 }

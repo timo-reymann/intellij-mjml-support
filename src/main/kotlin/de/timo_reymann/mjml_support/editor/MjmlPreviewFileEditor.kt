@@ -2,7 +2,10 @@ package de.timo_reymann.mjml_support.editor
 
 import com.intellij.CommonBundle
 import com.intellij.codeHighlighting.BackgroundEditorHighlighter
+import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.application.ModalityState
+import com.intellij.openapi.application.ReadAction
+import com.intellij.openapi.application.WriteAction
 import com.intellij.openapi.editor.Document
 import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.editor.event.DocumentEvent
@@ -24,20 +27,26 @@ import de.timo_reymann.mjml_support.bundle.MjmlBundle
 import de.timo_reymann.mjml_support.editor.provider.JCEFHtmlPanelProvider
 import de.timo_reymann.mjml_support.editor.provider.MjmlPreviewFileEditorProvider
 import de.timo_reymann.mjml_support.editor.render.MjmlRenderer
+import de.timo_reymann.mjml_support.settings.MJML_SETTINGS_CHANGED_TOPIC
+import de.timo_reymann.mjml_support.settings.MjmlSettings
+import de.timo_reymann.mjml_support.settings.MjmlSettingsChangedListener
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import org.intellij.plugins.markdown.settings.MarkdownApplicationSettings
 import java.awt.Dimension
 import java.awt.GridBagConstraints
 import java.awt.GridBagLayout
 import java.awt.event.ComponentAdapter
 import java.awt.event.ComponentEvent
 import java.beans.PropertyChangeListener
+import java.lang.Exception
 import javax.swing.JComponent
 import javax.swing.JPanel
+import javax.swing.SwingUtilities
 
 
 class MjmlPreviewFileEditor(private val project: Project, private val virtualFile: VirtualFile) :
-    UserDataHolderBase(), FileEditor {
+    UserDataHolderBase(), FileEditor, MjmlSettingsChangedListener {
     private val document: Document? = FileDocumentManager.getInstance().getDocument(virtualFile)
 
     private val htmlPanelWrapper: JPanel
@@ -121,13 +130,13 @@ class MjmlPreviewFileEditor(private val project: Project, private val virtualFil
     }
 
     // Is always run from pooled thread
-    private fun updateHtml() {
+    private fun updateHtml(force: Boolean) {
         if (panel == null || document == null || !virtualFile.isValid || Disposer.isDisposed(this) || mainEditor == null) {
             return
         }
 
         val currentText = mainEditor!!.document.text
-        if (myLastRenderedHtml != "" && currentText == previousText) {
+        if (!force && myLastRenderedHtml != "" && currentText == previousText) {
             return
         }
 
@@ -142,7 +151,7 @@ class MjmlPreviewFileEditor(private val project: Project, private val virtualFil
             lastHtmlOrRefreshRequest = Runnable {
                 if (panel == null) return@Runnable
                 val currentHtml = "<html><head></head>$html</html>"
-                if (currentHtml != myLastRenderedHtml) {
+                if (force || currentHtml != myLastRenderedHtml) {
                     myLastRenderedHtml = currentHtml
                     panel!!.setHtml(myLastRenderedHtml)
                 }
@@ -187,9 +196,9 @@ class MjmlPreviewFileEditor(private val project: Project, private val virtualFil
         updateHtmlPooled()
     }
 
-    private fun updateHtmlPooled() {
+    private fun updateHtmlPooled(force: Boolean = false) {
         pooledAlarm.cancelAllRequests()
-        pooledAlarm.addRequest({ updateHtml() }, 0)
+        pooledAlarm.addRequest({ updateHtml(force) }, 0)
     }
 
     companion object {
@@ -212,7 +221,7 @@ class MjmlPreviewFileEditor(private val project: Project, private val virtualFil
             }
 
             override fun documentChanged(e: DocumentEvent) {
-                pooledAlarm.addRequest({ updateHtml() }, PARSING_CALL_TIMEOUT_MS)
+                pooledAlarm.addRequest({ updateHtml(false) }, PARSING_CALL_TIMEOUT_MS)
             }
         }, this)
         htmlPanelWrapper = JPanel(GridBagLayout())
@@ -222,18 +231,29 @@ class MjmlPreviewFileEditor(private val project: Project, private val virtualFil
                 if (panel == null) {
                     attachHtmlPanel()
                 }
-            }, 0, ModalityState.stateForComponent(component))
+            }, 10, ModalityState.stateForComponent(component))
 
             override fun componentHidden(e: ComponentEvent) = swingAlarm.addRequest({
                 if (panel != null) {
                     detachHtmlPanel()
                 }
-            }, 0, ModalityState.stateForComponent(component))
+            }, 10, ModalityState.stateForComponent(component))
         })
 
         if (isPreviewShown(project, virtualFile)) {
             GlobalScope.launch {
                 attachHtmlPanel()
+            }
+        }
+
+        ApplicationManager.getApplication().messageBus.connect(this)
+            .subscribe(MJML_SETTINGS_CHANGED_TOPIC, this)
+    }
+
+    override fun onChanged(settings: MjmlSettings) {
+        ApplicationManager.getApplication().invokeLater {
+            ApplicationManager.getApplication().runReadAction {
+                updateHtml(true)
             }
         }
     }

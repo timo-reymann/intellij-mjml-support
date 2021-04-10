@@ -4,7 +4,8 @@ import com.intellij.psi.PsiElement
 import com.intellij.psi.xml.XmlTag
 import com.intellij.xml.impl.BasicXmlAttributeDescriptor
 
-class MjmlTagAttributeDescriptor(private val attributeName: String, private val tag: XmlTag) : BasicXmlAttributeDescriptor() {
+class MjmlTagAttributeDescriptor(private val attributeName: String, private val tag: XmlTag) :
+    BasicXmlAttributeDescriptor() {
     override fun isFixed() = false
 
     override fun getDefaultValue(): String? = null

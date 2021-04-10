@@ -24,7 +24,7 @@ class MjmlPathAttributeTypeReferenceContributor : PsiReferenceContributor() {
                     val attribute = element.parentOfType<XmlAttribute>() ?: return arrayOf()
 
                     val (_, mjmlAttribute) = getMjmlInfoFromAttribute(attribute)
-                    if(mjmlAttribute?.type != MjmlAttributeType.PATH) {
+                    if (mjmlAttribute?.type != MjmlAttributeType.PATH) {
                         return arrayOf()
                     }
 
@@ -32,7 +32,7 @@ class MjmlPathAttributeTypeReferenceContributor : PsiReferenceContributor() {
                     val virtualFile =
                         VfsUtilCore.findRelativeFile(filename, element.containingFile.virtualFile) ?: return arrayOf()
 
-                    if(virtualFile.isDirectory) {
+                    if (virtualFile.isDirectory) {
                         return arrayOf()
                     }
 

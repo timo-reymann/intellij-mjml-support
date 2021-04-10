@@ -12,7 +12,7 @@ const val CLASS_ATTRIBUTE = "css-class"
 
 class MjmlCssClassUsageProvider : CssClassOrIdReferenceBasedUsagesProvider() {
     override fun acceptElement(candidate: PsiElement): Boolean {
-        if(candidate !is XmlAttributeValue) {
+        if (candidate !is XmlAttributeValue) {
             return false
         }
 
@@ -21,7 +21,7 @@ class MjmlCssClassUsageProvider : CssClassOrIdReferenceBasedUsagesProvider() {
     }
 
     override fun isUsage(selectorSuffix: CssSelectorSuffix, candidate: PsiElement, offsetInCandidate: Int): Boolean {
-        if(selectorSuffix !is CssClass || candidate !is XmlAttributeValue) {
+        if (selectorSuffix !is CssClass || candidate !is XmlAttributeValue) {
             return false
         }
         return candidate.value.split(" ").contains(selectorSuffix.name)

@@ -3,7 +3,7 @@ package de.timo_reymann.mjml_support.api
 /**
  * Representation of well known mjml types
  */
-enum class MjmlAttributeType(val description : String) {
+enum class MjmlAttributeType(val description: String) {
     /**
      * Local file path
      */

@@ -19,7 +19,7 @@ class InvalidColorAttributeInspection : HtmlLocalInspectionTool() {
         }
 
         val color = ColorUtil.parseColor(attribute.value)
-        if(color == null) {
+        if (color == null) {
             holder.registerProblem(
                 attribute,
                 MjmlBundle.message("inspections.invalid_color"),

@@ -25,7 +25,7 @@ class MjmlUrlAttributeTypeReferenceContributor : PsiReferenceContributor() {
                     val attribute = element.parentOfType<XmlAttribute>() ?: return arrayOf()
 
                     val (_, mjmlAttribute) = getMjmlInfoFromAttribute(attribute)
-                    if(mjmlAttribute?.type != MjmlAttributeType.URL) {
+                    if (mjmlAttribute?.type != MjmlAttributeType.URL) {
                         return arrayOf()
                     }
 

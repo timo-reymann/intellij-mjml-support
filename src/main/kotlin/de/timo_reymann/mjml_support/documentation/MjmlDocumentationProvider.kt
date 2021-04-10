@@ -14,7 +14,7 @@ class MjmlDocumentationProvider : DocumentationProvider {
     override fun generateDoc(element: PsiElement?, originalElement: PsiElement?): String? {
 
         if (element is XmlTag) {
-            return generateTagDocumentation(element.project,element.name)
+            return generateTagDocumentation(element.project, element.name)
         } else if (element is XmlAttribute) {
             return generateAttributeDocumentation(element.project, element.parent.name, element.name)
         }
@@ -74,7 +74,7 @@ class MjmlDocumentationProvider : DocumentationProvider {
         return buf.toString()
     }
 
-    private fun generateTagDocumentation(project: Project,tagName: String): String? {
+    private fun generateTagDocumentation(project: Project, tagName: String): String? {
         val mjmlTag = MjmlTagProvider.getByTagName(project, tagName) ?: return null
 
         val buf = StringBuilder()

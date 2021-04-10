@@ -6,7 +6,8 @@ import com.intellij.psi.xml.XmlTag
 
 abstract class MjmlTagInformationProvider {
     companion object {
-        val EXTENSION_POINT = ExtensionPointName<MjmlTagInformationProvider>("de.timo_reymann.intellij-mjml-support.tagInformationProvider")
+        val EXTENSION_POINT =
+            ExtensionPointName<MjmlTagInformationProvider>("de.timo_reymann.intellij-mjml-support.tagInformationProvider")
     }
 
     /**
@@ -28,5 +29,5 @@ abstract class MjmlTagInformationProvider {
     /**
      * Return all available tags for provider
      */
-    abstract fun getAll(project: Project) : List<MjmlTagInformation>
+    abstract fun getAll(project: Project): List<MjmlTagInformation>
 }

@@ -30,8 +30,7 @@ import javax.swing.event.HyperlinkEvent
 
 class MjmlRenderer(
     private val project: Project,
-    private val virtualFile: VirtualFile,
-    private val rendererScript: String = DEFAULT_RENDERER_SCRIPT
+    private val virtualFile: VirtualFile
 ) {
     companion object {
         val DEFAULT_RENDERER_SCRIPT: String = FilePluginUtil.getFile("renderer/index.js").absolutePath
@@ -41,8 +40,7 @@ class MjmlRenderer(
     private val objectMapper = jacksonObjectMapper()
     private val mjmlRenderParameters =
         MjmlRenderParameters(project.basePath ?: File(virtualFile.path).parentFile.toString(), "")
-    private val commandLine = generateCommandLine()
-    private val mjmlSettings = MjmlSettings.getInstance(project)
+
 
     private fun updateTempFile(content: String) {
         mjmlRenderParameters.content = content
@@ -92,14 +90,16 @@ class MjmlRenderer(
 
     fun render(text: String): String {
         updateTempFile(text)
+        val commandLine = generateCommandLine()
         commandLine ?: return renderError(
             MjmlBundle.message("mjml_preview.node_not_configured"),
             MjmlBundle.message("mjml_preview.unavailable")
         )
 
         var script = DEFAULT_RENDERER_SCRIPT
-        if (!mjmlSettings.useBuiltInRenderer) {
-            script = mjmlSettings.renderScriptPath
+        val settings = MjmlSettings.getInstance(project)
+        if (!settings.useBuiltInRenderer) {
+            script = settings.renderScriptPath
         }
         commandLine.withParameters(script)
 

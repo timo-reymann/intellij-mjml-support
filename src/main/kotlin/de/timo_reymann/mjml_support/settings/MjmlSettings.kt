@@ -6,7 +6,7 @@ import com.intellij.openapi.project.Project
 @State(name = "de.timo_reymann.mjml_support.settings.MjmlSettings", storages = [Storage("mjmlSettings.xml")])
 class MjmlSettings : PersistentStateComponent<MjmlSettings>, BaseState() {
     var renderScriptPath: String by nonNullString()
-    var useBuiltInRenderer : Boolean by property(true)
+    var useBuiltInRenderer: Boolean by property(true)
 
     private fun nonNullString(initialValue: String = "") = property(initialValue) { it == initialValue }
     override fun getState(): MjmlSettings = this
@@ -15,6 +15,7 @@ class MjmlSettings : PersistentStateComponent<MjmlSettings>, BaseState() {
     }
 
     companion object {
-        fun getInstance(project : Project) = project.service<MjmlSettings>()
+        fun getInstance(project: Project) = project.service<MjmlSettings>()
     }
+
 }

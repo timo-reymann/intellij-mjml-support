@@ -47,7 +47,8 @@ intellij {
     setPlugins(
         "CSS",
         "HtmlTools",
-        "JavaScript"
+        "JavaScript",
+        "org.intellij.plugins.markdown"
     )
 }
 

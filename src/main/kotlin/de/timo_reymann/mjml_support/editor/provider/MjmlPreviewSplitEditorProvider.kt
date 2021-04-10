@@ -6,7 +6,8 @@ import com.intellij.openapi.fileEditor.impl.text.PsiAwareTextEditorProvider
 import de.timo_reymann.mjml_support.editor.MjmlPreviewFileEditor
 import de.timo_reymann.mjml_support.editor.MjmlSplitEditor
 
-class MjmlPreviewSplitEditorProvider : SplitTextEditorProvider(PsiAwareTextEditorProvider(), MjmlPreviewFileEditorProvider()) {
+class MjmlPreviewSplitEditorProvider :
+    SplitTextEditorProvider(PsiAwareTextEditorProvider(), MjmlPreviewFileEditorProvider()) {
 
     override fun createSplitEditor(firstEditor: FileEditor, secondEditor: FileEditor): FileEditor {
         require(!(firstEditor !is TextEditor || secondEditor !is MjmlPreviewFileEditor)) { "Main editor should be TextEditor" }
