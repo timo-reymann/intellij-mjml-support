@@ -1,6 +1,5 @@
 package de.timo_reymann.mjml_support.model
 
-import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiElement
 import com.intellij.psi.util.parentOfType
 import com.intellij.psi.xml.XmlAttribute

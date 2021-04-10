@@ -11,8 +11,8 @@ import com.intellij.psi.xml.XmlElementType
 import com.intellij.psi.xml.XmlTag
 import com.intellij.xml.XmlElementDescriptor
 import com.intellij.xml.XmlTagNameProvider
-import de.timo_reymann.mjml_support.isInMjmlFile
 import de.timo_reymann.mjml_support.api.MjmlTagInformation
+import de.timo_reymann.mjml_support.isInMjmlFile
 import de.timo_reymann.mjml_support.model.MjmlTagProvider
 import de.timo_reymann.mjml_support.model.PARENT_ANY
 

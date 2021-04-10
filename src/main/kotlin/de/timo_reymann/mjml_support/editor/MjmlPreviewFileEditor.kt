@@ -4,8 +4,6 @@ import com.intellij.CommonBundle
 import com.intellij.codeHighlighting.BackgroundEditorHighlighter
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.application.ModalityState
-import com.intellij.openapi.application.ReadAction
-import com.intellij.openapi.application.WriteAction
 import com.intellij.openapi.editor.Document
 import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.editor.event.DocumentEvent
@@ -32,17 +30,14 @@ import de.timo_reymann.mjml_support.settings.MjmlSettings
 import de.timo_reymann.mjml_support.settings.MjmlSettingsChangedListener
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import org.intellij.plugins.markdown.settings.MarkdownApplicationSettings
 import java.awt.Dimension
 import java.awt.GridBagConstraints
 import java.awt.GridBagLayout
 import java.awt.event.ComponentAdapter
 import java.awt.event.ComponentEvent
 import java.beans.PropertyChangeListener
-import java.lang.Exception
 import javax.swing.JComponent
 import javax.swing.JPanel
-import javax.swing.SwingUtilities
 
 
 class MjmlPreviewFileEditor(private val project: Project, private val virtualFile: VirtualFile) :
