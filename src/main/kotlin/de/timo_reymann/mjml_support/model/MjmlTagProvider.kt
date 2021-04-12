@@ -15,12 +15,15 @@ object MjmlTagProvider {
     }
 
     fun getByTagName(project: Project, tagName: String): MjmlTagInformation? {
-        getProviders().forEach {
-            val tagInfo = it.getByTagName(project, tagName)
-            if (tagInfo != null) {
-                return tagInfo
+        getProviders()
+            .sortedBy { it.getPriority() }
+            .reversed()
+            .forEach {
+                val tagInfo = it.getByTagName(project, tagName)
+                if (tagInfo != null) {
+                    return tagInfo
+                }
             }
-        }
 
         return null
     }

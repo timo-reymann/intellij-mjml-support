@@ -24,6 +24,8 @@ class BuiltInMjmlTagInformationProvider : MjmlTagInformationProvider() {
         }
     }
 
+   override fun getPriority() = 100
+
     init {
         register(
             MjmlTagInformation(

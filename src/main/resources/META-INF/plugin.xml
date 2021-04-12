@@ -157,6 +157,7 @@
 
     <extensions defaultExtensionNs="de.timo_reymann.intellij-mjml-support">
         <tagInformationProvider implementation="de.timo_reymann.mjml_support.model.BuiltInMjmlTagInformationProvider" />
+        <tagInformationProvider implementation="de.timo_reymann.mjml_support.model.JSComponentMjmlTagInformationProvider" />
     </extensions>
 
     <extensions defaultExtensionNs="com.intellij">
