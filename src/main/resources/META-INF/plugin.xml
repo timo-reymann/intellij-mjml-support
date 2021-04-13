@@ -27,6 +27,11 @@
 
         <h2>Changelog</h2>
         <ul>
+            <li>TBD
+                <ul>
+                    <li>Add support for es6 custom components</li>
+                </ul>
+            </li>
             <li>1.7.0
                 <ul>
                     <li>Load preview files on startup of the ide</li>
