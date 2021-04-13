@@ -40,7 +40,7 @@ import javax.swing.JComponent
 import javax.swing.JPanel
 
 
-class MjmlPreviewFileEditor(private val project: Project, private val virtualFile: VirtualFile) :
+class MjmlPreviewFileEditor(project: Project, private val virtualFile: VirtualFile) :
     UserDataHolderBase(), FileEditor, MjmlSettingsChangedListener {
     private val document: Document? = FileDocumentManager.getInstance().getDocument(virtualFile)
 
@@ -85,7 +85,7 @@ class MjmlPreviewFileEditor(private val project: Project, private val virtualFil
 
     override fun getPreferredFocusedComponent(): JComponent? = panel?.component
 
-    fun getPanel(): JCEFHtmlPanel? = this.panel
+    private fun getPanel(): JCEFHtmlPanel? = this.panel
 
     override fun selectNotify() {
         if (panel != null) {
@@ -179,12 +179,7 @@ class MjmlPreviewFileEditor(private val project: Project, private val virtualFil
         panel = retrievePanelProvider().createHtmlPanel()
         myLastRenderedHtml = ""
 
-        val c = GridBagConstraints()
-        c.fill = GridBagConstraints.VERTICAL
-        c.weightx = 0.0
-        c.weighty = 1.0
-        c.anchor = GridBagConstraints.EAST
-        htmlPanelWrapper.add(panel!!.component, c)
+        htmlPanelWrapper.add(panel!!.component, BROWSER_PANEL_CONSTRAINTS)
 
         updatePreviewWidth()
         htmlPanelWrapper.repaint()
@@ -200,12 +195,21 @@ class MjmlPreviewFileEditor(private val project: Project, private val virtualFil
         private val DEFAULT_PREVIEW_WIDTH = PreviewWidthStatus.DESKTOP
         private const val PARSING_CALL_TIMEOUT_MS = 50L
         private const val RENDERING_DELAY_MS = 40L
+        private val BROWSER_PANEL_CONSTRAINTS = GridBagConstraints()
+
         private fun isPreviewShown(project: Project, file: VirtualFile): Boolean {
             val editorState = EditorHistoryManager.getInstance(project).getState(file, MjmlPreviewFileEditorProvider())
             return when (editorState) {
                 !is MyFileEditorState -> true
                 else -> SplitEditorLayout.valueOf(editorState.splitLayout!!) != SplitEditorLayout.FIRST
             }
+        }
+
+        init {
+            BROWSER_PANEL_CONSTRAINTS.fill = GridBagConstraints.VERTICAL
+            BROWSER_PANEL_CONSTRAINTS.weightx = 0.0
+            BROWSER_PANEL_CONSTRAINTS.weighty = 1.0
+            BROWSER_PANEL_CONSTRAINTS.anchor = GridBagConstraints.EAST
         }
     }
 
@@ -219,8 +223,8 @@ class MjmlPreviewFileEditor(private val project: Project, private val virtualFil
                 pooledAlarm.addRequest({ updateHtml(false) }, PARSING_CALL_TIMEOUT_MS)
             }
         }, this)
-        htmlPanelWrapper = JPanel(GridBagLayout())
 
+        htmlPanelWrapper = JPanel(GridBagLayout())
         htmlPanelWrapper.addComponentListener(object : ComponentAdapter() {
             override fun componentShown(e: ComponentEvent) = swingAlarm.addRequest({
                 if (panel == null) {

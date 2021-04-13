@@ -1,29 +1,12 @@
-export default class MjBasicComponent extends BodyComponent {
-    /*
-      Tell the parser that our component won't contain other mjml tags.
-      This means any html tag inside its content will be left as it is.
-      Without this, it would be parsed as mjml content.
-      Examples of endingTags are mj-text, mj-button, mj-raw, etc.
-    */
-    static endingTag = true
-
-    static dependencies = {
-        // Tell the validator which tags are allowed as our component's parent
-        'mj-hero': ['mj-basic-component'],
-        'mj-column': ['mj-basic-component'],
-        // Tell the validator which tags are allowed as our component's children
-        'mj-basic-component': []
-    }
-
-    // Tells the validator which attributes are allowed for mj-layout
+export default class TestComponent extends BodyComponent {
     static allowedAttributes = {
         'stars-color': 'color',
         'color': 'color',
         'font-size': 'unit(px)',
         'align': 'enum(left,right,center)',
+        'text': 'string'
     }
 
-    // What the name suggests. Fallback value for this.getAttribute('attribute-name').
     static defaultAttributes = {
         'stars-color': 'yellow',
         color: 'black',
