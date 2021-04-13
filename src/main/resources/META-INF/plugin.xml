@@ -30,6 +30,7 @@
             <li>TBD
                 <ul>
                     <li>Add support for es6 custom components</li>
+                    <li>Add reload button</li>
                 </ul>
             </li>
             <li>1.7.0

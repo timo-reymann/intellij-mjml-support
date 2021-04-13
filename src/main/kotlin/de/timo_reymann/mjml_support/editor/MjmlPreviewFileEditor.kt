@@ -52,7 +52,7 @@ class MjmlPreviewFileEditor(project: Project, private val virtualFile: VirtualFi
     private val pooledAlarm = Alarm(Alarm.ThreadToUse.POOLED_THREAD, this)
     private val swingAlarm = Alarm(Alarm.ThreadToUse.SWING_THREAD, this)
     private var lastHtmlOrRefreshRequest: Runnable? = null
-    private val REQUESTS_LOCK = Any()
+    private val requestsLock = Any()
 
     private val mjmlRenderer = MjmlRenderer(project, virtualFile)
 
@@ -75,7 +75,7 @@ class MjmlPreviewFileEditor(project: Project, private val virtualFile: VirtualFi
         }
 
         val comp = getPanel()?.component ?: return
-        val size = Dimension(previewWidthStatus!!.width + 5, comp.size.height)
+        val size = Dimension(previewWidthStatus!!.width + 5, 0)
         comp.size = size
         comp.preferredSize = size
 
@@ -138,7 +138,7 @@ class MjmlPreviewFileEditor(project: Project, private val virtualFile: VirtualFi
         previousText = currentText
         val html = mjmlRenderer.render(currentText)
 
-        synchronized(REQUESTS_LOCK) {
+        synchronized(requestsLock) {
             if (lastHtmlOrRefreshRequest != null) {
                 swingAlarm.cancelRequest(lastHtmlOrRefreshRequest!!)
             }
@@ -150,7 +150,7 @@ class MjmlPreviewFileEditor(project: Project, private val virtualFile: VirtualFi
                     myLastRenderedHtml = currentHtml
                     panel!!.setHtml(myLastRenderedHtml)
                 }
-                synchronized(REQUESTS_LOCK) { lastHtmlOrRefreshRequest = null }
+                synchronized(requestsLock) { lastHtmlOrRefreshRequest = null }
             }
 
             if (!swingAlarm.isDisposed) {
@@ -184,6 +184,10 @@ class MjmlPreviewFileEditor(project: Project, private val virtualFile: VirtualFi
         updatePreviewWidth()
         htmlPanelWrapper.repaint()
         updateHtmlPooled()
+    }
+
+    public fun forceRerender() {
+        updateHtmlPooled(true)
     }
 
     private fun updateHtmlPooled(force: Boolean = false) {
@@ -250,6 +254,6 @@ class MjmlPreviewFileEditor(project: Project, private val virtualFile: VirtualFi
     }
 
     override fun onChanged(settings: MjmlSettings) {
-        updateHtmlPooled(true)
+        forceRerender()
     }
 }

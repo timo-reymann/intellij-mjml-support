@@ -1,5 +1,6 @@
 package de.timo_reymann.mjml_support.editor
 
+import com.intellij.icons.AllIcons
 import com.intellij.openapi.actionSystem.*
 import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.fileEditor.TextEditor
@@ -30,6 +31,11 @@ open class MjmlSplitEditor(val mainEditor: TextEditor, val secondEditor: MjmlPre
         showEditorAndPreviewAction,
         showPreviewAction,
         Separator.create(),
+        object : AnAction("Refresh","Refresh the preview", AllIcons.Actions.Refresh) {
+            override fun actionPerformed(e: AnActionEvent) {
+                secondEditor.forceRerender()
+            }
+        },
         PreviewWidthChangeAction(PreviewWidthStatus.DESKTOP),
         PreviewWidthChangeAction(PreviewWidthStatus.MOBILE)
     )
