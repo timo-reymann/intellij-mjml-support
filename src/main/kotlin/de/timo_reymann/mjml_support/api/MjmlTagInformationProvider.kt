@@ -28,4 +28,6 @@ abstract class MjmlTagInformationProvider {
      * Return all available tags for provider
      */
     abstract fun getAll(project: Project): List<MjmlTagInformation>
+
+    open fun getPriority(): Int = 0
 }

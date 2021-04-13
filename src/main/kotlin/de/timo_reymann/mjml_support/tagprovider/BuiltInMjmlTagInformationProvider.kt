@@ -1,10 +1,11 @@
-package de.timo_reymann.mjml_support.model
+package de.timo_reymann.mjml_support.tagprovider
 
 import com.intellij.openapi.project.Project
 import de.timo_reymann.mjml_support.api.MjmlAttributeInformation
 import de.timo_reymann.mjml_support.api.MjmlAttributeType
 import de.timo_reymann.mjml_support.api.MjmlTagInformation
 import de.timo_reymann.mjml_support.api.MjmlTagInformationProvider
+import de.timo_reymann.mjml_support.model.*
 
 class BuiltInMjmlTagInformationProvider : MjmlTagInformationProvider() {
     private var tags: MutableMap<String, MjmlTagInformation> = mutableMapOf()
@@ -23,6 +24,8 @@ class BuiltInMjmlTagInformationProvider : MjmlTagInformationProvider() {
             tags[it.tagName] = it
         }
     }
+
+   override fun getPriority() = 100
 
     init {
         register(

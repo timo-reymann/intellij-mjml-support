@@ -19,5 +19,5 @@ data class MjmlAttributeInformation(
     /**
      * Default value of attribute, if is none omit or set explicitly to null
      */
-    val defaultValue: String? = null
+    var defaultValue: String? = null
 )

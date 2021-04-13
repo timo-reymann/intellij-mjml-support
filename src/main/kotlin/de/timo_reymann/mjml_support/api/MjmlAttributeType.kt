@@ -32,5 +32,15 @@ enum class MjmlAttributeType(val description: String) {
     /**
      * Color specification
      */
-    COLOR("color code in hex, rgba or color name"),
+    COLOR("color code in hex, rgba or color name");
+
+    companion object {
+        fun fromMjmlSpec(spec: String): MjmlAttributeType {
+            return when (spec) {
+                "color" -> COLOR
+                "unit(px)" -> PIXEL
+                else -> STRING
+            }
+        }
+    }
 }
