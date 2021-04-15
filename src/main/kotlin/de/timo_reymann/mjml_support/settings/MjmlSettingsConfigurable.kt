@@ -5,6 +5,9 @@ import com.intellij.openapi.Disposable
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory
 import com.intellij.openapi.options.Configurable
+import com.intellij.openapi.progress.ProgressIndicator
+import com.intellij.openapi.progress.ProgressManager
+import com.intellij.openapi.progress.Task
 import com.intellij.openapi.project.Project
 import com.intellij.ui.DocumentAdapter
 import com.intellij.ui.components.JBCheckBox
@@ -12,8 +15,10 @@ import com.intellij.ui.layout.CellBuilder
 import com.intellij.ui.layout.not
 import com.intellij.ui.layout.panel
 import com.intellij.ui.layout.selected
+import de.timo_reymann.mjml_support.editor.MjmlPreviewStartupActivity
 import de.timo_reymann.mjml_support.editor.render.MjmlRenderer
 import de.timo_reymann.mjml_support.util.FilePluginUtil
+import java.awt.Desktop
 import java.io.File
 import javax.swing.JComponent
 import javax.swing.event.DocumentEvent
@@ -55,6 +60,20 @@ class MjmlSettingsConfigurable(project: Project) : Configurable, Disposable {
                 }
             }
         }
+
+        titledRow("Trouble Shooting") {
+            row {
+                cell {
+                    button("Open plugin folder") {
+                        Desktop.getDesktop().open(FilePluginUtil.getFile("."))
+                    }
+
+                    button("Copy files for preview from plugin") {
+                        MjmlPreviewStartupActivity().runActivity(project)
+                    }
+                }
+            }
+        }
     }
 
     private fun isValidScript(path: String): Boolean {
@@ -78,8 +97,6 @@ class MjmlSettingsConfigurable(project: Project) : Configurable, Disposable {
     }
 
     override fun getDisplayName(): String = "MJML Settings"
-    override fun dispose() {
-
-    }
+    override fun dispose() {}
 
 }
