@@ -12,6 +12,8 @@ import com.intellij.ui.layout.CellBuilder
 import com.intellij.ui.layout.not
 import com.intellij.ui.layout.panel
 import com.intellij.ui.layout.selected
+import de.timo_reymann.mjml_support.editor.render.MjmlRenderer
+import de.timo_reymann.mjml_support.util.FilePluginUtil
 import java.io.File
 import javax.swing.JComponent
 import javax.swing.event.DocumentEvent
@@ -22,7 +24,6 @@ class MjmlSettingsConfigurable(project: Project) : Configurable, Disposable {
     private val panel = panel {
         lateinit var useBuiltIn: CellBuilder<JBCheckBox>
         titledRow("Preview") {
-            // noteRow("Make sure to reopen preview for the changes to be detected")
             row {
                 checkBox(
                     text = "Builtin rendering script",
