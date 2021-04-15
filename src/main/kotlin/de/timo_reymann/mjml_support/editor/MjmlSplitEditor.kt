@@ -12,7 +12,7 @@ import de.timo_reymann.mjml_support.bundle.MjmlBundle
 import de.timo_reymann.mjml_support.icons.EditorIcons
 import javax.swing.Icon
 
-open class MjmlSplitEditor(val mainEditor: TextEditor, val secondEditor: MjmlPreviewFileEditor) :
+open class MjmlSplitEditor(private val mainEditor: TextEditor, val secondEditor: MjmlPreviewFileEditor) :
     TextEditorWithPreview(mainEditor, secondEditor, "TextEditorWithPreview", Layout.SHOW_EDITOR),
     TextEditor {
 
