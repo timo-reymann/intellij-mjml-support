@@ -2,4 +2,8 @@
     <extensions defaultExtensionNs="com.intellij">
         <fileEditorProvider implementation="de.timo_reymann.mjml_support.editor.provider.MjmlPreviewSplitEditorProvider" />
     </extensions>
+
+    <extensions defaultExtensionNs="de.timo_reymann.intellij-mjml-support">
+        <tagInformationProvider implementation="de.timo_reymann.mjml_support.tagprovider.JSES6ComponentMjmlTagInformationProvider" />
+    </extensions>
 </idea-plugin>
