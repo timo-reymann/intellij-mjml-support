@@ -75,7 +75,7 @@ class MjmlPreviewFileEditor(project: Project, private val virtualFile: VirtualFi
         }
 
         val comp = getPanel()?.component ?: return
-        val size = Dimension(previewWidthStatus!!.width + 5, 0)
+        val size = Dimension(previewWidthStatus!!.width + 5, comp.size.height)
         comp.size = size
         comp.preferredSize = size
 
