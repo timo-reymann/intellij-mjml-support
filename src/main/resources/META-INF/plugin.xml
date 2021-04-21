@@ -30,6 +30,7 @@
             <li>TBD
                 <ul>
                     <li>Add support for es6 custom components</li>
+                    <li>Add support for custom TypeScript components using mjml-custom-component-decorator</li>
                     <li>Add reload button</li>
                     <li>Add troubleshooting to settings for mjml preview</li>
                 </ul>
