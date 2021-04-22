@@ -67,7 +67,7 @@ object MjmlCustomComponentDecoratorParser {
     }
 
     private fun getPropertyValue(jsProperty: JSProperty?): String? =
-        (jsProperty?.value as JSLiteralExpression?)?.value as String?
+        (jsProperty?.value as JSLiteralExpression?)?.value?.toString()
 
     private fun parseAttributes(definition: JSObjectLiteralExpression): MutableList<MjmlAttributeInformation> {
         val decoratorAttributes = definition.findProperty("attributes")
