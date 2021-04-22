@@ -2,7 +2,10 @@ package de.timo_reymann.mjml_support.reference
 
 import com.intellij.openapi.util.TextRange
 import com.intellij.openapi.vfs.VfsUtilCore
+import com.intellij.patterns.ElementPattern
+import com.intellij.patterns.PlatformPatterns
 import com.intellij.patterns.PlatformPatterns.psiElement
+import com.intellij.patterns.StandardPatterns
 import com.intellij.psi.*
 import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReference
 import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReferenceSet
@@ -11,11 +14,13 @@ import com.intellij.psi.xml.XmlAttribute
 import com.intellij.psi.xml.XmlAttributeValue
 import com.intellij.util.ProcessingContext
 import de.timo_reymann.mjml_support.api.MjmlAttributeType
+import de.timo_reymann.mjml_support.lang.MjmlHtmlFileType
 import de.timo_reymann.mjml_support.model.getMjmlInfoFromAttribute
 
 class MjmlPathAttributeTypeReferenceContributor : PsiReferenceContributor() {
     override fun registerReferenceProviders(registrar: PsiReferenceRegistrar) {
-        registrar.registerReferenceProvider(psiElement().inside(XmlAttributeValue::class.java),
+        registrar.registerReferenceProvider(psiElement().inside(XmlAttributeValue::class.java).inFile(MJML_FILE_PATTERN)
+            .inFile(MJML_FILE_PATTERN),
             object : PsiReferenceProvider() {
                 override fun getReferencesByElement(
                     element: PsiElement,

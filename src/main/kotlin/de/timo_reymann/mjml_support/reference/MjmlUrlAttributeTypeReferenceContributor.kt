@@ -16,7 +16,7 @@ import de.timo_reymann.mjml_support.model.getMjmlInfoFromAttribute
 class MjmlUrlAttributeTypeReferenceContributor : PsiReferenceContributor() {
     override fun registerReferenceProviders(registrar: PsiReferenceRegistrar) {
         registrar.registerReferenceProvider(
-            PlatformPatterns.psiElement().inside(XmlAttributeValue::class.java),
+            PlatformPatterns.psiElement().inside(XmlAttributeValue::class.java).inFile(MJML_FILE_PATTERN),
             object : ArbitraryPlaceUrlReferenceProvider() {
                 override fun getReferencesByElement(
                     element: PsiElement,
