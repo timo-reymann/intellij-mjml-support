@@ -1,5 +1,6 @@
 package de.timo_reymann.mjml_support.tagprovider
 
+import com.intellij.lang.ecmascript6.psi.ES6Class
 import com.intellij.lang.ecmascript6.psi.ES6ClassExpression
 import com.intellij.lang.javascript.psi.JSField
 import com.intellij.lang.javascript.psi.JSLiteralExpression
@@ -36,7 +37,7 @@ object ES6BodyComponentParser {
     private fun getFieldDefinition(eS6ClassExpression: ES6ClassExpression, name: String): Array<JSProperty> =
         ((eS6ClassExpression.findFieldByName(name) as JSField).children[0] as JSObjectLiteralExpression).properties
 
-     fun parse(expression: ES6ClassExpression): MjmlTagInformation? {
+     fun parse(expression: ES6ClassExpression): Pair<MjmlTagInformation, ES6Class>? {
         val attributeMap = mutableMapOf<String, MjmlAttributeInformation>()
 
         // Index all allowed properties
@@ -75,11 +76,14 @@ object ES6BodyComponentParser {
             .map { it.value }
             .toTypedArray()
 
-        return MjmlTagInformation(
-            expression.name!!.camelToKebabCase(),
-            DESCRIPTION,
-            attributes = attributes,
-            allowedParentTags = PARENT_ANY // For now allow all tags
+        return Pair(
+            MjmlTagInformation(
+                expression.name!!.camelToKebabCase(),
+                DESCRIPTION,
+                attributes = attributes,
+                allowedParentTags = PARENT_ANY // For now allow all tags
+            ),
+            expression
         )
     }
 }

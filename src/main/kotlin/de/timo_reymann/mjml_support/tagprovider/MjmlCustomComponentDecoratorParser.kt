@@ -13,7 +13,7 @@ object MjmlCustomComponentDecoratorParser {
     private const val PROPERTY_DEFAULT_VALUE = "default"
     private const val PROPERTY_TYPE = "type"
 
-    fun parse(tsClass: TypeScriptClass): MjmlTagInformation? {
+    fun parse(tsClass: TypeScriptClass): Pair<MjmlTagInformation, TypeScriptClass>? {
         val attributeList = tsClass.attributeList ?: return null
         val decorators = attributeList.decorators
         for (decorator in decorators) {
@@ -40,11 +40,14 @@ object MjmlCustomComponentDecoratorParser {
             val attributes = parseAttributes(definition)
             val allowedParents = parseAllowedParentTags(definition)
 
-            return MjmlTagInformation(
-                tsClass.name.toString().camelToKebabCase(),
-                DESCRIPTION,
-                attributes = attributes.toTypedArray(),
-                allowedParentTags = allowedParents
+            return Pair(
+                MjmlTagInformation(
+                    tsClass.name.toString().camelToKebabCase(),
+                    DESCRIPTION,
+                    attributes = attributes.toTypedArray(),
+                    allowedParentTags = allowedParents
+                ),
+                tsClass
             )
         }
         return null

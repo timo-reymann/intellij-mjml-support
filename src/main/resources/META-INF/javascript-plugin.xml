@@ -1,6 +1,7 @@
 <idea-plugin>
     <extensions defaultExtensionNs="com.intellij">
         <fileEditorProvider implementation="de.timo_reymann.mjml_support.editor.provider.MjmlPreviewSplitEditorProvider" />
+        <psi.referenceContributor implementation="de.timo_reymann.mjml_support.reference.component.MjmlComponentReferenceProvider" />
     </extensions>
 
     <extensions defaultExtensionNs="de.timo_reymann.intellij-mjml-support">

@@ -6,6 +6,7 @@ import com.intellij.lang.javascript.psi.ecmal4.JSClass
 import com.intellij.lang.javascript.psi.stubs.JSSuperClassIndex
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiElement
+import com.intellij.psi.ResolveResult
 import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.psi.stubs.StubIndex
 import com.intellij.util.CommonProcessors
@@ -31,8 +32,8 @@ class JSES6ComponentMjmlTagInformationProvider : MjmlTagInformationProvider() {
     }
 
     private fun mapElement(element: PsiElement) = when (element) {
-        is ES6ClassExpression -> ES6BodyComponentParser.parse(element)
-        is TypeScriptClass -> MjmlCustomComponentDecoratorParser.parse(element)
+        is ES6ClassExpression -> ES6BodyComponentParser.parse(element)?.first
+        is TypeScriptClass -> MjmlCustomComponentDecoratorParser.parse(element)?.first
         else -> null
     }
 
@@ -48,6 +49,18 @@ class JSES6ComponentMjmlTagInformationProvider : MjmlTagInformationProvider() {
                 CommonProcessors.CollectProcessor(list)
             )
         return list
+    }
+
+    override fun getPsiElements(project: Project, tagName: String): Array<Pair<MjmlTagInformation, PsiElement>> {
+        return getAllPossibleComponents(project)
+            .mapNotNull {
+                when (it) {
+                    is ES6ClassExpression -> ES6BodyComponentParser.parse(it)
+                    is TypeScriptClass -> MjmlCustomComponentDecoratorParser.parse(it)
+                    else -> null
+                }
+            }.filter { it.first.tagName == tagName }
+            .toTypedArray()
     }
 
     override fun getPriority() = 99

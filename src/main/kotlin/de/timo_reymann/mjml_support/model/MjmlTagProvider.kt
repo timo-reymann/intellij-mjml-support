@@ -10,9 +10,7 @@ import org.jetbrains.annotations.NotNull
  * Utility to get mjml tag information from all sources
  */
 object MjmlTagProvider {
-    private fun getProviders(): @NotNull Array<out MjmlTagInformationProvider> {
-        return MjmlTagInformationProvider.EXTENSION_POINT.extensions
-    }
+    private fun getProviders() = MjmlTagInformationProvider.EXTENSION_POINT.extensions
 
     fun getByTagName(project: Project, tagName: String): MjmlTagInformation? {
         getProviders()
