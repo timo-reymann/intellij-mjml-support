@@ -2,6 +2,7 @@
     <extensions defaultExtensionNs="com.intellij">
         <fileEditorProvider implementation="de.timo_reymann.mjml_support.editor.provider.MjmlPreviewSplitEditorProvider" />
         <psi.referenceContributor implementation="de.timo_reymann.mjml_support.reference.component.MjmlComponentReferenceProvider" />
+        <codeInsight.lineMarkerProvider language="mjml" implementationClass="de.timo_reymann.mjml_support.marker.CustomComponentLineMarkerProvider" />
     </extensions>
 
     <extensions defaultExtensionNs="de.timo_reymann.intellij-mjml-support">
