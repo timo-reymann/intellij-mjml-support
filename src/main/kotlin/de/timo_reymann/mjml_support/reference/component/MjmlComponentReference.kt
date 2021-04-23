@@ -1,10 +1,8 @@
 package de.timo_reymann.mjml_support.reference.component
 
-import com.intellij.codeInsight.lookup.LookupElementBuilder
 import com.intellij.openapi.util.TextRange
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiReferenceBase
-import com.intellij.psi.html.HtmlTag
 import de.timo_reymann.mjml_support.api.MjmlTagInformationProvider
 
 class MjmlComponentReference(element: PsiElement, private val text: String, private val textRange: TextRange) :
@@ -19,8 +17,7 @@ class MjmlComponentReference(element: PsiElement, private val text: String, priv
         return null
     }
 
-    override fun isSoft(): Boolean {
-        return false
-    }
-}
+    override fun isReferenceTo(element: PsiElement): Boolean = resolve() == element
 
+    override fun isSoft(): Boolean = true
+}

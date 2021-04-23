@@ -22,7 +22,7 @@ class MjmlComponentReferenceProvider : PsiReferenceContributor() {
                     }
 
                     return arrayOf(
-                        MjmlComponentReference(element, element.localName, TextRange(0, element.localName.length + 1))
+                        MjmlComponentReference(element, element.localName, TextRange(0, element.localName.length))
                     )
                 }
             })
