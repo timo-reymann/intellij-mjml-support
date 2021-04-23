@@ -1,4 +1,4 @@
-package de.timo_reymann.mjml_support.tagprovider
+package de.timo_reymann.mjml_support.tagprovider.custom
 
 import com.intellij.lang.ecmascript6.psi.ES6ClassExpression
 import com.intellij.lang.javascript.psi.ecma6.TypeScriptClass
@@ -31,8 +31,8 @@ class JSES6ComponentMjmlTagInformationProvider : MjmlTagInformationProvider() {
     }
 
     private fun mapElement(element: PsiElement) = when (element) {
-        is ES6ClassExpression -> ES6BodyComponentParser.parse(element)
-        is TypeScriptClass -> MjmlCustomComponentDecoratorParser.parse(element)
+        is ES6ClassExpression -> ES6BodyComponentParser.parse(element)?.first
+        is TypeScriptClass -> MjmlCustomComponentDecoratorParser.parse(element)?.first
         else -> null
     }
 
@@ -48,6 +48,18 @@ class JSES6ComponentMjmlTagInformationProvider : MjmlTagInformationProvider() {
                 CommonProcessors.CollectProcessor(list)
             )
         return list
+    }
+
+    override fun getPsiElements(project: Project, tagName: String): Array<Pair<MjmlTagInformation, PsiElement>> {
+        return getAllPossibleComponents(project)
+            .mapNotNull {
+                when (it) {
+                    is ES6ClassExpression -> ES6BodyComponentParser.parse(it)
+                    is TypeScriptClass -> MjmlCustomComponentDecoratorParser.parse(it)
+                    else -> null
+                }
+            }.filter { it.first.tagName == tagName }
+            .toTypedArray()
     }
 
     override fun getPriority() = 99

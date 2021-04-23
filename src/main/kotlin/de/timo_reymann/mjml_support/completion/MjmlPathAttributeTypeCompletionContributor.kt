@@ -16,6 +16,7 @@ import com.intellij.util.ProcessingContext
 import com.intellij.util.Processor
 import com.intellij.util.containers.ContainerUtil
 import com.intellij.util.indexing.FindSymbolParameters
+import de.timo_reymann.mjml_support.api.MjmlAttributeInformation
 import de.timo_reymann.mjml_support.api.MjmlAttributeType
 import de.timo_reymann.mjml_support.icons.MjmlIcons
 import de.timo_reymann.mjml_support.lang.MjmlHtmlFileType
@@ -26,18 +27,14 @@ import java.util.*
 
 class MjmlPathAttributeTypeCompletionContributor : CompletionContributor() {
 
-    private val mjPathCompletion = object : CompletionProvider<CompletionParameters>() {
-        override fun addCompletions(
+    private val mjPathCompletion = object : MjmlAttributeCompletionProvider(MjmlAttributeType.PATH) {
+        override fun provide(
             parameters: CompletionParameters,
-            processingContext: ProcessingContext,
-            resultSet: CompletionResultSet
+            context: ProcessingContext,
+            result: CompletionResultSet,
+            mjmlAttribute: MjmlAttributeInformation
         ) {
             val target = parameters.position
-            val (_, mjmlAttribute) = getMjmlInfoFromAttributeValue(target)
-            if (mjmlAttribute?.type != MjmlAttributeType.PATH) {
-                return
-            }
-
             val project = target.project
             val rootFile = target.containingFile.originalFile.virtualFile
             val resultNames: MutableSet<String> = TreeSet()
@@ -68,7 +65,7 @@ class MjmlPathAttributeTypeCompletionContributor : CompletionContributor() {
                     }
 
                     val filePath: String = File(virtualFile.path).relativeTo(File(rootFile.parent.path)).toString()
-                    resultSet.addElement(LookupElementBuilder.create(filePath).withIcon(MjmlIcons.COLORED))
+                    result.addElement(LookupElementBuilder.create(filePath).withIcon(MjmlIcons.COLORED))
                 }
             }
         }

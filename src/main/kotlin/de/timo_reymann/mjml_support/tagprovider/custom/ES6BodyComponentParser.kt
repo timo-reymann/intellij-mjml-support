@@ -1,5 +1,6 @@
-package de.timo_reymann.mjml_support.tagprovider
+package de.timo_reymann.mjml_support.tagprovider.custom
 
+import com.intellij.lang.ecmascript6.psi.ES6Class
 import com.intellij.lang.ecmascript6.psi.ES6ClassExpression
 import com.intellij.lang.javascript.psi.JSField
 import com.intellij.lang.javascript.psi.JSLiteralExpression
@@ -9,6 +10,7 @@ import de.timo_reymann.mjml_support.api.MjmlAttributeInformation
 import de.timo_reymann.mjml_support.api.MjmlAttributeType
 import de.timo_reymann.mjml_support.api.MjmlTagInformation
 import de.timo_reymann.mjml_support.model.PARENT_ANY
+import de.timo_reymann.mjml_support.tagprovider.camelToKebabCase
 
 object ES6BodyComponentParser {
     private const val DESCRIPTION = "ES6 Custom MJML component"
@@ -36,7 +38,7 @@ object ES6BodyComponentParser {
     private fun getFieldDefinition(eS6ClassExpression: ES6ClassExpression, name: String): Array<JSProperty> =
         ((eS6ClassExpression.findFieldByName(name) as JSField).children[0] as JSObjectLiteralExpression).properties
 
-     fun parse(expression: ES6ClassExpression): MjmlTagInformation? {
+     fun parse(expression: ES6ClassExpression): Pair<MjmlTagInformation, ES6Class>? {
         val attributeMap = mutableMapOf<String, MjmlAttributeInformation>()
 
         // Index all allowed properties
@@ -75,11 +77,14 @@ object ES6BodyComponentParser {
             .map { it.value }
             .toTypedArray()
 
-        return MjmlTagInformation(
-            expression.name!!.camelToKebabCase(),
-            DESCRIPTION,
-            attributes = attributes,
-            allowedParentTags = PARENT_ANY // For now allow all tags
+        return Pair(
+            MjmlTagInformation(
+                expression.name!!.camelToKebabCase(),
+                DESCRIPTION,
+                attributes = attributes,
+                allowedParentTags = PARENT_ANY // For now allow all tags
+            ),
+            expression
         )
     }
 }

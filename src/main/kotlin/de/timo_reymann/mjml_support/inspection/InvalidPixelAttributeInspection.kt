@@ -22,7 +22,7 @@ class InvalidPixelAttributeInspection : HtmlLocalInspectionTool() {
             holder.registerProblem(
                 attribute,
                 MjmlBundle.message("inspections.invalid_pixel_attribute"),
-                ProblemHighlightType.ERROR,
+                ProblemHighlightType.WARNING,
             )
         }
     }

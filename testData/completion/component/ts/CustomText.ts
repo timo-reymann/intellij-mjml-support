@@ -12,7 +12,11 @@ import {MJMLCustomComponent} from "mjml-custom-component-decorator/lib/MJMLCusto
         'color': {
             type: "color"
         },
-        'empty': {}
+        'empty': {},
+        'bool':{
+            type: 'boolean',
+            default: false
+        }
     },
     allowedParentTags: ["mj-column"]
 })

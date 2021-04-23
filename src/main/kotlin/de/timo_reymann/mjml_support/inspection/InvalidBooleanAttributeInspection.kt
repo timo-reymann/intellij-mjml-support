@@ -7,23 +7,24 @@ import com.intellij.psi.xml.XmlAttribute
 import de.timo_reymann.mjml_support.api.MjmlAttributeType
 import de.timo_reymann.mjml_support.bundle.MjmlBundle
 import de.timo_reymann.mjml_support.model.getMjmlTagFromAttribute
-import de.timo_reymann.mjml_support.util.ColorUtil
 
-class InvalidColorAttributeInspection : HtmlLocalInspectionTool() {
+class InvalidBooleanAttributeInspection : HtmlLocalInspectionTool() {
     override fun checkAttribute(attribute: XmlAttribute, holder: ProblemsHolder, isOnTheFly: Boolean) {
         val mjmlTag = getMjmlTagFromAttribute(attribute) ?: return
         val mjmlAttribute = mjmlTag.getAttributeByName(attribute.name) ?: return
-        if (mjmlAttribute.type != MjmlAttributeType.COLOR) {
+        if (mjmlAttribute.type != MjmlAttributeType.BOOLEAN) {
             return
         }
 
-        val color = ColorUtil.parseColor(attribute.value)
-        if (color == null) {
-            holder.registerProblem(
-                attribute,
-                MjmlBundle.message("inspections.invalid_color"),
-                ProblemHighlightType.WARNING,
-            )
+        val value = attribute.value
+        if (value == "true" || value == "false") {
+            return
         }
+
+        holder.registerProblem(
+            attribute,
+            MjmlBundle.message("inspections.invalid_boolean"),
+            ProblemHighlightType.WARNING,
+        )
     }
 }
