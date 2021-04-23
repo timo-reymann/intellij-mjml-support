@@ -45,6 +45,7 @@
                     <li>Add troubleshooting to settings for mjml preview</li>
                     <li>Add gutter icon for custom component usage</li>
                     <li>Add boolean properties</li>
+                    <li>Add loading progress for copying preview files</li>
                 </ul>
             </li>
             <li>1.7.0
