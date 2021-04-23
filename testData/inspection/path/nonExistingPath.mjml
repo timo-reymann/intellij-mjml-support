@@ -1,1 +1,1 @@
-<mj-include <error descr="nonExistent.mjml is not resolving to a valid mjml file">path="nonExistent.mjml"</error> />
+<mj-include <warning descr="nonExistent.mjml is not resolving to a valid mjml file">path="nonExistent.mjml"</warning> />

@@ -37,7 +37,7 @@
         ]]></description>
     <change-notes><![CDATA[
         <ul>
-            <li>TBD
+            <li>1.8.0
                 <ul>
                     <li>Add support for es6 custom components</li>
                     <li>Add support for custom TypeScript components using <a href="https://github.com/timo-reymann/mjml-custom-component-decorator">mjml-custom-component-decorator</a></li>
@@ -46,6 +46,7 @@
                     <li>Add gutter icon for custom component usage</li>
                     <li>Add boolean properties</li>
                     <li>Add loading progress for copying preview files</li>
+                    <li>Invalid attribute values are now treated as warnings to prevent custom template engines etc. built on top of mjml to highlight as error</li>
                 </ul>
             </li>
             <li>1.7.0
