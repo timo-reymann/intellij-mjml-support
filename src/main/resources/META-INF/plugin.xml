@@ -19,13 +19,16 @@
             <li>code inspections to highlight common errors</li>
             <li>mjml live preview (if you have javascript support enabled + node.js setup locally)</li>
             <li>inspections for containing tags</li>
+            <li>Support for custom components</li>
         </ul>
 
         <h2>Credits</h2>
-        <div>Mobile icon made by <a href="https://www.freepik.com" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
-        <div>Desktop icon made by <a href="https://www.flaticon.com/authors/dave-gandy" title="Dave Gandy">Dave Gandy</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
-
-        <h2>Changelog</h2>
+        <div>Mobile icon made by <a href="https://www.freepik.com" title="Freepik">Freepik</a> from <a
+                href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
+        <div>Desktop icon made by <a href="https://www.flaticon.com/authors/dave-gandy" title="Dave Gandy">Dave
+            Gandy</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
+        ]]></description>
+    <change-notes><![CDATA[
         <ul>
             <li>TBD
                 <ul>
@@ -33,6 +36,8 @@
                     <li>Add support for custom TypeScript components using mjml-custom-component-decorator</li>
                     <li>Add reload button</li>
                     <li>Add troubleshooting to settings for mjml preview</li>
+                    <li>Add gutter icon for custom component usage</li>
+                    <li>Add boolean properties</li>
                 </ul>
             </li>
             <li>1.7.0
@@ -136,7 +141,7 @@
                 </ul>
             </li>
         </ul>
-        ]]></description>
+        ]]></change-notes>
 
     <idea-version since-build="203.3645.34"/>
     <depends>com.intellij.modules.platform</depends>
@@ -149,7 +154,7 @@
     <extensionPoints>
         <extensionPoint name="tagInformationProvider"
                         dynamic="true"
-                        interface="de.timo_reymann.mjml_support.api.MjmlTagInformationProvider" />
+                        interface="de.timo_reymann.mjml_support.api.MjmlTagInformationProvider"/>
     </extensionPoints>
 
     <resource-bundle>messages.MjmlBundle</resource-bundle>
@@ -159,12 +164,13 @@
                 id="MjmlCreateTemplateAction">
             <add-to-group group-id="NewGroup"
                           anchor="before"
-                          relative-to-action="NewStylesheetFile" />
+                          relative-to-action="NewStylesheetFile"/>
         </action>
     </actions>
 
     <extensions defaultExtensionNs="de.timo_reymann.intellij-mjml-support">
-        <tagInformationProvider implementation="de.timo_reymann.mjml_support.tagprovider.BuiltInMjmlTagInformationProvider" />
+        <tagInformationProvider
+                implementation="de.timo_reymann.mjml_support.tagprovider.BuiltInMjmlTagInformationProvider"/>
     </extensions>
 
     <extensions defaultExtensionNs="com.intellij">
@@ -197,6 +203,9 @@
         <completion.contributor language="mjml"
                                 implementationClass="de.timo_reymann.mjml_support.completion.MjmlColorAttributeTypeCompletionContributor"/>
 
+        <completion.contributor language="mjml"
+                                implementationClass="de.timo_reymann.mjml_support.completion.MjmlAttributeTypeBooleanCompletionContributor" />
+
         <localInspection implementationClass="de.timo_reymann.mjml_support.inspection.UnknownAttributeInspection"
                          language="mjml"
                          enabledByDefault="true"
@@ -227,22 +236,31 @@
                          enabledByDefault="true"
                          groupName="MJML"
                          displayName="Invalid parent tag"/>
+        <localInspection implementationClass="de.timo_reymann.mjml_support.inspection.InvalidBooleanAttributeInspection"
+                         language="mjml"
+                         enabledByDefault="true"
+                         groupName="MJML"
+                         displayName="Invalid boolean attribute"/>
 
         <notificationGroup displayType="NONE"
-                           id="MJML Support" />
+                           id="MJML Support"/>
 
         <fileType name="JSON"
                   language="JSON"
                   fileNames=".mjmlconfig"/>
 
         <createFromTemplateHandler implementation="de.timo_reymann.mjml_support.actions.MjmlCreateFromTemplateHandler"/>
-        
-        <postStartupActivity implementation="de.timo_reymann.mjml_support.editor.MjmlPreviewStartupActivity" />
+
+        <postStartupActivity implementation="de.timo_reymann.mjml_support.editor.MjmlPreviewStartupActivity"/>
 
         <projectConfigurable id="de.timo_reymann.mjml_support.settings.MjmlSettingsConfigurable"
                              groupId="tools"
-                             instance="de.timo_reymann.mjml_support.settings.MjmlSettingsConfigurable" />
-        <projectService serviceImplementation="de.timo_reymann.mjml_support.settings.MjmlSettings" />
+                             instance="de.timo_reymann.mjml_support.settings.MjmlSettingsConfigurable"/>
+        <projectService serviceImplementation="de.timo_reymann.mjml_support.settings.MjmlSettings"/>
+
+        <psi.referenceContributor order="first"
+                                  language="mjml"
+                                  implementation="de.timo_reymann.mjml_support.reference.component.MjmlComponentReferenceProvider"/>
     </extensions>
 
     <extensions defaultExtensionNs="JavaScript.JsonSchema">

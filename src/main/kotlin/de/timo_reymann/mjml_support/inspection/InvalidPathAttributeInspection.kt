@@ -47,7 +47,7 @@ class InvalidPathAttributeInspection : HtmlLocalInspectionTool() {
             holder.registerProblem(
                 attribute,
                 MjmlBundle.message("inspections.invalid_mjml_file", attribute.value!!),
-                ProblemHighlightType.ERROR,
+                ProblemHighlightType.WARNING,
                 *fixes
             )
         }

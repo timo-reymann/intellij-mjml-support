@@ -1,4 +1,4 @@
-package de.timo_reymann.mjml_support.tagprovider
+package de.timo_reymann.mjml_support.tagprovider.custom
 
 import com.intellij.lang.ecmascript6.psi.ES6Class
 import com.intellij.lang.ecmascript6.psi.ES6ClassExpression
@@ -10,6 +10,7 @@ import de.timo_reymann.mjml_support.api.MjmlAttributeInformation
 import de.timo_reymann.mjml_support.api.MjmlAttributeType
 import de.timo_reymann.mjml_support.api.MjmlTagInformation
 import de.timo_reymann.mjml_support.model.PARENT_ANY
+import de.timo_reymann.mjml_support.tagprovider.camelToKebabCase
 
 object ES6BodyComponentParser {
     private const val DESCRIPTION = "ES6 Custom MJML component"

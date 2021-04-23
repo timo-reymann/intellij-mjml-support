@@ -17,7 +17,7 @@ class MjmlComponentReference(element: PsiElement, private val text: String, priv
         return null
     }
 
-    override fun isReferenceTo(element: PsiElement): Boolean = resolve() == element
+    //override fun isReferenceTo(element: PsiElement): Boolean = resolve() == element
 
     override fun isSoft(): Boolean = true
 }

@@ -4,7 +4,7 @@ import de.timo_reymann.mjml_support.MjmlPluginBaseTestCase
 import de.timo_reymann.mjml_support.api.MjmlAttributeType
 import de.timo_reymann.mjml_support.api.MjmlTagInformation
 import de.timo_reymann.mjml_support.model.PARENT_ANY
-import de.timo_reymann.mjml_support.tagprovider.JSES6ComponentMjmlTagInformationProvider
+import de.timo_reymann.mjml_support.tagprovider.custom.JSES6ComponentMjmlTagInformationProvider
 import org.junit.Assert
 
 class JSES6ComponentMjmlTagInformationProviderTest : MjmlPluginBaseTestCase() {
@@ -38,6 +38,7 @@ class JSES6ComponentMjmlTagInformationProviderTest : MjmlPluginBaseTestCase() {
         verifyAttribute(tagInfo, "text", MjmlAttributeType.STRING, "Hello World")
         verifyAttribute(tagInfo, "color", MjmlAttributeType.COLOR, null)
         verifyAttribute(tagInfo, "empty", MjmlAttributeType.STRING, null)
+        verifyAttribute(tagInfo, "bool", MjmlAttributeType.BOOLEAN, "false")
     }
 
     private fun verifyAttribute(mjmlTag: MjmlTagInformation, name: String, type: MjmlAttributeType, default: String?) {

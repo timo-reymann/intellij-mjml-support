@@ -1,4 +1,4 @@
-package de.timo_reymann.mjml_support.tagprovider
+package de.timo_reymann.mjml_support.tagprovider.custom
 
 import com.intellij.lang.ecmascript6.psi.ES6ClassExpression
 import com.intellij.lang.javascript.psi.ecma6.TypeScriptClass
@@ -6,7 +6,6 @@ import com.intellij.lang.javascript.psi.ecmal4.JSClass
 import com.intellij.lang.javascript.psi.stubs.JSSuperClassIndex
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiElement
-import com.intellij.psi.ResolveResult
 import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.psi.stubs.StubIndex
 import com.intellij.util.CommonProcessors

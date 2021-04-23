@@ -9,10 +9,6 @@ import com.intellij.psi.util.elementType
 import com.intellij.psi.xml.XmlToken
 import com.intellij.psi.xml.XmlTokenType
 import de.timo_reymann.mjml_support.api.MjmlTagInformationProvider
-import de.timo_reymann.mjml_support.icons.MjmlIcons
-import de.timo_reymann.mjml_support.lang.MjmlHtmlFileType
-import de.timo_reymann.mjml_support.lang.MjmlHtmlLanguage
-import icons.JavaScriptLanguageIcons
 
 class CustomComponentLineMarkerProvider : RelatedItemLineMarkerProvider() {
     override fun collectNavigationMarkers(
@@ -27,9 +23,9 @@ class CustomComponentLineMarkerProvider : RelatedItemLineMarkerProvider() {
             val references = extension.getPsiElements(element.project, element.text)
             if (references.isNotEmpty()) {
                 val builder: NavigationGutterIconBuilder<PsiElement> =
-                    NavigationGutterIconBuilder.create(AllIcons.Gutter.ImplementingMethod)
+                    NavigationGutterIconBuilder.create(AllIcons.Gutter.ImplementedMethod)
                         .setTargets(references[0].second)
-                        .setTooltipText("Navigate to Simple language property")
+                        .setTooltipText("Navigate to implementation")
                 result.add(builder.createLineMarkerInfo(element))
                 break
             }

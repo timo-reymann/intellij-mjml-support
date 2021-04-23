@@ -1,10 +1,11 @@
-package de.timo_reymann.mjml_support.tagprovider
+package de.timo_reymann.mjml_support.tagprovider.custom
 
 import com.intellij.lang.javascript.psi.*
 import com.intellij.lang.javascript.psi.ecma6.TypeScriptClass
 import de.timo_reymann.mjml_support.api.MjmlAttributeInformation
 import de.timo_reymann.mjml_support.api.MjmlAttributeType
 import de.timo_reymann.mjml_support.api.MjmlTagInformation
+import de.timo_reymann.mjml_support.tagprovider.camelToKebabCase
 
 object MjmlCustomComponentDecoratorParser {
     private const val ANNOTATION_NAME = "MJMLCustomComponent"
