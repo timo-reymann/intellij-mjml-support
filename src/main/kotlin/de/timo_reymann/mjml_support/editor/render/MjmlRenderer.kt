@@ -81,7 +81,7 @@ class MjmlRenderer(
         val renderResult: MjmlRenderResult
         try {
             renderResult = mapper.readValue(rawJson, MjmlRenderResult::class.java)
-        } catch (e: Exception) {
+        } catch (e: Throwable) {
             getLogger<MjmlRenderer>().error("Error parsing result from stdout: $rawJson", e)
             return null
         }
