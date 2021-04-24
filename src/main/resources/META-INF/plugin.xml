@@ -37,6 +37,11 @@
         ]]></description>
     <change-notes><![CDATA[
         <ul>
+            <li>TBD
+                <ul>
+                    <li>Add action to preview for showing generated html output</li>
+                </ul>
+            </li>
             <li>1.8.1
                 <ul>
                     <li>Fix preview showing empty panel when resizing terminal over a specific point</li>

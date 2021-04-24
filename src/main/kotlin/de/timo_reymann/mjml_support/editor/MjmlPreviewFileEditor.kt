@@ -2,10 +2,15 @@ package de.timo_reymann.mjml_support.editor
 
 import com.intellij.CommonBundle
 import com.intellij.codeHighlighting.BackgroundEditorHighlighter
+import com.intellij.ide.highlighter.HtmlFileType
+import com.intellij.lang.html.HTMLLanguage
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.application.ModalityState
+import com.intellij.openapi.application.WriteAction
 import com.intellij.openapi.editor.Document
 import com.intellij.openapi.editor.Editor
+import com.intellij.openapi.editor.EditorFactory
+import com.intellij.openapi.editor.EditorKind
 import com.intellij.openapi.editor.event.DocumentEvent
 import com.intellij.openapi.editor.event.DocumentListener
 import com.intellij.openapi.fileEditor.FileDocumentManager
@@ -18,7 +23,10 @@ import com.intellij.openapi.ui.Messages
 import com.intellij.openapi.util.Disposer
 import com.intellij.openapi.util.UserDataHolderBase
 import com.intellij.openapi.vfs.VirtualFile
+import com.intellij.ui.EditorTextField
 import com.intellij.ui.JBSplitter
+import com.intellij.ui.LanguageTextField
+import com.intellij.ui.components.JBScrollPane
 import com.intellij.ui.jcef.JCEFHtmlPanel
 import com.intellij.util.Alarm
 import de.timo_reymann.mjml_support.bundle.MjmlBundle
@@ -40,14 +48,15 @@ import javax.swing.JComponent
 import javax.swing.JPanel
 
 
-class MjmlPreviewFileEditor(project: Project, private val virtualFile: VirtualFile) :
+class MjmlPreviewFileEditor(private val project: Project, private val virtualFile: VirtualFile) :
     UserDataHolderBase(), FileEditor, MjmlSettingsChangedListener {
     private val document: Document? = FileDocumentManager.getInstance().getDocument(virtualFile)
 
     private val htmlPanelWrapper: JPanel
-    private var panel: JCEFHtmlPanel? = null
+    private var htmlPanel: JCEFHtmlPanel? = null
     private var mainEditor: Editor? = null
     internal var previewWidthStatus: PreviewWidthStatus? = null
+    internal var sourceViewer: EditorTextField? = null
 
     private val pooledAlarm = Alarm(Alarm.ThreadToUse.POOLED_THREAD, this)
     private val swingAlarm = Alarm(Alarm.ThreadToUse.SWING_THREAD, this)
@@ -64,33 +73,35 @@ class MjmlPreviewFileEditor(project: Project, private val virtualFile: VirtualFi
     }
 
     fun setPreviewWidth(previewWidthStatus: PreviewWidthStatus) {
-        this.previewWidthStatus = previewWidthStatus
-        this.updatePreviewWidth()
-    }
-
-    private fun updatePreviewWidth() {
-        (htmlPanelWrapper.parent as JBSplitter?)?.let {
-            it.proportion = 1f
-            it.setResizeEnabled(false)
+        // Cleanup html viewer before updating width
+        if (isHtmlPreview()) {
+            removeSourceViewer()
         }
 
-        val panelComponent = getPanel()?.component ?: return
-
-        // Set size for all components to make sure the rendering is smooth
-        // height is set to 1 to prevent the preview from showing an empty panel
-        val size = Dimension(previewWidthStatus!!.width + 5, 1)
-        panelComponent.size = size
-        panelComponent.preferredSize = size
-        htmlPanelWrapper.preferredSize = size
-        htmlPanelWrapper.minimumSize = size
+        this.previewWidthStatus = previewWidthStatus
+        this.updatePreviewWidth(previewWidthStatus.width)
     }
 
-    override fun getPreferredFocusedComponent(): JComponent? = panel?.component
+    private fun updatePreviewWidth(width: Int, resizable: Boolean = false) {
+        (htmlPanelWrapper.parent as JBSplitter?)?.let {
+            it.proportion = 1f
+            it.setResizeEnabled(resizable)
+            it.baselineResizeBehavior
+        }
+        val size = Dimension(width + 5, 1)
 
-    private fun getPanel(): JCEFHtmlPanel? = this.panel
+        // Set panel wrapper width, minimum size is used by splitter
+        htmlPanelWrapper.minimumSize = size
+
+        htmlPanel!!.component.size = size
+    }
+
+    override fun getPreferredFocusedComponent(): JComponent? = htmlPanel?.component
+
+    private fun getPanel(): JCEFHtmlPanel? = this.htmlPanel
 
     override fun selectNotify() {
-        if (panel != null) {
+        if (htmlPanel != null) {
             updateHtmlPooled()
         }
     }
@@ -107,8 +118,8 @@ class MjmlPreviewFileEditor(project: Project, private val virtualFile: VirtualFi
     override fun getCurrentLocation(): FileEditorLocation? = null
 
     override fun dispose() {
-        if (panel != null) {
-            Disposer.dispose(panel!!)
+        if (htmlPanel != null) {
+            Disposer.dispose(htmlPanel!!)
         }
     }
 
@@ -128,7 +139,7 @@ class MjmlPreviewFileEditor(project: Project, private val virtualFile: VirtualFi
 
     // Is always run from pooled thread
     private fun updateHtml(force: Boolean) {
-        if (panel == null || document == null || !virtualFile.isValid || Disposer.isDisposed(this) || mainEditor == null) {
+        if (htmlPanel == null || document == null || !virtualFile.isValid || Disposer.isDisposed(this) || mainEditor == null) {
             return
         }
 
@@ -146,11 +157,11 @@ class MjmlPreviewFileEditor(project: Project, private val virtualFile: VirtualFi
             }
 
             lastHtmlOrRefreshRequest = Runnable {
-                if (panel == null) return@Runnable
+                if (htmlPanel == null) return@Runnable
                 val currentHtml = "<html><head></head>$html</html>"
                 if (force || currentHtml != myLastRenderedHtml) {
                     myLastRenderedHtml = currentHtml
-                    panel!!.setHtml(myLastRenderedHtml)
+                    setComponentHtml()
                 }
                 synchronized(requestsLock) { lastHtmlOrRefreshRequest = null }
             }
@@ -165,30 +176,64 @@ class MjmlPreviewFileEditor(project: Project, private val virtualFile: VirtualFi
         }
     }
 
+    private fun setComponentHtml() {
+        if (isHtmlPreview()) {
+            WriteAction.run<Exception> {
+                sourceViewer!!.document.setText(myLastRenderedHtml)
+            }
+        } else if (htmlPanel != null) {
+            htmlPanel!!.setHtml(myLastRenderedHtml)
+        }
+    }
+
     private fun detachHtmlPanel() {
-        if (panel == null) {
+        if (htmlPanel == null) {
             return
         }
 
         previewWidthStatus = DEFAULT_PREVIEW_WIDTH
-        htmlPanelWrapper.remove(panel!!.component)
-        Disposer.dispose(panel!!)
-        panel = null
+        htmlPanelWrapper.removeAll()
+        Disposer.dispose(htmlPanel!!)
+        htmlPanel = null
+    }
+
+    fun isHtmlPreview(): Boolean {
+        return sourceViewer != null
+    }
+
+    fun createSourceViewer() {
+        // Make html source resizable
+        updatePreviewWidth(800, true)
+
+        htmlPanelWrapper.removeAll()
+        val document = EditorFactory.getInstance().createDocument(myLastRenderedHtml)
+
+        // Create source viewer with html snippet
+        sourceViewer = EditorTextField(document, project, HtmlFileType.INSTANCE, true, false)
+
+        val scrollPane = JBScrollPane(sourceViewer)
+        htmlPanelWrapper.add(scrollPane, BROWSER_PANEL_CONSTRAINTS)
+    }
+
+    fun removeSourceViewer() {
+        htmlPanelWrapper.removeAll()
+        attachHtmlPanel()
+        sourceViewer = null
     }
 
     private fun attachHtmlPanel() {
         previewWidthStatus = DEFAULT_PREVIEW_WIDTH
-        panel = retrievePanelProvider().createHtmlPanel()
+        htmlPanel = retrievePanelProvider().createHtmlPanel()
         myLastRenderedHtml = ""
 
-        htmlPanelWrapper.add(panel!!.component, BROWSER_PANEL_CONSTRAINTS)
+        htmlPanelWrapper.add(htmlPanel!!.component, BROWSER_PANEL_CONSTRAINTS)
 
-        updatePreviewWidth()
+        updatePreviewWidth(previewWidthStatus!!.width)
         htmlPanelWrapper.repaint()
         updateHtmlPooled()
     }
 
-    public fun forceRerender() {
+    fun forceRerender() {
         updateHtmlPooled(true)
     }
 
@@ -212,10 +257,10 @@ class MjmlPreviewFileEditor(project: Project, private val virtualFile: VirtualFi
         }
 
         init {
-            BROWSER_PANEL_CONSTRAINTS.fill = GridBagConstraints.VERTICAL
-            BROWSER_PANEL_CONSTRAINTS.weightx = 0.0
+            BROWSER_PANEL_CONSTRAINTS.fill = GridBagConstraints.BOTH
+            BROWSER_PANEL_CONSTRAINTS.weightx = 1.0
             BROWSER_PANEL_CONSTRAINTS.weighty = 1.0
-            BROWSER_PANEL_CONSTRAINTS.anchor = GridBagConstraints.EAST
+            BROWSER_PANEL_CONSTRAINTS.gridwidth = GridBagConstraints.HORIZONTAL
         }
     }
 
@@ -233,13 +278,13 @@ class MjmlPreviewFileEditor(project: Project, private val virtualFile: VirtualFi
         htmlPanelWrapper = JPanel(GridBagLayout())
         htmlPanelWrapper.addComponentListener(object : ComponentAdapter() {
             override fun componentShown(e: ComponentEvent) = swingAlarm.addRequest({
-                if (panel == null) {
+                if (htmlPanel == null) {
                     attachHtmlPanel()
                 }
             }, 10, ModalityState.stateForComponent(component))
 
             override fun componentHidden(e: ComponentEvent) = swingAlarm.addRequest({
-                if (panel != null) {
+                if (htmlPanel != null) {
                     detachHtmlPanel()
                 }
             }, 10, ModalityState.stateForComponent(component))

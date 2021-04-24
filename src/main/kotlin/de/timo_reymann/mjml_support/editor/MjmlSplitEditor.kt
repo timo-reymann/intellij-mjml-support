@@ -31,9 +31,21 @@ open class MjmlSplitEditor(private val mainEditor: TextEditor, val secondEditor:
         showEditorAndPreviewAction,
         showPreviewAction,
         Separator.create(),
-        object : AnAction("Refresh","Refresh the preview", AllIcons.Actions.Refresh) {
+        object : AnAction("Refresh", "Refresh the preview", AllIcons.Actions.Refresh) {
             override fun actionPerformed(e: AnActionEvent) {
                 secondEditor.forceRerender()
+            }
+        },
+        Separator.create(),
+        object : ToggleAction("Show HTML", "", AllIcons.FileTypes.Html) {
+            override fun isSelected(e: AnActionEvent): Boolean = secondEditor.isHtmlPreview()
+
+            override fun setSelected(e: AnActionEvent, show: Boolean) {
+                if (show) {
+                    secondEditor.createSourceViewer()
+                } else {
+                    secondEditor.removeSourceViewer()
+                }
             }
         },
         PreviewWidthChangeAction(PreviewWidthStatus.DESKTOP),
@@ -48,7 +60,7 @@ open class MjmlSplitEditor(private val mainEditor: TextEditor, val secondEditor:
         ToggleAction(myPreviewWidthStatus.text, myPreviewWidthStatus.description, myPreviewWidthStatus.icon),
         DumbAware {
 
-        override fun isSelected(e: AnActionEvent): Boolean = myPreviewWidthStatus == secondEditor.previewWidthStatus
+        override fun isSelected(e: AnActionEvent): Boolean = myPreviewWidthStatus == secondEditor.previewWidthStatus && !secondEditor.isHtmlPreview()
 
         private fun select() {
             secondEditor.setPreviewWidth(myPreviewWidthStatus)
