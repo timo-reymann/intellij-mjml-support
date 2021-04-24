@@ -93,7 +93,7 @@ class MjmlPreviewFileEditor(private val project: Project, private val virtualFil
         // Set panel wrapper width, minimum size is used by splitter
         htmlPanelWrapper.minimumSize = size
 
-        htmlPanel!!.component.size = size
+        htmlPanel?.component?.size = size
     }
 
     override fun getPreferredFocusedComponent(): JComponent? = htmlPanel?.component
@@ -278,10 +278,12 @@ class MjmlPreviewFileEditor(private val project: Project, private val virtualFil
         htmlPanelWrapper = JPanel(GridBagLayout())
         htmlPanelWrapper.addComponentListener(object : ComponentAdapter() {
             override fun componentShown(e: ComponentEvent) = swingAlarm.addRequest({
-                if (htmlPanel == null) {
+                if (htmlPanel == null && !isHtmlPreview()) {
                     attachHtmlPanel()
+                } else {
+                    createSourceViewer()
                 }
-            }, 10, ModalityState.stateForComponent(component))
+            }, 20, ModalityState.stateForComponent(component))
 
             override fun componentHidden(e: ComponentEvent) = swingAlarm.addRequest({
                 if (htmlPanel != null) {
