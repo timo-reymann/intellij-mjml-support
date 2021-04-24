@@ -60,11 +60,11 @@ open class MjmlSplitEditor(private val mainEditor: TextEditor, val secondEditor:
         ToggleAction(myPreviewWidthStatus.text, myPreviewWidthStatus.description, myPreviewWidthStatus.icon),
         DumbAware {
 
-        override fun isSelected(e: AnActionEvent): Boolean = myPreviewWidthStatus == secondEditor.previewWidthStatus && !secondEditor.isHtmlPreview()
+        override fun isSelected(e: AnActionEvent): Boolean = myPreviewWidthStatus == secondEditor.previewWidthStatus
+                && !secondEditor.isHtmlPreview()
+                && layout != Layout.SHOW_PREVIEW
 
-        private fun select() {
-            secondEditor.setPreviewWidth(myPreviewWidthStatus)
-        }
+        private fun select() = secondEditor.setPreviewWidth(myPreviewWidthStatus)
 
         override fun setSelected(e: AnActionEvent, state: Boolean) {
             if (state) {
