@@ -4,7 +4,6 @@ import com.intellij.openapi.project.Project
 import com.intellij.psi.xml.XmlTag
 import de.timo_reymann.mjml_support.api.MjmlTagInformation
 import de.timo_reymann.mjml_support.api.MjmlTagInformationProvider
-import org.jetbrains.annotations.NotNull
 
 /**
  * Utility to get mjml tag information from all sources

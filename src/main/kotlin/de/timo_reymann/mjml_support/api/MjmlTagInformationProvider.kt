@@ -3,7 +3,6 @@ package de.timo_reymann.mjml_support.api
 import com.intellij.openapi.extensions.ExtensionPointName
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiElement
-import com.intellij.psi.ResolveResult
 import com.intellij.psi.xml.XmlTag
 
 abstract class MjmlTagInformationProvider {
