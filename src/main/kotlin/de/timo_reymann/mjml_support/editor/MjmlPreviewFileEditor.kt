@@ -74,13 +74,15 @@ class MjmlPreviewFileEditor(project: Project, private val virtualFile: VirtualFi
             it.setResizeEnabled(false)
         }
 
-        val comp = getPanel()?.component ?: return
-        val size = Dimension(previewWidthStatus!!.width + 5, comp.size.height)
-        comp.size = size
-        comp.preferredSize = size
+        val panelComponent = getPanel()?.component ?: return
 
-        htmlPanelWrapper.minimumSize = size
+        // Set size for all components to make sure the rendering is smooth
+        // height is set to 1 to prevent the preview from showing an empty panel
+        val size = Dimension(previewWidthStatus!!.width + 5, 1)
+        panelComponent.size = size
+        panelComponent.preferredSize = size
         htmlPanelWrapper.preferredSize = size
+        htmlPanelWrapper.minimumSize = size
     }
 
     override fun getPreferredFocusedComponent(): JComponent? = panel?.component

@@ -37,6 +37,11 @@
         ]]></description>
     <change-notes><![CDATA[
         <ul>
+            <li>1.8.1
+                <ul>
+                    <li>Fix preview showing empty panel when resizing terminal over a specific point</li>
+                </ul>
+            </li>
             <li>1.8.0
                 <ul>
                     <li>Add support for es6 custom components</li>
