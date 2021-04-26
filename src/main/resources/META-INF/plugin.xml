@@ -40,6 +40,7 @@
             <li>TBD
                 <ul>
                     <li>Add action to preview for showing generated html output</li>
+                    <li>Dont load json schema when JavaScript support is not enabled</li>
                 </ul>
             </li>
             <li>1.8.1
@@ -280,9 +281,5 @@
         <psi.referenceContributor order="first"
                                   language="mjml"
                                   implementation="de.timo_reymann.mjml_support.reference.component.MjmlComponentReferenceProvider"/>
-    </extensions>
-
-    <extensions defaultExtensionNs="JavaScript.JsonSchema">
-        <ProviderFactory implementation="de.timo_reymann.mjml_support.config.MjmlConfigSchemaProviderFactory"/>
     </extensions>
 </idea-plugin>

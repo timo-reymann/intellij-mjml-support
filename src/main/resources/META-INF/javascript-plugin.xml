@@ -8,4 +8,8 @@
     <extensions defaultExtensionNs="de.timo_reymann.intellij-mjml-support">
         <tagInformationProvider implementation="de.timo_reymann.mjml_support.tagprovider.custom.JSES6ComponentMjmlTagInformationProvider" />
     </extensions>
+
+    <extensions defaultExtensionNs="JavaScript.JsonSchema">
+        <ProviderFactory implementation="de.timo_reymann.mjml_support.config.MjmlConfigSchemaProviderFactory"/>
+    </extensions>
 </idea-plugin>
