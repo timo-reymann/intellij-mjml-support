@@ -32,6 +32,8 @@ import com.intellij.util.Alarm
 import de.timo_reymann.mjml_support.bundle.MjmlBundle
 import de.timo_reymann.mjml_support.editor.provider.JCEFHtmlPanelProvider
 import de.timo_reymann.mjml_support.editor.provider.MjmlPreviewFileEditorProvider
+import de.timo_reymann.mjml_support.editor.render.MJML_PREVIEW_FORCE_RENDER_TOPIC
+import de.timo_reymann.mjml_support.editor.render.MjmlForceRenderListener
 import de.timo_reymann.mjml_support.editor.render.MjmlRenderer
 import de.timo_reymann.mjml_support.settings.MJML_SETTINGS_CHANGED_TOPIC
 import de.timo_reymann.mjml_support.settings.MjmlSettings
@@ -49,7 +51,7 @@ import javax.swing.JPanel
 
 
 class MjmlPreviewFileEditor(private val project: Project, private val virtualFile: VirtualFile) :
-    UserDataHolderBase(), FileEditor, MjmlSettingsChangedListener {
+    UserDataHolderBase(), FileEditor, MjmlSettingsChangedListener, MjmlForceRenderListener {
     private val document: Document? = FileDocumentManager.getInstance().getDocument(virtualFile)
 
     private val htmlPanelWrapper: JPanel
@@ -297,12 +299,14 @@ class MjmlPreviewFileEditor(private val project: Project, private val virtualFil
                 attachHtmlPanel()
             }
         }
-
-        ApplicationManager.getApplication().messageBus.connect(this)
+        val messageBus = ApplicationManager.getApplication().messageBus
+        messageBus.connect(this)
             .subscribe(MJML_SETTINGS_CHANGED_TOPIC, this)
+        messageBus.connect(this)
+            .subscribe(MJML_PREVIEW_FORCE_RENDER_TOPIC, this)
     }
 
-    override fun onChanged(settings: MjmlSettings) {
-        forceRerender()
-    }
+    override fun onChanged(settings: MjmlSettings) = forceRerender()
+
+    override fun onForcedRender() = forceRerender()
 }

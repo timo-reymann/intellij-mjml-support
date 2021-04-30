@@ -16,6 +16,7 @@ import com.intellij.ui.layout.not
 import com.intellij.ui.layout.panel
 import com.intellij.ui.layout.selected
 import de.timo_reymann.mjml_support.editor.MjmlPreviewStartupActivity
+import de.timo_reymann.mjml_support.editor.render.BuiltinRenderResourceProvider
 import de.timo_reymann.mjml_support.editor.render.MjmlRenderer
 import de.timo_reymann.mjml_support.util.FilePluginUtil
 import java.awt.Desktop
@@ -69,19 +70,19 @@ class MjmlSettingsConfigurable(project: Project) : Configurable, Disposable {
                     }
 
                     button("Copy files for preview from plugin") {
-                        MjmlPreviewStartupActivity().runActivity(project)
+                        BuiltinRenderResourceProvider.copyResources()
                     }
                 }
             }
         }
     }
 
-    private fun isValidScript(path: String): Boolean {
-        return File(path).exists()
-    }
-
+    private fun isValidScript(path: String): Boolean = File(path).exists()
     override fun createComponent(): JComponent = panel
     override fun isModified(): Boolean = panel.isModified()
+    override fun reset() = panel.reset()
+    override fun getDisplayName(): String = "MJML Settings"
+    override fun dispose() {}
 
     override fun apply() {
         panel.apply()
@@ -91,12 +92,4 @@ class MjmlSettingsConfigurable(project: Project) : Configurable, Disposable {
             .syncPublisher(MJML_SETTINGS_CHANGED_TOPIC)
             .onChanged(this.state)
     }
-
-    override fun reset() {
-        panel.reset()
-    }
-
-    override fun getDisplayName(): String = "MJML Settings"
-    override fun dispose() {}
-
 }

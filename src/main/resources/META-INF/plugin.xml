@@ -37,10 +37,11 @@
         ]]></description>
     <change-notes><![CDATA[
         <ul>
-            <li>TBD
+            <li>1.9.0
                 <ul>
                     <li>Add action to preview for showing generated html output</li>
                     <li>Dont load json schema when JavaScript support is not enabled</li>
+                    <li>Always rerender previews event-driven after changing the render files</li>
                 </ul>
             </li>
             <li>1.8.1
