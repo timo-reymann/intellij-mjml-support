@@ -1,8 +1,7 @@
 <idea-plugin>
     <id>de.timo_reymann.intellij-mjml-support</id>
     <name>MJML Support</name>
-    <vendor email="mail@timo-reymann.de" url="https://timo-reymann.de">Timo Reymann</vendor>
-
+    <vendor email="jetbrains-plugins@timo-reymann.de" url="https://timo-reymann.de">Timo Reymann</vendor>
     <description><![CDATA[
         MJML support for the IntelliJ Platform.
 
