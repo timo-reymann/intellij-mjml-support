@@ -36,7 +36,7 @@
         ]]></description>
     <change-notes><![CDATA[
         <ul>
-            <li>1.10.10
+            <li>1.10.0
                 <ul>
                     <li>Upgrade to mjml 4.9.3</li>
                     <li>Add bundled mjml version to settings</li>
