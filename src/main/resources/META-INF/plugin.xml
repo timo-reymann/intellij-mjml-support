@@ -36,6 +36,12 @@
         ]]></description>
     <change-notes><![CDATA[
         <ul>
+            <li>1.10.10
+                <ul>
+                    <li>Upgrade to mjml 4.9.3</li>
+                    <li>Add bundled mjml version to settings</li>
+                </ul>
+            </li>
             <li>1.9.0
                 <ul>
                     <li>Add action to preview for showing generated html output</li>
