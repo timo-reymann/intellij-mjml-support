@@ -1,6 +1,5 @@
 package de.timo_reymann.mjml_support.util
 
-import com.intellij.openapi.application.PluginPathManager
 import com.intellij.util.ResourceUtil
 import de.timo_reymann.mjml_support.bundle.MjmlBundle
 import de.timo_reymann.mjml_support.editor.MjmlJCEFHtmlPanel
@@ -9,7 +8,7 @@ import java.nio.file.Files
 import java.nio.file.StandardCopyOption
 
 object FilePluginUtil {
-    private val PLUGIN_HOME: File = PluginPathManager.getPluginHome(MjmlBundle.message("technical_name"))
+    private val PLUGIN_HOME: File = File(System.getProperty("idea.system.path") + "/" + MjmlBundle.message("technical_name"))
 
     fun copyFile(path: String, fileName: String) {
         val destinationFile = getFile(fileName)

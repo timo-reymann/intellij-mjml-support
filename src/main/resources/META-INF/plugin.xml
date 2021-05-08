@@ -36,6 +36,11 @@
         ]]></description>
     <change-notes><![CDATA[
         <ul>
+            <li>1.11.0
+                <ul>
+                    <li>Use system path for storing renderer to prevent permission problems on some installations</li>
+                </ul>
+            </li>
             <li>1.10.0
                 <ul>
                     <li>Upgrade to mjml 4.9.3</li>
