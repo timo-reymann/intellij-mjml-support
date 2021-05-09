@@ -47,7 +47,8 @@ intellij {
     setPlugins(
         "CSS",
         "HtmlTools",
-        "JavaScript"
+        "JavaScript",
+        "com.jetbrains.php:211.7142.45"
     )
 }
 

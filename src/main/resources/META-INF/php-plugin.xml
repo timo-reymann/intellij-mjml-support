@@ -1,0 +1,8 @@
+<idea-plugin>
+    <extensions defaultExtensionNs="com.intellij">
+        <fileType name="MJML"
+                  order="first"
+                  language="mjml"
+                  patterns="*_mjml.blade.php"/>
+    </extensions>
+</idea-plugin>
