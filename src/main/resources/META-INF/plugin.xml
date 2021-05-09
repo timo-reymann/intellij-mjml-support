@@ -36,6 +36,11 @@
         ]]></description>
     <change-notes><![CDATA[
         <ul>
+            <li>1.11.0
+                <ul>
+                    <li>Add blade file association for `*_mjml.blade.php`</li>
+                </ul>
+            </li>
             <li>1.10.1
                 <ul>
                     <li>Use cache folder from intellij for storing renderer files to prevent write permission problems</li>
