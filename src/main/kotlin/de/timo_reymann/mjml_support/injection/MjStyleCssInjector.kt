@@ -11,17 +11,25 @@ import com.intellij.psi.xml.XmlAttributeValue
 import com.intellij.psi.xml.XmlTag
 import com.intellij.psi.xml.XmlText
 import com.intellij.util.containers.ContainerUtil
+import de.timo_reymann.mjml_support.lang.MjmlHtmlLanguage
 
 class MjStyleCssInjector : MultiHostInjector {
     override fun getLanguagesToInject(registrar: MultiHostRegistrar, context: PsiElement) {
+        // Prevent style injection to be called outside of mjml context
+        if(context.language != MjmlHtmlLanguage.INSTANCE) {
+            return
+        }
+
         val host = context as PsiLanguageInjectionHost
         when (host.parent) {
+            // Highlight child content
             is XmlTag -> {
                 if ((host.parent as XmlTag).name == "mj-style") {
                     highlight(registrar, host, false)
                 }
             }
 
+            // Highlight value content
             is XmlAttribute -> {
                 if ((host.parent as XmlAttribute).name == "style") {
                     highlight(registrar, host, true)

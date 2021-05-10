@@ -36,6 +36,11 @@
         ]]></description>
     <change-notes><![CDATA[
         <ul>
+            <li>1.11.1
+                <ul>
+                    <li>Fix error in combination with style attribute in tsx-files</li>
+                </ul>
+            </li>
             <li>1.11.0
                 <ul>
                     <li>Add blade file association for `*_mjml.blade.php`</li>
