@@ -36,6 +36,11 @@
         ]]></description>
     <change-notes><![CDATA[
         <ul>
+            <li>TBD
+                <ul>
+                    <li>Allow all tags in mj-attributes (<a href="https://github.com/timo-reymann/intellij-mjml-support/issues/16">#16</a>)</li>
+                </ul>
+            </li>
             <li>1.11.1
                 <ul>
                     <li>Fix error in combination with style attribute in tsx-files</li>

@@ -148,7 +148,7 @@ class BuiltInMjmlTagInformationProvider : MjmlTagInformationProvider() {
                     ATTRIBUTE_PADDING_RIGHT,
                     ATTRIBUTE_PADDING_TOP
                 ),
-                allowedParentTags = listOf("mj-attributes", "mj-column", "mj-hero")
+                allowedParentTags = listOf("mj-column", "mj-hero")
             ),
             MjmlTagInformation(
                 "mj-accordion-element",
@@ -167,7 +167,7 @@ class BuiltInMjmlTagInformationProvider : MjmlTagInformationProvider() {
                     ATTRIBUTE_ICON_WRAPPED_ALT,
                     ATTRIBUTE_ICON_WRAPPED_URL
                 ),
-                allowedParentTags = listOf("mj-accordion", "mj-attributes")
+                allowedParentTags = listOf("mj-accordion")
             ),
             MjmlTagInformation(
                 "mj-accordion-title",
@@ -190,7 +190,7 @@ class BuiltInMjmlTagInformationProvider : MjmlTagInformationProvider() {
                     ATTRIBUTE_PADDING_RIGHT,
                     ATTRIBUTE_PADDING_TOP
                 ),
-                allowedParentTags = listOf("mj-accordion", "mj-attributes")
+                allowedParentTags = listOf("mj-accordion")
             ),
             MjmlTagInformation(
                 "mj-accordion-text",
@@ -213,7 +213,7 @@ class BuiltInMjmlTagInformationProvider : MjmlTagInformationProvider() {
                     ATTRIBUTE_PADDING_RIGHT,
                     ATTRIBUTE_PADDING_TOP
                 ),
-                allowedParentTags = listOf("mj-accordion-element", "mj-attributes")
+                allowedParentTags = listOf("mj-accordion-element")
             ),
             MjmlTagInformation(
                 "mj-button",
@@ -309,7 +309,7 @@ class BuiltInMjmlTagInformationProvider : MjmlTagInformationProvider() {
                     ),
                     ATTRIBUTE_WIDTH
                 ),
-                allowedParentTags = listOf("mj-attributes", "mj-column", "mj-hero")
+                allowedParentTags = listOf("mj-column", "mj-hero")
             ),
             MjmlTagInformation(
                 "mj-carousel",
@@ -376,7 +376,7 @@ class BuiltInMjmlTagInformationProvider : MjmlTagInformationProvider() {
                         "hidden"
                     )
                 ),
-                allowedParentTags = listOf("mj-attributes", "mj-column", "mj-hero")
+                allowedParentTags = listOf("mj-column", "mj-hero")
             ),
             MjmlTagInformation(
                 "mj-carousel-image",
@@ -400,7 +400,7 @@ class BuiltInMjmlTagInformationProvider : MjmlTagInformationProvider() {
                     ),
                     ATTRIBUTE_TITLE
                 ),
-                allowedParentTags = listOf("mj-attributes", "mj-carousel")
+                allowedParentTags = listOf("mj-carousel")
             ),
             MjmlTagInformation(
                 "mj-column",
@@ -475,7 +475,7 @@ class BuiltInMjmlTagInformationProvider : MjmlTagInformationProvider() {
                     ATTRIBUTE_CSS_CLASS,
                     ATTRIBUTE_MJ_CLASS
                 ),
-                allowedParentTags = listOf("mj-attributes", "mj-group", "mj-section")
+                allowedParentTags = listOf("mj-group", "mj-section")
             ),
             MjmlTagInformation(
                 "mj-divider",
@@ -522,7 +522,7 @@ class BuiltInMjmlTagInformationProvider : MjmlTagInformationProvider() {
                         "100%"
                     )
                 ),
-                allowedParentTags = listOf("mj-attributes", "mj-column", "mj-hero")
+                allowedParentTags = listOf("mj-column", "mj-hero")
             ),
             MjmlTagInformation(
                 "mj-group",
@@ -556,7 +556,7 @@ class BuiltInMjmlTagInformationProvider : MjmlTagInformationProvider() {
                     ATTRIBUTE_CSS_CLASS,
                     ATTRIBUTE_MJ_CLASS
                 ),
-                allowedParentTags = listOf("mj-attributes", "mj-section")
+                allowedParentTags = listOf("mj-section")
             ),
             MjmlTagInformation(
                 "mj-hero",
@@ -797,7 +797,7 @@ class BuiltInMjmlTagInformationProvider : MjmlTagInformationProvider() {
                         "hamburger icon text transformation none/capitalize/uppercase/lowercase (hamburger mode required)\t"
                     )
                 ),
-                allowedParentTags = listOf("mj-attributes", "mj-column", "mj-hero")
+                allowedParentTags = listOf("mj-column", "mj-hero")
             ),
             MjmlTagInformation(
                 "mj-navbar-link",
@@ -844,7 +844,7 @@ class BuiltInMjmlTagInformationProvider : MjmlTagInformationProvider() {
                         "uppercase"
                     )
                 ),
-                allowedParentTags = listOf("mj-attributes", "mj-navbar")
+                allowedParentTags = listOf("mj-navbar")
             ),
             MjmlTagInformation(
                 "mj-raw",
@@ -917,7 +917,7 @@ class BuiltInMjmlTagInformationProvider : MjmlTagInformationProvider() {
                         "center"
                     )
                 ),
-                allowedParentTags = listOf("mj-attributes", "mj-body", "mj-wrapper")
+                allowedParentTags = listOf("mj-body", "mj-wrapper")
             ),
             MjmlTagInformation(
                 "mj-social",
@@ -981,7 +981,7 @@ class BuiltInMjmlTagInformationProvider : MjmlTagInformationProvider() {
                         "underline/overline/none"
                     )
                 ),
-                allowedParentTags = listOf("mj-attributes", "mj-column", "mj-hero")
+                allowedParentTags = listOf("mj-column", "mj-hero")
             ),
             MjmlTagInformation(
                 "mj-social-element",
@@ -1064,7 +1064,7 @@ class BuiltInMjmlTagInformationProvider : MjmlTagInformationProvider() {
                         "middle"
                     )
                 ),
-                allowedParentTags = listOf("mj-attributes", "mj-social")
+                allowedParentTags = listOf( "mj-social")
             ),
             MjmlTagInformation(
                 "mj-spacer",
@@ -1138,7 +1138,7 @@ class BuiltInMjmlTagInformationProvider : MjmlTagInformationProvider() {
                         "100%"
                     )
                 ),
-                allowedParentTags = listOf("mj-attributes", "mj-column", "mj-hero")
+                allowedParentTags = listOf("mj-column", "mj-hero")
             ),
             MjmlTagInformation(
                 "mj-text",
@@ -1194,7 +1194,7 @@ class BuiltInMjmlTagInformationProvider : MjmlTagInformationProvider() {
                     ATTRIBUTE_CSS_CLASS,
                     ATTRIBUTE_MJ_CLASS
                 ),
-                allowedParentTags = listOf("mj-attributes", "mj-column", "mj-hero")
+                allowedParentTags = listOf( "mj-column", "mj-hero")
             ),
             MjmlTagInformation(
                 "mj-wrapper",
@@ -1248,7 +1248,7 @@ class BuiltInMjmlTagInformationProvider : MjmlTagInformationProvider() {
                         "center"
                     )
                 ),
-                allowedParentTags = listOf("mj-body", "mj-attributes", "mj-column", "mj-hero")
+                allowedParentTags = listOf("mj-body", "mj-column", "mj-hero")
             )
         )
     }

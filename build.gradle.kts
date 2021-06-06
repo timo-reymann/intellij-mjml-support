@@ -38,7 +38,7 @@ dependencies {
 
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {
-    version = "IU-LATEST-EAP-SNAPSHOT"
+    version = "IU-211.7442.40"
 
     updateSinceUntilBuild = false
     downloadSources = true

@@ -15,7 +15,7 @@ class InvalidParentTagInspection : HtmlLocalInspectionTool() {
             val parentTagName = (tag.parent as XmlTag).name
             val allowedParentTags = mjmlTag.allowedParentTags
 
-            if (allowedParentTags == PARENT_ANY || allowedParentTags.contains(parentTagName)) {
+            if (mjmlTag.isValidParent(parentTagName)) {
                 return
             }
 

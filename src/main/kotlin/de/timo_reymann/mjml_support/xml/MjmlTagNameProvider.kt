@@ -31,8 +31,8 @@ class MjmlTagNameProvider : XmlTagNameProvider, XmlElementDescriptorProvider {
 
         when {
             tag.parent is XmlTag -> {
-                filter = fun(tagInfo: MjmlTagInformation): Boolean = tagInfo.allowedParentTags == PARENT_ANY ||
-                        tagInfo.allowedParentTags.contains((tag.parent as XmlTag).name)
+               val parentTagName = (tag.parent as XmlTag).name
+                filter = fun(tagInfo: MjmlTagInformation): Boolean = tagInfo.isValidParent(parentTagName)
             }
             tag.parent is PsiElement && tag.parent.elementType == XmlElementType.HTML_DOCUMENT -> {
                 filter = fun(tagInfo: MjmlTagInformation): Boolean = tagInfo.tagName == ROOT_TAG

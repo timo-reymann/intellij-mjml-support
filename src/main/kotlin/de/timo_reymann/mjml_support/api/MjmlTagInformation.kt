@@ -1,5 +1,7 @@
 package de.timo_reymann.mjml_support.api
 
+import de.timo_reymann.mjml_support.model.PARENT_ANY
+
 /**
  * Information about mjml tag
  */
@@ -33,6 +35,12 @@ data class MjmlTagInformation(
     val allowedParentTags: List<String>
 ) {
     fun getAttributeByName(name: String): MjmlAttributeInformation? = attributes.firstOrNull { it.name == name }
+
+    fun isValidParent(tagName: String): Boolean {
+        return allowedParentTags == PARENT_ANY ||
+                allowedParentTags.contains(tagName) ||
+                tagName == "mj-attributes"
+    }
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
