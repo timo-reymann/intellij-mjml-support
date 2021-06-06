@@ -1,4 +1,4 @@
 <mj-style>
-    .class<caret> {}
+    .class {}
 </mj-style>
 <mj-section css-class="class" />

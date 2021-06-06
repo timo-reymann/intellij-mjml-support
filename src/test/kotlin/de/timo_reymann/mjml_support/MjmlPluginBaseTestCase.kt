@@ -1,5 +1,6 @@
 package de.timo_reymann.mjml_support
 
+import com.intellij.codeInspection.InspectionProfileEntry
 import com.intellij.codeInspection.LocalInspectionTool
 import com.intellij.psi.PsiReference
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
@@ -22,7 +23,7 @@ abstract class MjmlPluginBaseTestCase : BasePlatformTestCase() {
         verifyCompletion(*expectedStrings)
     }
 
-    protected fun checkHighlighting(inspection: LocalInspectionTool) {
+    protected fun checkHighlighting(inspection: InspectionProfileEntry) {
         myFixture.enableInspections(inspection)
         myFixture.testHighlighting(true, false, true, getTestName(true) + ".mjml")
     }

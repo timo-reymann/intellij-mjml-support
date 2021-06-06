@@ -21,9 +21,12 @@ class MjmlCssClassUsageProvider : CssClassOrIdReferenceBasedUsagesProvider() {
     }
 
     override fun isUsage(selectorSuffix: CssSelectorSuffix, candidate: PsiElement, offsetInCandidate: Int): Boolean {
-        if (selectorSuffix !is CssClass || candidate !is XmlAttributeValue) {
+        if(selectorSuffix !is CssClass || !acceptElement(candidate)) {
             return false
         }
-        return candidate.value.split(" ").contains(selectorSuffix.name)
+
+        return (candidate as XmlAttributeValue).value
+            .split(" ")
+            .contains(selectorSuffix.name)
     }
 }

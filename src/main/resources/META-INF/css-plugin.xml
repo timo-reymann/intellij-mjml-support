@@ -2,6 +2,7 @@
     <extensions defaultExtensionNs="com.intellij">
         <css.classOrIdUsagesProvider
                 implementation="de.timo_reymann.mjml_support.reference.MjmlCssClassUsageProvider" />
+        <css.classOrIdUsagesProvider implementation="de.timo_reymann.mjml_support.reference.MjmlComponentDefinedClassUsageProvider" />
         <css.embeddedCssProvider implementation="de.timo_reymann.mjml_support.reference.MjmlEmbeddedCssProvider" />
         <multiHostInjector implementation="de.timo_reymann.mjml_support.injection.MjStyleCssInjector"/>
     </extensions>

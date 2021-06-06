@@ -25,7 +25,7 @@ class BuiltInMjmlTagInformationProvider : MjmlTagInformationProvider() {
         }
     }
 
-   override fun getPriority() = 100
+    override fun getPriority() = 100
 
     init {
         register(
@@ -376,7 +376,20 @@ class BuiltInMjmlTagInformationProvider : MjmlTagInformationProvider() {
                         "hidden"
                     )
                 ),
-                allowedParentTags = listOf("mj-column", "mj-hero")
+                allowedParentTags = listOf("mj-column", "mj-hero"),
+                definedCssClasses = arrayOf(
+                    "mj-carousel-main",
+                    "mj-carousel-previous",
+                    "mj-carousel-previous",
+                    "mj-carousel-next",
+                    "mj-carousel-thumbnail",
+                    "mj-carousel-radio",
+                    "mj-carousel-content",
+                    "mj-carousel-previous-icons",
+                    "mj-carousel-images",
+                    "mj-carousel-image",
+                    "mj-carousel-next-icons"
+                )
             ),
             MjmlTagInformation(
                 "mj-carousel-image",
@@ -1064,7 +1077,7 @@ class BuiltInMjmlTagInformationProvider : MjmlTagInformationProvider() {
                         "middle"
                     )
                 ),
-                allowedParentTags = listOf( "mj-social")
+                allowedParentTags = listOf("mj-social")
             ),
             MjmlTagInformation(
                 "mj-spacer",
@@ -1194,7 +1207,7 @@ class BuiltInMjmlTagInformationProvider : MjmlTagInformationProvider() {
                     ATTRIBUTE_CSS_CLASS,
                     ATTRIBUTE_MJ_CLASS
                 ),
-                allowedParentTags = listOf( "mj-column", "mj-hero")
+                allowedParentTags = listOf("mj-column", "mj-hero")
             ),
             MjmlTagInformation(
                 "mj-wrapper",

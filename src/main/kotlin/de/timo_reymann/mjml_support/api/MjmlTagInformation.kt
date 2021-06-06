@@ -17,6 +17,14 @@ data class MjmlTagInformation(
     val description: String,
 
     /**
+     * Allowed parent tags, following magic values are supported:
+     *
+     * - `*` star allows any parent tag
+     * - empty list allows no parent excerpt the top level document
+     */
+    val allowedParentTags: List<String>,
+
+    /**
      * Notes about the element, anything special or warnings go here
      */
     val notes: Array<String> = arrayOf(),
@@ -27,12 +35,9 @@ data class MjmlTagInformation(
     val attributes: Array<MjmlAttributeInformation> = arrayOf(),
 
     /**
-     * Allowed parent tags, following magic values are supported:
-     *
-     * - `*` star allows any parent tag
-     * - empty list allows no parent excerpt the top level document
+     * List with classes defined by the component, useful for e. g. class usage detection
      */
-    val allowedParentTags: List<String>
+    val definedCssClasses: Array<String> = arrayOf()
 ) {
     fun getAttributeByName(name: String): MjmlAttributeInformation? = attributes.firstOrNull { it.name == name }
 
@@ -40,6 +45,10 @@ data class MjmlTagInformation(
         return allowedParentTags == PARENT_ANY ||
                 allowedParentTags.contains(tagName) ||
                 tagName == "mj-attributes"
+    }
+
+    fun definesClass(cssClass: String): Boolean {
+        return definedCssClasses.contains(cssClass)
     }
 
     override fun equals(other: Any?): Boolean {

@@ -1,4 +1,4 @@
 <mj-style>
-    .class<caret> {}
+    <warning descr="Selector class is never used">.class</warning> {}
 </mj-style>
 <mj-section css-class="other" />
