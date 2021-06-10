@@ -65,3 +65,6 @@ Simply use the extension point `de.timo_reymann.intellij-mjml-support.tagInforma
 - The preview editor support is adapted from the official markdown plugin
 - Preview uses bundled node_modules for mjml rendering currently, support for custom rendering is currently in
   development
+
+For [architecture decision records](https://adr.github.io/) please take a look at [docs/adr](./docs/adr), this will give
+you an idea why implementations are as they are.
