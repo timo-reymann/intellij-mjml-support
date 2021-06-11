@@ -21,7 +21,8 @@ An important part of supporting MJML is providing a fast and responsive preview 
 
 ## Decision Outcome
 
-Chosen option: "Bundle preview script with Webpack and use integrated WebView", because the other solutions havent been
+Chosen option: "Bundle script and dependencies with the plugin and execute it with node.js
+", because the other solutions havent been
 working.
 
 ## Pros and Cons of the Options <!-- optional -->
