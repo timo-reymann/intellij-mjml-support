@@ -20,7 +20,7 @@ try {
                 line: -1,
                 message:  (e || "unknown").toString(),
                 tagName: "",
-                formattedMessage: `Invaldi mjml: ${e.toString()}`
+                formattedMessage: `Invalid mjml: ${e.toString()}`
             }
         ]
     }
