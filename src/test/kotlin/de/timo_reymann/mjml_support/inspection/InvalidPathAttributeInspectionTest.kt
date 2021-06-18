@@ -12,7 +12,27 @@ class InvalidPathAttributeInspectionTest : MjmlPluginBaseTestCase() {
     }
 
     fun testInvalidMjmlFile() {
-        myFixture.copyFileToProject("_include.mjml")
+        myFixture.copyFileToProject("invalidMjmlFile.mjml")
+        checkHighlighting(InvalidPathAttributeInspection())
+    }
+
+    fun testInvalidCssFile() {
+        myFixture.copyFileToProject("invalidCssFile.mjml")
+        checkHighlighting(InvalidPathAttributeInspection())
+    }
+
+    fun testValidCssFile() {
+        myFixture.copyFileToProject("validCssFile.mjml", "include.css")
+        checkHighlighting(InvalidPathAttributeInspection())
+    }
+
+    fun testInvalidHtmlFile() {
+        myFixture.copyFileToProject("invalidHtmlFile.mjml")
+        checkHighlighting(InvalidPathAttributeInspection())
+    }
+
+    fun testValidHtmlFile() {
+        myFixture.copyFileToProject("validHtmlFile.mjml", "include.html")
         checkHighlighting(InvalidPathAttributeInspection())
     }
 

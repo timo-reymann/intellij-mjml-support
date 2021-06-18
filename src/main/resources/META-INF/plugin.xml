@@ -36,6 +36,11 @@
         ]]></description>
     <change-notes><![CDATA[
         <ul>
+            <li>1.3.0
+                <ul>
+                    <li>Add support for html and css files in mj-include (<a href="https://github.com/timo-reymann/intellij-mjml-support/issues/21">#21</a>)</li>
+                </ul>
+            </li>
             <li>1.2.0
                 <ul>
                     <li>Add css class usage defined by components for custom styling (<a href="https://github.com/timo-reymann/intellij-mjml-support/issues/15">#15</a>)</li>
