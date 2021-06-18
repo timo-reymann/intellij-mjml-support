@@ -11,7 +11,17 @@ import de.timo_reymann.mjml_support.model.MjmlTagProvider
 class MjmlComponentDefinedClassUsageProvider : CssClassOrIdReferenceBasedUsagesProvider() {
     override fun acceptElement(candidate: PsiElement): Boolean {
         return candidate is CssClass
-                && (candidate.containingFile.viewProvider.virtualFile as VirtualFileWindow).delegate.fileType == MjmlHtmlFileType.INSTANCE
+                && isCssBlockInMjmlFile(candidate)
+    }
+
+    private fun isCssBlockInMjmlFile(candidate : PsiElement) : Boolean {
+        val file = candidate.containingFile.viewProvider.virtualFile
+
+        if(file !is VirtualFileWindow) {
+            return false
+        }
+
+       return file.delegate.fileType == MjmlHtmlFileType.INSTANCE
     }
 
     /**
