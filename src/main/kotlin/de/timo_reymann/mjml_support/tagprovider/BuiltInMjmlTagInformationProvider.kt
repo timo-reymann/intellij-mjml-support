@@ -64,7 +64,8 @@ class BuiltInMjmlTagInformationProvider : MjmlTagInformationProvider() {
                     "Note that the file must be a file with a `.mjml` extension"
                 ),
                 attributes = arrayOf(
-                    MjmlAttributeInformation("path", MjmlAttributeType.PATH, "path to mjml file that will be included")
+                    MjmlAttributeInformation("path", MjmlAttributeType.PATH, "path to mjml file that will be included"),
+                    MjmlAttributeInformation("type", MjmlAttributeType.STRING, "file type to include should be css or html")
                 ),
                 allowedParentTags = PARENT_ANY
             ),

@@ -27,15 +27,17 @@ enum class IncludeType(val fileType: FileType) {
     CSS(CssFileType.INSTANCE),
     HTML(HtmlFileType.INSTANCE),
     MJML(MjmlHtmlFileType.INSTANCE);
+
+    companion object {
+        fun fromTag(tag: XmlTag): IncludeType = when(tag.getAttribute("type")?.value) {
+            "css" -> CSS
+            "html" -> HTML
+            else -> MJML
+        }
+    }
 }
 
 class InvalidPathAttributeInspection : HtmlLocalInspectionTool() {
-    private fun getType(tag: XmlTag): IncludeType = when(tag.getAttribute("type")?.value) {
-        "css" -> IncludeType.CSS
-        "html" -> IncludeType.HTML
-        else -> IncludeType.MJML
-    }
-
     override fun checkAttribute(attribute: XmlAttribute, holder: ProblemsHolder, isOnTheFly: Boolean) {
         val parentTag = attribute.parentOfType<XmlTag>() ?: return
         val mjmlTag = MjmlTagProvider.getByXmlElement(parentTag) ?: return
@@ -54,7 +56,7 @@ class InvalidPathAttributeInspection : HtmlLocalInspectionTool() {
             return
         }
 
-        val expectedFileType = getType(parentTag)
+        val expectedFileType = IncludeType.fromTag(parentTag)
 
         val virtualFile = VfsUtilCore.findRelativeFile(filename, attribute.containingFile.virtualFile)
         if (virtualFile == null || !virtualFile.isValid || virtualFile.isDirectory || virtualFile.fileType != expectedFileType.fileType) {
