@@ -15,5 +15,8 @@ class InvalidParentTagInspectionTest  : MjmlPluginBaseTestCase() {
     fun testMjmlAttributes() =
         checkHighlighting(InvalidParentTagInspection())
 
+    fun testNoChildren() =
+        checkHighlighting(InvalidParentTagInspection())
+
     override fun getTestDataPath(): String = super.getTestDataPath() + "inspection/parentTag"
 }

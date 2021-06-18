@@ -1,0 +1,3 @@
+<mj-text>
+    <warning descr="Tag mj-text can not have child elements"><mj-include></mj-include></warning>
+</mj-text>

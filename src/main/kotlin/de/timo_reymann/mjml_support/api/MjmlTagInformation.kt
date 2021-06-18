@@ -37,14 +37,23 @@ data class MjmlTagInformation(
     /**
      * List with classes defined by the component, useful for e. g. class usage detection
      */
-    val definedCssClasses: Array<String> = arrayOf()
+    val definedCssClasses: Array<String> = arrayOf(),
+
+    /**
+     * Is the tag allowed to have children tags or not
+     */
+    val canHaveChildren: Boolean = true
 ) {
     fun getAttributeByName(name: String): MjmlAttributeInformation? = attributes.firstOrNull { it.name == name }
 
-    fun isValidParent(tagName: String): Boolean {
-        return allowedParentTags == PARENT_ANY ||
-                allowedParentTags.contains(tagName) ||
-                tagName == "mj-attributes"
+    fun isValidParent(tag: MjmlTagInformation): Boolean {
+        if (!tag.canHaveChildren) {
+            return false;
+        }
+
+        return allowedParentTags == PARENT_ANY
+                || allowedParentTags.contains(tag.tagName)
+                || tag.tagName == "mj-attributes"
     }
 
     fun definesClass(cssClass: String): Boolean {

@@ -17,6 +17,7 @@ object ES6BodyComponentParser {
 
     private const val PROPERTY_ALLOWED_ATTRIBUTES = "allowedAttributes"
     private const val PROPERTY_DEFAULT_ATTRIBUTES = "defaultAttributes"
+    private const val PROPERTY_ENDING_TAG = "endingTag"
 
     private fun getPropertyStringValue(property: Any): String? {
         if (property !is JSProperty) {
@@ -38,7 +39,7 @@ object ES6BodyComponentParser {
     private fun getFieldDefinition(eS6ClassExpression: ES6ClassExpression, name: String): Array<JSProperty> =
         ((eS6ClassExpression.findFieldByName(name) as JSField).children[0] as JSObjectLiteralExpression).properties
 
-     fun parse(expression: ES6ClassExpression): Pair<MjmlTagInformation, ES6Class>? {
+    fun parse(expression: ES6ClassExpression): Pair<MjmlTagInformation, ES6Class>? {
         val attributeMap = mutableMapOf<String, MjmlAttributeInformation>()
 
         // Index all allowed properties
@@ -77,12 +78,17 @@ object ES6BodyComponentParser {
             .map { it.value }
             .toTypedArray()
 
+        val endingTagDefinition =
+            expression.findFieldByName(PROPERTY_ENDING_TAG)?.children?.get(0) as JSLiteralExpression?
+        val endingTag = (endingTagDefinition?.value as Boolean? ?: false)
+
         return Pair(
             MjmlTagInformation(
                 expression.name!!.camelToKebabCase(),
                 DESCRIPTION,
                 attributes = attributes,
-                allowedParentTags = PARENT_ANY // For now allow all tags
+                allowedParentTags = PARENT_ANY,
+                canHaveChildren = !endingTag
             ),
             expression
         )

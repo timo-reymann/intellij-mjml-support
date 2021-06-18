@@ -13,9 +13,10 @@ class InvalidParentTagInspection : HtmlLocalInspectionTool() {
         val mjmlTag = MjmlTagProvider.getByXmlElement(tag) ?: return
         if (tag.parent is XmlTag) {
             val parentTagName = (tag.parent as XmlTag).name
+            val parentTag = MjmlTagProvider.getByTagName(tag.project, parentTagName) ?: return
             val allowedParentTags = mjmlTag.allowedParentTags
 
-            if (mjmlTag.isValidParent(parentTagName)) {
+            if (mjmlTag.isValidParent(parentTag)) {
                 return
             }
 
@@ -24,14 +25,22 @@ class InvalidParentTagInspection : HtmlLocalInspectionTool() {
                 else -> allowedParentTags.joinToString(", ")
             }
 
-            holder.registerProblem(
-                tag,
-                MjmlBundle.message(
+            val errorMessage = when (parentTag.canHaveChildren) {
+                true -> MjmlBundle.message(
                     "inspections.invalid_parent",
                     mjmlTag.tagName,
                     parentTagName,
                     inspectionAllowedTagsText
-                ),
+                )
+                false ->  MjmlBundle.message(
+                    "inspections.no_children_allowed",
+                    parentTag.tagName
+                )
+            }
+
+            holder.registerProblem(
+                tag,
+                errorMessage,
                 ProblemHighlightType.WARNING
             )
 
