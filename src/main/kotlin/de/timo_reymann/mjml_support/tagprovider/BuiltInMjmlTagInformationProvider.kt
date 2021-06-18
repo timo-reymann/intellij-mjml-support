@@ -65,7 +65,12 @@ class BuiltInMjmlTagInformationProvider : MjmlTagInformationProvider() {
                 ),
                 attributes = arrayOf(
                     MjmlAttributeInformation("path", MjmlAttributeType.PATH, "path to mjml file that will be included"),
-                    MjmlAttributeInformation("type", MjmlAttributeType.STRING, "file type to include should be css or html")
+                    MjmlAttributeInformation(
+                        "type",
+                        MjmlAttributeType.STRING,
+                        "file type to include should be css or html"
+                    ),
+                    MjmlAttributeInformation("css-inline", MjmlAttributeType.STRING, "Inline included css")
                 ),
                 allowedParentTags = PARENT_ANY
             ),
