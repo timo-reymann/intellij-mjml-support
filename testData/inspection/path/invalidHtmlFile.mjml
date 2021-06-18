@@ -1,0 +1,4 @@
+<mj-include
+ <warning descr="_include.txt is not resolving to a valid html file">path="_include.txt"</warning>
+ type="html"
+/>

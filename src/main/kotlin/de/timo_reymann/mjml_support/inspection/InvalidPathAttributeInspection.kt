@@ -5,22 +5,40 @@ import com.intellij.codeInspection.ProblemDescriptor
 import com.intellij.codeInspection.ProblemHighlightType
 import com.intellij.codeInspection.ProblemsHolder
 import com.intellij.codeInspection.htmlInspections.HtmlLocalInspectionTool
+import com.intellij.ide.highlighter.HtmlFileType
 import com.intellij.notification.NotificationType
 import com.intellij.openapi.fileEditor.FileEditorManager
+import com.intellij.openapi.fileTypes.FileType
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VfsUtil
 import com.intellij.openapi.vfs.VfsUtilCore
+import com.intellij.psi.css.CssFileType
+import com.intellij.psi.util.parentOfType
 import com.intellij.psi.xml.XmlAttribute
+import com.intellij.psi.xml.XmlTag
 import de.timo_reymann.mjml_support.api.MjmlAttributeType
 import de.timo_reymann.mjml_support.bundle.MjmlBundle
 import de.timo_reymann.mjml_support.lang.MjmlHtmlFileType
-import de.timo_reymann.mjml_support.model.getMjmlTagFromAttribute
+import de.timo_reymann.mjml_support.model.MjmlTagProvider
 import de.timo_reymann.mjml_support.util.MessageBusUtil
 import java.io.IOException
 
+enum class IncludeType(val fileType: FileType) {
+    CSS(CssFileType.INSTANCE),
+    HTML(HtmlFileType.INSTANCE),
+    MJML(MjmlHtmlFileType.INSTANCE);
+}
+
 class InvalidPathAttributeInspection : HtmlLocalInspectionTool() {
+    private fun getType(tag: XmlTag): IncludeType = when(tag.getAttribute("type")?.value) {
+        "css" -> IncludeType.CSS
+        "html" -> IncludeType.HTML
+        else -> IncludeType.MJML
+    }
+
     override fun checkAttribute(attribute: XmlAttribute, holder: ProblemsHolder, isOnTheFly: Boolean) {
-        val mjmlTag = getMjmlTagFromAttribute(attribute) ?: return
+        val parentTag = attribute.parentOfType<XmlTag>() ?: return
+        val mjmlTag = MjmlTagProvider.getByXmlElement(parentTag) ?: return
         val mjmlAttribute = mjmlTag.getAttributeByName(attribute.name) ?: return
         if (mjmlAttribute.type != MjmlAttributeType.PATH) {
             return
@@ -36,8 +54,10 @@ class InvalidPathAttributeInspection : HtmlLocalInspectionTool() {
             return
         }
 
+        val expectedFileType = getType(parentTag)
+
         val virtualFile = VfsUtilCore.findRelativeFile(filename, attribute.containingFile.virtualFile)
-        if (virtualFile == null || !virtualFile.isValid || virtualFile.isDirectory || virtualFile.fileType != MjmlHtmlFileType.INSTANCE) {
+        if (virtualFile == null || !virtualFile.isValid || virtualFile.isDirectory || virtualFile.fileType != expectedFileType.fileType) {
             var fixes = arrayOf<LocalQuickFix>()
 
             if (wouldBeValidMjmlFile(filename)) {
@@ -46,7 +66,7 @@ class InvalidPathAttributeInspection : HtmlLocalInspectionTool() {
 
             holder.registerProblem(
                 attribute,
-                MjmlBundle.message("inspections.invalid_mjml_file", attribute.value!!),
+                MjmlBundle.message("inspections.invalid_file_type", attribute.value!!, expectedFileType.fileType.defaultExtension),
                 ProblemHighlightType.WARNING,
                 *fixes
             )
