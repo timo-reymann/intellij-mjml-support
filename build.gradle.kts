@@ -6,11 +6,28 @@ plugins {
     kotlin("jvm") version "1.4.31"
 }
 
-fun getVersionDetails(): com.palantir.gradle.gitversion.VersionDetails = (extra["versionDetails"] as groovy.lang.Closure<*>)() as com.palantir.gradle.gitversion.VersionDetails
-var gitInfo = getVersionDetails()
-
 group = "de.timo_reymann"
-version = gitInfo.lastTag
+
+fun getVersionDetails(): com.palantir.gradle.gitversion.VersionDetails =
+    (extra["versionDetails"] as groovy.lang.Closure<*>)() as com.palantir.gradle.gitversion.VersionDetails
+
+val gitInfo = getVersionDetails()
+var releaseChannels = arrayOf<String>()
+
+when {
+    properties.containsKey("snapshotVersion") -> {
+        version = properties["snapshotVersion"]!!
+        releaseChannels = arrayOf("eap")
+    }
+    gitInfo.isCleanTag -> {
+        version = gitInfo.lastTag
+        releaseChannels = arrayOf("default")
+    }
+    else -> {
+        version = gitInfo.version
+        releaseChannels = arrayOf("local")
+    }
+}
 
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
@@ -64,13 +81,10 @@ tasks.withType<Test> {
 }
 
 tasks.getByName<org.jetbrains.intellij.tasks.PatchPluginXmlTask>("patchPluginXml") {
-    if(gitInfo.isCleanTag) {
-        setVersion(gitInfo.lastTag)
-    } else {
-        setVersion(gitInfo.version)
-    }
+    setVersion(version)
 }
 
 tasks.getByName<org.jetbrains.intellij.tasks.PublishTask>("publishPlugin") {
     setToken(System.getenv("JB_TOKEN"))
+    setChannels(releaseChannels)
 }
