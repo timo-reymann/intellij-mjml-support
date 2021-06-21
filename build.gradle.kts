@@ -17,7 +17,7 @@ var releaseChannels = arrayOf<String>()
 when {
     properties.containsKey("snapshotVersion") -> {
         version = properties["snapshotVersion"]!!
-        releaseChannels = arrayOf("eap")
+        releaseChannels = arrayOf("snapshot")
     }
     gitInfo.isCleanTag -> {
         version = gitInfo.lastTag

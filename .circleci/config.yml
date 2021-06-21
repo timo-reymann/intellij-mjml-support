@@ -126,8 +126,6 @@ workflows:
           requires:
             - test
           filters:
-            branches:
-              only: /.*/
             tags:
               only: /.*/
       - github_release:

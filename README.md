@@ -19,6 +19,13 @@ the [plugin.xml](./src/main/resources/META-INF/plugin.xml).
 1. Install it from the plugin repository
 4. You are done, enjoy the magic!
 
+### You live on the edge?
+
+There is also the channel `snapshot` (https://plugins.jetbrains.com/plugins/snapshot/list) available, for more details about set up please
+see [JetBrains Marketplace Docs](https://plugins.jetbrains.com/docs/marketplace/custom-release-channels.html#configuring-a-custom-channel-in-intellij-platform-based-ides)
+
+The versioning used there is not based on semantic versioning, but rather: `YYYY.MM.DD-BUILDNUM` and is on 
+
 ## Extension
 
 ### Custom mjml resolution
