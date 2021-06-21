@@ -3,7 +3,7 @@ plugins {
     id("com.palantir.git-version") version "0.12.2"
     id("com.adarshr.test-logger") version "3.0.0"
     java
-    kotlin("jvm") version "1.4.31"
+    kotlin("jvm") version "1.5.10"
 }
 
 group = "de.timo_reymann"
