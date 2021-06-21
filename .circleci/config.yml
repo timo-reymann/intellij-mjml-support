@@ -119,9 +119,9 @@ workflows:
       - build_and_publish_snapshot:
           requires:
             - test
-            filters:
-              branches:
-                only: main
+          filters:
+            branches:
+              only: main
       - build:
           requires:
             - test
