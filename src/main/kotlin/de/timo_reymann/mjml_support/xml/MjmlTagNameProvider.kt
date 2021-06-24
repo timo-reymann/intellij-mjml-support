@@ -27,7 +27,7 @@ class MjmlTagNameProvider : XmlTagNameProvider, XmlElementDescriptorProvider {
         // Clear existing html elements
         elements.clear()
 
-        var filter = fun(tag: MjmlTagInformation): Boolean = true
+        var filter = fun(_: MjmlTagInformation): Boolean = true
 
         when {
             tag.parent is XmlTag -> {

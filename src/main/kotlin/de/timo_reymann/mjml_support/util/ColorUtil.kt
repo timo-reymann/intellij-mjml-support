@@ -2,6 +2,7 @@ package de.timo_reymann.mjml_support.util
 
 import com.intellij.xml.util.ColorMap
 import java.awt.Color
+import java.util.*
 
 object ColorUtil {
     fun parseColor(text: String?): Color? {
@@ -37,5 +38,6 @@ object ColorUtil {
         }
     }
 
-    fun toHexString(color: Color) = String.format("#%02x%02x%02x", color.red, color.green, color.blue).toUpperCase()
+    fun toHexString(color: Color) = String.format("#%02x%02x%02x", color.red, color.green, color.blue)
+        .uppercase(Locale.getDefault())
 }
