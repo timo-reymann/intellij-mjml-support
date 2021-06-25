@@ -39,6 +39,10 @@ enum class IncludeType(val fileType: FileType) {
 
 class InvalidPathAttributeInspection : HtmlLocalInspectionTool() {
     override fun checkAttribute(attribute: XmlAttribute, holder: ProblemsHolder, isOnTheFly: Boolean) {
+        if(attribute.containingFile.fileType != MjmlHtmlFileType.INSTANCE) {
+            return
+        }
+
         val parentTag = attribute.parentOfType<XmlTag>() ?: return
         val mjmlTag = MjmlTagProvider.getByXmlElement(parentTag) ?: return
         val mjmlAttribute = mjmlTag.getAttributeByName(attribute.name) ?: return
