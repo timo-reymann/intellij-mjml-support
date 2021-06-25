@@ -1282,7 +1282,7 @@ class BuiltInMjmlTagInformationProvider : MjmlTagInformationProvider() {
                         "center"
                     )
                 ),
-                allowedParentTags = listOf("mj-body", "mj-column", "mj-hero")
+                allowedParentTags = listOf("mj-body", "mj-column", "mj-hero", "mj-wrapper")
             )
         )
     }
