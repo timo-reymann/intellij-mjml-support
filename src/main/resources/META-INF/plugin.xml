@@ -36,9 +36,10 @@
         ]]></description>
     <change-notes><![CDATA[
         <ul>
-            <li>TBD
+            <li>1.15.1
                 <ul>
                     <li>Fix mj-include inspection inside xml (related to <a href="https://github.com/timo-reymann/intellij-mjml-support/issues/23">#23</a>)</li>
+                    <li>Fix plugin crash on unknown/invalid tags (<a href="https://github.com/timo-reymann/intellij-mjml-support/issues/31">#31</a>)</li>
                 </ul>
             </li>
             <li>1.15.0

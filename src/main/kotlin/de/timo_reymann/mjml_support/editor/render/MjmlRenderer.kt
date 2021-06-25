@@ -5,6 +5,8 @@ import com.intellij.execution.configurations.GeneralCommandLine
 import com.intellij.execution.process.OSProcessHandler
 import com.intellij.execution.process.ProcessAdapter
 import com.intellij.execution.process.ProcessEvent
+import com.intellij.execution.process.ProcessOutputType
+import com.intellij.execution.process.ProcessOutputType.*
 import com.intellij.javascript.nodejs.interpreter.NodeCommandLineConfigurator
 import com.intellij.javascript.nodejs.interpreter.NodeJsInterpreterRef
 import com.intellij.notification.Notification
@@ -18,6 +20,7 @@ import com.intellij.openapi.vfs.VfsUtil
 import com.intellij.openapi.vfs.VirtualFile
 import com.jetbrains.rd.util.error
 import com.jetbrains.rd.util.getLogger
+import com.jetbrains.rd.util.warn
 import de.timo_reymann.mjml_support.bundle.MjmlBundle
 import de.timo_reymann.mjml_support.editor.renderError
 import de.timo_reymann.mjml_support.settings.MjmlSettings
@@ -58,16 +61,15 @@ class MjmlRenderer(
     }
 
     private fun captureOutput(commandLine: GeneralCommandLine): Pair<Int, String> {
-        val line = AtomicInteger(0)
         val processHandler = OSProcessHandler(commandLine)
         val buffer = StringBuffer()
         processHandler.addProcessListener(object : ProcessAdapter() {
             override fun onTextAvailable(event: ProcessEvent, outputType: Key<*>) {
-                // First line is command output, remove it
-                if (line.incrementAndGet() == 1) {
-                    return
+                when (outputType) {
+                    STDOUT -> buffer.append(event.text)
+                    // stderr may contain duplicates from errors (due to hard coded console.error in mjml code)
+                    STDERR -> getLogger<MjmlRenderer>().warn { event.text }
                 }
-                buffer.append(event.text)
             }
         })
 
