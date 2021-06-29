@@ -209,7 +209,7 @@ class BuiltInMjmlTagInformationProvider : MjmlTagInformationProvider() {
                     ATTRIBUTE_PADDING_RIGHT,
                     ATTRIBUTE_PADDING_TOP
                 ),
-                allowedParentTags = listOf("mj-accordion"),
+                allowedParentTags = listOf("mj-accordion", "mj-accordion-element"),
                 canHaveChildren = false
             ),
             MjmlTagInformation(
