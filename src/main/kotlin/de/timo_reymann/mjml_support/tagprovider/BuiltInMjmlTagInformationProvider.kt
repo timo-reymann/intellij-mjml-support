@@ -32,6 +32,14 @@ class BuiltInMjmlTagInformationProvider : MjmlTagInformationProvider() {
             MjmlTagInformation(
                 "mjml",
                 "A MJML document starts with a <mjml> tag, it can contain only mj-head and mj-body tags. Both have the same purpose of head and body in a HTML document.",
+                attributes = arrayOf(
+                    MjmlAttributeInformation("lang", MjmlAttributeType.STRING, "used as <html lang=\"\"> attribute"),
+                    MjmlAttributeInformation(
+                        "owa",
+                        MjmlAttributeType.STRING,
+                        "if set to \"desktop\", switch force desktop version for older (self-hosted) version of Outlook.com that doesn't support media queries (cf. this issue)"
+                    )
+                ),
                 allowedParentTags = PARENT_NONE
             ),
             MjmlTagInformation(
