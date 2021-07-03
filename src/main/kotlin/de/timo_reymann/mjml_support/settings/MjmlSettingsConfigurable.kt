@@ -34,7 +34,7 @@ class MjmlSettingsConfigurable(project: Project) : Configurable, Disposable {
                 checkBox(
                     text = "Builtin rendering script (MJML v"+BuiltinRenderResourceProvider.getBundledMjmlVersion()+")",
                     prop = state::useBuiltInRenderer,
-                    comment = "Disable to use custom rendering script"
+                    comment = "Disable custom rendering script"
                 ).also { useBuiltIn = it }
             }
             row {
