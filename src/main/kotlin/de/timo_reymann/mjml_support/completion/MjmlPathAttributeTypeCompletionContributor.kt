@@ -1,9 +1,13 @@
 package de.timo_reymann.mjml_support.completion
 
-import com.intellij.codeInsight.completion.*
+import com.intellij.codeInsight.completion.CompletionContributor
+import com.intellij.codeInsight.completion.CompletionParameters
+import com.intellij.codeInsight.completion.CompletionResultSet
+import com.intellij.codeInsight.completion.CompletionType
 import com.intellij.codeInsight.lookup.LookupElementBuilder
 import com.intellij.navigation.ChooseByNameContributor
 import com.intellij.navigation.ChooseByNameContributorEx
+import com.intellij.openapi.fileTypes.FileType
 import com.intellij.openapi.fileTypes.FileTypeManager
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.io.FileUtilRt
@@ -11,7 +15,9 @@ import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.patterns.PlatformPatterns.psiElement
 import com.intellij.psi.search.FilenameIndex
 import com.intellij.psi.search.ProjectScope
+import com.intellij.psi.util.parentOfType
 import com.intellij.psi.xml.XmlAttributeValue
+import com.intellij.psi.xml.XmlTag
 import com.intellij.util.ProcessingContext
 import com.intellij.util.Processor
 import com.intellij.util.containers.ContainerUtil
@@ -19,8 +25,8 @@ import com.intellij.util.indexing.FindSymbolParameters
 import de.timo_reymann.mjml_support.api.MjmlAttributeInformation
 import de.timo_reymann.mjml_support.api.MjmlAttributeType
 import de.timo_reymann.mjml_support.icons.MjmlIcons
+import de.timo_reymann.mjml_support.inspection.IncludeType
 import de.timo_reymann.mjml_support.lang.MjmlHtmlFileType
-import de.timo_reymann.mjml_support.model.getMjmlInfoFromAttributeValue
 import java.io.File
 import java.util.*
 
@@ -35,12 +41,14 @@ class MjmlPathAttributeTypeCompletionContributor : CompletionContributor() {
             mjmlAttribute: MjmlAttributeInformation
         ) {
             val target = parameters.position
+            val xmlTag = target.parentOfType<XmlTag>() ?: return
+            val includeFileType = IncludeType.fromTag(xmlTag).fileType
             val project = target.project
             val rootFile = target.containingFile.originalFile.virtualFile
             val resultNames: MutableSet<String> = TreeSet()
 
             processAllNames(project) { fileName: String ->
-                if (filenameMatchesPrefixOrType(fileName, parameters.invocationCount)) {
+                if (filenameMatchesPrefixOrType(includeFileType, fileName, parameters.invocationCount)) {
                     resultNames.add(fileName)
                 }
                 true
@@ -49,7 +57,6 @@ class MjmlPathAttributeTypeCompletionContributor : CompletionContributor() {
             val scope = ProjectScope.getProjectScope(project)
 
             for (resultName in resultNames) {
-                // ProgressManager.checkCanceled();
 
                 val files = FilenameIndex.getFilesByName(project, resultName, scope)
 
@@ -65,13 +72,13 @@ class MjmlPathAttributeTypeCompletionContributor : CompletionContributor() {
                     }
 
                     val filePath: String = File(virtualFile.path).relativeTo(File(rootFile.parent.path)).toString()
-                    result.addElement(LookupElementBuilder.create(filePath).withIcon(MjmlIcons.COLORED))
+                    result.addElement(LookupElementBuilder.create(filePath).withIcon(includeFileType.icon))
                 }
             }
         }
     }
 
-    private fun filenameMatchesPrefixOrType(fileName: String, invocationCount: Int): Boolean {
+    private fun filenameMatchesPrefixOrType(fileType : FileType, fileName: String, invocationCount: Int): Boolean {
         if (invocationCount > 2) {
             return true
         }
@@ -81,7 +88,7 @@ class MjmlPathAttributeTypeCompletionContributor : CompletionContributor() {
             return false
         }
 
-        for (matcher in FileTypeManager.getInstance().getAssociations(MjmlHtmlFileType.INSTANCE)) {
+        for (matcher in FileTypeManager.getInstance().getAssociations(fileType)) {
             if (matcher.acceptsCharSequence(fileName)) return true
         }
 

@@ -27,12 +27,13 @@ class MjmlTagNameProvider : XmlTagNameProvider, XmlElementDescriptorProvider {
         // Clear existing html elements
         elements.clear()
 
-        var filter = fun(tag: MjmlTagInformation): Boolean = true
+        var filter = fun(_: MjmlTagInformation): Boolean = true
 
         when {
             tag.parent is XmlTag -> {
-               val parentTagName = (tag.parent as XmlTag).name
-                filter = fun(tagInfo: MjmlTagInformation): Boolean = tagInfo.isValidParent(parentTagName)
+                val parentTagName = (tag.parent as XmlTag).name
+                val parentTag = MjmlTagProvider.getByTagName(tag.project, parentTagName) ?: return
+                filter = fun(tagInfo: MjmlTagInformation): Boolean = tagInfo.isValidParent(parentTag)
             }
             tag.parent is PsiElement && tag.parent.elementType == XmlElementType.HTML_DOCUMENT -> {
                 filter = fun(tagInfo: MjmlTagInformation): Boolean = tagInfo.tagName == ROOT_TAG

@@ -36,7 +36,38 @@
         ]]></description>
     <change-notes><![CDATA[
         <ul>
-            <li>1.2.0
+            <li>SNAPSHOT
+                <ul>
+                    <li>Allow mj-accordion-title inside mj-accordion (<a href="https://github.com/timo-reymann/intellij-mjml-support/issues/32">#32</a>)</li>
+                    <li>Add tags for mjml tag (<a href="https://github.com/timo-reymann/intellij-mjml-support/issues/33">#33</a>)</li>
+                    <li>Improve configuration validation for custom rendering script</li>
+                    <li>Add file lock to prevent multiple running intellij instances to run in concurrency problems for builtin rendering script (<a href="https://github.com/timo-reymann/intellij-mjml-support/issues/34">#34</a>)</li>
+                </ul>
+            </li>
+            <li>1.15.1
+                <ul>
+                    <li>Fix mj-include inspection inside xml (related to <a href="https://github.com/timo-reymann/intellij-mjml-support/issues/23">#23</a>)</li>
+                    <li>Fix plugin crash on unknown/invalid tags (<a href="https://github.com/timo-reymann/intellij-mjml-support/issues/31">#31</a>)</li>
+                </ul>
+            </li>
+            <li>1.15.0
+                <ul>
+                    <li>Allow nested mj-wrapper (<a href="https://github.com/timo-reymann/intellij-mjml-support/issues/30">#30</a>)</li>
+                    <li>Add support for <code>endingTag</code>-mechanism used by mjml (<a href="https://github.com/timo-reymann/intellij-mjml-support/issues/20">#20</a>)</li>
+                </ul>
+            </li>
+            <li>1.14.0
+                <ul>
+                    <li>Fix css class usage crashing on non-mjml context css files</li>
+                    <li>Upgrade bundled mjml version to <code>4.10.0</code></li>
+                </ul>
+            </li>
+            <li>1.13.0
+                <ul>
+                    <li>Add support for html and css files in mj-include (<a href="https://github.com/timo-reymann/intellij-mjml-support/issues/21">#21</a>)</li>
+                </ul>
+            </li>
+            <li>1.12.0
                 <ul>
                     <li>Add css class usage defined by components for custom styling (<a href="https://github.com/timo-reymann/intellij-mjml-support/issues/15">#15</a>)</li>
                     <li>Allow all tags in mj-attributes (<a href="https://github.com/timo-reymann/intellij-mjml-support/issues/16">#16</a>)</li>

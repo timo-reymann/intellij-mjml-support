@@ -2,6 +2,7 @@ package de.timo_reymann.mjml_support.util
 
 import com.intellij.notification.*
 import de.timo_reymann.mjml_support.bundle.MjmlBundle
+import java.util.*
 
 object MessageBusUtil {
     private val GROUP_ID = MjmlBundle.message("notification_group")
@@ -16,6 +17,6 @@ object MessageBusUtil {
     private fun capitalize(str: String?): String? {
         return if (str == null || str.isEmpty()) {
             str
-        } else str.substring(0, 1).toUpperCase() + str.toLowerCase().substring(1)
+        } else str.substring(0, 1).uppercase(Locale.getDefault()) + str.lowercase(Locale.getDefault()).substring(1)
     }
 }

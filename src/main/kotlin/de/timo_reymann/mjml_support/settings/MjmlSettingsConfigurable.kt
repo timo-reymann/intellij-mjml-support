@@ -5,9 +5,7 @@ import com.intellij.openapi.Disposable
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory
 import com.intellij.openapi.options.Configurable
-import com.intellij.openapi.progress.ProgressIndicator
-import com.intellij.openapi.progress.ProgressManager
-import com.intellij.openapi.progress.Task
+import com.intellij.openapi.options.ConfigurationException
 import com.intellij.openapi.project.Project
 import com.intellij.ui.DocumentAdapter
 import com.intellij.ui.components.JBCheckBox
@@ -17,22 +15,25 @@ import com.intellij.ui.layout.panel
 import com.intellij.ui.layout.selected
 import de.timo_reymann.mjml_support.editor.MjmlPreviewStartupActivity
 import de.timo_reymann.mjml_support.editor.render.BuiltinRenderResourceProvider
-import de.timo_reymann.mjml_support.editor.render.MjmlRenderer
 import de.timo_reymann.mjml_support.util.FilePluginUtil
+import de.timo_reymann.mjml_support.util.UiTimerUtil
 import java.awt.Desktop
 import java.io.File
+import javax.swing.JButton
 import javax.swing.JComponent
+import javax.swing.JTextField
 import javax.swing.event.DocumentEvent
 
 class MjmlSettingsConfigurable(project: Project) : Configurable, Disposable {
     private var state = MjmlSettings.getInstance(project)
+    private lateinit var renderingScriptTextField: JTextField;
 
     private val panel = panel {
         lateinit var useBuiltIn: CellBuilder<JBCheckBox>
         titledRow("Preview") {
             row {
                 checkBox(
-                    text = "Builtin rendering script (MJML v"+BuiltinRenderResourceProvider.getBundledMjmlVersion()+")",
+                    text = "Builtin rendering script (MJML v" + BuiltinRenderResourceProvider.getBundledMjmlVersion() + ")",
                     prop = state::useBuiltInRenderer,
                     comment = "Disable custom rendering script"
                 ).also { useBuiltIn = it }
@@ -48,16 +49,7 @@ class MjmlSettingsConfigurable(project: Project) : Configurable, Disposable {
                         )
                     ).enableIf(useBuiltIn.selected.not())
                         .comment("The selected script will be executed with Node.JS")
-                        .also {
-                            val textField = it.component.textField
-                            textField.document.addDocumentListener(object : DocumentAdapter() {
-                                override fun textChanged(e: DocumentEvent) {
-                                    val outline: Any? = if (isValidScript(textField.text)) null else "error"
-                                    textField.putClientProperty("JComponent.outline", outline)
-                                    textField.toolTipText = if (outline == null) null else "File does not exist"
-                                }
-                            })
-                        }
+                        .also { renderingScriptTextField = it.component.textField }
                 }
             }
         }
@@ -69,8 +61,13 @@ class MjmlSettingsConfigurable(project: Project) : Configurable, Disposable {
                         Desktop.getDesktop().open(FilePluginUtil.getFile("."))
                     }
 
-                    button("Copy files for preview from plugin") {
-                        BuiltinRenderResourceProvider.copyResources()
+                    button("Copy files for preview from plugin") { e ->
+                        MjmlPreviewStartupActivity().runActivity(project)
+                        val button = e.source as JButton
+                        button.isEnabled = false
+                        UiTimerUtil.singleExecutionAfter(2) {
+                            button.isEnabled = true
+                        }
                     }
                 }
             }
@@ -85,6 +82,11 @@ class MjmlSettingsConfigurable(project: Project) : Configurable, Disposable {
     override fun dispose() {}
 
     override fun apply() {
+        val renderingScriptPath = renderingScriptTextField.text
+        if (renderingScriptPath.trim() != "" && !File(renderingScriptPath).exists()) {
+            throw ConfigurationException("Custom rendering script does not exist")
+        }
+
         panel.apply()
 
         ApplicationManager.getApplication()

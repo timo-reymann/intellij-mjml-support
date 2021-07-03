@@ -1,9 +1,11 @@
 intellij-mjml-support
 ===
 
-[![GitHub Release](https://img.shields.io/github/v/tag/timo-reymann/intellij-mjml-support.svg?label=version)](https://github.com/timo-reymann/intellij-mjml-support/releases)
-[![JetBrains Plugins](https://img.shields.io/badge/JetBrains-Plugins-orange)](https://plugins.jetbrains.com/plugin/16418-mjml-support)
 [![CircleCI](https://circleci.com/gh/timo-reymann/intellij-mjml-support.svg?style=shield)](https://app.circleci.com/pipelines/github/timo-reymann/intellij-mjml-support)
+[![GitHub Release](https://img.shields.io/github/v/tag/timo-reymann/intellij-mjml-support.svg?label=version)](https://github.com/timo-reymann/intellij-mjml-support/releases)
+[![Version](https://img.shields.io/jetbrains/plugin/v/16418-mjml-support)](https://plugins.jetbrains.com/plugin/16418-mjml-support/versions)
+[![Downloads](https://img.shields.io/jetbrains/plugin/d/16418-mjml-support)](https://plugins.jetbrains.com/plugin/16418-mjml-support)
+[![Rating](https://img.shields.io/jetbrains/plugin/r/rating/16418-mjml-support)](https://plugins.jetbrains.com/plugin/16418-mjml-support/reviews)
 
 MJML support for the IntelliJ Platform.
 
@@ -18,6 +20,13 @@ the [plugin.xml](./src/main/resources/META-INF/plugin.xml).
 
 1. Install it from the plugin repository
 4. You are done, enjoy the magic!
+
+### You live on the edge?
+
+There is also the channel `snapshot` (https://plugins.jetbrains.com/plugins/snapshot/list) available, for more details about set up please
+see [JetBrains Marketplace Docs](https://plugins.jetbrains.com/docs/marketplace/custom-release-channels.html#configuring-a-custom-channel-in-intellij-platform-based-ides)
+
+The versioning used there is not based on semantic versioning, but rather: `YYYY.MM.DD-BUILDNUM` and is on 
 
 ## Extension
 

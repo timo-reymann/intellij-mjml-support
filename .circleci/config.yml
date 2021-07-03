@@ -58,6 +58,15 @@ jobs:
             - build/distributions
       - create_or_update_cache
 
+  build_and_publish_snapshot:
+    executor: gradle
+    steps:
+      - checkout
+      - retrieve_cache
+      - run:
+          name: Build snapshot
+          command: ./gradlew -PsnapshotVersion="`date +'%Y.%m.%d'`-${CIRCLE_BUILD_NUM}" buildPlugin publishPlugin
+
   publish_to_marketplace:
     executor: gradle
     steps:
@@ -107,12 +116,18 @@ workflows:
               only: /.*/
             tags:
               only: /.*/
+      - build_and_publish_snapshot:
+          requires:
+            - test
+          filters:
+            branches:
+              only: main
       - build:
           requires:
             - test
           filters:
             branches:
-              only: /.*/
+              ignore: /.*/
             tags:
               only: /.*/
       - github_release:

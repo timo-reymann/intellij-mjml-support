@@ -12,6 +12,7 @@ object MjmlCustomComponentDecoratorParser {
     private const val DESCRIPTION = "Component annotated with @$ANNOTATION_NAME"
 
     private const val PROPERTY_DEFAULT_VALUE = "default"
+    private const val PROPERTY_ENDING_TAG = "endingTag"
     private const val PROPERTY_TYPE = "type"
 
     fun parse(tsClass: TypeScriptClass): Pair<MjmlTagInformation, TypeScriptClass>? {
@@ -40,13 +41,15 @@ object MjmlCustomComponentDecoratorParser {
 
             val attributes = parseAttributes(definition)
             val allowedParents = parseAllowedParentTags(definition)
+            val endingTag = (getPropertyValue(definition.findProperty(PROPERTY_ENDING_TAG)) ?: "false").toBoolean()
 
             return Pair(
                 MjmlTagInformation(
                     tsClass.name.toString().camelToKebabCase(),
                     DESCRIPTION,
                     attributes = attributes.toTypedArray(),
-                    allowedParentTags = allowedParents
+                    allowedParentTags = allowedParents,
+                    canHaveChildren = !endingTag
                 ),
                 tsClass
             )
