@@ -18,7 +18,9 @@
             <li>code inspections to highlight common errors</li>
             <li>mjml live preview (if you have javascript support enabled + node.js setup locally)</li>
             <li>inspections for containing tags</li>
-            <li>Support for custom components using ES6 syntax or <a href="https://github.com/timo-reymann/mjml-custom-component-decorator">mjml-custom-component-decorator</a></li>
+            <li>Support for custom components using ES6 syntax or <a
+                    href="https://github.com/timo-reymann/mjml-custom-component-decorator">mjml-custom-component-decorator</a>
+            </li>
         </ul>
 
         <h2>Credits</h2>
@@ -38,22 +40,38 @@
         <ul>
             <li>SNAPSHOT
                 <ul>
-                    <li>Allow mj-accordion-title inside mj-accordion (<a href="https://github.com/timo-reymann/intellij-mjml-support/issues/32">#32</a>)</li>
-                    <li>Add tags for mjml tag (<a href="https://github.com/timo-reymann/intellij-mjml-support/issues/33">#33</a>)</li>
+                    <li>Allow mj-accordion-title inside mj-accordion (<a
+                            href="https://github.com/timo-reymann/intellij-mjml-support/issues/32">#32</a>)
+                    </li>
+                    <li>Add tags for mjml tag (<a
+                            href="https://github.com/timo-reymann/intellij-mjml-support/issues/33">#33</a>)
+                    </li>
                     <li>Improve configuration validation for custom rendering script</li>
-                    <li>Add file lock to prevent multiple running intellij instances to run in concurrency problems for builtin rendering script (<a href="https://github.com/timo-reymann/intellij-mjml-support/issues/34">#34</a>)</li>
+                    <li>Add file lock to prevent multiple running intellij instances to run in concurrency problems for
+                        builtin rendering script (<a
+                                href="https://github.com/timo-reymann/intellij-mjml-support/issues/34">#34</a>)
+                    </li>
+                    <li></li>
                 </ul>
             </li>
             <li>1.15.1
                 <ul>
-                    <li>Fix mj-include inspection inside xml (related to <a href="https://github.com/timo-reymann/intellij-mjml-support/issues/23">#23</a>)</li>
-                    <li>Fix plugin crash on unknown/invalid tags (<a href="https://github.com/timo-reymann/intellij-mjml-support/issues/31">#31</a>)</li>
+                    <li>Fix mj-include inspection inside xml (related to <a
+                            href="https://github.com/timo-reymann/intellij-mjml-support/issues/23">#23</a>)
+                    </li>
+                    <li>Fix plugin crash on unknown/invalid tags (<a
+                            href="https://github.com/timo-reymann/intellij-mjml-support/issues/31">#31</a>)
+                    </li>
                 </ul>
             </li>
             <li>1.15.0
                 <ul>
-                    <li>Allow nested mj-wrapper (<a href="https://github.com/timo-reymann/intellij-mjml-support/issues/30">#30</a>)</li>
-                    <li>Add support for <code>endingTag</code>-mechanism used by mjml (<a href="https://github.com/timo-reymann/intellij-mjml-support/issues/20">#20</a>)</li>
+                    <li>Allow nested mj-wrapper (<a
+                            href="https://github.com/timo-reymann/intellij-mjml-support/issues/30">#30</a>)
+                    </li>
+                    <li>Add support for <code>endingTag</code>-mechanism used by mjml (<a
+                            href="https://github.com/timo-reymann/intellij-mjml-support/issues/20">#20</a>)
+                    </li>
                 </ul>
             </li>
             <li>1.14.0
@@ -64,13 +82,19 @@
             </li>
             <li>1.13.0
                 <ul>
-                    <li>Add support for html and css files in mj-include (<a href="https://github.com/timo-reymann/intellij-mjml-support/issues/21">#21</a>)</li>
+                    <li>Add support for html and css files in mj-include (<a
+                            href="https://github.com/timo-reymann/intellij-mjml-support/issues/21">#21</a>)
+                    </li>
                 </ul>
             </li>
             <li>1.12.0
                 <ul>
-                    <li>Add css class usage defined by components for custom styling (<a href="https://github.com/timo-reymann/intellij-mjml-support/issues/15">#15</a>)</li>
-                    <li>Allow all tags in mj-attributes (<a href="https://github.com/timo-reymann/intellij-mjml-support/issues/16">#16</a>)</li>
+                    <li>Add css class usage defined by components for custom styling (<a
+                            href="https://github.com/timo-reymann/intellij-mjml-support/issues/15">#15</a>)
+                    </li>
+                    <li>Allow all tags in mj-attributes (<a
+                            href="https://github.com/timo-reymann/intellij-mjml-support/issues/16">#16</a>)
+                    </li>
                     <li>Disable pixel inspection by default</li>
                 </ul>
             </li>
@@ -86,7 +110,8 @@
             </li>
             <li>1.10.1
                 <ul>
-                    <li>Use cache folder from intellij for storing renderer files to prevent write permission problems</li>
+                    <li>Use cache folder from intellij for storing renderer files to prevent write permission problems
+                    </li>
                 </ul>
             </li>
             <li>1.10.0
@@ -110,13 +135,17 @@
             <li>1.8.0
                 <ul>
                     <li>Add support for es6 custom components</li>
-                    <li>Add support for custom TypeScript components using <a href="https://github.com/timo-reymann/mjml-custom-component-decorator">mjml-custom-component-decorator</a></li>
+                    <li>Add support for custom TypeScript components using <a
+                            href="https://github.com/timo-reymann/mjml-custom-component-decorator">mjml-custom-component-decorator</a>
+                    </li>
                     <li>Add reload button</li>
                     <li>Add troubleshooting to settings for mjml preview</li>
                     <li>Add gutter icon for custom component usage</li>
                     <li>Add boolean properties</li>
                     <li>Add loading progress for copying preview files</li>
-                    <li>Invalid attribute values are now treated as warnings to prevent custom template engines etc. built on top of mjml to highlight as error</li>
+                    <li>Invalid attribute values are now treated as warnings to prevent custom template engines etc.
+                        built on top of mjml to highlight as error
+                    </li>
                 </ul>
             </li>
             <li>1.7.0
@@ -284,7 +313,7 @@
                                 implementationClass="de.timo_reymann.mjml_support.completion.MjmlColorAttributeTypeCompletionContributor"/>
 
         <completion.contributor language="mjml"
-                                implementationClass="de.timo_reymann.mjml_support.completion.MjmlAttributeTypeBooleanCompletionContributor" />
+                                implementationClass="de.timo_reymann.mjml_support.completion.MjmlAttributeTypeBooleanCompletionContributor"/>
 
         <localInspection implementationClass="de.timo_reymann.mjml_support.inspection.UnknownAttributeInspection"
                          language="mjml"

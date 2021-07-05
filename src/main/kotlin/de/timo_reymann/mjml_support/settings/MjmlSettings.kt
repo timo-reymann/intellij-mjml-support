@@ -6,7 +6,8 @@ import com.intellij.openapi.project.Project
 @State(name = "de.timo_reymann.mjml_support.settings.MjmlSettings", storages = [Storage("mjmlSettings.xml")])
 class MjmlSettings : PersistentStateComponent<MjmlSettings>, BaseState() {
     var renderScriptPath: String by nonNullString()
-    var useBuiltInRenderer: Boolean by property(true)
+    val useBuiltInRenderer: Boolean
+        get() = renderScriptPath == BUILT_IN
 
     private fun nonNullString(initialValue: String = "") = property(initialValue) { it == initialValue }
     override fun getState(): MjmlSettings = this
@@ -16,6 +17,7 @@ class MjmlSettings : PersistentStateComponent<MjmlSettings>, BaseState() {
 
     companion object {
         fun getInstance(project: Project) = project.service<MjmlSettings>()
+        const val BUILT_IN = "Bundled"
     }
 
 }

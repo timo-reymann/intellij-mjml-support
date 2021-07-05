@@ -1,57 +1,89 @@
 package de.timo_reymann.mjml_support.settings
 
-import com.intellij.lang.javascript.JavaScriptFileType
+import com.intellij.icons.AllIcons
 import com.intellij.openapi.Disposable
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory
+import com.intellij.openapi.fileChooser.FileChooserFactory
 import com.intellij.openapi.options.Configurable
 import com.intellij.openapi.options.ConfigurationException
 import com.intellij.openapi.project.Project
-import com.intellij.ui.DocumentAdapter
-import com.intellij.ui.components.JBCheckBox
-import com.intellij.ui.layout.CellBuilder
-import com.intellij.ui.layout.not
+import com.intellij.openapi.ui.ComboBox
+import com.intellij.ui.CollectionComboBoxModel
+import com.intellij.ui.components.fields.ExtendableTextComponent
+import com.intellij.ui.components.fields.ExtendableTextField
 import com.intellij.ui.layout.panel
-import com.intellij.ui.layout.selected
 import de.timo_reymann.mjml_support.editor.MjmlPreviewStartupActivity
 import de.timo_reymann.mjml_support.editor.render.BuiltinRenderResourceProvider
 import de.timo_reymann.mjml_support.util.FilePluginUtil
 import de.timo_reymann.mjml_support.util.UiTimerUtil
 import java.awt.Desktop
+import java.awt.Dimension
 import java.io.File
 import javax.swing.JButton
 import javax.swing.JComponent
 import javax.swing.JTextField
-import javax.swing.event.DocumentEvent
+import javax.swing.plaf.basic.BasicComboBoxEditor
 
 class MjmlSettingsConfigurable(project: Project) : Configurable, Disposable {
+
     private var state = MjmlSettings.getInstance(project)
-    private lateinit var renderingScriptTextField: JTextField;
+    private lateinit var comboBox: ComboBox<String>;
+    private val browseExtension = ExtendableTextComponent.Extension.create(
+        AllIcons.General.OpenDisk, AllIcons.General.OpenDiskHover,
+        "Select custom rendering script"
+    ) {
+        val result = FileChooserFactory.getInstance()
+            .createFileChooser(FileChooserDescriptorFactory.createSingleFileDescriptor(), project, null)
+            .choose(project)
+        if (result.isEmpty()) {
+            return@create
+        }
+
+        comboBox.selectedItem = result[0].toNioPath().toString()
+        setComboBoxModelRenderer(comboBox.selectedItem as String)
+    }
+
+    private fun setComboBoxModelRenderer(rendererScript: String?) {
+        val options: List<String> = if (rendererScript == null) {
+            listOf(MjmlSettings.BUILT_IN)
+        } else {
+            listOf(rendererScript, MjmlSettings.BUILT_IN)
+        }
+        comboBox.model = CollectionComboBoxModel(options)
+    }
 
     private val panel = panel {
-        lateinit var useBuiltIn: CellBuilder<JBCheckBox>
         titledRow("Preview") {
             row {
-                checkBox(
-                    text = "Builtin rendering script (MJML v" + BuiltinRenderResourceProvider.getBundledMjmlVersion() + ")",
-                    prop = state::useBuiltInRenderer,
-                    comment = "Disable to use custom rendering script"
-                ).also { useBuiltIn = it }
-            }
-            row {
                 cell {
-                    label("Path to custom script for rendering")
-                    textFieldWithBrowseButton(
-                        prop = state::renderScriptPath,
-                        browseDialogTitle = "Select script",
-                        fileChooserDescriptor = FileChooserDescriptorFactory.createSingleFileDescriptor(
-                            JavaScriptFileType.INSTANCE
-                        )
-                    ).enableIf(useBuiltIn.selected.not())
-                        .comment("The selected script will be executed with Node.JS")
-                        .also { renderingScriptTextField = it.component.textField }
+                    label("Rendering script")
+                    comboBox(
+                        CollectionComboBoxModel(),
+                        state::renderScriptPath
+                    ).also {
+                        comboBox = it.component
+
+                        if (state.useBuiltInRenderer) {
+                            setComboBoxModelRenderer(null)
+                        } else {
+                            setComboBoxModelRenderer(state::renderScriptPath.get())
+                        }
+
+                        comboBox.preferredSize = Dimension(500, comboBox.preferredSize.height)
+                        comboBox.isEditable = true
+                        comboBox.editor = object : BasicComboBoxEditor() {
+                            override fun createEditorComponent(): JTextField {
+                                val ecbEditor = ExtendableTextField()
+                                ecbEditor.addExtension(browseExtension)
+                                ecbEditor.border = null
+                                return ecbEditor
+                            }
+                        }
+                    }.comment("Bundled script uses MJML v${BuiltinRenderResourceProvider.getBundledMjmlVersion()}")
                 }
             }
+            noteRow("""For more information about custom rendering scripts click <a href="https://plugins.jetbrains.com/plugin/16418-mjml-support/tutorials/custom-rendering-script">here</a>.""")
         }
 
         titledRow("Trouble Shooting") {
@@ -74,7 +106,6 @@ class MjmlSettingsConfigurable(project: Project) : Configurable, Disposable {
         }
     }
 
-    private fun isValidScript(path: String): Boolean = File(path).exists()
     override fun createComponent(): JComponent = panel
     override fun isModified(): Boolean = panel.isModified()
     override fun reset() = panel.reset()
@@ -82,8 +113,9 @@ class MjmlSettingsConfigurable(project: Project) : Configurable, Disposable {
     override fun dispose() {}
 
     override fun apply() {
-        val renderingScriptPath = renderingScriptTextField.text
-        if (renderingScriptPath.trim() != "" && !File(renderingScriptPath).exists()) {
+        val renderingScriptPath = comboBox.selectedItem as String
+
+        if (renderingScriptPath.trim() != "" && !File(renderingScriptPath).exists() && renderingScriptPath != MjmlSettings.BUILT_IN) {
             throw ConfigurationException("Custom rendering script does not exist")
         }
 
