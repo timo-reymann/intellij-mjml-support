@@ -51,7 +51,8 @@
                         builtin rendering script (<a
                                 href="https://github.com/timo-reymann/intellij-mjml-support/issues/34">#34</a>)
                     </li>
-                    <li></li>
+                    <li>Add combobox for rendering script path (<a
+                            href="https://github.com/timo-reymann/intellij-mjml-support/issues/38">#38</a></li>
                 </ul>
             </li>
             <li>1.15.1
