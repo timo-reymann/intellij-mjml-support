@@ -45,7 +45,7 @@ class MjmlSettingsConfigurable(project: Project) : Configurable, Disposable {
     }
 
     private fun setComboBoxModelRenderer(rendererScript: String?) {
-        val options: List<String> = if (rendererScript == null) {
+        val options: List<String> = if (rendererScript == null || rendererScript.isBlank()) {
             listOf(MjmlSettings.BUILT_IN)
         } else {
             listOf(rendererScript, MjmlSettings.BUILT_IN)
@@ -75,8 +75,10 @@ class MjmlSettingsConfigurable(project: Project) : Configurable, Disposable {
                         comboBox.editor = object : BasicComboBoxEditor() {
                             override fun createEditorComponent(): JTextField {
                                 val ecbEditor = ExtendableTextField()
-                                ecbEditor.addExtension(browseExtension)
-                                ecbEditor.border = null
+                                with(ecbEditor) {
+                                    addExtension(browseExtension)
+                                    border = null
+                                }
                                 return ecbEditor
                             }
                         }
@@ -95,10 +97,12 @@ class MjmlSettingsConfigurable(project: Project) : Configurable, Disposable {
 
                     button("Copy files for preview from plugin") { e ->
                         MjmlPreviewStartupActivity().runActivity(project)
-                        val button = e.source as JButton
-                        button.isEnabled = false
-                        UiTimerUtil.singleExecutionAfter(2) {
-                            button.isEnabled = true
+                        with(e.source as JButton) {
+                            isEnabled = false
+
+                            UiTimerUtil.singleExecutionAfter(2) {
+                                this.isEnabled = true
+                            }
                         }
                     }
                 }
