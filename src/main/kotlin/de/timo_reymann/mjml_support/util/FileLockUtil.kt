@@ -18,10 +18,10 @@ object FileLockUtil {
             file.parentFile.mkdirs()
             file.createNewFile()
         }
-        val randomAccessFile = RandomAccessFile(file.absoluteFile, "rw")
 
         for (retries in 0 until 10) {
             try {
+                val randomAccessFile = RandomAccessFile(file.absoluteFile, "rw")
                 val lock = randomAccessFile.channel.lock()
                 callback()
                 lock.release()
@@ -34,12 +34,6 @@ object FileLockUtil {
                 logger.error("Failed to write lock file", e)
                 throw FileLockFailedException(e)
             }
-        }
-
-        try {
-            Files.delete(file.toPath())
-        } catch (e: Exception) {
-            logger.error("Failed to delete lock file", e)
         }
     }
 }

@@ -7,7 +7,7 @@ import com.intellij.openapi.project.Project
 class MjmlSettings : PersistentStateComponent<MjmlSettings>, BaseState() {
     var renderScriptPath: String by nonNullString()
     val useBuiltInRenderer: Boolean
-        get() = renderScriptPath == BUILT_IN
+        get() = renderScriptPath == BUILT_IN || renderScriptPath.isBlank()
 
     private fun nonNullString(initialValue: String = "") = property(initialValue) { it == initialValue }
     override fun getState(): MjmlSettings = this
