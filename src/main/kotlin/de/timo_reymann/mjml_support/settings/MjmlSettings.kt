@@ -5,7 +5,7 @@ import com.intellij.openapi.project.Project
 
 @State(name = "de.timo_reymann.mjml_support.settings.MjmlSettings", storages = [Storage("mjmlSettings.xml")])
 class MjmlSettings : PersistentStateComponent<MjmlSettings>, BaseState() {
-    var renderScriptPath: String by nonNullString()
+    var renderScriptPath: String by nonNullString(BUILT_IN)
     val useBuiltInRenderer: Boolean
         get() = renderScriptPath == BUILT_IN || renderScriptPath.isBlank()
 

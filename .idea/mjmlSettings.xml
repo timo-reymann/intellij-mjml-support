@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="de.timo_reymann.mjml_support.settings.MjmlSettings">
+    <option name="renderScriptPath" value="Bundled" />
+  </component>
+</project>
