@@ -12,13 +12,13 @@ import com.intellij.openapi.ui.ComboBox
 import com.intellij.ui.CollectionComboBoxModel
 import com.intellij.ui.components.fields.ExtendableTextComponent
 import com.intellij.ui.components.fields.ExtendableTextField
+import com.intellij.ui.layout.GrowPolicy
 import com.intellij.ui.layout.panel
 import de.timo_reymann.mjml_support.editor.MjmlPreviewStartupActivity
 import de.timo_reymann.mjml_support.editor.render.BuiltinRenderResourceProvider
 import de.timo_reymann.mjml_support.util.FilePluginUtil
 import de.timo_reymann.mjml_support.util.UiTimerUtil
 import java.awt.Desktop
-import java.awt.Dimension
 import java.io.File
 import javax.swing.JButton
 import javax.swing.JComponent
@@ -56,33 +56,32 @@ class MjmlSettingsConfigurable(project: Project) : Configurable, Disposable {
     private val panel = panel {
         titledRow("Preview") {
             row {
-                cell {
+                cell(isFullWidth = true) {
                     label("Rendering script")
-                    comboBox(
-                        CollectionComboBoxModel(),
-                        state::renderScriptPath
-                    ).also {
-                        comboBox = it.component
+                    comboBox(CollectionComboBoxModel(), state::renderScriptPath)
+                        .growPolicy(GrowPolicy.MEDIUM_TEXT)
+                        .also {
+                            comboBox = it.component
 
-                        if (state.useBuiltInRenderer) {
-                            setComboBoxModelRenderer(null)
-                        } else {
-                            setComboBoxModelRenderer(state::renderScriptPath.get())
-                        }
-
-                        comboBox.preferredSize = Dimension(500, comboBox.preferredSize.height)
-                        comboBox.isEditable = true
-                        comboBox.editor = object : BasicComboBoxEditor() {
-                            override fun createEditorComponent(): JTextField {
-                                val ecbEditor = ExtendableTextField()
-                                with(ecbEditor) {
-                                    addExtension(browseExtension)
-                                    border = null
-                                }
-                                return ecbEditor
+                            if (state.useBuiltInRenderer) {
+                                setComboBoxModelRenderer(null)
+                            } else {
+                                setComboBoxModelRenderer(state::renderScriptPath.get())
                             }
-                        }
-                    }.comment("Bundled script uses MJML v${BuiltinRenderResourceProvider.getBundledMjmlVersion()}")
+
+                            //comboBox.preferredSize = Dimension(400, comboBox.preferredSize.height)
+                            comboBox.isEditable = true
+                            comboBox.editor = object : BasicComboBoxEditor() {
+                                override fun createEditorComponent(): JTextField {
+                                    val ecbEditor = ExtendableTextField()
+                                    with(ecbEditor) {
+                                        addExtension(browseExtension)
+                                        border = null
+                                    }
+                                    return ecbEditor
+                                }
+                            }
+                        }.comment("Bundled script uses MJML v${BuiltinRenderResourceProvider.getBundledMjmlVersion()}")
                 }
             }
             noteRow("""For more information about custom rendering scripts click <a href="https://plugins.jetbrains.com/plugin/16418-mjml-support/tutorials/custom-rendering-script">here</a>.""")

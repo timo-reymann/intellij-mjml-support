@@ -105,9 +105,16 @@ class MjmlRenderer(
         }
         commandLine.withParameters(script)
 
-        val (exitCode, output) = captureOutput(commandLine);
+        val (exitCode, output) = captureOutput(commandLine)
 
         if (exitCode != 0) {
+            if(!File(script).exists()) {
+                return renderError(
+                    MjmlBundle.message(if (settings.useBuiltInRenderer) "mjml_preview.renderer_copying" else "mjml_preview.renderer_missing"),
+                    "<pre>When finished, this preview will be reloaded</pre>"
+                )
+            }
+
             return renderError(
                 MjmlBundle.message("mjml_preview.render_failed"),
                 "<pre>$output</pre>"
