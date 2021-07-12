@@ -231,7 +231,13 @@ class BuiltInMjmlTagInformationProvider : MjmlTagInformationProvider() {
                     ATTRIBUTE_PADDING_BOTTOM,
                     ATTRIBUTE_PADDING_LEFT,
                     ATTRIBUTE_PADDING_RIGHT,
-                    ATTRIBUTE_PADDING_TOP
+                    ATTRIBUTE_PADDING_TOP,
+                    MjmlAttributeInformation(
+                        "line-height",
+                        MjmlAttributeType.PIXEL,
+                        "space between the lines",
+                        "1"
+                    )
                 ),
                 allowedParentTags = listOf("mj-accordion-element"),
                 canHaveChildren = false
