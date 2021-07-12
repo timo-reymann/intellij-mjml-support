@@ -38,7 +38,7 @@
         ]]></description>
     <change-notes><![CDATA[
         <ul>
-            <li>SNAPSHOT
+            <li>1.16.0
                 <ul>
                     <li>
                         Allow mj-accordion-title inside mj-accordion
