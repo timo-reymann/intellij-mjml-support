@@ -44,6 +44,7 @@
                         Add missing line-height attribute for mj-accordion-text
                         (<a href="https://github.com/timo-reymann/intellij-mjml-support/issues/44">#44</a>)
                     </li>
+                    <li>Add reference for css-class usage defined in css files</li>
                 </ul>
             </li>
             <li>1.16.0
@@ -297,6 +298,7 @@
     </extensions>
 
     <extensions defaultExtensionNs="com.intellij">
+        <fileBasedIndex implementation="de.timo_reymann.mjml_support.index.MjClassIndex"/>
         <fileType name="MJML"
                   implementationClass="de.timo_reymann.mjml_support.lang.MjmlHtmlFileType"
                   fieldName="INSTANCE"

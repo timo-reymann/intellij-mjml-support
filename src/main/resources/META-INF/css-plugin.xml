@@ -1,9 +1,11 @@
 <idea-plugin>
     <extensions defaultExtensionNs="com.intellij">
         <css.classOrIdUsagesProvider
-                implementation="de.timo_reymann.mjml_support.reference.MjmlCssClassUsageProvider" />
+                implementation="de.timo_reymann.mjml_support.reference.css.MjmlCssClassUsageProvider" />
         <css.classOrIdUsagesProvider implementation="de.timo_reymann.mjml_support.reference.MjmlComponentDefinedClassUsageProvider" />
-        <css.embeddedCssProvider implementation="de.timo_reymann.mjml_support.reference.MjmlEmbeddedCssProvider" />
+        <css.embeddedCssProvider implementation="de.timo_reymann.mjml_support.reference.css.MjmlEmbeddedCssProvider" />
         <multiHostInjector implementation="de.timo_reymann.mjml_support.injection.MjStyleCssInjector"/>
+
+        <psi.referenceContributor implementation="de.timo_reymann.mjml_support.reference.css.MjmlClassReferenceContributor" />
     </extensions>
 </idea-plugin>
