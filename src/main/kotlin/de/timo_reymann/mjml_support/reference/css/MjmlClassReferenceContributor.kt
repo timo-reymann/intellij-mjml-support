@@ -14,6 +14,8 @@ import com.intellij.psi.xml.XmlAttribute
 import com.intellij.psi.xml.XmlAttributeValue
 import com.intellij.util.CommonProcessors
 import com.intellij.util.ProcessingContext
+import com.intellij.util.indexing.FileBasedIndex
+import de.timo_reymann.mjml_support.index.MjmlIncludeIndex
 import de.timo_reymann.mjml_support.reference.MJML_FILE_PATTERN
 import de.timo_reymann.mjml_support.util.TextRangeUtil
 
@@ -55,9 +57,20 @@ class MjmlClassReferenceContributor : PsiReferenceContributor() {
                                 CommonProcessors.CollectProcessor(occurrences)
                             )
 
+
                         val textRange = TextRangeUtil.fromString(attribute.value!!, className)
                         occurrences.forEach { occurrence ->
-                            references += MjmlClassReference(element, occurrence, textRange)
+                            val isReachableFromReferencingElement = FileBasedIndex.getInstance()
+                                .getContainingFiles(
+                                    MjmlIncludeIndex.KEY,
+                                    MjmlIncludeIndex.createIndexKey(occurrence.containingFile.virtualFile),
+                                    GlobalSearchScope.allScope(project)
+                                )
+                                .contains(element.containingFile.virtualFile)
+
+                            if(isReachableFromReferencingElement) {
+                                references += MjmlClassReference(element, occurrence, textRange)
+                            }
                         }
                     }
 
