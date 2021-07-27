@@ -390,5 +390,6 @@
 
         <fileBasedIndex implementation="de.timo_reymann.mjml_support.index.MjmlClassUsageIndex"/>
         <fileBasedIndex implementation="de.timo_reymann.mjml_support.index.MjmlIncludeIndex" />
+        <fileBasedIndex implementation="de.timo_reymann.mjml_support.index.MjmlClassDefinitionIndex" />
     </extensions>
 </idea-plugin>
