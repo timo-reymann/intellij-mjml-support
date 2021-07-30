@@ -11,6 +11,7 @@ import com.intellij.util.indexing.ID
 import com.intellij.util.io.DataExternalizer
 import java.io.DataInput
 import java.io.DataOutput
+import java.lang.UnsupportedOperationException
 
 class MjmlIncludeIndex : AbstractMjmlFileBasedIndex<MjmlIncludeInfo>(1) {
     companion object {
@@ -35,6 +36,15 @@ class MjmlIncludeIndex : AbstractMjmlFileBasedIndex<MjmlIncludeInfo>(1) {
                 val includePath = it.getAttributeValue("path") ?: return@forEach
                 val includedFile = VfsUtil.findRelativeFile(includePath, fileContent.file) ?: return@forEach
                 val type = it.getAttribute("type")?.value ?: "mjml"
+
+                // In case the underlying file system doesnt support NIO Paths
+                // e.g. testing with TempFileSystem
+                try {
+                    val key = includedFile.toNioPath().toString()
+                } catch (e : UnsupportedOperationException) {
+                    return@forEach
+                }
+
                 val key = includedFile.toNioPath().toString()
                 if (result.containsKey(key)) {
                     result[key] = MjmlIncludeInfo(result[key]!!.occurrences + 1, type)

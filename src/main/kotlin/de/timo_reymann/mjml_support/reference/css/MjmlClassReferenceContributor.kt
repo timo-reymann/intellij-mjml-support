@@ -1,7 +1,7 @@
 package de.timo_reymann.mjml_support.reference.css;
 
-import com.intellij.lang.injection.InjectedLanguageManager
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.patterns.PlatformPatterns
 import com.intellij.psi.*
 import com.intellij.psi.css.CssSelectorSuffix
@@ -14,6 +14,7 @@ import com.intellij.psi.xml.XmlAttributeValue
 import com.intellij.util.CommonProcessors
 import com.intellij.util.ProcessingContext
 import com.intellij.util.indexing.FileBasedIndex
+import de.timo_reymann.mjml_support.index.MjmlClassDefinition
 import de.timo_reymann.mjml_support.index.MjmlClassDefinitionIndex
 import de.timo_reymann.mjml_support.index.MjmlIncludeIndex
 import de.timo_reymann.mjml_support.reference.MJML_FILE_PATTERN
@@ -24,38 +25,67 @@ import de.timo_reymann.mjml_support.util.TextRangeUtil
  */
 class MjmlClassReferenceContributor : PsiReferenceContributor() {
 
+    private fun getCssDefinedClasses(project: Project, className: String): ArrayList<PsiElement> {
+        val cssClasses = ArrayList<PsiElement>()
+        StubIndex.getInstance()
+            .processElements(
+                CssClassIndex.KEY,
+                className,
+                project,
+                GlobalSearchScope.allScope(project),
+                CssSelectorSuffix::class.java,
+                CommonProcessors.CollectProcessor(cssClasses)
+            )
+        return cssClasses
+    }
+
+    private fun getMjmlDefinedClasses(
+        project: Project,
+        className: String
+    ): MutableList<Pair<MjmlClassDefinition, VirtualFile>> {
+        val occurrences = mutableListOf<Pair<MjmlClassDefinition, VirtualFile>>()
+        FileBasedIndex.getInstance()
+            .processValues(
+                MjmlClassDefinitionIndex.KEY,
+                className,
+                null,
+                { virtualFile, mjmlClassDefinition ->
+                    occurrences.add(
+                        Pair<MjmlClassDefinition, VirtualFile>(
+                            mjmlClassDefinition,
+                            virtualFile
+                        )
+                    )
+                    true
+                },
+                GlobalSearchScope.allScope(project)
+            )
+        return occurrences
+    }
+
+    private fun isReachableFromReferencingElement(
+        project: Project,
+        usageFile: PsiFile,
+        cssSelectorFile: VirtualFile
+    ): Boolean {
+        // Prevent jar files etc.
+        if (!cssSelectorFile.isWritable) {
+            return false
+        }
+
+        return FileBasedIndex.getInstance()
+            .getContainingFiles(
+                MjmlIncludeIndex.KEY,
+                MjmlIncludeIndex.createIndexKey(cssSelectorFile),
+                GlobalSearchScope.allScope(project)
+            )
+            .contains(usageFile.containingFile.virtualFile)
+    }
+
     override fun registerReferenceProviders(registrar: PsiReferenceRegistrar) {
         registrar.registerReferenceProvider(
             PlatformPatterns.psiElement().inside(XmlAttributeValue::class.java).inFile(MJML_FILE_PATTERN),
             object : CssReferenceProvider() {
-                private fun getDeclaredCssClasses(project: Project, className: String): ArrayList<PsiElement> {
-                    val occurrences = ArrayList<PsiElement>()
-                    StubIndex.getInstance()
-                        .processElements(
-                            CssClassIndex.KEY,
-                            className,
-                            project,
-                            GlobalSearchScope.allScope(project),
-                            CssSelectorSuffix::class.java,
-                            CommonProcessors.CollectProcessor(occurrences)
-                        )
-
-                    FileBasedIndex.getInstance()
-                        .processValues(
-                            MjmlClassDefinitionIndex.KEY,
-                            className,
-                            null,
-                            { virtualFile, mjmlClassDefinition ->
-                                val psi = PsiManager.getInstance(project).findFile(virtualFile) ?: return@processValues true
-                                occurrences.add(InjectedLanguageManager.getInstance(project).findInjectedElementAt(psi ,mjmlClassDefinition.textOffset)!!)
-                                true
-                            },
-                            GlobalSearchScope.allScope(project)
-                        )
-
-                    return occurrences
-                }
-
                 override fun getReferencesByElement(
                     element: PsiElement,
                     context: ProcessingContext
@@ -65,7 +95,7 @@ class MjmlClassReferenceContributor : PsiReferenceContributor() {
                     }
                     val attribute = (element.parent as XmlAttribute)
 
-                    if (attribute.name != "css-class") {
+                    if (attribute.name != "css-class" && attribute.name != "mj-class") {
                         return PsiReference.EMPTY_ARRAY
                     }
 
@@ -74,22 +104,35 @@ class MjmlClassReferenceContributor : PsiReferenceContributor() {
                     val references = mutableListOf<PsiReference>()
 
                     classNames.forEach { className ->
-                        val occurrences = getDeclaredCssClasses(project, className,)
-
                         val textRange = TextRangeUtil.fromString(attribute.value!!, className)
-                        occurrences.forEach { occurrence ->
-                            val isReachableFromReferencingElement = FileBasedIndex.getInstance()
-                                .getContainingFiles(
-                                    MjmlIncludeIndex.KEY,
-                                    MjmlIncludeIndex.createIndexKey(occurrence.containingFile.virtualFile),
-                                    GlobalSearchScope.allScope(project)
-                                )
-                                .contains(element.containingFile.virtualFile)
 
-                            if (isReachableFromReferencingElement) {
-                                references += MjmlClassReference(element, occurrence, textRange)
+                        getCssDefinedClasses(project, className)
+                            .filter {
+                                isReachableFromReferencingElement(
+                                    project,
+                                    element.containingFile,
+                                    it.containingFile.virtualFile
+                                )
                             }
-                        }
+                            .forEach {
+                                references += CssDefinedClassReferenceImpl(
+                                    element,
+                                    textRange,
+                                    it
+                                )
+                            }
+
+                        getMjmlDefinedClasses(project, className)
+                            .filter { isReachableFromReferencingElement(project, element.containingFile, it.second) }
+                            .forEach {
+                                references += MjmlDefinedClassReferenceImpl(
+                                    element,
+                                    it.first,
+                                    it.second,
+                                    textRange
+                                )
+                            }
+
                     }
 
                     return references.toTypedArray()
