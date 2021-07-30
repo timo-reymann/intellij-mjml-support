@@ -5,7 +5,7 @@ import de.timo_reymann.mjml_support.api.MjmlAttributeType
 
 val ATTRIBUTE_CSS_CLASS = MjmlAttributeInformation(
     "css-class",
-    MjmlAttributeType.STRING,
+    MjmlAttributeType.CLASS,
     "class name, added to the root HTML element created"
 )
 
@@ -231,6 +231,6 @@ val ATTRIBUTE_BACKGROUND_URL = MjmlAttributeInformation(
 
 val ATTRIBUTE_MJ_CLASS = MjmlAttributeInformation(
     "mj-class",
-    MjmlAttributeType.STRING,
+    MjmlAttributeType.CLASS,
     "mj-class"
 )

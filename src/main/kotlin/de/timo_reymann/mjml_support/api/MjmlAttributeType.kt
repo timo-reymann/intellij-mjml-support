@@ -34,6 +34,8 @@ enum class MjmlAttributeType(val description: String) {
      */
     COLOR("color code in hex, rgba or color name"),
 
+    CLASS("mjml or css class list"),
+
     /**
      * Boolean attribute
      */

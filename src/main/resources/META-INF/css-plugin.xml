@@ -7,5 +7,12 @@
         <multiHostInjector implementation="de.timo_reymann.mjml_support.injection.MjStyleCssInjector"/>
 
         <psi.referenceContributor implementation="de.timo_reymann.mjml_support.reference.css.MjmlClassReferenceContributor" />
+
+        <!--
+        Disabled for now, is to unstable
+        <completion.contributor implementationClass="de.timo_reymann.mjml_support.completion.MjmlClassCompletionContributor"
+                                language="mjml"
+        />
+        -->
     </extensions>
 </idea-plugin>
