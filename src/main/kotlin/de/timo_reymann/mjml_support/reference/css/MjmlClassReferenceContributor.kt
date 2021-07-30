@@ -1,16 +1,14 @@
 package de.timo_reymann.mjml_support.reference.css;
 
-import com.intellij.openapi.project.Project
-import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.patterns.PlatformPatterns
-import com.intellij.psi.*
+import com.intellij.psi.PsiElement
+import com.intellij.psi.PsiReference
+import com.intellij.psi.PsiReferenceContributor
+import com.intellij.psi.PsiReferenceRegistrar
 import com.intellij.psi.css.impl.util.CssReferenceProvider
-import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.psi.xml.XmlAttribute
 import com.intellij.psi.xml.XmlAttributeValue
 import com.intellij.util.ProcessingContext
-import com.intellij.util.indexing.FileBasedIndex
-import de.timo_reymann.mjml_support.index.MjmlIncludeIndex
 import de.timo_reymann.mjml_support.index.util.getCssDefinedClasses
 import de.timo_reymann.mjml_support.index.util.getMjmlDefinedClasses
 import de.timo_reymann.mjml_support.index.util.isReachableFromReferencingElement

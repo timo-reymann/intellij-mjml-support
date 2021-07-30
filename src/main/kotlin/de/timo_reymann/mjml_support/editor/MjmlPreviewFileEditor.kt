@@ -3,14 +3,12 @@ package de.timo_reymann.mjml_support.editor
 import com.intellij.CommonBundle
 import com.intellij.codeHighlighting.BackgroundEditorHighlighter
 import com.intellij.ide.highlighter.HtmlFileType
-import com.intellij.lang.html.HTMLLanguage
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.application.ModalityState
 import com.intellij.openapi.application.WriteAction
 import com.intellij.openapi.editor.Document
 import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.editor.EditorFactory
-import com.intellij.openapi.editor.EditorKind
 import com.intellij.openapi.editor.event.DocumentEvent
 import com.intellij.openapi.editor.event.DocumentListener
 import com.intellij.openapi.fileEditor.FileDocumentManager
@@ -25,7 +23,6 @@ import com.intellij.openapi.util.UserDataHolderBase
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.ui.EditorTextField
 import com.intellij.ui.JBSplitter
-import com.intellij.ui.LanguageTextField
 import com.intellij.ui.components.JBScrollPane
 import com.intellij.ui.jcef.JCEFHtmlPanel
 import com.intellij.util.Alarm

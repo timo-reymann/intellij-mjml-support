@@ -9,7 +9,6 @@ import com.intellij.icons.AllIcons
 import com.intellij.patterns.PlatformPatterns
 import com.intellij.psi.css.impl.stubs.index.CssClassIndex
 import com.intellij.psi.stubs.StubIndex
-import com.intellij.psi.stubs.StubIndexEx
 import com.intellij.psi.xml.XmlAttributeValue
 import com.intellij.util.ProcessingContext
 import com.intellij.util.indexing.FileBasedIndex
@@ -17,8 +16,6 @@ import de.timo_reymann.mjml_support.api.MjmlAttributeInformation
 import de.timo_reymann.mjml_support.api.MjmlAttributeType
 import de.timo_reymann.mjml_support.icons.MjmlIcons
 import de.timo_reymann.mjml_support.index.MjmlClassDefinitionIndex
-import de.timo_reymann.mjml_support.index.util.getCssDefinedClasses
-import de.timo_reymann.mjml_support.index.util.getMjmlDefinedClasses
 
 /**
  * Experimental completion -> suggests not reachable files atm

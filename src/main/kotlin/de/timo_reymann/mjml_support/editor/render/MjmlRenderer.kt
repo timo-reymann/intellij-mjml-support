@@ -5,8 +5,8 @@ import com.intellij.execution.configurations.GeneralCommandLine
 import com.intellij.execution.process.OSProcessHandler
 import com.intellij.execution.process.ProcessAdapter
 import com.intellij.execution.process.ProcessEvent
-import com.intellij.execution.process.ProcessOutputType
-import com.intellij.execution.process.ProcessOutputType.*
+import com.intellij.execution.process.ProcessOutputType.STDERR
+import com.intellij.execution.process.ProcessOutputType.STDOUT
 import com.intellij.javascript.nodejs.interpreter.NodeCommandLineConfigurator
 import com.intellij.javascript.nodejs.interpreter.NodeJsInterpreterRef
 import com.intellij.notification.Notification
@@ -28,7 +28,6 @@ import de.timo_reymann.mjml_support.util.FilePluginUtil
 import de.timo_reymann.mjml_support.util.MessageBusUtil
 import java.io.File
 import java.util.*
-import java.util.concurrent.atomic.AtomicInteger
 import javax.swing.event.HyperlinkEvent
 
 class MjmlRenderer(

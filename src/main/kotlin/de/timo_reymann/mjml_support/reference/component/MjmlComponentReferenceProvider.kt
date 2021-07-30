@@ -6,7 +6,6 @@ import com.intellij.psi.*
 import com.intellij.psi.PsiReferenceRegistrar.HIGHER_PRIORITY
 import com.intellij.psi.xml.XmlTag
 import com.intellij.util.ProcessingContext
-import de.timo_reymann.mjml_support.api.MjmlTagInformationProvider
 import de.timo_reymann.mjml_support.reference.MJML_FILE_PATTERN
 
 class MjmlComponentReferenceProvider : PsiReferenceContributor() {

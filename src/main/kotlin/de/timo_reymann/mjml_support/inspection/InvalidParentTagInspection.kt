@@ -6,7 +6,6 @@ import com.intellij.codeInspection.htmlInspections.HtmlLocalInspectionTool
 import com.intellij.psi.xml.XmlTag
 import de.timo_reymann.mjml_support.bundle.MjmlBundle
 import de.timo_reymann.mjml_support.model.MjmlTagProvider
-import de.timo_reymann.mjml_support.model.PARENT_ANY
 
 class InvalidParentTagInspection : HtmlLocalInspectionTool() {
     override fun checkTag(tag: XmlTag, holder: ProblemsHolder, isOnTheFly: Boolean) {

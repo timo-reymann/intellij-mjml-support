@@ -11,7 +11,6 @@ import com.intellij.util.indexing.ID
 import com.intellij.util.io.DataExternalizer
 import java.io.DataInput
 import java.io.DataOutput
-import java.lang.UnsupportedOperationException
 
 class MjmlIncludeIndex : AbstractMjmlFileBasedIndex<MjmlIncludeInfo>(1) {
     companion object {
@@ -23,8 +22,12 @@ class MjmlIncludeIndex : AbstractMjmlFileBasedIndex<MjmlIncludeInfo>(1) {
             if(file is VirtualFileWindow) {
                 targetFile = (file as VirtualFileWindow).delegate
             }
-            
-            return targetFile.toNioPath().toString()
+
+            return try {
+                targetFile.toNioPath().toString()
+            } catch(e : UnsupportedOperationException) {
+                targetFile.path
+            }
         }
     }
 
