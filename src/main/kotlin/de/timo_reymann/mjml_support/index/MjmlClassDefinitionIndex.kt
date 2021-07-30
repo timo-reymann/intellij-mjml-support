@@ -13,6 +13,14 @@ import com.intellij.util.io.DataExternalizer
 import java.io.DataInput
 import java.io.DataOutput
 
+internal fun XmlTag.isMjStyle(): Boolean {
+    return this.name == "mj-style"
+}
+
+internal fun XmlTag.isMjClass(): Boolean {
+    return this.name == "mj-class"
+}
+
 class MjmlClassDefinitionIndex : AbstractMjmlFileBasedIndex<MjmlClassDefinition>(3) {
     companion object {
         val KEY = ID.create<String, MjmlClassDefinition>(MjmlClassDefinitionIndex::class.java.canonicalName)
@@ -26,17 +34,18 @@ class MjmlClassDefinitionIndex : AbstractMjmlFileBasedIndex<MjmlClassDefinition>
             val project = fileContent.project
 
             val relevantTags = PsiTreeUtil.findChildrenOfType(fileContent.psiFile, XmlTag::class.java)
-                .filter { it.name == "mj-style" || it.name == "mj-class" }
+                .filter { it.isMjStyle() || it.isMjClass() }
 
             relevantTags
-                .filter { it.name == "mj-style" }
+                .filter { it.isMjStyle() }
                 .forEach { xmlTag ->
                     PsiTreeUtil.findChildrenOfType(xmlTag, XmlText::class.java)
                         .firstOrNull()
                         ?.also {
                             val inlineStyleSheet = it.text
                             val styleSheet =
-                                CssElementFactory.getInstance(project).createStylesheet(inlineStyleSheet, CSSLanguage.INSTANCE)
+                                CssElementFactory.getInstance(project)
+                                    .createStylesheet(inlineStyleSheet, CSSLanguage.INSTANCE)
                             val rangeBegin = it.textOffset
 
                             for (ruleSet in styleSheet.rulesetList.rulesets) {
@@ -51,7 +60,10 @@ class MjmlClassDefinitionIndex : AbstractMjmlFileBasedIndex<MjmlClassDefinition>
                                         val selectorClassName = selectorPart.text.substring(1)
                                         result[selectorClassName] = MjmlClassDefinition(
                                             rangeBegin + ruleSet.textOffset,
-                                            TextRange(ruleSet.textRange.startOffset + rangeBegin, ruleSet.textRange.endOffset + rangeBegin),
+                                            TextRange(
+                                                ruleSet.textRange.startOffset + rangeBegin,
+                                                ruleSet.textRange.endOffset + rangeBegin
+                                            ),
                                             MjmlClassDefinitionType.MJ_STYLE
                                         )
                                     }
@@ -59,7 +71,18 @@ class MjmlClassDefinitionIndex : AbstractMjmlFileBasedIndex<MjmlClassDefinition>
                             }
 
                         }
-                    // TODO Index mj-class
+                    relevantTags
+                        .filter { it.isMjClass() }
+                        .forEach {
+                            val classNameAttribute = it.getAttribute("name") ?: return@forEach
+                            val className = classNameAttribute.value ?: return@forEach
+
+                            result[className] = MjmlClassDefinition(
+                                classNameAttribute.valueElement!!.textOffset,
+                                classNameAttribute.valueElement!!.textRange,
+                                MjmlClassDefinitionType.MJML_CLASS
+                            )
+                        }
                 }
 
             result

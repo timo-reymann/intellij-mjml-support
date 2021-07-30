@@ -7,6 +7,7 @@ import com.intellij.psi.*
 import com.intellij.psi.css.CssSelectorSuffix
 import com.intellij.psi.css.impl.stubs.index.CssClassIndex
 import com.intellij.psi.css.impl.util.CssReferenceProvider
+import com.intellij.psi.impl.source.xml.XmlAttributeImpl
 import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.psi.stubs.StubIndex
 import com.intellij.psi.xml.XmlAttribute
@@ -14,9 +15,7 @@ import com.intellij.psi.xml.XmlAttributeValue
 import com.intellij.util.CommonProcessors
 import com.intellij.util.ProcessingContext
 import com.intellij.util.indexing.FileBasedIndex
-import de.timo_reymann.mjml_support.index.MjmlClassDefinition
-import de.timo_reymann.mjml_support.index.MjmlClassDefinitionIndex
-import de.timo_reymann.mjml_support.index.MjmlIncludeIndex
+import de.timo_reymann.mjml_support.index.*
 import de.timo_reymann.mjml_support.reference.MJML_FILE_PATTERN
 import de.timo_reymann.mjml_support.util.TextRangeUtil
 
