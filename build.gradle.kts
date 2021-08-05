@@ -47,7 +47,8 @@ intellij {
             "CSS",
             "HtmlTools",
             "JavaScript",
-            "com.jetbrains.php:211.7142.45"
+            "com.jetbrains.php:211.7142.45",
+            "com.jetbrains.hackathon.indices.viewer:1.13"
         )
     )
 }

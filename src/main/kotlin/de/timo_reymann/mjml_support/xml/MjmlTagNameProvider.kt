@@ -14,7 +14,6 @@ import com.intellij.xml.XmlTagNameProvider
 import de.timo_reymann.mjml_support.api.MjmlTagInformation
 import de.timo_reymann.mjml_support.isInMjmlFile
 import de.timo_reymann.mjml_support.model.MjmlTagProvider
-import de.timo_reymann.mjml_support.model.PARENT_ANY
 
 const val ROOT_TAG = "mjml"
 

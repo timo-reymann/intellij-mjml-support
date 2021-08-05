@@ -7,7 +7,6 @@ import com.jetbrains.rd.util.warn
 import java.io.File
 import java.io.RandomAccessFile
 import java.nio.channels.OverlappingFileLockException
-import java.nio.file.Files
 
 object FileLockUtil {
     private val logger = getLogger<FileLockUtil>()

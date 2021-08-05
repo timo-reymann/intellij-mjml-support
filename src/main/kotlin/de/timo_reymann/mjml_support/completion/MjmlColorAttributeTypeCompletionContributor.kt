@@ -1,13 +1,15 @@
 package de.timo_reymann.mjml_support.completion
 
-import com.intellij.codeInsight.completion.*
+import com.intellij.codeInsight.completion.CompletionContributor
+import com.intellij.codeInsight.completion.CompletionParameters
+import com.intellij.codeInsight.completion.CompletionResultSet
+import com.intellij.codeInsight.completion.CompletionType
 import com.intellij.patterns.PlatformPatterns
 import com.intellij.psi.xml.XmlAttributeValue
 import com.intellij.util.ProcessingContext
 import com.intellij.xml.util.ColorSampleLookupValue
 import de.timo_reymann.mjml_support.api.MjmlAttributeInformation
 import de.timo_reymann.mjml_support.api.MjmlAttributeType
-import de.timo_reymann.mjml_support.model.getMjmlInfoFromAttributeValue
 
 class MjmlColorAttributeTypeCompletionContributor : CompletionContributor() {
     init {

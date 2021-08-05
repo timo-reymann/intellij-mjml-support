@@ -1,4 +1,4 @@
-package de.timo_reymann.mjml_support.reference
+package de.timo_reymann.mjml_support.reference.css
 
 import com.intellij.lang.Language
 import com.intellij.psi.css.EmbeddedCssProvider
