@@ -1,6 +1,7 @@
 package de.timo_reymann.mjml_support.xml
 
 import com.intellij.codeInsight.completion.XmlTagInsertHandler
+import com.intellij.codeInsight.daemon.impl.analysis.XmlHighlightVisitor
 import com.intellij.codeInsight.lookup.LookupElement
 import com.intellij.codeInsight.lookup.LookupElementBuilder
 import com.intellij.icons.AllIcons.Nodes.Tag

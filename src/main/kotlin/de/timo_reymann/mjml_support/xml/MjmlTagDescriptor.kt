@@ -1,5 +1,6 @@
 package de.timo_reymann.mjml_support.xml
 
+import com.intellij.codeInsight.daemon.impl.analysis.XmlHighlightVisitor
 import com.intellij.psi.PsiElement
 import com.intellij.psi.impl.source.xml.XmlDescriptorUtil
 import com.intellij.psi.xml.XmlAttribute
@@ -22,11 +23,21 @@ class MjmlTagDescriptor(private val tagName: String, private val xmlTag: XmlTag)
 
     override fun getDefaultName() = tagName
 
+    /**
+    Prevent further validation
+     */
+    private fun disableValidation(xmlTag : XmlTag?) {
+        xmlTag ?: return
+        XmlHighlightVisitor.setSkipValidation(xmlTag)
+    }
+
     override fun getElementsDescriptors(context: XmlTag?): Array<XmlElementDescriptor> {
+        disableValidation(context)
         return XmlDescriptorUtil.getElementsDescriptors(context)
     }
 
     override fun getElementDescriptor(childTag: XmlTag?, contextTag: XmlTag?): XmlElementDescriptor? {
+        disableValidation(contextTag)
         return XmlDescriptorUtil.getElementDescriptor(childTag, contextTag)
     }
 

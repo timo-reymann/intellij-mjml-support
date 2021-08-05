@@ -10,5 +10,5 @@ class MjmlXmlExtension : HtmlXmlExtension() {
 
     override fun isSelfClosingTagAllowed(tag: XmlTag): Boolean = true
 
-    override fun isCustomTagAllowed(tag: XmlTag?): Boolean = false
+    override fun isCustomTagAllowed(tag: XmlTag?): Boolean = true
 }
