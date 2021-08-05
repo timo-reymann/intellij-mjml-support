@@ -1,27 +1,16 @@
 package de.timo_reymann.mjml_support.reference
 
-import com.intellij.injected.editor.VirtualFileWindow
 import com.intellij.psi.PsiElement
 import com.intellij.psi.css.CssClass
 import com.intellij.psi.css.CssSelectorSuffix
 import com.intellij.psi.css.usages.CssClassOrIdReferenceBasedUsagesProvider
-import de.timo_reymann.mjml_support.lang.MjmlHtmlFileType
+import de.timo_reymann.mjml_support.util.isCssBlockInMjmlFile
 import de.timo_reymann.mjml_support.model.MjmlTagProvider
 
 class MjmlComponentDefinedClassUsageProvider : CssClassOrIdReferenceBasedUsagesProvider() {
     override fun acceptElement(candidate: PsiElement): Boolean {
         return candidate is CssClass
                 && isCssBlockInMjmlFile(candidate)
-    }
-
-    private fun isCssBlockInMjmlFile(candidate : PsiElement) : Boolean {
-        val file = candidate.containingFile.viewProvider.virtualFile
-
-        if(file !is VirtualFileWindow) {
-            return false
-        }
-
-       return file.delegate.fileType == MjmlHtmlFileType.INSTANCE
     }
 
     /**

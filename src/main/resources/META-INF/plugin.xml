@@ -44,9 +44,12 @@
                         Add missing line-height attribute for mj-accordion-text
                         (<a href="https://github.com/timo-reymann/intellij-mjml-support/issues/44">#44</a>)
                     </li>
-                    <li>Add reference (including renaming support) for css-class usage defined in standalone css files</li>
-                    <li>Add go to declaration for inline mj-style blocks and mj-includes with mj-style blocks</li>
-                    <li>Add go to declaration for mj-class definitions</li>
+                    <li>
+                        Add reference for css-class/mj-class usage defined in standalone css files and mj-style blocks
+                    </li>
+                    <li>
+                        Add autocomplete for css classes inside mj-class and css-class
+                    </li>
                 </ul>
             </li>
             <li>1.16.0
@@ -390,7 +393,7 @@
 
 
         <fileBasedIndex implementation="de.timo_reymann.mjml_support.index.MjmlClassUsageIndex"/>
-        <fileBasedIndex implementation="de.timo_reymann.mjml_support.index.MjmlIncludeIndex" />
-        <fileBasedIndex implementation="de.timo_reymann.mjml_support.index.MjmlClassDefinitionIndex" />
+        <fileBasedIndex implementation="de.timo_reymann.mjml_support.index.MjmlIncludeIndex"/>
+        <fileBasedIndex implementation="de.timo_reymann.mjml_support.index.MjmlClassDefinitionIndex"/>
     </extensions>
 </idea-plugin>

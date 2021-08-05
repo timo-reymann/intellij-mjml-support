@@ -1,5 +1,6 @@
-package de.timo_reymann.mjml_support.index.util
+package de.timo_reymann.mjml_support.util
 
+import com.intellij.injected.editor.VirtualFileWindow
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.PsiElement
@@ -13,6 +14,7 @@ import com.intellij.util.indexing.FileBasedIndex
 import de.timo_reymann.mjml_support.index.MjmlClassDefinition
 import de.timo_reymann.mjml_support.index.MjmlClassDefinitionIndex
 import de.timo_reymann.mjml_support.index.MjmlIncludeIndex
+import de.timo_reymann.mjml_support.lang.MjmlHtmlFileType
 
 fun getCssDefinedClasses(project: Project, className: String): ArrayList<PsiElement> {
     val cssClasses = ArrayList<PsiElement>()
@@ -52,6 +54,16 @@ fun getMjmlDefinedClasses(
     return occurrences
 }
 
+fun isCssBlockInMjmlFile(candidate: PsiElement): Boolean {
+    val file = candidate.containingFile.viewProvider.virtualFile
+
+    if (file !is VirtualFileWindow) {
+        return false
+    }
+
+    return file.delegate.fileType == MjmlHtmlFileType.INSTANCE
+}
+
 fun isReachableFromReferencingElement(
     project: Project,
     usageFile: PsiFile,
@@ -62,6 +74,11 @@ fun isReachableFromReferencingElement(
         return false
     }
 
+    // if is no file or same file
+    if(usageFile.virtualFile == null || isSameFile(cssSelectorFile, usageFile.virtualFile)) {
+        return true
+    }
+
     return FileBasedIndex.getInstance()
         .getContainingFiles(
             MjmlIncludeIndex.KEY,
@@ -69,4 +86,9 @@ fun isReachableFromReferencingElement(
             GlobalSearchScope.allScope(project)
         )
         .contains(usageFile.containingFile.virtualFile)
+}
+
+fun isSameFile(selectorFile : VirtualFile, targetFile : VirtualFile): Boolean {
+    return selectorFile == targetFile ||
+            (selectorFile is VirtualFileWindow && (selectorFile as VirtualFileWindow).delegate == targetFile)
 }

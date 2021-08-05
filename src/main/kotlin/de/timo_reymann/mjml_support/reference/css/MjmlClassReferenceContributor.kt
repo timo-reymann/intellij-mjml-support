@@ -9,9 +9,9 @@ import com.intellij.psi.css.impl.util.CssReferenceProvider
 import com.intellij.psi.xml.XmlAttribute
 import com.intellij.psi.xml.XmlAttributeValue
 import com.intellij.util.ProcessingContext
-import de.timo_reymann.mjml_support.index.util.getCssDefinedClasses
-import de.timo_reymann.mjml_support.index.util.getMjmlDefinedClasses
-import de.timo_reymann.mjml_support.index.util.isReachableFromReferencingElement
+import de.timo_reymann.mjml_support.util.getCssDefinedClasses
+import de.timo_reymann.mjml_support.util.getMjmlDefinedClasses
+import de.timo_reymann.mjml_support.util.isReachableFromReferencingElement
 import de.timo_reymann.mjml_support.reference.MJML_FILE_PATTERN
 import de.timo_reymann.mjml_support.util.TextRangeUtil
 

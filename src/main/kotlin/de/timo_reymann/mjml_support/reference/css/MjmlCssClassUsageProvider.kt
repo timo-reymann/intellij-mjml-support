@@ -1,6 +1,5 @@
 package de.timo_reymann.mjml_support.reference.css
 
-import com.intellij.injected.editor.VirtualFileWindow
 import com.intellij.psi.PsiElement
 import com.intellij.psi.css.CssClass
 import com.intellij.psi.css.CssSelectorSuffix
@@ -10,6 +9,7 @@ import com.intellij.psi.xml.XmlToken
 import com.intellij.util.indexing.FileBasedIndex
 import de.timo_reymann.mjml_support.index.MjmlClassUsageIndex
 import de.timo_reymann.mjml_support.index.MjmlIncludeIndex
+import de.timo_reymann.mjml_support.util.isSameFile
 
 /**
  * Mark usages of css-class for mj-style blocks
@@ -25,11 +25,9 @@ class MjmlCssClassUsageProvider : CssClassOrIdReferenceBasedUsagesProvider() {
         val targetElementFile = candidate.containingFile.virtualFile
         val selectorFile = selectorSuffix.containingFile.virtualFile
 
-        val isSameFile = selectorSuffix.containingFile == targetElementFile ||
-                (selectorFile is VirtualFileWindow && (selectorFile as VirtualFileWindow).delegate == targetElementFile)
 
         // same file -> already in usage
-        if (isSameFile) {
+        if (isSameFile(selectorFile, targetElementFile)) {
             return true
         }
 

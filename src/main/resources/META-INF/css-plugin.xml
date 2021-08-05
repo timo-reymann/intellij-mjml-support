@@ -1,18 +1,18 @@
 <idea-plugin>
     <extensions defaultExtensionNs="com.intellij">
         <css.classOrIdUsagesProvider
-                implementation="de.timo_reymann.mjml_support.reference.css.MjmlCssClassUsageProvider" />
-        <css.classOrIdUsagesProvider implementation="de.timo_reymann.mjml_support.reference.MjmlComponentDefinedClassUsageProvider" />
-        <css.embeddedCssProvider implementation="de.timo_reymann.mjml_support.reference.css.MjmlEmbeddedCssProvider" />
+                implementation="de.timo_reymann.mjml_support.reference.css.MjmlCssClassUsageProvider"/>
+        <css.classOrIdUsagesProvider
+                implementation="de.timo_reymann.mjml_support.reference.MjmlComponentDefinedClassUsageProvider"/>
+        <css.embeddedCssProvider implementation="de.timo_reymann.mjml_support.reference.css.MjmlEmbeddedCssProvider"/>
         <multiHostInjector implementation="de.timo_reymann.mjml_support.injection.MjStyleCssInjector"/>
 
-        <psi.referenceContributor implementation="de.timo_reymann.mjml_support.reference.css.MjmlClassReferenceContributor" />
+        <psi.referenceContributor
+                implementation="de.timo_reymann.mjml_support.reference.css.MjmlClassReferenceContributor"/>
 
-        <!--
-        Disabled for now, is to unstable
+
         <completion.contributor implementationClass="de.timo_reymann.mjml_support.completion.MjmlClassCompletionContributor"
                                 language="mjml"
         />
-        -->
     </extensions>
 </idea-plugin>
