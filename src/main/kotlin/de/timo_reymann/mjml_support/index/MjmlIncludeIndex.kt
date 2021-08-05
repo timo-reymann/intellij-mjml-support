@@ -19,13 +19,13 @@ class MjmlIncludeIndex : AbstractMjmlFileBasedIndex<MjmlIncludeInfo>(1) {
         fun createIndexKey(file: VirtualFile): String {
             var targetFile = file
 
-            if(file is VirtualFileWindow) {
+            if (file is VirtualFileWindow) {
                 targetFile = (file as VirtualFileWindow).delegate
             }
 
             return try {
                 targetFile.toNioPath().toString()
-            } catch(e : UnsupportedOperationException) {
+            } catch (e: UnsupportedOperationException) {
                 targetFile.path
             }
         }
@@ -39,16 +39,16 @@ class MjmlIncludeIndex : AbstractMjmlFileBasedIndex<MjmlIncludeInfo>(1) {
                 val includePath = it.getAttributeValue("path") ?: return@forEach
                 val includedFile = VfsUtil.findRelativeFile(includePath, fileContent.file) ?: return@forEach
                 val type = it.getAttribute("type")?.value ?: "mjml"
+                val key: String
 
                 // In case the underlying file system doesnt support NIO Paths
                 // e.g. testing with TempFileSystem
                 try {
-                    val key = includedFile.toNioPath().toString()
-                } catch (e : UnsupportedOperationException) {
+                    key = includedFile.toNioPath().toString()
+                } catch (e: UnsupportedOperationException) {
                     return@forEach
                 }
 
-                val key = includedFile.toNioPath().toString()
                 if (result.containsKey(key)) {
                     result[key] = MjmlIncludeInfo(result[key]!!.occurrences + 1, type)
                 } else {
