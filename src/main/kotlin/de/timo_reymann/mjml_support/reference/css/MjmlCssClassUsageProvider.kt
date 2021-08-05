@@ -26,11 +26,6 @@ class MjmlCssClassUsageProvider : CssClassOrIdReferenceBasedUsagesProvider() {
         val selectorFile = selectorSuffix.containingFile.virtualFile
 
 
-        // same file -> already in usage
-        if (isSameFile(selectorFile, targetElementFile)) {
-            return true
-        }
-
         val includesOfCssFile = FileBasedIndex.getInstance()
             .getContainingFiles(
                 MjmlIncludeIndex.KEY,
@@ -46,7 +41,7 @@ class MjmlCssClassUsageProvider : CssClassOrIdReferenceBasedUsagesProvider() {
         /*
         Check if class is used somewhere where the file is included,
         this DOES NOT include recursive checks, so if you e. g. use one include for css and another for a partial
-        the usage wont be declared.
+        the usage won't be declared.
 
         This is currently intended and if this is to strict the second solution would be to simply ignore the includes
         and assume if the class has been used anywhere and is included in any file it can be used an mark it as such.
@@ -58,6 +53,6 @@ class MjmlCssClassUsageProvider : CssClassOrIdReferenceBasedUsagesProvider() {
                 selectorSuffix.name!!,
                 GlobalSearchScope.allScope(project)
             )
-            .any { includesOfCssFile.contains(it) }
+            .any { includesOfCssFile.contains(it) || isSameFile(selectorFile, it) }
     }
 }
