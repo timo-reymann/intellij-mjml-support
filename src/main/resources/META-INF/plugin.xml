@@ -309,7 +309,7 @@
                   language="mjml"
                   extensions="mjml"/>
         <lang.parserDefinition language="mjml"
-                               implementationClass="de.timo_reymann.mjml_support.lang.MjmlHtmlParserDefinition"/>
+                               implementationClass="de.timo_reymann.mjml_support.lang.parsing.MjmlHtmlParserDefinition"/>
         <lang.documentationProvider language="mjml"
                                     implementationClass="de.timo_reymann.mjml_support.documentation.MjmlDocumentationProvider"/>
 

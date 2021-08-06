@@ -59,25 +59,25 @@ class MjmlIncludeIndex : AbstractMjmlFileBasedIndex<MjmlIncludeInfo>(1) {
         return@DataIndexer result
     }
 
+    private val valueExternalizer = object : DataExternalizer<MjmlIncludeInfo> {
+        override fun save(out: DataOutput, value: MjmlIncludeInfo?) {
+            value ?: return
+
+            out.writeInt(value.occurrences)
+            out.writeUTF(value.type)
+        }
+
+        override fun read(dataInput: DataInput): MjmlIncludeInfo {
+            val occurrences = dataInput.readInt()
+            val type = dataInput.readUTF()
+            return MjmlIncludeInfo(occurrences, type)
+        }
+
+    }
+
     override fun getName(): ID<String, MjmlIncludeInfo> = KEY
 
     override fun getIndexer(): DataIndexer<String, MjmlIncludeInfo, FileContent> = indexer
 
-    override fun getValueExternalizer(): DataExternalizer<MjmlIncludeInfo> {
-        return object : DataExternalizer<MjmlIncludeInfo> {
-            override fun save(out: DataOutput, value: MjmlIncludeInfo?) {
-                value ?: return
-
-                out.writeInt(value.occurrences)
-                out.writeUTF(value.type)
-            }
-
-            override fun read(dataInput: DataInput): MjmlIncludeInfo {
-                val occurrences = dataInput.readInt()
-                val type = dataInput.readUTF()
-                return MjmlIncludeInfo(occurrences, type)
-            }
-
-        }
-    }
+    override fun getValueExternalizer(): DataExternalizer<MjmlIncludeInfo> = valueExternalizer
 }
