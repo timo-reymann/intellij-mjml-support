@@ -83,7 +83,7 @@ class MjmlRenderer(
         try {
             renderResult = mapper.readValue(rawJson, MjmlRenderResult::class.java)
         } catch (e: Throwable) {
-            getLogger<MjmlRenderer>().error("Error parsing result from stdout: $rawJson", e)
+            getLogger<MjmlRenderer>().error(MjmlBundle.message("mjml_preview.render_parsing_failed", rawJson), e)
             return null
         }
         return renderResult
@@ -110,7 +110,7 @@ class MjmlRenderer(
             if(!File(script).exists()) {
                 return renderError(
                     MjmlBundle.message(if (settings.useBuiltInRenderer) "mjml_preview.renderer_copying" else "mjml_preview.renderer_missing"),
-                    "<pre>When finished, this preview will be reloaded</pre>"
+                    "<pre>${MjmlBundle.message("mjml_preview.renderer_preview_will_reload")}</pre>"
                 )
             }
 
@@ -125,7 +125,7 @@ class MjmlRenderer(
             propagateErrorsToUser(listOf(MjmlRenderResultError(output)))
             return renderError(
                 MjmlBundle.message("mjml_preview.unavailable"),
-                "Either your mjml is invalid, node.js is not set up properly, or the rendering script crashed"
+                MjmlBundle.message("mjml_preview.unavailable_crash")
             )
         }
 

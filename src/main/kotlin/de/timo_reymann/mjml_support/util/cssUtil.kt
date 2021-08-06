@@ -14,6 +14,7 @@ import com.intellij.util.indexing.FileBasedIndex
 import de.timo_reymann.mjml_support.index.MjmlClassDefinition
 import de.timo_reymann.mjml_support.index.MjmlClassDefinitionIndex
 import de.timo_reymann.mjml_support.index.MjmlIncludeIndex
+import de.timo_reymann.mjml_support.index.getFilesWithIncludesFor
 import de.timo_reymann.mjml_support.lang.MjmlHtmlFileType
 
 fun getCssDefinedClasses(project: Project, className: String): ArrayList<PsiElement> {
@@ -79,12 +80,7 @@ fun isReachableFromReferencingElement(
         return true
     }
 
-    return FileBasedIndex.getInstance()
-        .getContainingFiles(
-            MjmlIncludeIndex.KEY,
-            MjmlIncludeIndex.createIndexKey(cssSelectorFile),
-            GlobalSearchScope.allScope(project)
-        )
+    return getFilesWithIncludesFor(cssSelectorFile, project)
         .contains(usageFile.containingFile.virtualFile)
 }
 

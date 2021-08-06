@@ -50,6 +50,10 @@
                     <li>
                         Add autocomplete for css classes inside mj-class and css-class
                     </li>
+                    <li>
+                        Add faster, more transparent error handling for incomplete and included mjml files
+                        (<a href="https://github.com/timo-reymann/intellij-mjml-support/issues/50">#50</a>)
+                    </li>
                 </ul>
             </li>
             <li>1.16.0

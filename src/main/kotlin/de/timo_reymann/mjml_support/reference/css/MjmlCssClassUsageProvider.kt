@@ -9,6 +9,7 @@ import com.intellij.psi.xml.XmlToken
 import com.intellij.util.indexing.FileBasedIndex
 import de.timo_reymann.mjml_support.index.MjmlClassUsageIndex
 import de.timo_reymann.mjml_support.index.MjmlIncludeIndex
+import de.timo_reymann.mjml_support.index.getFilesWithIncludesFor
 import de.timo_reymann.mjml_support.util.isSameFile
 
 /**
@@ -26,12 +27,7 @@ class MjmlCssClassUsageProvider : CssClassOrIdReferenceBasedUsagesProvider() {
         val selectorFile = selectorSuffix.containingFile.virtualFile
 
 
-        val includesOfCssFile = FileBasedIndex.getInstance()
-            .getContainingFiles(
-                MjmlIncludeIndex.KEY,
-                MjmlIncludeIndex.createIndexKey(selectorSuffix.containingFile.virtualFile),
-                GlobalSearchScope.allScope(project)
-            )
+        val includesOfCssFile = getFilesWithIncludesFor(selectorSuffix.containingFile.virtualFile, project)
 
         // not used in any include -> cant be used
         if (includesOfCssFile.isEmpty()) {

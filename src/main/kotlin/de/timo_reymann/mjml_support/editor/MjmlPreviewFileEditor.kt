@@ -5,6 +5,7 @@ import com.intellij.codeHighlighting.BackgroundEditorHighlighter
 import com.intellij.ide.highlighter.HtmlFileType
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.application.ModalityState
+import com.intellij.openapi.application.ReadAction
 import com.intellij.openapi.application.WriteAction
 import com.intellij.openapi.editor.Document
 import com.intellij.openapi.editor.Editor
@@ -16,33 +17,42 @@ import com.intellij.openapi.fileEditor.FileEditor
 import com.intellij.openapi.fileEditor.FileEditorLocation
 import com.intellij.openapi.fileEditor.FileEditorState
 import com.intellij.openapi.fileEditor.impl.EditorHistoryManager
+import com.intellij.openapi.project.DumbService
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.Messages
 import com.intellij.openapi.util.Disposer
 import com.intellij.openapi.util.UserDataHolderBase
 import com.intellij.openapi.vfs.VirtualFile
+import com.intellij.psi.xml.XmlFile
 import com.intellij.ui.EditorTextField
 import com.intellij.ui.JBSplitter
 import com.intellij.ui.components.JBScrollPane
 import com.intellij.ui.jcef.JCEFHtmlPanel
 import com.intellij.util.Alarm
+import com.intellij.util.xml.DomElement
+import com.intellij.util.xml.DomManager
+import com.intellij.xml.util.XmlUtil
 import de.timo_reymann.mjml_support.bundle.MjmlBundle
 import de.timo_reymann.mjml_support.editor.provider.JCEFHtmlPanelProvider
 import de.timo_reymann.mjml_support.editor.provider.MjmlPreviewFileEditorProvider
 import de.timo_reymann.mjml_support.editor.render.MJML_PREVIEW_FORCE_RENDER_TOPIC
 import de.timo_reymann.mjml_support.editor.render.MjmlForceRenderListener
 import de.timo_reymann.mjml_support.editor.render.MjmlRenderer
+import de.timo_reymann.mjml_support.index.getFilesWithIncludesFor
 import de.timo_reymann.mjml_support.settings.MJML_SETTINGS_CHANGED_TOPIC
 import de.timo_reymann.mjml_support.settings.MjmlSettings
 import de.timo_reymann.mjml_support.settings.MjmlSettingsChangedListener
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import org.jdom.input.JDOMParseException
+import org.jdom.input.SAXBuilder
 import java.awt.Dimension
 import java.awt.GridBagConstraints
 import java.awt.GridBagLayout
 import java.awt.event.ComponentAdapter
 import java.awt.event.ComponentEvent
 import java.beans.PropertyChangeListener
+import java.io.StringReader
 import javax.swing.JComponent
 import javax.swing.JPanel
 
@@ -136,6 +146,18 @@ class MjmlPreviewFileEditor(private val project: Project, private val virtualFil
         return JCEFHtmlPanelProvider()
     }
 
+    private fun isValidMjmlDocument(content: String): Boolean {
+        try {
+            val doc = SAXBuilder().build(StringReader(content))
+            if (!doc.hasRootElement() || doc.rootElement.name != "mjml") {
+                return false
+            }
+            return doc.rootElement.getChild("mj-body") != null
+        } catch (e : JDOMParseException) {
+            return false
+        }
+    }
+
     // Is always run from pooled thread
     private fun updateHtml(force: Boolean) {
         if (htmlPanel == null || document == null || !virtualFile.isValid || Disposer.isDisposed(this) || mainEditor == null) {
@@ -143,12 +165,34 @@ class MjmlPreviewFileEditor(private val project: Project, private val virtualFil
         }
 
         val currentText = mainEditor!!.document.text
+
         if (!force && myLastRenderedHtml != "" && currentText == previousText) {
             return
         }
 
         previousText = currentText
-        val html = mjmlRenderer.render(currentText)
+
+        val isValidMjml = isValidMjmlDocument(currentText)
+
+        val html = if (isValidMjml) {
+            mjmlRenderer.render(currentText)
+        } else {
+            lateinit var includes: Collection<VirtualFile>
+            // While indexing still runs the editor might already be open
+            if(DumbService.isDumb(project)) {
+                includes = listOf()
+            } else {
+                ReadAction.run<Exception> {
+                    includes = getFilesWithIncludesFor(virtualFile, project)
+                }
+            }
+
+            renderError(
+                MjmlBundle.message("mjml_preview.unavailable"),
+                MjmlBundle.message(if (includes.isEmpty()) "mjml_preview.invalid_file_standalone" else "mjml_preview.invalid_file_include")
+            )
+        }
+
 
         synchronized(requestsLock) {
             if (lastHtmlOrRefreshRequest != null) {

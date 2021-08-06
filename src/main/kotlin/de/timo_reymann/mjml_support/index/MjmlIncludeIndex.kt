@@ -1,11 +1,14 @@
 package de.timo_reymann.mjml_support.index
 
 import com.intellij.injected.editor.VirtualFileWindow
+import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VfsUtil
 import com.intellij.openapi.vfs.VirtualFile
+import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.psi.xml.XmlTag
 import com.intellij.util.indexing.DataIndexer
+import com.intellij.util.indexing.FileBasedIndex
 import com.intellij.util.indexing.FileContent
 import com.intellij.util.indexing.ID
 import com.intellij.util.io.DataExternalizer
@@ -80,4 +83,13 @@ class MjmlIncludeIndex : AbstractMjmlFileBasedIndex<MjmlIncludeInfo>(1) {
     override fun getIndexer(): DataIndexer<String, MjmlIncludeInfo, FileContent> = indexer
 
     override fun getValueExternalizer(): DataExternalizer<MjmlIncludeInfo> = valueExternalizer
+}
+
+fun getFilesWithIncludesFor(file : VirtualFile, project : Project): MutableCollection<VirtualFile> {
+    return FileBasedIndex.getInstance()
+        .getContainingFiles(
+            MjmlIncludeIndex.KEY,
+            MjmlIncludeIndex.createIndexKey(file),
+            GlobalSearchScope.allScope(project)
+        )
 }
