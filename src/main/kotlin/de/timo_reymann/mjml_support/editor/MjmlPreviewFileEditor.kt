@@ -12,10 +12,7 @@ import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.editor.EditorFactory
 import com.intellij.openapi.editor.event.DocumentEvent
 import com.intellij.openapi.editor.event.DocumentListener
-import com.intellij.openapi.fileEditor.FileDocumentManager
-import com.intellij.openapi.fileEditor.FileEditor
-import com.intellij.openapi.fileEditor.FileEditorLocation
-import com.intellij.openapi.fileEditor.FileEditorState
+import com.intellij.openapi.fileEditor.*
 import com.intellij.openapi.fileEditor.impl.EditorHistoryManager
 import com.intellij.openapi.project.DumbService
 import com.intellij.openapi.project.Project
@@ -23,15 +20,11 @@ import com.intellij.openapi.ui.Messages
 import com.intellij.openapi.util.Disposer
 import com.intellij.openapi.util.UserDataHolderBase
 import com.intellij.openapi.vfs.VirtualFile
-import com.intellij.psi.xml.XmlFile
 import com.intellij.ui.EditorTextField
 import com.intellij.ui.JBSplitter
 import com.intellij.ui.components.JBScrollPane
 import com.intellij.ui.jcef.JCEFHtmlPanel
 import com.intellij.util.Alarm
-import com.intellij.util.xml.DomElement
-import com.intellij.util.xml.DomManager
-import com.intellij.xml.util.XmlUtil
 import de.timo_reymann.mjml_support.bundle.MjmlBundle
 import de.timo_reymann.mjml_support.editor.provider.JCEFHtmlPanelProvider
 import de.timo_reymann.mjml_support.editor.provider.MjmlPreviewFileEditorProvider
@@ -291,14 +284,6 @@ class MjmlPreviewFileEditor(private val project: Project, private val virtualFil
         private const val RENDERING_DELAY_MS = 40L
         private val BROWSER_PANEL_CONSTRAINTS = GridBagConstraints()
 
-        private fun isPreviewShown(project: Project, file: VirtualFile): Boolean {
-            val editorState = EditorHistoryManager.getInstance(project).getState(file, MjmlPreviewFileEditorProvider())
-            return when (editorState) {
-                !is MyFileEditorState -> true
-                else -> SplitEditorLayout.valueOf(editorState.splitLayout!!) != SplitEditorLayout.FIRST
-            }
-        }
-
         init {
             BROWSER_PANEL_CONSTRAINTS.fill = GridBagConstraints.BOTH
             BROWSER_PANEL_CONSTRAINTS.weightx = 1.0
@@ -335,11 +320,11 @@ class MjmlPreviewFileEditor(private val project: Project, private val virtualFil
             }, 10, ModalityState.stateForComponent(component))
         })
 
-        if (isPreviewShown(project, virtualFile)) {
+       // if (isPreviewShown(project, virtualFile)) {
             GlobalScope.launch {
                 attachHtmlPanel()
             }
-        }
+        //}
         val messageBus = ApplicationManager.getApplication().messageBus
         messageBus.connect(this)
             .subscribe(MJML_SETTINGS_CHANGED_TOPIC, this)

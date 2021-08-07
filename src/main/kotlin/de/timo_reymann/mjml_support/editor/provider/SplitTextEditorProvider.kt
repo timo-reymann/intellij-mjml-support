@@ -4,7 +4,7 @@ import com.intellij.openapi.fileEditor.*
 import com.intellij.openapi.project.DumbAware
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
-import de.timo_reymann.mjml_support.editor.MyFileEditorState
+import de.timo_reymann.mjml_support.editor.MjmlFileEditorState
 import org.jdom.Element
 
 abstract class SplitTextEditorProvider(
@@ -48,12 +48,12 @@ abstract class SplitTextEditorProvider(
         }
 
         val attribute = sourceElement.getAttribute(SPLIT_LAYOUT)
-        val layoutName: String = attribute?.value ?: FIRST_EDITOR
-        return MyFileEditorState(layoutName, firstState, secondState)
+        val layoutName: String = attribute?.value ?: TextEditorWithPreview.Layout.SHOW_EDITOR.name
+        return MjmlFileEditorState(TextEditorWithPreview.Layout.valueOf(layoutName.uppercase()), firstState, secondState)
     }
 
     override fun writeState(state: FileEditorState, project: Project, targetElement: Element) {
-        if (state !is MyFileEditorState) {
+        if (state !is MjmlFileEditorState) {
             return
         }
 
@@ -69,9 +69,7 @@ abstract class SplitTextEditorProvider(
             targetElement.addContent(child)
         }
 
-        if (state.splitLayout != null) {
-            targetElement.setAttribute(SPLIT_LAYOUT, state.splitLayout)
-        }
+        targetElement.setAttribute(SPLIT_LAYOUT, state.splitLayout.name)
     }
 
     protected abstract fun createSplitEditor(firstEditor: FileEditor, secondEditor: FileEditor): FileEditor
