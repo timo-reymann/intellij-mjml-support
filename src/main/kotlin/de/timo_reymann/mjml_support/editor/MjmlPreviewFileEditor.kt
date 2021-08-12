@@ -22,6 +22,11 @@ import com.intellij.openapi.ui.Messages
 import com.intellij.openapi.util.Disposer
 import com.intellij.openapi.util.UserDataHolderBase
 import com.intellij.openapi.vfs.VirtualFile
+import com.intellij.psi.PsiElement
+import com.intellij.psi.PsiFile
+import com.intellij.psi.PsiManager
+import com.intellij.psi.util.PsiTreeUtil
+import com.intellij.psi.xml.XmlTag
 import com.intellij.ui.EditorTextField
 import com.intellij.ui.JBSplitter
 import com.intellij.ui.components.JBScrollPane
@@ -138,16 +143,34 @@ class MjmlPreviewFileEditor(private val project: Project, private val virtualFil
         return JCEFHtmlPanelProvider()
     }
 
-    private fun isValidMjmlDocument(content: String): Boolean {
-        try {
-            val doc = SAXBuilder().build(StringReader(content))
-            if (!doc.hasRootElement() || doc.rootElement.name != "mjml") {
-                return false
-            }
-            return doc.rootElement.getChild("mj-body") != null
-        } catch (e: JDOMParseException) {
-            return false
+    private fun isValidMjmlDocument(): Boolean {
+        var hasRoot = false
+        var hasBody = false
+        var tags: Collection<XmlTag>? = null
+        ReadAction.run<Exception> {
+            val psi = PsiManager.getInstance(project)
+                .findFile(virtualFile)
+            psi ?: return@run
+            tags = PsiTreeUtil.findChildrenOfType(psi, XmlTag::class.java)
         }
+
+        tags ?: return false
+
+        for (tag in tags!!) {
+            if (!hasRoot) {
+                hasRoot = tag.name == "mjml"
+            }
+
+            if (!hasBody) {
+                hasBody = tag.name == "mj-body"
+            }
+
+            if (hasBody && hasRoot) {
+                break
+            }
+        }
+
+        return hasRoot && hasBody
     }
 
     // Is always run from pooled thread
@@ -164,7 +187,7 @@ class MjmlPreviewFileEditor(private val project: Project, private val virtualFil
 
         previousText = currentText
 
-        val isValidMjml = isValidMjmlDocument(currentText)
+        val isValidMjml = isValidMjmlDocument()
 
         val html = if (isValidMjml) {
             mjmlRenderer.render(currentText)

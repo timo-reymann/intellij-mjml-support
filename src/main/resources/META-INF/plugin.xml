@@ -9,15 +9,15 @@
         <ul>
             <li>MJML file icons</li>
             <li>Syntax highlighting and auto complete for mjml files</li>
-            <li>Auto complete for built in mjml tags</li>
+            <li>Auto complete for builtin mjml tags</li>
             <li>Syntax highlighting for custom tags and css (if you have css support enabled)</li>
-            <li>class usage for css-class attribute (if you have css support enabled)</li>
-            <li>path completion for mj-includes</li>
-            <li>url references</li>
-            <li>color annotation and detection for attributes</li>
-            <li>code inspections to highlight common errors</li>
-            <li>mjml live preview (if you have javascript support enabled + node.js setup locally)</li>
-            <li>inspections for containing tags</li>
+            <li>Class usage and reference support</li>
+            <li>Path completion for mj-includes</li>
+            <li>Url references</li>
+            <li>Color annotation and detection for attributes</li>
+            <li>Code inspections to highlight common errors</li>
+            <li>Mjml live preview (if you have javascript support enabled + node.js setup locally)</li>
+            <li>Inspections to detect and prevent common errors and pitfalls</li>
             <li>Support for custom components using ES6 syntax or <a
                     href="https://github.com/timo-reymann/mjml-custom-component-decorator">mjml-custom-component-decorator</a>
             </li>
@@ -38,7 +38,7 @@
         ]]></description>
     <change-notes><![CDATA[
         <ul>
-            <li>SNAPSHOT
+            <li>1.17.0
                 <ul>
                     <li>
                         Add missing line-height attribute for mj-accordion-text
