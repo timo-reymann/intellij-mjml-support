@@ -49,7 +49,14 @@ abstract class SplitTextEditorProvider(
 
         val attribute = sourceElement.getAttribute(SPLIT_LAYOUT)
         val layoutName: String = attribute?.value ?: TextEditorWithPreview.Layout.SHOW_EDITOR.name
-        return MjmlFileEditorState(TextEditorWithPreview.Layout.valueOf(layoutName.uppercase()), firstState, secondState)
+
+        val layout = try {
+            TextEditorWithPreview.Layout.valueOf(layoutName.uppercase())
+        } catch(e : Exception) {
+            TextEditorWithPreview.Layout.SHOW_EDITOR_AND_PREVIEW
+        }
+
+        return MjmlFileEditorState(layout, firstState, secondState)
     }
 
     override fun writeState(state: FileEditorState, project: Project, targetElement: Element) {
