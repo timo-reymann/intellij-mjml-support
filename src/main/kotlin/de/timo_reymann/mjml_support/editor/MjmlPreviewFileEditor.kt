@@ -12,8 +12,10 @@ import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.editor.EditorFactory
 import com.intellij.openapi.editor.event.DocumentEvent
 import com.intellij.openapi.editor.event.DocumentListener
-import com.intellij.openapi.fileEditor.*
-import com.intellij.openapi.fileEditor.impl.EditorHistoryManager
+import com.intellij.openapi.fileEditor.FileDocumentManager
+import com.intellij.openapi.fileEditor.FileEditor
+import com.intellij.openapi.fileEditor.FileEditorLocation
+import com.intellij.openapi.fileEditor.FileEditorState
 import com.intellij.openapi.project.DumbService
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.Messages
@@ -32,7 +34,6 @@ import com.intellij.ui.jcef.JCEFHtmlPanel
 import com.intellij.util.Alarm
 import de.timo_reymann.mjml_support.bundle.MjmlBundle
 import de.timo_reymann.mjml_support.editor.provider.JCEFHtmlPanelProvider
-import de.timo_reymann.mjml_support.editor.provider.MjmlPreviewFileEditorProvider
 import de.timo_reymann.mjml_support.editor.render.MJML_PREVIEW_FORCE_RENDER_TOPIC
 import de.timo_reymann.mjml_support.editor.render.MjmlForceRenderListener
 import de.timo_reymann.mjml_support.editor.render.MjmlRenderer
@@ -60,7 +61,7 @@ class MjmlPreviewFileEditor(private val project: Project, private val virtualFil
     private val document: Document? = FileDocumentManager.getInstance().getDocument(virtualFile)
 
     private val htmlPanelWrapper: JPanel
-    private var htmlPanel: JCEFHtmlPanel? = null
+    private var htmlPanel: MjmlJCEFHtmlPanel? = null
     private var mainEditor: Editor? = null
     internal var previewWidthStatus: PreviewWidthStatus? = null
     internal var sourceViewer: EditorTextField? = null
@@ -104,8 +105,6 @@ class MjmlPreviewFileEditor(private val project: Project, private val virtualFil
     }
 
     override fun getPreferredFocusedComponent(): JComponent? = htmlPanel?.component
-
-    private fun getPanel(): JCEFHtmlPanel? = this.htmlPanel
 
     override fun selectNotify() {
         if (htmlPanel != null) {
