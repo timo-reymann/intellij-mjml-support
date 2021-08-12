@@ -38,7 +38,7 @@
         ]]></description>
     <change-notes><![CDATA[
         <ul>
-            <li>SNAPSHOT
+            <li>1.17.0
                 <ul>
                     <li>
                         Add missing line-height attribute for mj-accordion-text
