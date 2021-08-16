@@ -279,7 +279,7 @@
         </ul>
         ]]></change-notes>
 
-    <idea-version since-build="203.8084.17"/>
+    <idea-version since-build="211.7442.40"/>
     <depends>com.intellij.modules.platform</depends>
     <depends>com.intellij.modules.lang</depends>
     <depends>com.intellij.modules.xml</depends>
