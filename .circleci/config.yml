@@ -64,8 +64,20 @@ jobs:
       - checkout
       - retrieve_cache
       - run:
+          name: Setup build version
+          command: echo "export SNAPSHOT_VERSION=`date +'%Y.%m.%d'`-${CIRCLE_BUILD_NUM}" >> $BASH_ENV
+      - run:
           name: Build snapshot
-          command: ./gradlew -PsnapshotVersion="`date +'%Y.%m.%d'`-${CIRCLE_BUILD_NUM}" buildPlugin publishPlugin
+          command: ./gradlew -PsnapshotVersion="$SNAPSHOT_VERSION" buildPlugin publishPlugin
+      - run:
+          name: Notify github issue about new snapshot
+          command: |
+            export COMMIT_MESSAGE="$(git log --format=oneline --pretty=format:%s  -n 1 $CIRCLE_SHA)"
+            sudo apt update
+            sudo apt install python3 python3-pip
+            pip3 install PyGitHub==1.55
+            ./notify_github.py
+
 
   publish_to_marketplace:
     executor: gradle
