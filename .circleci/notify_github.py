@@ -6,7 +6,7 @@ from github import Github
 import re
 import sys
 
-REPOSITORY = environ.get("CIRCLE_PROJECT_REPONAME", "timo-reymann/intellij-mjml-support")
+REPOSITORY = environ.get("CIRCLE_PROJECT_USERNAME", "timo-reymann") + "/" + environ.get("CIRCLE_PROJECT_REPONAME", "intellij-mjml-support")
 PREFIX = "[NEW SNAPSHOT]"
 
 
