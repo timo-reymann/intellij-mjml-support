@@ -2,7 +2,7 @@ version: '2.1'
 executors:
   gradle:
     docker:
-      - image: circleci/openjdk:11.0.3-jdk-stretch
+      - image: cimg/openjdk:11.0
   go:
     docker:
       - image: circleci/golang:1.15
