@@ -40,9 +40,7 @@ if __name__ == "__main__":
         print("Oh no, no feature. Anyways ...")
         sys.exit(0)
 
-    print(issue)
-
-    create_comment(g, issue,"""
+    create_comment(g, issue, f"""
     Latest snapshot mentioning this issue has been published to marketplace:
     <a href="https://plugins.jetbrains.com/plugin/16418-mjml-support/versions/snapshot">{environ.get("SNAPSHOT_VERSION")}</a>
     """.lstrip())
