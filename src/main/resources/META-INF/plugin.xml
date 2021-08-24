@@ -38,6 +38,14 @@
         ]]></description>
     <change-notes><![CDATA[
         <ul>
+            <li>SNAPSHOT
+                <ul>
+                    <li>
+                        Keep scroll position on rerendering
+                        (<a href="https://github.com/timo-reymann/intellij-mjml-support/issues/51">#51</a>)
+                    </li>
+                </ul>
+            </li>
             <li>1.17.0
                 <ul>
                     <li>

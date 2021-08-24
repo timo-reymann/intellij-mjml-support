@@ -255,8 +255,12 @@ class MjmlPreviewFileEditor(private val project: Project, private val virtualFil
         htmlPanel = null
     }
 
-    fun isHtmlPreview(): Boolean {
-        return sourceViewer != null
+    fun isHtmlPreview(): Boolean = sourceViewer != null
+
+    fun isScrollSync(): Boolean = htmlPanel?.syncScroll ?: false
+
+    fun setScrollSync(toggle: Boolean) {
+        htmlPanel?.syncScroll = toggle
     }
 
     fun createSourceViewer() {

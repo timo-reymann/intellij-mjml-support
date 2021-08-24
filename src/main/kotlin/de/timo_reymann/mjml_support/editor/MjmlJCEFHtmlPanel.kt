@@ -28,6 +28,27 @@ class MjmlJCEFHtmlPanel : JCEFHtmlPanel(getClassUrl()) {
 
     }
 
+    private val handler = object : CefLoadHandlerAdapter() {
+
+        override fun onLoadEnd(browser: CefBrowser?, frame: CefFrame?, httpStatusCode: Int) {
+            executeJavaScript(
+                // language=JavaScript
+                """
+                    window.scroll(0, $scrollOffset)
+                    
+                    function updateOffset(offset) {
+                       ${query.inject("offset")}
+                    }
+                    document.addEventListener("scroll", () => {
+                       updateOffset(window.scrollY)
+                    })
+                    
+                    """.trimIndent()
+            )
+        }
+    }
+
+    internal var syncScroll: Boolean = true
     val query = createQuery()
     private var scrollOffset = 0
 
@@ -52,24 +73,10 @@ class MjmlJCEFHtmlPanel : JCEFHtmlPanel(getClassUrl()) {
     override fun setHtml(html: String) {
         super.setHtml(html)
 
-        jbCefClient.addLoadHandler(object : CefLoadHandlerAdapter() {
+        jbCefClient.removeLoadHandler(handler, this.cefBrowser)
 
-            override fun onLoadEnd(browser: CefBrowser?, frame: CefFrame?, httpStatusCode: Int) {
-                executeJavaScript(
-                    // language=JavaScript
-                    """
-                    window.scroll(0, $scrollOffset)
-                    
-                    function updateOffset(offset) {
-                       ${query.inject("offset")}
-                    }
-                    document.addEventListener("scroll", () => {
-                       updateOffset(window.scrollY)
-                    })
-                    
-                    """.trimIndent()
-                )
-            }
-        }, this.cefBrowser)
+        if (this.syncScroll) {
+            jbCefClient.addLoadHandler(handler, this.cefBrowser)
+        }
     }
 }

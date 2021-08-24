@@ -64,6 +64,13 @@ open class MjmlSplitEditor(private val mainEditor: TextEditor, val secondEditor:
             }
         },
         Separator.create(),
+        object : ToggleAction("Keep Scroll Position", "Keep scroll position on rerendering",AllIcons.Actions.SynchronizeScrolling) {
+            override fun isSelected(e: AnActionEvent): Boolean = secondEditor.isScrollSync()
+
+            override fun setSelected(e: AnActionEvent, state: Boolean) {
+                secondEditor.setScrollSync(state)
+            }
+        },
         object : ToggleAction("Show HTML", "", AllIcons.FileTypes.Html) {
             override fun isSelected(e: AnActionEvent): Boolean = secondEditor.isHtmlPreview()
 
