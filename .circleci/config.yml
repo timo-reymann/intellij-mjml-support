@@ -8,6 +8,12 @@ executors:
       - image: circleci/golang:1.15
 
 commands:
+  check-changed-files-or-halt:
+    parameters:
+      pattern:
+        type: string
+    steps:
+      - run: git show -m HEAD --name-only --pretty="" | egrep -q '<< parameters.pattern >>' || circleci step halt
   retrieve_cache:
     steps:
       - restore_cache:
@@ -65,6 +71,8 @@ jobs:
     executor: gradle
     steps:
       - checkout
+      - check-changed-files-or-halt:
+          pattern: ^src
       - retrieve_cache
       - run:
           name: Setup build version
