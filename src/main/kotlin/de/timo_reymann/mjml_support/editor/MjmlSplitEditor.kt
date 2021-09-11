@@ -11,9 +11,7 @@ import com.intellij.openapi.project.DumbAware
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.pom.Navigatable
 import de.timo_reymann.mjml_support.bundle.MjmlBundle
-import de.timo_reymann.mjml_support.icons.EditorIcons
 import de.timo_reymann.mjml_support.mock.AnActionEventMock
-import javax.swing.Icon
 
 open class MjmlSplitEditor(private val mainEditor: TextEditor, val secondEditor: MjmlPreviewFileEditor) :
     TextEditorWithPreview(mainEditor, secondEditor, "TextEditorWithPreview", Layout.SHOW_EDITOR),
@@ -64,7 +62,11 @@ open class MjmlSplitEditor(private val mainEditor: TextEditor, val secondEditor:
             }
         },
         Separator.create(),
-        object : ToggleAction("Keep Scroll Position", "Keep scroll position on rerendering",AllIcons.Actions.SynchronizeScrolling) {
+        object : ToggleAction(
+            "Keep Scroll Position",
+            "Keep scroll position on rerendering",
+            AllIcons.Actions.SynchronizeScrolling
+        ) {
             override fun isSelected(e: AnActionEvent): Boolean = secondEditor.isScrollSync()
 
             override fun setSelected(e: AnActionEvent, state: Boolean) {
@@ -96,7 +98,7 @@ open class MjmlSplitEditor(private val mainEditor: TextEditor, val secondEditor:
 
         override fun isSelected(e: AnActionEvent): Boolean = myPreviewWidthStatus == secondEditor.previewWidthStatus
                 && !secondEditor.isHtmlPreview()
-                && layout != Layout.SHOW_PREVIEW
+                && layout != Layout.SHOW_EDITOR
 
         private fun select() = secondEditor.setPreviewWidth(myPreviewWidthStatus)
 
@@ -108,7 +110,4 @@ open class MjmlSplitEditor(private val mainEditor: TextEditor, val secondEditor:
     }
 }
 
-enum class PreviewWidthStatus(val text: String, val description: String, val width: Int, val icon: Icon) {
-    MOBILE("Mobile Preview", "Show preview for mobile devices", 400, EditorIcons.SMARTPHONE),
-    DESKTOP("Desktop Preview", "Show desktop preview", 800, EditorIcons.DESKTOP);
-}
+
