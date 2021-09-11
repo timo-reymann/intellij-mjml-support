@@ -29,7 +29,6 @@ import com.intellij.psi.xml.XmlTag
 import com.intellij.ui.EditorTextField
 import com.intellij.ui.JBSplitter
 import com.intellij.ui.components.JBScrollPane
-import com.intellij.ui.layout.panel
 import com.intellij.util.Alarm
 import de.timo_reymann.mjml_support.bundle.MjmlBundle
 import de.timo_reymann.mjml_support.editor.provider.JCEFHtmlPanelProvider
@@ -46,10 +45,15 @@ import java.awt.Dimension
 import java.awt.GridBagConstraints
 import java.awt.GridBagLayout
 import java.awt.Insets
-import java.awt.event.*
+import java.awt.event.ComponentAdapter
+import java.awt.event.ComponentEvent
+import java.awt.event.MouseEvent
+import java.awt.event.MouseListener
 import java.beans.PropertyChangeListener
-import javax.swing.*
-
+import javax.swing.JComponent
+import javax.swing.JLabel
+import javax.swing.JPanel
+import javax.swing.SwingConstants
 
 class MjmlPreviewFileEditor(private val project: Project, private val virtualFile: VirtualFile) :
     UserDataHolderBase(), FileEditor, MjmlSettingsChangedListener, MjmlForceRenderListener {
@@ -61,7 +65,6 @@ class MjmlPreviewFileEditor(private val project: Project, private val virtualFil
     private val pooledAlarm = Alarm(Alarm.ThreadToUse.POOLED_THREAD, this)
     private val swingAlarm = Alarm(Alarm.ThreadToUse.SWING_THREAD, this)
     private val requestsLock = Any()
-    private val previewWidthChangeListener = mutableListOf<PreviewWidthChangedListener>()
 
     private var htmlPanel: MjmlJCEFHtmlPanel? = null
     private var mainEditor: Editor? = null
@@ -72,10 +75,6 @@ class MjmlPreviewFileEditor(private val project: Project, private val virtualFil
 
     var previewWidthStatus: PreviewWidthStatus? = null
         private set
-
-    fun addPreviewWidthChangedListener(listener: PreviewWidthChangedListener) {
-        previewWidthChangeListener.add(listener)
-    }
 
     fun setMainEditor(editor: Editor?) {
         mainEditor = editor
@@ -319,18 +318,6 @@ class MjmlPreviewFileEditor(private val project: Project, private val virtualFil
             it.lackOfSpaceStrategy = Splitter.LackOfSpaceStrategy.HONOR_THE_SECOND_MIN_SIZE
         }
 
-        /*divider?.addComponentListener(object : ComponentAdapter() {
-            override fun componentMoved(e: ComponentEvent?) {
-                if (isHtmlPreview()) {
-                    return
-                }
-
-                previewWidthChangeListener.forEach {
-                    it.onResized(e, htmlPanelWrapper.width - PREVIEW_PADDING, previewWidthStatus)
-                }
-            }
-        })*/
-
         divider?.addComponentListener(object : ComponentAdapter() {
             override fun componentMoved(e: ComponentEvent?) {
                 setPreviewText("" + htmlPanelWrapper.width + "px")
@@ -342,20 +329,10 @@ class MjmlPreviewFileEditor(private val project: Project, private val virtualFil
             override fun mousePressed(e: MouseEvent?) {
                 updatePreviewWidth(0)
                 setPreviewWidth(null)
-                //toggleHtmlVisibility(false)
                 togglePreviewTextVisibility(true)
             }
 
             override fun mouseReleased(e: MouseEvent?) {
-                /*val resizedWidth = PreviewWidthStatus.getByWidth(htmlPanelWrapper.width - PREVIEW_PADDING)
-
-                // Same as set
-                if (resizedWidth == previewWidthStatus) {
-                    return
-                }
-
-                setPreviewWidth(null)*/
-                //toggleHtmlVisibility(true)
                 togglePreviewTextVisibility(false)
             }
 
