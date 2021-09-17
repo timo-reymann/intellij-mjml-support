@@ -1,4 +1,8 @@
 version: '2.1'
+
+orbs:
+  github-release: timo-reymann/github-release@1.0.0
+
 executors:
   gradle:
     docker:
@@ -109,26 +113,10 @@ jobs:
       - attach_workspace:
           at: .
           name: Retrieve plugin file
-      - run:
-          name: Create github release
-          command: |
-            go get github.com/github-release/github-release
-            git config user.name $CIRCLE_PROJECT_USERNAME
-            github-release release \
-                --user $CIRCLE_PROJECT_USERNAME \
-                --repo $CIRCLE_PROJECT_REPONAME \
-                --tag $CIRCLE_TAG \
-                --name "Release $CIRCLE_TAG"
-            for filename in build/distributions/*
-            do
-                github-release upload \
-                  --replace \
-                  --user $CIRCLE_PROJECT_USERNAME \
-                  --repo $CIRCLE_PROJECT_REPONAME \
-                  --tag $CIRCLE_TAG \
-                  --name "$(basename "$filename")" \
-                  --file "$filename"
-            done
+      - github-release/setup
+      - github-release/create-release
+      - github-release/upload-files:
+          file_pattern: 'build/distributions/*'
 
 workflows:
   continious:
