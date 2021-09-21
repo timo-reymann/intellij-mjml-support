@@ -21,6 +21,7 @@ about: If something isn't working as expected 🤔.
 Every version that can be important should be listed here!
 -->
 * Host OS: Linux/Darwin/Windows
+* IDE: <Name> <Version>
 
 ## Problem description
 <!-- Describe what you are trying to do -->
