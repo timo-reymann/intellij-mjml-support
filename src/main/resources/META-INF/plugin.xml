@@ -38,7 +38,7 @@
         ]]></description>
     <change-notes><![CDATA[
         <ul>
-            <li>SNAPSHOT
+            <li>1.18.0
                 <ul>
                     <li>
                         Add custom error reporter
