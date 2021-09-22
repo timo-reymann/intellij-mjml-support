@@ -13,7 +13,7 @@ import org.jetbrains.annotations.NotNull
 
 
 abstract class MjmlPluginBaseTestCase : BasePlatformTestCase() {
-    protected fun getRefsForCaret(): @NotNull Array<out PsiReference> {
+    protected fun getRefsForCaret(): Array<out PsiReference> {
         val element = myFixture.elementAtCaret
         return element.references
     }

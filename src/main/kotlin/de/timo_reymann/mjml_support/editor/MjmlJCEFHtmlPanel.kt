@@ -10,6 +10,7 @@ import org.apache.commons.lang.math.RandomUtils.nextInt
 import org.cef.browser.CefBrowser
 import org.cef.browser.CefFrame
 import org.cef.handler.CefLoadHandlerAdapter
+import java.lang.RuntimeException
 
 class MjmlJCEFHtmlPanel : JCEFHtmlPanel(getClassUrl()) {
 
