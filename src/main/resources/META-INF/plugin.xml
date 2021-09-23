@@ -38,6 +38,11 @@
         ]]></description>
     <change-notes><![CDATA[
         <ul>
+            <li>1.18.1
+                <ul>
+                    <li>Remove url length limit for error reporter</li>
+                </ul>
+            </li>
             <li>1.18.0
                 <ul>
                     <li>

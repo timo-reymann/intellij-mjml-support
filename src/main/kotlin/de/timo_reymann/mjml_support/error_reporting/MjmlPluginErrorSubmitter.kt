@@ -27,9 +27,6 @@ class MjmlPluginErrorSubmitter : ErrorReportSubmitter() {
         val applicationInfo by lazy {
             ApplicationInfo.getInstance().let { "${it.fullApplicationName} (build ${it.build})" }
         }
-
-        // http://www.faqs.org/rfcs/rfc2616.html
-        const val URL_MAX_LENGTH = 2_000
     }
 
     fun generateGitHubIssueLink(
@@ -121,7 +118,7 @@ class MjmlPluginErrorSubmitter : ErrorReportSubmitter() {
                 """
             #### StackTrace
             ```
-            ${body.take(1_000)}
+            $body
             ```
         """.trimIndent(), listOf("bug")
             )
@@ -130,8 +127,7 @@ class MjmlPluginErrorSubmitter : ErrorReportSubmitter() {
             return false
         }
 
-        // http://www.faqs.org/rfcs/rfc2616.html
-        BrowserUtil.browse(URI(url.take(URL_MAX_LENGTH)))
+        BrowserUtil.browse(URI(url))
         consumer.consume(
             SubmittedReportInfo(null, "Github Issue", SubmittedReportInfo.SubmissionStatus.NEW_ISSUE)
         )
