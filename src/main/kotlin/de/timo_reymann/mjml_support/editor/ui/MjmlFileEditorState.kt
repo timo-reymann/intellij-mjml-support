@@ -1,4 +1,4 @@
-package de.timo_reymann.mjml_support.editor
+package de.timo_reymann.mjml_support.editor.ui
 
 import com.intellij.openapi.fileEditor.FileEditorState
 import com.intellij.openapi.fileEditor.FileEditorStateLevel

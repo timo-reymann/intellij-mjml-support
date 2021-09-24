@@ -4,7 +4,7 @@ import com.intellij.openapi.fileEditor.*
 import com.intellij.openapi.project.DumbAware
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
-import de.timo_reymann.mjml_support.editor.MjmlFileEditorState
+import de.timo_reymann.mjml_support.editor.ui.MjmlFileEditorState
 import org.jdom.Element
 
 abstract class SplitTextEditorProvider(

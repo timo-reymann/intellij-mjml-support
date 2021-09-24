@@ -1,4 +1,4 @@
-package de.timo_reymann.mjml_support.editor
+package de.timo_reymann.mjml_support.editor.ui
 
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.util.Disposer
@@ -10,7 +10,6 @@ import org.apache.commons.lang.math.RandomUtils.nextInt
 import org.cef.browser.CefBrowser
 import org.cef.browser.CefFrame
 import org.cef.handler.CefLoadHandlerAdapter
-import java.lang.RuntimeException
 
 class MjmlJCEFHtmlPanel : JCEFHtmlPanel(getClassUrl()) {
 

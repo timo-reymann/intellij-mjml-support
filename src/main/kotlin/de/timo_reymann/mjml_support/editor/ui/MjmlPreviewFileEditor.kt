@@ -1,4 +1,4 @@
-package de.timo_reymann.mjml_support.editor
+package de.timo_reymann.mjml_support.editor.ui
 
 import com.intellij.CommonBundle
 import com.intellij.codeHighlighting.BackgroundEditorHighlighter
@@ -35,6 +35,7 @@ import de.timo_reymann.mjml_support.editor.provider.JCEFHtmlPanelProvider
 import de.timo_reymann.mjml_support.editor.render.MJML_PREVIEW_FORCE_RENDER_TOPIC
 import de.timo_reymann.mjml_support.editor.render.MjmlForceRenderListener
 import de.timo_reymann.mjml_support.editor.render.MjmlRenderer
+import de.timo_reymann.mjml_support.editor.renderError
 import de.timo_reymann.mjml_support.index.getFilesWithIncludesFor
 import de.timo_reymann.mjml_support.settings.MJML_SETTINGS_CHANGED_TOPIC
 import de.timo_reymann.mjml_support.settings.MjmlSettings

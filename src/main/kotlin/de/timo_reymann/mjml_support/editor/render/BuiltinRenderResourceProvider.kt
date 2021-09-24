@@ -5,8 +5,7 @@ import com.intellij.notification.NotificationType
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.diagnostic.logger
 import com.intellij.util.io.Decompressor
-import de.timo_reymann.mjml_support.editor.MjmlJCEFHtmlPanel
-import de.timo_reymann.mjml_support.editor.MjmlPreviewStartupActivity
+import de.timo_reymann.mjml_support.editor.ui.MjmlJCEFHtmlPanel
 import de.timo_reymann.mjml_support.util.FileLockFailedException
 import de.timo_reymann.mjml_support.util.FileLockUtil
 import de.timo_reymann.mjml_support.util.FilePluginUtil
@@ -15,7 +14,7 @@ import de.timo_reymann.mjml_support.util.MessageBusUtil
 object BuiltinRenderResourceProvider {
     private var mjmlVersion: String = "?"
     private val mapper = jacksonObjectMapper()
-    private val logger = logger<MjmlPreviewStartupActivity>()
+    private val logger = logger<BuiltinRenderResourceProvider>()
 
     fun getBundledMjmlVersion(): String {
         return mjmlVersion

@@ -1,4 +1,4 @@
-<idea-plugin>
+<idea-plugin require-restart="true">
     <id>de.timo_reymann.intellij-mjml-support</id>
     <name>MJML Support</name>
     <vendor email="jetbrains-plugins@timo-reymann.de" url="https://timo-reymann.de">Timo Reymann</vendor>
@@ -38,6 +38,11 @@
         ]]></description>
     <change-notes><![CDATA[
         <ul>
+            <li>SNAPSHOT
+                <ul>
+                    <li>Add support for reloading mjml files on changes</li>
+                </ul>
+            </li>
             <li>1.18.1
                 <ul>
                     <li>Remove url length limit for error reporter</li>
@@ -408,7 +413,7 @@
 
         <createFromTemplateHandler implementation="de.timo_reymann.mjml_support.actions.MjmlCreateFromTemplateHandler"/>
 
-        <postStartupActivity implementation="de.timo_reymann.mjml_support.editor.MjmlPreviewStartupActivity"/>
+        <postStartupActivity implementation="de.timo_reymann.mjml_support.editor.render.MjmlPreviewStartupActivity"/>
 
         <projectConfigurable id="de.timo_reymann.mjml_support.settings.MjmlSettingsConfigurable"
                              groupId="tools"

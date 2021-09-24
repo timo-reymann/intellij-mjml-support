@@ -3,6 +3,7 @@
         <fileEditorProvider implementation="de.timo_reymann.mjml_support.editor.provider.MjmlPreviewSplitEditorProvider" />
         <codeInsight.lineMarkerProvider language="mjml"
                                         implementationClass="de.timo_reymann.mjml_support.marker.CustomComponentLineMarkerProvider" />
+        <postStartupActivity implementation="de.timo_reymann.mjml_support.editor.filelistener.MjmlFileChangeListenerStartupActivity"/>
     </extensions>
 
     <extensions defaultExtensionNs="de.timo_reymann.intellij-mjml-support">
@@ -12,4 +13,6 @@
     <extensions defaultExtensionNs="JavaScript.JsonSchema">
         <ProviderFactory implementation="de.timo_reymann.mjml_support.config.MjmlConfigSchemaProviderFactory"/>
     </extensions>
+
+
 </idea-plugin>
