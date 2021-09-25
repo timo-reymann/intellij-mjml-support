@@ -5,10 +5,22 @@ import com.intellij.openapi.diagnostic.logger
 import com.intellij.openapi.externalSystem.autoimport.AsyncFileChangeListenerBase
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.openapi.vfs.newvfs.events.VFileEvent
-import de.timo_reymann.mjml_support.editor.render.MJML_PREVIEW_FORCE_RENDER_TOPIC
+import com.intellij.util.messages.Topic
 import de.timo_reymann.mjml_support.lang.MjmlHtmlFileType
 
-class MjmlFileChangeListener : AsyncFileChangeListenerBase() {
+val MJML_FILE_CHANGED_TOPIC = Topic.create("MjmlFileChanged", MjmlFileChangedListener::class.java)
+
+/**
+ * Listen for changes on mjml files in the current project
+ */
+interface MjmlFileChangedListener {
+    /**
+     * Gets called when mjml files changed on disk
+     */
+    fun onFilesChanged(files : Set<VirtualFile>)
+}
+
+open class MjmlFileChangeListener : AsyncFileChangeListenerBase() {
     private lateinit var mjmlFiles: MutableSet<VirtualFile>
     private val logger = logger<MjmlFileChangeListener>()
 
@@ -16,12 +28,12 @@ class MjmlFileChangeListener : AsyncFileChangeListenerBase() {
         if (mjmlFiles.isEmpty()) {
             return
         }
-        logger.info("Changed files: $mjmlFiles")
-        // TODO Create different topic with file
+        logger.debug("Changed files: $mjmlFiles")
+
         ApplicationManager.getApplication()
             .messageBus
-            .syncPublisher(MJML_PREVIEW_FORCE_RENDER_TOPIC)
-            .onForcedRender()
+            .syncPublisher(MJML_FILE_CHANGED_TOPIC)
+            .onFilesChanged(mjmlFiles)
     }
 
     override fun init() {

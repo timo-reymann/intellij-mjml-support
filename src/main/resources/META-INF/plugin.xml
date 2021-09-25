@@ -40,7 +40,10 @@
         <ul>
             <li>SNAPSHOT
                 <ul>
-                    <li>Add support for reloading mjml files on changes</li>
+                    <li>
+                        Preview reloads automatically if other mjml files changed in the current project
+                        (<a href="https://github.com/timo-reymann/intellij-mjml-support/issues/66">#66</a>)
+                    </li>
                 </ul>
             </li>
             <li>1.18.1

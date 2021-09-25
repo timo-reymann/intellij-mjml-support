@@ -30,12 +30,16 @@ import com.intellij.ui.EditorTextField
 import com.intellij.ui.JBSplitter
 import com.intellij.ui.components.JBScrollPane
 import com.intellij.util.Alarm
+import com.intellij.util.messages.Topic
 import de.timo_reymann.mjml_support.bundle.MjmlBundle
+import de.timo_reymann.mjml_support.editor.filelistener.MJML_FILE_CHANGED_TOPIC
+import de.timo_reymann.mjml_support.editor.filelistener.MjmlFileChangeListener
+import de.timo_reymann.mjml_support.editor.filelistener.MjmlFileChangedListener
 import de.timo_reymann.mjml_support.editor.provider.JCEFHtmlPanelProvider
 import de.timo_reymann.mjml_support.editor.render.MJML_PREVIEW_FORCE_RENDER_TOPIC
 import de.timo_reymann.mjml_support.editor.render.MjmlForceRenderListener
 import de.timo_reymann.mjml_support.editor.render.MjmlRenderer
-import de.timo_reymann.mjml_support.editor.renderError
+import de.timo_reymann.mjml_support.editor.render.renderError
 import de.timo_reymann.mjml_support.index.getFilesWithIncludesFor
 import de.timo_reymann.mjml_support.settings.MJML_SETTINGS_CHANGED_TOPIC
 import de.timo_reymann.mjml_support.settings.MjmlSettings
@@ -57,7 +61,7 @@ import javax.swing.JPanel
 import javax.swing.SwingConstants
 
 class MjmlPreviewFileEditor(private val project: Project, private val virtualFile: VirtualFile) :
-    UserDataHolderBase(), FileEditor, MjmlSettingsChangedListener, MjmlForceRenderListener {
+    UserDataHolderBase(), FileEditor, MjmlSettingsChangedListener, MjmlForceRenderListener, MjmlFileChangedListener {
 
     private val document: Document? = FileDocumentManager.getInstance().getDocument(virtualFile)
     private val htmlPanelWrapper: JPanel
@@ -179,7 +183,6 @@ class MjmlPreviewFileEditor(private val project: Project, private val virtualFil
         }
 
         val currentText = mainEditor!!.document.text
-
         if (!force && myLastRenderedHtml != "" && currentText == previousText) {
             return
         }
@@ -207,7 +210,10 @@ class MjmlPreviewFileEditor(private val project: Project, private val virtualFil
             )
         }
 
+        scheduleHtmlUpdate(html, force)
+    }
 
+    private fun scheduleHtmlUpdate(html: String, force: Boolean) {
         synchronized(requestsLock) {
             if (lastHtmlOrRefreshRequest != null) {
                 swingAlarm.cancelRequest(lastHtmlOrRefreshRequest!!)
@@ -358,6 +364,7 @@ class MjmlPreviewFileEditor(private val project: Project, private val virtualFil
         private val DEFAULT_PREVIEW_WIDTH = PreviewWidthStatus.MOBILE
         private val BROWSER_PANEL_CONSTRAINTS = GridBagConstraints()
         private val TEXT_PANEL_CONSTRAINTS = GridBagConstraints()
+        private val messageBus = ApplicationManager.getApplication().messageBus
 
         init {
             BROWSER_PANEL_CONSTRAINTS.fill = GridBagConstraints.BOTH
@@ -404,19 +411,28 @@ class MjmlPreviewFileEditor(private val project: Project, private val virtualFil
             }, 10, ModalityState.stateForComponent(component))
         })
 
-        // if (isPreviewShown(project, virtualFile)) {
         GlobalScope.launch {
             attachHtmlPanel()
         }
-        //}
-        val messageBus = ApplicationManager.getApplication().messageBus
+
         messageBus.connect(this)
             .subscribe(MJML_SETTINGS_CHANGED_TOPIC, this)
         messageBus.connect(this)
             .subscribe(MJML_PREVIEW_FORCE_RENDER_TOPIC, this)
+        messageBus.connect(this)
+            .subscribe(MJML_FILE_CHANGED_TOPIC, this)
     }
 
     override fun onChanged(settings: MjmlSettings) = forceRerender()
 
     override fun onForcedRender() = forceRerender()
+
+    override fun onFilesChanged(files: Set<VirtualFile>) {
+        val currentFileEventCount = files.count { it == virtualFile }
+        // In case only the current file changed
+        if (currentFileEventCount == files.count()) {
+            return
+        }
+        forceRerender()
+    }
 }

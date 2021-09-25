@@ -1,10 +1,10 @@
-package de.timo_reymann.mjml_support.editor
+package de.timo_reymann.mjml_support.editor.render
 
 import com.intellij.openapi.editor.colors.EditorColorsManager
 import de.timo_reymann.mjml_support.util.ColorUtil
 
 fun renderErrorHtml(body: String): String {
-    val colorScheme = EditorColorsManager.getInstance().getGlobalScheme()
+    val colorScheme = EditorColorsManager.getInstance().globalScheme
     return """
             <html>
                 <head>
