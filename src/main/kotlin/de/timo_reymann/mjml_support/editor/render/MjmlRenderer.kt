@@ -22,7 +22,6 @@ import com.jetbrains.rd.util.error
 import com.jetbrains.rd.util.getLogger
 import com.jetbrains.rd.util.warn
 import de.timo_reymann.mjml_support.bundle.MjmlBundle
-import de.timo_reymann.mjml_support.editor.renderError
 import de.timo_reymann.mjml_support.settings.MjmlSettings
 import de.timo_reymann.mjml_support.util.FilePluginUtil
 import de.timo_reymann.mjml_support.util.MessageBusUtil

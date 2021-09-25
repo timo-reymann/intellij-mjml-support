@@ -1,7 +1,7 @@
 package de.timo_reymann.mjml_support.util
 
 import de.timo_reymann.mjml_support.MjmlPluginBaseTestCase
-import de.timo_reymann.mjml_support.editor.MjmlJCEFHtmlPanel
+import de.timo_reymann.mjml_support.editor.ui.MjmlJCEFHtmlPanel
 import org.apache.commons.io.FileUtils
 
 class FilePluginUtilTest : MjmlPluginBaseTestCase() {

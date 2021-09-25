@@ -1,4 +1,4 @@
-package de.timo_reymann.mjml_support.editor
+package de.timo_reymann.mjml_support.editor.ui
 
 import de.timo_reymann.mjml_support.icons.EditorIcons
 import javax.swing.Icon

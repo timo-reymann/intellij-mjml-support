@@ -14,7 +14,7 @@ import com.intellij.ui.components.fields.ExtendableTextComponent
 import com.intellij.ui.components.fields.ExtendableTextField
 import com.intellij.ui.layout.GrowPolicy
 import com.intellij.ui.layout.panel
-import de.timo_reymann.mjml_support.editor.MjmlPreviewStartupActivity
+import de.timo_reymann.mjml_support.editor.render.MjmlPreviewStartupActivity
 import de.timo_reymann.mjml_support.editor.render.BuiltinRenderResourceProvider
 import de.timo_reymann.mjml_support.util.FilePluginUtil
 import de.timo_reymann.mjml_support.util.UiTimerUtil
