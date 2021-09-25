@@ -5,9 +5,11 @@ orbs:
 
 executors:
   gradle:
+    working_directory: ~/project
     docker:
       - image: cimg/openjdk:11.0
   go:
+    working_directory: ~/project
     docker:
       - image: circleci/golang:1.15
 
