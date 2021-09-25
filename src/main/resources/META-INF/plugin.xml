@@ -44,6 +44,7 @@
                         Preview reloads automatically if other mjml files changed in the current project
                         (<a href="https://github.com/timo-reymann/intellij-mjml-support/issues/66">#66</a>)
                     </li>
+                    <li>Enforce restart for plugin updates to prevent issues with duplicate resources being loaded</li>
                 </ul>
             </li>
             <li>1.18.1
