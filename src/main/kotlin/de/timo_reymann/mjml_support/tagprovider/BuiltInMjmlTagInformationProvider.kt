@@ -524,6 +524,12 @@ class BuiltInMjmlTagInformationProvider : MjmlTagInformationProvider() {
                 "Displays a horizontal divider that can be customized like a HTML border.",
                 attributes = arrayOf(
                     MjmlAttributeInformation(
+                        "align",
+                        MjmlAttributeType.STRING,
+                        "left/right/center/justify",
+                        "center"
+                    ),
+                    MjmlAttributeInformation(
                         "border-color",
                         MjmlAttributeType.COLOR,
                         "#000000"
