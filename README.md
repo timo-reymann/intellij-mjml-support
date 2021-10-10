@@ -6,6 +6,7 @@ intellij-mjml-support
 [![Version](https://img.shields.io/jetbrains/plugin/v/16418-mjml-support)](https://plugins.jetbrains.com/plugin/16418-mjml-support/versions)
 [![Downloads](https://img.shields.io/jetbrains/plugin/d/16418-mjml-support)](https://plugins.jetbrains.com/plugin/16418-mjml-support)
 [![Rating](https://img.shields.io/jetbrains/plugin/r/rating/16418-mjml-support)](https://plugins.jetbrains.com/plugin/16418-mjml-support/reviews)
+[![Dependabot](https://badgen.net/badge/Dependabot/enabled/green?icon=dependabot)](https://dependabot.com/)
 
 MJML support for the IntelliJ Platform.
 
