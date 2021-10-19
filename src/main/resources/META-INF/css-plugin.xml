@@ -10,9 +10,11 @@
         <psi.referenceContributor
                 implementation="de.timo_reymann.mjml_support.reference.css.MjmlClassReferenceContributor"/>
 
+        <completion.contributor
+                implementationClass="de.timo_reymann.mjml_support.completion.MjmlClassCompletionContributor"
+                language="mjml"/>
 
-        <completion.contributor implementationClass="de.timo_reymann.mjml_support.completion.MjmlClassCompletionContributor"
-                                language="mjml"
-        />
+        <fileBasedIndex implementation="de.timo_reymann.mjml_support.index.MjmlClassUsageIndex"/>
+        <fileBasedIndex implementation="de.timo_reymann.mjml_support.index.MjmlClassDefinitionIndex"/>
     </extensions>
 </idea-plugin>

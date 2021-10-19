@@ -38,6 +38,11 @@
         ]]></description>
     <change-notes><![CDATA[
         <ul>
+            <li>1.19.1
+                <ul>
+                    <li>Create css indices only when the css module has been loaded, preventing crashes on various IDEs.</li>
+                </ul>
+            </li>
             <li>1.19.0
                 <ul>
                     <li>
@@ -432,10 +437,9 @@
                                   language="mjml"
                                   implementation="de.timo_reymann.mjml_support.reference.component.MjmlComponentReferenceProvider"/>
 
-        <fileBasedIndex implementation="de.timo_reymann.mjml_support.index.MjmlClassUsageIndex"/>
+
         <fileBasedIndex implementation="de.timo_reymann.mjml_support.index.MjmlIncludeIndex"/>
-        <fileBasedIndex implementation="de.timo_reymann.mjml_support.index.MjmlClassDefinitionIndex"/>
-        
+
         <errorHandler implementation="de.timo_reymann.mjml_support.error_reporting.MjmlPluginErrorSubmitter" />
     </extensions>
 </idea-plugin>
