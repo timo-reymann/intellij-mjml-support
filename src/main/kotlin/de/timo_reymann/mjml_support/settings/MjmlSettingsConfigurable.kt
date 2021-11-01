@@ -57,6 +57,13 @@ class MjmlSettingsConfigurable(project: Project) : Configurable, Disposable {
         titledRow("Preview") {
             row {
                 cell(isFullWidth = true) {
+                    checkBox("Resolve local image paths", state::resolveLocalImages)
+                        .comment("While mails can not use local paths, the plugin can resolve them for you in the preview. " +
+                                "If you use a lot of local images this might impact preview update performance!")
+                }
+            }
+            row {
+                cell(isFullWidth = true) {
                     label("Rendering script")
                     comboBox(CollectionComboBoxModel(), state::renderScriptPath)
                         .growPolicy(GrowPolicy.MEDIUM_TEXT)
@@ -81,10 +88,10 @@ class MjmlSettingsConfigurable(project: Project) : Configurable, Disposable {
                                     return ecbEditor
                                 }
                             }
-                        }.comment("Bundled script uses MJML v${BuiltinRenderResourceProvider.getBundledMjmlVersion()}")
+                        }
+                        .comment("""Bundled script uses MJML v${BuiltinRenderResourceProvider.getBundledMjmlVersion()}, For more information about custom rendering scripts click <a href="https://plugins.jetbrains.com/plugin/16418-mjml-support/tutorials/custom-rendering-script">here</a>.""")
                 }
             }
-            noteRow("""For more information about custom rendering scripts click <a href="https://plugins.jetbrains.com/plugin/16418-mjml-support/tutorials/custom-rendering-script">here</a>.""")
         }
 
         titledRow("Trouble Shooting") {

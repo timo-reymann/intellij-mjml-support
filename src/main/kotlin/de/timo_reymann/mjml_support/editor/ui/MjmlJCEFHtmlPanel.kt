@@ -9,9 +9,11 @@ import com.intellij.ui.jcef.JCEFHtmlPanel
 import org.apache.commons.lang.math.RandomUtils.nextInt
 import org.cef.browser.CefBrowser
 import org.cef.browser.CefFrame
-import org.cef.handler.CefLoadHandlerAdapter
+import org.cef.handler.*
+import org.cef.misc.BoolRef
+import org.cef.network.CefRequest
 
-class MjmlJCEFHtmlPanel : JCEFHtmlPanel(getClassUrl()) {
+class MjmlJCEFHtmlPanel : JCEFHtmlPanel {
 
     companion object {
         internal const val RENDERER_ARCHIVE_NAME = "renderer.zip"
@@ -28,7 +30,22 @@ class MjmlJCEFHtmlPanel : JCEFHtmlPanel(getClassUrl()) {
 
     }
 
-    private val handler = object : CefLoadHandlerAdapter() {
+    constructor() : super(getClassUrl()) {
+        this.jbCefClient.addRequestHandler(object : CefRequestHandlerAdapter() {
+            override fun onBeforeBrowse(
+                browser: CefBrowser?,
+                frame: CefFrame?,
+                request: CefRequest?,
+                user_gesture: Boolean,
+                is_redirect: Boolean
+            ): Boolean {
+
+                return super.onBeforeBrowse(browser, frame, request, user_gesture, is_redirect)
+            }
+        }, this.cefBrowser)
+    }
+
+    private val loadHandler = object : CefLoadHandlerAdapter() {
 
         override fun onLoadEnd(browser: CefBrowser?, frame: CefFrame?, httpStatusCode: Int) {
             executeJavaScript(
@@ -73,10 +90,11 @@ class MjmlJCEFHtmlPanel : JCEFHtmlPanel(getClassUrl()) {
     override fun setHtml(html: String) {
         super.setHtml(html)
 
-        jbCefClient.removeLoadHandler(handler, this.cefBrowser)
-
+        jbCefClient.removeLoadHandler(loadHandler, this.cefBrowser)
         if (this.syncScroll) {
-            jbCefClient.addLoadHandler(handler, this.cefBrowser)
+            jbCefClient.addLoadHandler(loadHandler, this.cefBrowser)
         }
+
+
     }
 }

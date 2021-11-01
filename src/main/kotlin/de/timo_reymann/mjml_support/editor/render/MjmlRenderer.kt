@@ -25,6 +25,7 @@ import de.timo_reymann.mjml_support.bundle.MjmlBundle
 import de.timo_reymann.mjml_support.settings.MjmlSettings
 import de.timo_reymann.mjml_support.util.FilePluginUtil
 import de.timo_reymann.mjml_support.util.MessageBusUtil
+import org.jsoup.Jsoup
 import java.io.File
 import java.util.*
 import javax.swing.event.HyperlinkEvent
@@ -39,9 +40,12 @@ class MjmlRenderer(
 
     private val tempFile = File.createTempFile(UUID.randomUUID().toString(), "json")
     private val objectMapper = jacksonObjectMapper()
-    private val mjmlRenderParameters =
-        MjmlRenderParameters(project.basePath ?: File(virtualFile.path).parentFile.toString(), "")
+    private val basePath by lazy {
+        File(virtualFile.path).parentFile
+    }
 
+    private val mjmlRenderParameters =
+        MjmlRenderParameters(basePath.toString(), "")
 
     private fun updateTempFile(content: String) {
         mjmlRenderParameters.content = content
@@ -52,7 +56,7 @@ class MjmlRenderer(
         val nodeJsInterpreter = NodeJsInterpreterRef.createProjectRef().resolve(project) ?: return null
         val commandLine = GeneralCommandLine("node")
             .withInput(tempFile)
-            .withWorkDirectory(File(virtualFile.path).parentFile)
+            .withWorkDirectory(basePath)
         val commandLineConfigurator = NodeCommandLineConfigurator.find(nodeJsInterpreter)
         commandLineConfigurator.configure(commandLine)
         return commandLine
@@ -106,7 +110,7 @@ class MjmlRenderer(
         val (exitCode, output) = captureOutput(commandLine)
 
         if (exitCode != 0) {
-            if(!File(script).exists()) {
+            if (!File(script).exists()) {
                 return renderError(
                     MjmlBundle.message(if (settings.useBuiltInRenderer) "mjml_preview.renderer_copying" else "mjml_preview.renderer_missing"),
                     "<pre>${MjmlBundle.message("mjml_preview.renderer_preview_will_reload")}</pre>"
@@ -135,7 +139,31 @@ class MjmlRenderer(
             propagateErrorsToUser(errors)
         }
 
+        if(settings.resolveLocalImages) {
+            try {
+                return convertRelativeImagePathsToAbsolute(renderResult.html!!)
+            } catch (e: Exception) {
+                getLogger<MjmlRenderer>().log(
+                    com.jetbrains.rd.util.LogLevel.Warn,
+                    "Failed to replace image paths, returning unmodified html",
+                    e
+                )
+            }
+        }
+
         return renderResult.html ?: ""
+    }
+
+    private fun convertRelativeImagePathsToAbsolute(html: String): String {
+        val htmlDoc = Jsoup.parse(html)
+        val imgTags = htmlDoc.getElementsByTag("img")
+        imgTags.forEach {
+            val source = it.attr("src")
+            if (source != "") {
+                it.attr("src", "file://$basePath/$source")
+            }
+        }
+        return htmlDoc.html()
     }
 
     private fun propagateErrorsToUser(errors: List<MjmlRenderResultError>) {

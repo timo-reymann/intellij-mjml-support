@@ -38,6 +38,11 @@
         ]]></description>
     <change-notes><![CDATA[
         <ul>
+            <li>1.20.0
+                <ul>
+                    <li>Add option to preview local images (<a href="https://github.com/timo-reymann/intellij-mjml-support/issues/86">#86</a>)</li>
+                </ul>
+            </li>
             <li>1.19.1
                 <ul>
                     <li>Create css indices only when the css module has been loaded, preventing crashes on various IDEs.</li>
