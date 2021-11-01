@@ -50,7 +50,6 @@ jobs:
           path: build/test-results/test
       - store_artifacts:
           path: build/test-results/test
-          when: always
       - create_or_update_cache
 
   build:
