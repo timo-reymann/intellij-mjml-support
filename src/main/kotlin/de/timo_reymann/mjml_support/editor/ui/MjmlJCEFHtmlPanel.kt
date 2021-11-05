@@ -13,7 +13,7 @@ import org.cef.handler.*
 import org.cef.misc.BoolRef
 import org.cef.network.CefRequest
 
-class MjmlJCEFHtmlPanel : JCEFHtmlPanel {
+class MjmlJCEFHtmlPanel : JCEFHtmlPanel(getClassUrl()) {
 
     companion object {
         internal const val RENDERER_ARCHIVE_NAME = "renderer.zip"
@@ -28,21 +28,6 @@ class MjmlJCEFHtmlPanel : JCEFHtmlPanel {
             return "$url@${nextInt(Integer.MAX_VALUE)}"
         }
 
-    }
-
-    constructor() : super(getClassUrl()) {
-        this.jbCefClient.addRequestHandler(object : CefRequestHandlerAdapter() {
-            override fun onBeforeBrowse(
-                browser: CefBrowser?,
-                frame: CefFrame?,
-                request: CefRequest?,
-                user_gesture: Boolean,
-                is_redirect: Boolean
-            ): Boolean {
-
-                return super.onBeforeBrowse(browser, frame, request, user_gesture, is_redirect)
-            }
-        }, this.cefBrowser)
     }
 
     private val loadHandler = object : CefLoadHandlerAdapter() {
@@ -94,7 +79,5 @@ class MjmlJCEFHtmlPanel : JCEFHtmlPanel {
         if (this.syncScroll) {
             jbCefClient.addLoadHandler(loadHandler, this.cefBrowser)
         }
-
-
     }
 }
