@@ -221,9 +221,8 @@ class MjmlPreviewFileEditor(private val project: Project, private val virtualFil
 
             lastHtmlOrRefreshRequest = Runnable {
                 if (htmlPanel == null) return@Runnable
-                val currentHtml = "<html><head></head>$html</html>"
-                if (force || currentHtml != myLastRenderedHtml) {
-                    myLastRenderedHtml = currentHtml
+                if (force || html != myLastRenderedHtml) {
+                    myLastRenderedHtml = html
                     setComponentHtml()
                 }
                 synchronized(requestsLock) { lastHtmlOrRefreshRequest = null }

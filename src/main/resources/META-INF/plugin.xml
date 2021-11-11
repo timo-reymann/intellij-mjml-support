@@ -38,6 +38,11 @@
         ]]></description>
     <change-notes><![CDATA[
         <ul>
+            <li>1.20.1
+                <ul>
+                    <li>Fix duplicate html tags in preview</li>
+                </ul>
+            </li>
             <li>1.20.0
                 <ul>
                     <li>Add option to preview local images (<a href="https://github.com/timo-reymann/intellij-mjml-support/issues/86">#86</a>)</li>
