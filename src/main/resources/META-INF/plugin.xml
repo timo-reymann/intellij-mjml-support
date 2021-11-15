@@ -38,6 +38,11 @@
         ]]></description>
     <change-notes><![CDATA[
         <ul>
+            <li>1.20.2
+                <ul>
+                    <li>Decode umlauts in html output to prevent display errors</li>
+                </ul>
+            </li>
             <li>1.20.1
                 <ul>
                     <li>Fix duplicate html tags in preview</li>

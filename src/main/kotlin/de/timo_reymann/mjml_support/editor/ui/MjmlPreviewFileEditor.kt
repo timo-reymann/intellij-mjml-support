@@ -30,10 +30,8 @@ import com.intellij.ui.EditorTextField
 import com.intellij.ui.JBSplitter
 import com.intellij.ui.components.JBScrollPane
 import com.intellij.util.Alarm
-import com.intellij.util.messages.Topic
 import de.timo_reymann.mjml_support.bundle.MjmlBundle
 import de.timo_reymann.mjml_support.editor.filelistener.MJML_FILE_CHANGED_TOPIC
-import de.timo_reymann.mjml_support.editor.filelistener.MjmlFileChangeListener
 import de.timo_reymann.mjml_support.editor.filelistener.MjmlFileChangedListener
 import de.timo_reymann.mjml_support.editor.provider.JCEFHtmlPanelProvider
 import de.timo_reymann.mjml_support.editor.render.MJML_PREVIEW_FORCE_RENDER_TOPIC
@@ -46,6 +44,8 @@ import de.timo_reymann.mjml_support.settings.MjmlSettings
 import de.timo_reymann.mjml_support.settings.MjmlSettingsChangedListener
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import org.jsoup.Jsoup
+import org.jsoup.nodes.Entities
 import java.awt.Dimension
 import java.awt.GridBagConstraints
 import java.awt.GridBagLayout
@@ -59,6 +59,7 @@ import javax.swing.JComponent
 import javax.swing.JLabel
 import javax.swing.JPanel
 import javax.swing.SwingConstants
+
 
 class MjmlPreviewFileEditor(private val project: Project, private val virtualFile: VirtualFile) :
     UserDataHolderBase(), FileEditor, MjmlSettingsChangedListener, MjmlForceRenderListener, MjmlFileChangedListener {
@@ -192,7 +193,10 @@ class MjmlPreviewFileEditor(private val project: Project, private val virtualFil
         val isValidMjml = isValidMjmlDocument()
 
         val html = if (isValidMjml) {
-            mjmlRenderer.render(currentText)
+            val doc = Jsoup.parse(mjmlRenderer.render(currentText))
+            doc.outputSettings().escapeMode(Entities.EscapeMode.base)
+            doc.outputSettings().charset("ASCII")
+            doc.html()
         } else {
             lateinit var includes: Collection<VirtualFile>
             // While indexing still runs the editor might already be open

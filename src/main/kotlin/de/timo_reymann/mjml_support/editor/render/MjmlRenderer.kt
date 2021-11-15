@@ -25,8 +25,10 @@ import de.timo_reymann.mjml_support.bundle.MjmlBundle
 import de.timo_reymann.mjml_support.settings.MjmlSettings
 import de.timo_reymann.mjml_support.util.FilePluginUtil
 import de.timo_reymann.mjml_support.util.MessageBusUtil
+import jnr.ffi.provider.converters.StringResultConverter
 import org.jsoup.Jsoup
 import java.io.File
+import java.nio.charset.StandardCharsets
 import java.util.*
 import javax.swing.event.HyperlinkEvent
 
@@ -56,6 +58,7 @@ class MjmlRenderer(
         val nodeJsInterpreter = NodeJsInterpreterRef.createProjectRef().resolve(project) ?: return null
         val commandLine = GeneralCommandLine("node")
             .withInput(tempFile)
+            .withCharset(StandardCharsets.UTF_8)
             .withWorkDirectory(basePath)
         val commandLineConfigurator = NodeCommandLineConfigurator.find(nodeJsInterpreter)
         commandLineConfigurator.configure(commandLine)
@@ -77,7 +80,7 @@ class MjmlRenderer(
 
         processHandler.startNotify()
         processHandler.waitFor()
-        return Pair(processHandler.exitCode!!, buffer.toString())
+        return Pair(processHandler.exitCode!!,  buffer.toString())
     }
 
     private fun parseResult(rawJson: String): MjmlRenderResult? {
