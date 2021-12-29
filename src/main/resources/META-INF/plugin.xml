@@ -38,6 +38,11 @@
         ]]></description>
     <change-notes><![CDATA[
         <ul>
+            <li>1.21.0
+                <ul>
+                    <li>Add more error details for crashing scripts</li>
+                </ul>
+            </li>
             <li>1.20.4
                 <ul>
                     <li>Fix invisible toolbar on IntelliJ 2021.2+</li>
@@ -60,12 +65,16 @@
             </li>
             <li>1.20.0
                 <ul>
-                    <li>Add option to preview local images (<a href="https://github.com/timo-reymann/intellij-mjml-support/issues/86">#86</a>)</li>
+                    <li>Add option to preview local images (<a
+                            href="https://github.com/timo-reymann/intellij-mjml-support/issues/86">#86</a>)
+                    </li>
                 </ul>
             </li>
             <li>1.19.1
                 <ul>
-                    <li>Create css indices only when the css module has been loaded, preventing crashes on various IDEs.</li>
+                    <li>Create css indices only when the css module has been loaded, preventing crashes on various
+                        IDEs.
+                    </li>
                 </ul>
             </li>
             <li>1.19.0
@@ -77,7 +86,7 @@
                     <li>Enforce restart for plugin updates to prevent issues with duplicate resources being loaded</li>
                     <li>
                         Add align property to mj-divider (thanks to <a href="https://github.com/pahan35">@pahan35</a>)
-                      (<a href="https://github.com/timo-reymann/intellij-mjml-support/pull/79">#79</a>)
+                        (<a href="https://github.com/timo-reymann/intellij-mjml-support/pull/79">#79</a>)
                     </li>
                 </ul>
             </li>
@@ -465,6 +474,6 @@
 
         <fileBasedIndex implementation="de.timo_reymann.mjml_support.index.MjmlIncludeIndex"/>
 
-        <errorHandler implementation="de.timo_reymann.mjml_support.error_reporting.MjmlPluginErrorSubmitter" />
+        <errorHandler implementation="de.timo_reymann.mjml_support.error_reporting.MjmlPluginErrorSubmitter"/>
     </extensions>
 </idea-plugin>

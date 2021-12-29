@@ -83,14 +83,18 @@ class MjmlRenderer(
         return Pair(processHandler.exitCode!!,  buffer.toString())
     }
 
-    private fun parseResult(rawJson: String): MjmlRenderResult? {
+    private fun parseResult(rawJson: String): MjmlRenderResult {
         val mapper = jacksonObjectMapper()
-        val renderResult: MjmlRenderResult
+        var renderResult: MjmlRenderResult
         try {
             renderResult = mapper.readValue(rawJson, MjmlRenderResult::class.java)
         } catch (e: Throwable) {
-            getLogger<MjmlRenderer>().error(MjmlBundle.message("mjml_preview.render_parsing_failed", rawJson), e)
-            return null
+            getLogger<MjmlRenderer>().warn  {
+                MjmlBundle.message("mjml_preview.render_parsing_failed", rawJson) + e.stackTraceToString()
+            }
+            renderResult = MjmlRenderResult()
+            renderResult.errors = arrayOf()
+            renderResult.stdout = rawJson
         }
         return renderResult
     }
@@ -127,19 +131,18 @@ class MjmlRenderer(
         }
 
         val renderResult = parseResult(output)
-        if (renderResult == null) {
-            propagateErrorsToUser(listOf(MjmlRenderResultError(output)))
+        if (renderResult.html == null) {
+            propagateErrorsToUser(renderResult)
             return renderError(
                 MjmlBundle.message("mjml_preview.unavailable"),
                 MjmlBundle.message("mjml_preview.unavailable_crash")
             )
         }
 
-
         val errors = renderResult.errors
             .filter { it.formattedMessage != null }
         if (errors.isNotEmpty()) {
-            propagateErrorsToUser(errors)
+            propagateErrorsToUser(renderResult)
         }
 
         if(settings.resolveLocalImages) {
@@ -169,8 +172,9 @@ class MjmlRenderer(
         return htmlDoc.html()
     }
 
-    private fun propagateErrorsToUser(errors: List<MjmlRenderResultError>) {
-        val message = errors
+    private fun propagateErrorsToUser(result: MjmlRenderResult) {
+        val message = result.errors
+            .filter { it.formattedMessage != null }
             .joinToString("\n<br />") {
                 """
                             <a href="${virtualFile.path}:${it.line ?: 0}">${
@@ -179,9 +183,15 @@ class MjmlRenderer(
                         """.trimIndent()
             }
 
+        val errorDetails = if(result.stdout == null) {
+            ""
+        } else {
+            "<code${result.stdout}</code>"
+        }
+
         MessageBusUtil.NOTIFICATION_GROUP
             .createNotification(
-                "<html><strong>${MjmlBundle.message("mjml_preview.render_failed")}</strong></html>",
+                "<html><strong>${MjmlBundle.message("mjml_preview.render_failed")}</strong>${errorDetails}</html>",
                 "<html>\n${message}</html>",
                 NotificationType.WARNING,
                 object : NotificationListener {
