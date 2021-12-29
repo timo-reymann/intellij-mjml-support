@@ -21,7 +21,7 @@ class MjmlDocumentationProvider : DocumentationProvider {
         return null
     }
 
-    override fun getUrlFor(element: PsiElement, originalElement: PsiElement): MutableList<String> {
+    override fun getUrlFor(element: PsiElement?, originalElement: PsiElement?): MutableList<String> {
         if (element !is XmlTag && element !is XmlAttribute) {
             return mutableListOf()
         }
