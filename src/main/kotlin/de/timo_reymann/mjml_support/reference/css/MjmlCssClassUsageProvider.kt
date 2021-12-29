@@ -23,10 +23,7 @@ class MjmlCssClassUsageProvider : CssClassOrIdReferenceBasedUsagesProvider() {
         }
 
         val project = candidate.project
-        val targetElementFile = candidate.containingFile.virtualFile
         val selectorFile = selectorSuffix.containingFile.virtualFile
-
-
         val includesOfCssFile = getFilesWithIncludesFor(selectorSuffix.containingFile.virtualFile, project)
 
         // not used in any include -> cant be used
@@ -36,7 +33,7 @@ class MjmlCssClassUsageProvider : CssClassOrIdReferenceBasedUsagesProvider() {
 
         /*
         Check if class is used somewhere where the file is included,
-        this DOES NOT include recursive checks, so if you e. g. use one include for css and another for a partial
+        this DOES NOT include recursive checks, so if you e.g. use one include for css and another for a partial
         the usage won't be declared.
 
         This is currently intended and if this is to strict the second solution would be to simply ignore the includes

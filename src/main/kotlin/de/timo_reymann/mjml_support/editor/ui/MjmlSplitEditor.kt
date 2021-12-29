@@ -47,6 +47,10 @@ open class MjmlSplitEditor(private val mainEditor: TextEditor, val secondEditor:
         }
     }
 
+    override fun isShowFloatingToolbar() : Boolean {
+        return false;
+    }
+
     override fun getState(level: FileEditorStateLevel): FileEditorState {
         return MjmlFileEditorState(super.getLayout(), myEditor.getState(level), myPreview.getState(level))
     }

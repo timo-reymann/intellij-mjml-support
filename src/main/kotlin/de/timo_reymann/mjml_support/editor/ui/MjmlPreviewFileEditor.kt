@@ -42,6 +42,7 @@ import de.timo_reymann.mjml_support.index.getFilesWithIncludesFor
 import de.timo_reymann.mjml_support.settings.MJML_SETTINGS_CHANGED_TOPIC
 import de.timo_reymann.mjml_support.settings.MjmlSettings
 import de.timo_reymann.mjml_support.settings.MjmlSettingsChangedListener
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.jsoup.Jsoup
@@ -59,7 +60,6 @@ import javax.swing.JComponent
 import javax.swing.JLabel
 import javax.swing.JPanel
 import javax.swing.SwingConstants
-
 
 class MjmlPreviewFileEditor(private val project: Project, private val virtualFile: VirtualFile) :
     UserDataHolderBase(), FileEditor, MjmlSettingsChangedListener, MjmlForceRenderListener, MjmlFileChangedListener {
@@ -99,6 +99,7 @@ class MjmlPreviewFileEditor(private val project: Project, private val virtualFil
     private fun getSplitter(): JBSplitter? {
         return htmlPanelWrapper.parent as JBSplitter?
     }
+
 
     private fun updatePreviewWidth(width: Int) {
         val size = Dimension(width + PREVIEW_PADDING, 1)

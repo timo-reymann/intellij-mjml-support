@@ -38,6 +38,11 @@
         ]]></description>
     <change-notes><![CDATA[
         <ul>
+            <li>1.20.4
+                <ul>
+                    <li>Fix invisible toolbar on IntelliJ 2021.2+</li>
+                </ul>
+            </li>
             <li>1.20.3
                 <ul>
                     <li>Fix NullPointerExceptions with MJML DocumentationProvider</li>
@@ -337,7 +342,7 @@
         </ul>
         ]]></change-notes>
 
-    <idea-version since-build="211.7442.40"/>
+    <idea-version since-build="211.7628.21"/>
     <depends>com.intellij.modules.platform</depends>
     <depends>com.intellij.modules.lang</depends>
     <depends>com.intellij.modules.xml</depends>
