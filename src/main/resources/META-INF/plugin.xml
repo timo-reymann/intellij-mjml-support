@@ -38,6 +38,11 @@
         ]]></description>
     <change-notes><![CDATA[
         <ul>
+            <li>1.22.0
+                <ul>
+                    <li>Add autocomplete for local image paths</li>
+                </ul>
+            </li>
             <li>1.21.0
                 <ul>
                     <li>Add more error details for crashing scripts</li>
