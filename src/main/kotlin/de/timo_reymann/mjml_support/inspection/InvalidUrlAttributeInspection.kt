@@ -8,6 +8,7 @@ import com.intellij.psi.xml.XmlAttribute
 import de.timo_reymann.mjml_support.api.MjmlAttributeType
 import de.timo_reymann.mjml_support.bundle.MjmlBundle
 import de.timo_reymann.mjml_support.model.getMjmlTagFromAttribute
+import de.timo_reymann.mjml_support.settings.MjmlSettings
 import java.net.URL
 
 class InvalidUrlAttributeInspection : HtmlLocalInspectionTool() {
@@ -15,6 +16,11 @@ class InvalidUrlAttributeInspection : HtmlLocalInspectionTool() {
         val mjmlTag = getMjmlTagFromAttribute(attribute) ?: return
         val mjmlAttribute = mjmlTag.getAttributeByName(attribute.name) ?: return
         if (mjmlAttribute.type != MjmlAttributeType.URL) {
+            return
+        }
+
+        // Disable inspection in case local images are enabled
+        if (MjmlSettings.getInstance(attribute.project).resolveLocalImages) {
             return
         }
 

@@ -6,6 +6,7 @@ import com.intellij.codeInsight.completion.CompletionResultSet
 import com.intellij.util.ProcessingContext
 import de.timo_reymann.mjml_support.api.MjmlAttributeInformation
 import de.timo_reymann.mjml_support.api.MjmlAttributeType
+import de.timo_reymann.mjml_support.api.MjmlTagInformation
 import de.timo_reymann.mjml_support.model.getMjmlInfoFromAttributeValue
 
 abstract class MjmlAttributeCompletionProvider(private val attributeType: MjmlAttributeType) :
@@ -16,17 +17,18 @@ abstract class MjmlAttributeCompletionProvider(private val attributeType: MjmlAt
         result: CompletionResultSet
     ) {
         val target = parameters.position
-        val (_, mjmlAttribute) = getMjmlInfoFromAttributeValue(target)
+        val (mjmlTag, mjmlAttribute) = getMjmlInfoFromAttributeValue(target)
         if (mjmlAttribute?.type != attributeType) {
             return
         }
-        provide(parameters, context, result, mjmlAttribute)
+        provide(parameters, context, result, mjmlTag, mjmlAttribute)
     }
 
     abstract fun provide(
         parameters: CompletionParameters,
         context: ProcessingContext,
         result: CompletionResultSet,
+        mjmlTag : MjmlTagInformation?,
         mjmlAttribute: MjmlAttributeInformation
     )
 }

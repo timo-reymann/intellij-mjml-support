@@ -14,6 +14,7 @@ import com.intellij.util.ProcessingContext
 import com.intellij.util.indexing.FileBasedIndex
 import de.timo_reymann.mjml_support.api.MjmlAttributeInformation
 import de.timo_reymann.mjml_support.api.MjmlAttributeType
+import de.timo_reymann.mjml_support.api.MjmlTagInformation
 import de.timo_reymann.mjml_support.icons.MjmlIcons
 import de.timo_reymann.mjml_support.index.MjmlClassDefinitionIndex
 
@@ -30,6 +31,7 @@ class MjmlClassCompletionContributor : CompletionContributor() {
                     parameters: CompletionParameters,
                     context: ProcessingContext,
                     result: CompletionResultSet,
+                    mjmlTag: MjmlTagInformation?,
                     mjmlAttribute: MjmlAttributeInformation
                 ) {
                     val classListResult: CompletionResultSet

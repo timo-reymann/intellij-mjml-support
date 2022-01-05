@@ -415,6 +415,9 @@
         <completion.contributor language="mjml"
                                 implementationClass="de.timo_reymann.mjml_support.completion.MjmlAttributeTypeBooleanCompletionContributor"/>
 
+        <completion.contributor language="mjml"
+            implementationClass="de.timo_reymann.mjml_support.completion.MjmlLocalImagePathCompletionContributor"/>
+
         <localInspection implementationClass="de.timo_reymann.mjml_support.inspection.UnknownAttributeInspection"
                          language="mjml"
                          enabledByDefault="true"

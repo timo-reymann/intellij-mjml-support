@@ -10,6 +10,7 @@ import com.intellij.util.ProcessingContext
 import com.intellij.xml.util.ColorSampleLookupValue
 import de.timo_reymann.mjml_support.api.MjmlAttributeInformation
 import de.timo_reymann.mjml_support.api.MjmlAttributeType
+import de.timo_reymann.mjml_support.api.MjmlTagInformation
 
 class MjmlColorAttributeTypeCompletionContributor : CompletionContributor() {
     init {
@@ -21,6 +22,7 @@ class MjmlColorAttributeTypeCompletionContributor : CompletionContributor() {
                     parameters: CompletionParameters,
                     context: ProcessingContext,
                     result: CompletionResultSet,
+                    mjmlTag: MjmlTagInformation?,
                     mjmlAttribute: MjmlAttributeInformation
                 ) {
                     result.addAllElements(ColorSampleLookupValue.getColors()

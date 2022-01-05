@@ -24,6 +24,8 @@ import com.intellij.util.containers.ContainerUtil
 import com.intellij.util.indexing.FindSymbolParameters
 import de.timo_reymann.mjml_support.api.MjmlAttributeInformation
 import de.timo_reymann.mjml_support.api.MjmlAttributeType
+import de.timo_reymann.mjml_support.api.MjmlTagInformation
+import de.timo_reymann.mjml_support.index.FileIndexUtil
 import de.timo_reymann.mjml_support.inspection.IncludeType
 import java.io.File
 import java.util.*
@@ -36,6 +38,7 @@ class MjmlPathAttributeTypeCompletionContributor : CompletionContributor() {
             parameters: CompletionParameters,
             context: ProcessingContext,
             result: CompletionResultSet,
+            mjmlTag: MjmlTagInformation?,
             mjmlAttribute: MjmlAttributeInformation
         ) {
             val target = parameters.position
@@ -43,65 +46,16 @@ class MjmlPathAttributeTypeCompletionContributor : CompletionContributor() {
             val includeFileType = IncludeType.fromTag(xmlTag).fileType
             val project = target.project
             val rootFile = target.containingFile.originalFile.virtualFile
-            val resultNames: MutableSet<String> = TreeSet()
 
-            processAllNames(project) { fileName: String ->
-                if (filenameMatchesPrefixOrType(includeFileType, fileName, parameters.invocationCount)) {
-                    resultNames.add(fileName)
-                }
-                true
-            }
+            val fileNames =
+                FileIndexUtil.getMatchesForAutoComplete(project, rootFile, setOf(includeFileType), parameters.invocationCount)
 
-            val scope = ProjectScope.getProjectScope(project)
-
-            for (resultName in resultNames) {
-
-                val files = FilenameIndex.getFilesByName(project, resultName, scope)
-
-                if (files.isEmpty()) {
-                    continue
-                }
-
-                for (psiFile in files) {
-                    // ProgressManager.checkCanceled()
-                    val virtualFile: VirtualFile = psiFile.virtualFile ?: continue
-                    if (virtualFile == rootFile) {
-                        continue
-                    }
-
-                    val filePath: String = File(virtualFile.path).relativeTo(File(rootFile.parent.path)).toString()
-                    result.addElement(LookupElementBuilder.create(filePath).withIcon(includeFileType.icon))
-                }
-            }
-        }
-    }
-
-    private fun filenameMatchesPrefixOrType(fileType : FileType, fileName: String, invocationCount: Int): Boolean {
-        if (invocationCount > 2) {
-            return true
-        }
-
-        val extension = FileUtilRt.getExtension(fileName)
-        if (extension.isEmpty()) {
-            return false
-        }
-
-        for (matcher in FileTypeManager.getInstance().getAssociations(fileType)) {
-            if (matcher.acceptsCharSequence(fileName)) return true
-        }
-
-        return false
-    }
-
-    private fun processAllNames(project: Project, processor: Processor<in String>) {
-        for (contributor in ChooseByNameContributor.FILE_EP_NAME.extensionList) {
-            try {
-                if (contributor is ChooseByNameContributorEx) {
-                    contributor.processNames(processor, FindSymbolParameters.searchScopeFor(project, false), null)
-                } else {
-                    ContainerUtil.process(contributor.getNames(project, false), processor)
-                }
-            } catch (ex: Exception) {
+            for (path in fileNames) {
+                result.addElement(
+                    LookupElementBuilder
+                        .create(path)
+                        .withIcon(includeFileType.icon)
+                )
             }
         }
     }

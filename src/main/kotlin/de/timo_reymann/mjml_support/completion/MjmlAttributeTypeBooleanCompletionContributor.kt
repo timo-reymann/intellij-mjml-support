@@ -10,6 +10,7 @@ import com.intellij.psi.xml.XmlAttributeValue
 import com.intellij.util.ProcessingContext
 import de.timo_reymann.mjml_support.api.MjmlAttributeInformation
 import de.timo_reymann.mjml_support.api.MjmlAttributeType
+import de.timo_reymann.mjml_support.api.MjmlTagInformation
 
 class MjmlAttributeTypeBooleanCompletionContributor : CompletionContributor() {
     private val LOOKUP_OPTIONS = listOf(
@@ -26,6 +27,7 @@ class MjmlAttributeTypeBooleanCompletionContributor : CompletionContributor() {
                     parameters: CompletionParameters,
                     context: ProcessingContext,
                     result: CompletionResultSet,
+                    mjmlTag: MjmlTagInformation?,
                     mjmlAttribute: MjmlAttributeInformation
                 ) = result.addAllElements(LOOKUP_OPTIONS)
             })
