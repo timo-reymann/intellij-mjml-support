@@ -28,7 +28,7 @@ import javax.swing.plaf.basic.BasicComboBoxEditor
 class MjmlSettingsConfigurable(project: Project) : Configurable, Disposable {
 
     private var state = MjmlSettings.getInstance(project)
-    private lateinit var comboBox: ComboBox<String>;
+    private lateinit var comboBox: ComboBox<String>
     private val browseExtension = ExtendableTextComponent.Extension.create(
         AllIcons.General.OpenDisk, AllIcons.General.OpenDiskHover,
         "Select custom rendering script"

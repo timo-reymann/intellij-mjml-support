@@ -78,6 +78,7 @@ class MjmlPreviewFileEditor(private val project: Project, private val virtualFil
     private var myLastRenderedHtml = ""
     private var sourceViewer: EditorTextField? = null
     private var lastHtmlOrRefreshRequest: Runnable? = null
+    private var isDisposed = false
 
     var previewWidthStatus: PreviewWidthStatus? = null
         private set
@@ -132,6 +133,7 @@ class MjmlPreviewFileEditor(private val project: Project, private val virtualFil
         if (htmlPanel != null) {
             Disposer.dispose(htmlPanel!!)
         }
+        isDisposed = true
     }
 
     private fun retrievePanelProvider(): MjmlHtmlPanelProvider {
@@ -180,7 +182,7 @@ class MjmlPreviewFileEditor(private val project: Project, private val virtualFil
 
     // Is always run from pooled thread
     private fun updateHtml(force: Boolean) {
-        if (htmlPanel == null || document == null || !virtualFile.isValid || Disposer.isDisposed(this) || mainEditor == null) {
+        if (htmlPanel == null || document == null || !virtualFile.isValid || isDisposed || mainEditor == null) {
             return
         }
 

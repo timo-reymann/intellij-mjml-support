@@ -80,7 +80,7 @@ class MjmlRenderer(
 
         processHandler.startNotify()
         processHandler.waitFor()
-        return Pair(processHandler.exitCode!!,  buffer.toString())
+        return Pair(processHandler.exitCode!!, buffer.toString())
     }
 
     private fun parseResult(rawJson: String): MjmlRenderResult {
@@ -89,7 +89,7 @@ class MjmlRenderer(
         try {
             renderResult = mapper.readValue(rawJson, MjmlRenderResult::class.java)
         } catch (e: Throwable) {
-            getLogger<MjmlRenderer>().warn  {
+            getLogger<MjmlRenderer>().warn {
                 MjmlBundle.message("mjml_preview.render_parsing_failed", rawJson) + e.stackTraceToString()
             }
             renderResult = MjmlRenderResult()
@@ -145,7 +145,7 @@ class MjmlRenderer(
             propagateErrorsToUser(renderResult)
         }
 
-        if(settings.resolveLocalImages) {
+        if (settings.resolveLocalImages) {
             try {
                 return convertRelativeImagePathsToAbsolute(renderResult.html!!)
             } catch (e: Exception) {
@@ -183,7 +183,7 @@ class MjmlRenderer(
                         """.trimIndent()
             }
 
-        val errorDetails = if(result.stdout == null) {
+        val errorDetails = if (result.stdout == null) {
             ""
         } else {
             "<code${result.stdout}</code>"
@@ -193,19 +193,20 @@ class MjmlRenderer(
             .createNotification(
                 "<html><strong>${MjmlBundle.message("mjml_preview.render_failed")}</strong>${errorDetails}</html>",
                 "<html>\n${message}</html>",
-                NotificationType.WARNING,
-                object : NotificationListener {
-                    override fun hyperlinkUpdate(notification: Notification, event: HyperlinkEvent) {
-                        if (event.eventType != HyperlinkEvent.EventType.ACTIVATED) {
-                            return
-                        }
-
-                        val fields = event.description.split(":")
-                        val file = VfsUtil.findFile(File(fields[0]).toPath(), true)
-                        FileEditorManager.getInstance(project)
-                            .openTextEditor(OpenFileDescriptor(project, file!!, fields[1].toInt(), 0), true)
+                NotificationType.WARNING
+            )
+            .setListener { notification, event ->
+                run {
+                    if (event.eventType != HyperlinkEvent.EventType.ACTIVATED) {
+                        return@run
                     }
-                })
+
+                    val fields = event.description.split(":")
+                    val file = VfsUtil.findFile(File(fields[0]).toPath(), true)
+                    FileEditorManager.getInstance(project)
+                        .openTextEditor(OpenFileDescriptor(project, file!!, fields[1].toInt(), 0), true)
+                }
+            }
             .notify(project)
     }
 }
