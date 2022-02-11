@@ -38,11 +38,13 @@
         ]]></description>
     <change-notes><![CDATA[
         <ul>
-            <li>SNAPSHOT
+            <li>2.0.0
                 <ul>
                     <li>Upgrade bundled mjml to 4.12.0</li>
                     <li>Add filetype association with *.mjml by default (<a
                             href="https://github.com/timo-reymann/intellij-mjml-support/issues/108">#108</a>)</li>
+                    <li>Upgrade to kotlin dsl v2 for settings</li>
+                    <li>Get the plugin ready for 2022</li>
                 </ul>
             </li>
             <li>1.22.0
