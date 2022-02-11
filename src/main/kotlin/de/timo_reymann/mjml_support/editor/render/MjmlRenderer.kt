@@ -189,6 +189,7 @@ class MjmlRenderer(
             "<code${result.stdout}</code>"
         }
 
+
         MessageBusUtil.NOTIFICATION_GROUP
             .createNotification(
                 "<html><strong>${MjmlBundle.message("mjml_preview.render_failed")}</strong>${errorDetails}</html>",

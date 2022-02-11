@@ -5,16 +5,15 @@ import com.intellij.codeInsight.completion.CompletionParameters
 import com.intellij.codeInsight.completion.CompletionResultSet
 import com.intellij.codeInsight.completion.CompletionType
 import com.intellij.codeInsight.lookup.LookupElementBuilder
-import com.intellij.icons.AllIcons
 import com.intellij.patterns.PlatformPatterns
 import com.intellij.psi.xml.XmlAttributeValue
 import com.intellij.util.ProcessingContext
 import de.timo_reymann.mjml_support.api.MjmlAttributeInformation
 import de.timo_reymann.mjml_support.api.MjmlAttributeType
 import de.timo_reymann.mjml_support.api.MjmlTagInformation
+import de.timo_reymann.mjml_support.icons.FileTypeIcons
 import de.timo_reymann.mjml_support.index.FileIndexUtil
 import de.timo_reymann.mjml_support.settings.MjmlSettings
-import icons.ImagesIcons
 import org.intellij.images.fileTypes.impl.ImageFileType
 
 class MjmlLocalImagePathCompletionContributor : CompletionContributor() {
@@ -50,7 +49,7 @@ class MjmlLocalImagePathCompletionContributor : CompletionContributor() {
                 result.addElement(
                     LookupElementBuilder
                         .create(path)
-                        .withIcon(ImagesIcons.ImagesFileType)
+                        .withIcon(FileTypeIcons.Image)
                 )
             }
         }

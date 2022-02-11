@@ -1,3 +1,5 @@
+@file:Suppress("UnstableApiUsage")
+
 package de.timo_reymann.mjml_support.settings
 
 import com.intellij.icons.AllIcons
@@ -12,10 +14,9 @@ import com.intellij.openapi.ui.ComboBox
 import com.intellij.ui.CollectionComboBoxModel
 import com.intellij.ui.components.fields.ExtendableTextComponent
 import com.intellij.ui.components.fields.ExtendableTextField
-import com.intellij.ui.layout.GrowPolicy
-import com.intellij.ui.layout.panel
-import de.timo_reymann.mjml_support.editor.render.MjmlPreviewStartupActivity
+import com.intellij.ui.dsl.builder.*
 import de.timo_reymann.mjml_support.editor.render.BuiltinRenderResourceProvider
+import de.timo_reymann.mjml_support.editor.render.MjmlPreviewStartupActivity
 import de.timo_reymann.mjml_support.util.FilePluginUtil
 import de.timo_reymann.mjml_support.util.UiTimerUtil
 import java.awt.Desktop
@@ -54,61 +55,60 @@ class MjmlSettingsConfigurable(project: Project) : Configurable, Disposable {
     }
 
     private val panel = panel {
-        titledRow("Preview") {
+        group("Preview") {
             row {
-                cell(isFullWidth = true) {
-                    checkBox("Resolve local image paths", state::resolveLocalImages)
-                        .comment("While mails can not use local paths, the plugin can resolve them for you in the preview. " +
-                                "If you use a lot of local images this might impact preview update performance!")
-                }
+                checkBox("Resolve local image paths")
+                    .bindSelected(state::resolveLocalImages)
+                    .comment(
+                        "While mails can not use local paths, the plugin can resolve them for you in the preview. " +
+                                "If you use a lot of local images this might impact preview update performance!"
+                    )
             }
             row {
-                cell(isFullWidth = true) {
-                    label("Rendering script")
-                    comboBox(CollectionComboBoxModel(), state::renderScriptPath)
-                        .growPolicy(GrowPolicy.MEDIUM_TEXT)
-                        .also {
-                            comboBox = it.component
+                label("Rendering script")
+                comboBox(CollectionComboBoxModel<String>(), null)
+                    .bindItem(state::renderScriptPath)
+                    .columns(COLUMNS_MEDIUM)
+                    .also {
+                        comboBox = it.component
 
-                            if (state.useBuiltInRenderer) {
-                                setComboBoxModelRenderer(null)
-                            } else {
-                                setComboBoxModelRenderer(state::renderScriptPath.get())
-                            }
+                        if (state.useBuiltInRenderer) {
+                            setComboBoxModelRenderer(null)
+                        } else {
+                            setComboBoxModelRenderer(state::renderScriptPath.get())
+                        }
 
-                            //comboBox.preferredSize = Dimension(400, comboBox.preferredSize.height)
-                            comboBox.isEditable = true
-                            comboBox.editor = object : BasicComboBoxEditor() {
-                                override fun createEditorComponent(): JTextField {
-                                    val ecbEditor = ExtendableTextField()
-                                    with(ecbEditor) {
-                                        addExtension(browseExtension)
-                                        border = null
-                                    }
-                                    return ecbEditor
+                        //comboBox.preferredSize = Dimension(400, comboBox.preferredSize.height)
+                        comboBox.isEditable = true
+                        comboBox.editor = object : BasicComboBoxEditor() {
+                            override fun createEditorComponent(): JTextField {
+                                val ecbEditor = ExtendableTextField()
+                                with(ecbEditor) {
+                                    addExtension(browseExtension)
+                                    border = null
                                 }
+                                return ecbEditor
                             }
                         }
-                        .comment("""Bundled script uses MJML v${BuiltinRenderResourceProvider.getBundledMjmlVersion()}, For more information about custom rendering scripts click <a href="https://plugins.jetbrains.com/plugin/16418-mjml-support/tutorials/custom-rendering-script">here</a>.""")
-                }
+                    }
+                    .comment("""Bundled script uses MJML v${BuiltinRenderResourceProvider.getBundledMjmlVersion()}, For more information about custom rendering scripts click <a href="https://plugins.jetbrains.com/plugin/16418-mjml-support/tutorials/custom-rendering-script">here</a>.""")
+
             }
         }
 
-        titledRow("Trouble Shooting") {
+        group("Trouble Shooting") {
             row {
-                cell {
-                    button("Open plugin folder") {
-                        Desktop.getDesktop().open(FilePluginUtil.getFile("."))
-                    }
+                button("Open plugin folder") {
+                    Desktop.getDesktop().open(FilePluginUtil.getFile("."))
+                }
 
-                    button("Copy files for preview from plugin") { e ->
-                        MjmlPreviewStartupActivity().runActivity(project)
-                        with(e.source as JButton) {
-                            isEnabled = false
+                button("Copy files for preview from plugin") { e ->
+                    MjmlPreviewStartupActivity().runActivity(project)
+                    with(e.source as JButton) {
+                        isEnabled = false
 
-                            UiTimerUtil.singleExecutionAfter(2) {
-                                this.isEnabled = true
-                            }
+                        UiTimerUtil.singleExecutionAfter(2) {
+                            this.isEnabled = true
                         }
                     }
                 }
