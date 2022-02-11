@@ -38,6 +38,11 @@
         ]]></description>
     <change-notes><![CDATA[
         <ul>
+            <li>SNAPSHOT
+                <ul>
+                    <li>Upgrade bundled mjml to 4.12.0</li>
+                </ul>
+            </li>
             <li>1.22.0
                 <ul>
                     <li>Add autocomplete for local image paths</li>
