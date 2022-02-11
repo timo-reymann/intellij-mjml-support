@@ -41,6 +41,8 @@
             <li>SNAPSHOT
                 <ul>
                     <li>Upgrade bundled mjml to 4.12.0</li>
+                    <li>Add filetype association with *.mjml by default (<a
+                            href="https://github.com/timo-reymann/intellij-mjml-support/issues/108">#108</a>)</li>
                 </ul>
             </li>
             <li>1.22.0
@@ -397,7 +399,9 @@
                   implementationClass="de.timo_reymann.mjml_support.lang.MjmlHtmlFileType"
                   fieldName="INSTANCE"
                   language="mjml"
+                  patterns="*.mjml"
                   extensions="mjml"/>
+
         <lang.parserDefinition language="mjml"
                                implementationClass="de.timo_reymann.mjml_support.lang.parsing.MjmlHtmlParserDefinition"/>
         <lang.documentationProvider language="mjml"
@@ -426,7 +430,7 @@
                                 implementationClass="de.timo_reymann.mjml_support.completion.MjmlAttributeTypeBooleanCompletionContributor"/>
 
         <completion.contributor language="mjml"
-            implementationClass="de.timo_reymann.mjml_support.completion.MjmlLocalImagePathCompletionContributor"/>
+                                implementationClass="de.timo_reymann.mjml_support.completion.MjmlLocalImagePathCompletionContributor"/>
 
         <localInspection implementationClass="de.timo_reymann.mjml_support.inspection.UnknownAttributeInspection"
                          language="mjml"
