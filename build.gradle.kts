@@ -28,7 +28,7 @@ plugins {
     kotlin("jvm") version "1.6.10"
     id("org.jetbrains.intellij") version "1.4.0"
     id("com.palantir.git-version") version "0.13.0"
-    id("com.adarshr.test-logger") version "3.0.0"
+    id("com.adarshr.test-logger") version "3.2.0"
 }
 
 dependencies {
