@@ -65,6 +65,12 @@ class MjmlSettingsConfigurable(project: Project) : Configurable, Disposable {
                     )
             }
             row {
+                checkBox("Skip MJML validation")
+                    .bindSelected(state::skipMjmlValidation)
+                    .comment("Do not validate if MJML files contain a root tag and body. " +
+                            "This allows you to use custom rendering scripts that do this on their own.")
+            }
+            row {
                 label("Rendering script")
                 comboBox(CollectionComboBoxModel<String>(), null)
                     .bindItem(state::renderScriptPath)

@@ -193,7 +193,7 @@ class MjmlPreviewFileEditor(private val project: Project, private val virtualFil
 
         previousText = currentText
 
-        val isValidMjml = isValidMjmlDocument()
+        val isValidMjml = MjmlSettings.getInstance(project).skipMjmlValidation || isValidMjmlDocument()
 
         val html = if (isValidMjml) {
             val doc = Jsoup.parse(mjmlRenderer.render(currentText))

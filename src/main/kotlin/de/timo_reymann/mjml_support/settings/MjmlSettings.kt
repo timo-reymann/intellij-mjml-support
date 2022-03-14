@@ -9,6 +9,7 @@ class MjmlSettings : PersistentStateComponent<MjmlSettings>, BaseState() {
     var resolveLocalImages by property(false)
     val useBuiltInRenderer: Boolean
         get() = renderScriptPath == BUILT_IN || renderScriptPath.isBlank()
+    var skipMjmlValidation by property(false)
 
     private fun nonNullString(initialValue: String = "") = property(initialValue) { it == initialValue }
     override fun getState(): MjmlSettings = this
