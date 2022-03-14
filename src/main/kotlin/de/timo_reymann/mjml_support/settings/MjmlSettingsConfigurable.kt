@@ -15,6 +15,7 @@ import com.intellij.ui.CollectionComboBoxModel
 import com.intellij.ui.components.fields.ExtendableTextComponent
 import com.intellij.ui.components.fields.ExtendableTextField
 import com.intellij.ui.dsl.builder.*
+import com.intellij.ui.dsl.gridLayout.HorizontalAlign
 import de.timo_reymann.mjml_support.editor.render.BuiltinRenderResourceProvider
 import de.timo_reymann.mjml_support.editor.render.MjmlPreviewStartupActivity
 import de.timo_reymann.mjml_support.util.FilePluginUtil
@@ -63,42 +64,53 @@ class MjmlSettingsConfigurable(project: Project) : Configurable, Disposable {
                         "While mails can not use local paths, the plugin can resolve them for you in the preview. " +
                                 "If you use a lot of local images this might impact preview update performance!"
                     )
-            }
+            }.layout(RowLayout.PARENT_GRID)
             row {
                 checkBox("Skip MJML validation")
                     .bindSelected(state::skipMjmlValidation)
                     .comment("Do not validate if MJML files contain a root tag and body. " +
                             "This allows you to use custom rendering scripts that do this on their own.")
-            }
-            row {
-                label("Rendering script")
-                comboBox(CollectionComboBoxModel<String>(), null)
-                    .bindItem(state::renderScriptPath)
-                    .columns(COLUMNS_MEDIUM)
-                    .also {
-                        comboBox = it.component
+            }.layout(RowLayout.PARENT_GRID)
+            panel {
+                row {
+                    // TODO Add config file path binding
+                    textFieldWithBrowseButton(fileChooserDescriptor = FileChooserDescriptorFactory.createSingleFileOrFolderDescriptor()) { file -> file.toNioPath().toString() }
+                        .gap(RightGap.COLUMNS)
+                        .horizontalAlign(HorizontalAlign.FILL)
+                        .label("Config file")
+                        .comment("Path or directory of .mjmlconfig file (leave blank for default, will search in same folder as the mjml file)")
+                }.layout(RowLayout.PARENT_GRID)
+                row {
+                    comboBox(CollectionComboBoxModel<String>(), null)
+                        .label("Rendering script")
+                        .gap(RightGap.COLUMNS)
+                        .horizontalAlign(HorizontalAlign.FILL)
+                        .bindItem(state::renderScriptPath)
+                        .columns(COLUMNS_MEDIUM)
+                        .also {
+                            comboBox = it.component
 
-                        if (state.useBuiltInRenderer) {
-                            setComboBoxModelRenderer(null)
-                        } else {
-                            setComboBoxModelRenderer(state::renderScriptPath.get())
-                        }
+                            if (state.useBuiltInRenderer) {
+                                setComboBoxModelRenderer(null)
+                            } else {
+                                setComboBoxModelRenderer(state::renderScriptPath.get())
+                            }
 
-                        //comboBox.preferredSize = Dimension(400, comboBox.preferredSize.height)
-                        comboBox.isEditable = true
-                        comboBox.editor = object : BasicComboBoxEditor() {
-                            override fun createEditorComponent(): JTextField {
-                                val ecbEditor = ExtendableTextField()
-                                with(ecbEditor) {
-                                    addExtension(browseExtension)
-                                    border = null
+                            //comboBox.preferredSize = Dimension(400, comboBox.preferredSize.height)
+                            comboBox.isEditable = true
+                            comboBox.editor = object : BasicComboBoxEditor() {
+                                override fun createEditorComponent(): JTextField {
+                                    val ecbEditor = ExtendableTextField()
+                                    with(ecbEditor) {
+                                        addExtension(browseExtension)
+                                        border = null
+                                    }
+                                    return ecbEditor
                                 }
-                                return ecbEditor
                             }
                         }
-                    }
-                    .comment("""Bundled script uses MJML v${BuiltinRenderResourceProvider.getBundledMjmlVersion()}, For more information about custom rendering scripts click <a href="https://plugins.jetbrains.com/plugin/16418-mjml-support/tutorials/custom-rendering-script">here</a>.""")
-
+                        .comment("""Bundled script uses MJML v${BuiltinRenderResourceProvider.getBundledMjmlVersion()}, For more information about custom rendering scripts click <a href="https://plugins.jetbrains.com/plugin/16418-mjml-support/tutorials/custom-rendering-script">here</a>.""")
+                }.layout(RowLayout.PARENT_GRID)
             }
         }
 

@@ -11,6 +11,8 @@ class MjmlSettings : PersistentStateComponent<MjmlSettings>, BaseState() {
         get() = renderScriptPath == BUILT_IN || renderScriptPath.isBlank()
     var skipMjmlValidation by property(false)
 
+    // TODO Add config file path
+
     private fun nonNullString(initialValue: String = "") = property(initialValue) { it == initialValue }
     override fun getState(): MjmlSettings = this
     override fun loadState(state: MjmlSettings) {

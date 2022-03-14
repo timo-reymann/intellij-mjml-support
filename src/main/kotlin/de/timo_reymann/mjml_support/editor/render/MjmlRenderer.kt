@@ -46,6 +46,7 @@ class MjmlRenderer(
         File(virtualFile.path).parentFile
     }
 
+    // TODO Add config file path
     private val mjmlRenderParameters =
         MjmlRenderParameters(basePath.toString(), "", MjmlRenderParametersOptions(null))
 
