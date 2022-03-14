@@ -47,7 +47,7 @@ class MjmlRenderer(
     }
 
     private val mjmlRenderParameters =
-        MjmlRenderParameters(basePath.toString(), "")
+        MjmlRenderParameters(basePath.toString(), "", MjmlRenderParametersOptions(null))
 
     private fun updateTempFile(content: String) {
         mjmlRenderParameters.content = content
@@ -196,7 +196,7 @@ class MjmlRenderer(
                 "<html>\n${message}</html>",
                 NotificationType.WARNING
             )
-            .setListener { notification, event ->
+            .setListener { _, event ->
                 run {
                     if (event.eventType != HyperlinkEvent.EventType.ACTIVATED) {
                         return@run
