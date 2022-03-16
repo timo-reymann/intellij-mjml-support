@@ -10,8 +10,7 @@ class MjmlSettings : PersistentStateComponent<MjmlSettings>, BaseState() {
     val useBuiltInRenderer: Boolean
         get() = renderScriptPath == BUILT_IN || renderScriptPath.isBlank()
     var skipMjmlValidation by property(false)
-
-    // TODO Add config file path
+    var mjmlConfigFile by nonNullString("")
 
     private fun nonNullString(initialValue: String = "") = property(initialValue) { it == initialValue }
     override fun getState(): MjmlSettings = this

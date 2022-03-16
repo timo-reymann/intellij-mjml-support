@@ -40,15 +40,15 @@ class MjmlRenderer(
         val DEFAULT_RENDERER_SCRIPT: String = FilePluginUtil.getFile("renderer/index.js").absolutePath
     }
 
+    private val mjmlSettings = MjmlSettings.getInstance(project)
     private val tempFile = File.createTempFile(UUID.randomUUID().toString(), "json")
     private val objectMapper = jacksonObjectMapper()
     private val basePath by lazy {
         File(virtualFile.path).parentFile
     }
 
-    // TODO Add config file path
     private val mjmlRenderParameters =
-        MjmlRenderParameters(basePath.toString(), "", MjmlRenderParametersOptions(null))
+        MjmlRenderParameters(basePath.toString(), "", MjmlRenderParametersOptions(mjmlSettings.mjmlConfigFile))
 
     private fun updateTempFile(content: String) {
         mjmlRenderParameters.content = content
@@ -109,9 +109,8 @@ class MjmlRenderer(
         )
 
         var script = DEFAULT_RENDERER_SCRIPT
-        val settings = MjmlSettings.getInstance(project)
-        if (!settings.useBuiltInRenderer) {
-            script = settings.renderScriptPath
+        if (!mjmlSettings.useBuiltInRenderer) {
+            script = mjmlSettings.renderScriptPath
         }
         commandLine.withParameters(script)
 
@@ -120,7 +119,7 @@ class MjmlRenderer(
         if (exitCode != 0) {
             if (!File(script).exists()) {
                 return renderError(
-                    MjmlBundle.message(if (settings.useBuiltInRenderer) "mjml_preview.renderer_copying" else "mjml_preview.renderer_missing"),
+                    MjmlBundle.message(if (mjmlSettings.useBuiltInRenderer) "mjml_preview.renderer_copying" else "mjml_preview.renderer_missing"),
                     "<pre>${MjmlBundle.message("mjml_preview.renderer_preview_will_reload")}</pre>"
                 )
             }
@@ -146,7 +145,7 @@ class MjmlRenderer(
             propagateErrorsToUser(renderResult)
         }
 
-        if (settings.resolveLocalImages) {
+        if (mjmlSettings.resolveLocalImages) {
             try {
                 return convertRelativeImagePathsToAbsolute(renderResult.html!!)
             } catch (e: Exception) {

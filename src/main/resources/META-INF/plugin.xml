@@ -38,10 +38,13 @@
         ]]></description>
     <change-notes><![CDATA[
         <ul>
-            <li>SNAPSHOT
+            <li>2.1.0
                 <ul>
-                    <li>Allow incomplete MJML files to render (<a
-                            href="https://github.com/timo-reymann/intellij-mjml-support/issues/111">#111</a>
+                    <li>Allow incomplete MJML files to render via feature toggle (<a
+                            href="https://github.com/timo-reymann/intellij-mjml-support/issues/111">#111</a>)
+                    </li>
+                    <li>
+                        Allow custom mjmlconfig files (<a  href="https://github.com/timo-reymann/intellij-mjml-support/issues/112">#112</a>)
                     </li>
                 </ul>
             </li>

@@ -73,8 +73,8 @@ class MjmlSettingsConfigurable(project: Project) : Configurable, Disposable {
             }.layout(RowLayout.PARENT_GRID)
             panel {
                 row {
-                    // TODO Add config file path binding
                     textFieldWithBrowseButton(fileChooserDescriptor = FileChooserDescriptorFactory.createSingleFileOrFolderDescriptor()) { file -> file.toNioPath().toString() }
+                        .bindText(state::mjmlConfigFile)
                         .gap(RightGap.COLUMNS)
                         .horizontalAlign(HorizontalAlign.FILL)
                         .label("Config file")
