@@ -51,7 +51,10 @@ Simply use the extension point `de.timo_reymann.intellij-mjml-support.tagInforma
   ```json
     {
       "directory": "absolute path to project root, this might be different from the current file location",
-      "content": "file editor content to render"
+      "content": "file editor content to render",
+      "options": {
+        "mjmlConfigPath": "mjml config path or empty string"
+      }
     }
   ```
 - Output to stdout must be in json in this format for:
