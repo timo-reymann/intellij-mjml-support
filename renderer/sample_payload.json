@@ -1,4 +1,7 @@
 {
   "directory": "/home/user/mjml-project/subfolder",
-  "content": "<mjml>...</mjml>"
+  "content": "<mjml></mjml>",
+  "options": {
+
+  }
 }
