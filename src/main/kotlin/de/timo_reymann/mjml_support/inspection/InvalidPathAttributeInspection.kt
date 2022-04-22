@@ -12,13 +12,16 @@ import com.intellij.openapi.fileTypes.FileType
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VfsUtil
 import com.intellij.openapi.vfs.VfsUtilCore
+import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.css.CssFileType
 import com.intellij.psi.util.parentOfType
 import com.intellij.psi.xml.XmlAttribute
 import com.intellij.psi.xml.XmlTag
+import com.intellij.webcore.template.TemplateLanguageFileUtil
 import de.timo_reymann.mjml_support.api.MjmlAttributeType
 import de.timo_reymann.mjml_support.bundle.MjmlBundle
 import de.timo_reymann.mjml_support.lang.MjmlHtmlFileType
+import de.timo_reymann.mjml_support.lang.MjmlHtmlLanguage
 import de.timo_reymann.mjml_support.model.MjmlTagProvider
 import de.timo_reymann.mjml_support.util.MessageBusUtil
 import java.io.IOException
@@ -63,7 +66,8 @@ class InvalidPathAttributeInspection : HtmlLocalInspectionTool() {
         val expectedFileType = IncludeType.fromTag(parentTag)
 
         val virtualFile = VfsUtilCore.findRelativeFile(filename, attribute.containingFile.virtualFile)
-        if (virtualFile == null || !virtualFile.isValid || virtualFile.isDirectory || virtualFile.fileType != expectedFileType.fileType) {
+        val isInvalidPsiFile = virtualFile == null || !virtualFile.isValid || virtualFile.isDirectory
+        if (isInvalidPsiFile || (virtualFile!!.fileType != expectedFileType.fileType && !isTemplateWithMjml(attribute.project,virtualFile))) {
             var fixes = arrayOf<LocalQuickFix>()
 
             if (wouldBeValidMjmlFile(filename)) {
@@ -77,6 +81,10 @@ class InvalidPathAttributeInspection : HtmlLocalInspectionTool() {
                 *fixes
             )
         }
+    }
+
+    private fun isTemplateWithMjml(project : Project, virtualFile : VirtualFile): Boolean {
+        return TemplateLanguageFileUtil.getTemplateDataLanguage(project,virtualFile) == MjmlHtmlLanguage.INSTANCE;
     }
 
     private fun wouldBeValidMjmlFile(fileName: String): Boolean {

@@ -12,6 +12,7 @@ import com.intellij.psi.search.ProjectScope
 import com.intellij.util.Processor
 import com.intellij.util.containers.ContainerUtil
 import com.intellij.util.indexing.FindSymbolParameters
+import com.intellij.webcore.template.TemplateLanguageFileUtil
 import java.io.File
 import java.util.*
 
