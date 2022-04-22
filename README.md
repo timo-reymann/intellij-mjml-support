@@ -24,10 +24,11 @@ the [plugin.xml](./src/main/resources/META-INF/plugin.xml).
 
 ### You live on the edge?
 
-There is also the channel `snapshot` (https://plugins.jetbrains.com/plugins/snapshot/list) available, for more details about set up please
+There is also the channel `snapshot` (https://plugins.jetbrains.com/plugins/snapshot/list) available, for more details
+about set up please
 see [JetBrains Marketplace Docs](https://plugins.jetbrains.com/docs/marketplace/custom-release-channels.html#configuring-a-custom-channel-in-intellij-platform-based-ides)
 
-The versioning used there is not based on semantic versioning, but rather: `YYYY.MM.DD-BUILDNUM` and is on 
+The versioning used there is not based on semantic versioning, but rather: `YYYY.MM.DD-BUILDNUM` and is on
 
 ## Extension
 
@@ -38,7 +39,6 @@ You want to add custom mjml tags or custom resolving to match your needs?
 Simply use the extension point `de.timo_reymann.intellij-mjml-support.tagInformationProvider`:
 
 ```xml
-
 <extensions defaultExtensionNs="de.timo_reymann.intellij-mjml-support">
     <tagInformationProvider implementation="my.company.OurCustomTaginformationProvider"/>
 </extensions>

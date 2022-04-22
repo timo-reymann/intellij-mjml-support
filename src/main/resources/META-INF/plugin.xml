@@ -38,6 +38,12 @@
         ]]></description>
     <change-notes><![CDATA[
         <ul>
+            <li>2.2.0
+                <ul>
+                    <li>Support template data language mjml for mj-includes (<a
+                            href="https://github.com/timo-reymann/intellij-mjml-support/issues/120">#120</a>)</li>
+                </ul>
+            </li>
             <li>2.1.0
                 <ul>
                     <li>Allow incomplete MJML files to render via feature toggle (<a
