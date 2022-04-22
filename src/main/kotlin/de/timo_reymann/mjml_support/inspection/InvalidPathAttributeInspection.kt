@@ -83,13 +83,11 @@ class InvalidPathAttributeInspection : HtmlLocalInspectionTool() {
         }
     }
 
-    private fun isTemplateWithMjml(project : Project, virtualFile : VirtualFile): Boolean {
-        return TemplateLanguageFileUtil.getTemplateDataLanguage(project,virtualFile) == MjmlHtmlLanguage.INSTANCE;
-    }
+    private fun isTemplateWithMjml(project : Project, virtualFile : VirtualFile): Boolean =
+        TemplateLanguageFileUtil.getTemplateDataLanguage(project,virtualFile) == MjmlHtmlLanguage.INSTANCE
 
-    private fun wouldBeValidMjmlFile(fileName: String): Boolean {
-        return (fileName.endsWith(".${MjmlHtmlFileType.INSTANCE.defaultExtension}"))
-    }
+    private fun wouldBeValidMjmlFile(fileName: String): Boolean =
+        (fileName.endsWith(".${MjmlHtmlFileType.INSTANCE.defaultExtension}"))
 }
 
 class CreateMjmlFileQuickFix : LocalQuickFix {
