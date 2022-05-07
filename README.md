@@ -1,6 +1,5 @@
 intellij-mjml-support
 ===
-
 [![CircleCI](https://circleci.com/gh/timo-reymann/intellij-mjml-support.svg?style=shield)](https://app.circleci.com/pipelines/github/timo-reymann/intellij-mjml-support)
 [![GitHub Release](https://img.shields.io/github/v/tag/timo-reymann/intellij-mjml-support.svg?label=version)](https://github.com/timo-reymann/intellij-mjml-support/releases)
 [![Version](https://img.shields.io/jetbrains/plugin/v/16418-mjml-support)](https://plugins.jetbrains.com/plugin/16418-mjml-support/versions)
@@ -8,7 +7,13 @@ intellij-mjml-support
 [![Rating](https://img.shields.io/jetbrains/plugin/r/rating/16418-mjml-support)](https://plugins.jetbrains.com/plugin/16418-mjml-support/reviews)
 [![Dependabot](https://badgen.net/badge/Dependabot/enabled/green?icon=dependabot)](https://dependabot.com/)
 
-MJML support for the IntelliJ Platform.
+<p align="center">
+	<img width="300" src="./src/main/resources/META-INF/pluginIcon.svg">
+</p>
+
+<p align="center">
+	MJML support for the IntelliJ Platform.
+</p>
 
 > You are missing something or something is broken? - Feel free to file a PR/issue or open a discussion on GitHub!
 
