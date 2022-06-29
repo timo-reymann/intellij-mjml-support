@@ -20,7 +20,7 @@ Pull requests are the best way to propose changes to the codebase (we use [Circl
 5. Make sure your code and commit lints.
 6. Issue that pull request!
 
-## Any contributions you make will be under the GNU General Public License v3.0
+## Any contributions you make will be under the Climate Strike License
 In short, when you submit code changes, your submissions are understood to be under the same ["Climate Strike" License Version 1.0](https://github.com/timo-reymann/intellij-mjml-support/blob/main/LICENSE) that covers the project. Feel free to contact the maintainers if that's a concern.
 
 ## Report bugs using Github's issues
