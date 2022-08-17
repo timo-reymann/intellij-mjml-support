@@ -27,6 +27,8 @@ the [plugin.xml](./src/main/resources/META-INF/plugin.xml).
 1. Install it from the plugin repository
 4. You are done, enjoy the magic!
 
+The generated HTML can be viewed by clicking on the "Show HTML" button in the toolbar of the tool window.
+
 ### You live on the edge?
 
 There is also the channel `snapshot` (https://plugins.jetbrains.com/plugins/snapshot/list) available, for more details
