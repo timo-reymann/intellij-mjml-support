@@ -7,7 +7,7 @@ executors:
   gradle:
     working_directory: ~/workspace
     docker:
-      - image: cimg/openjdk:11.0
+      - image: cimg/openjdk:18.0
 
 commands:
   check-changed-files-or-halt:
