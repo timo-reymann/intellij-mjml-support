@@ -10,6 +10,8 @@ import com.intellij.psi.xml.XmlTag
 import de.timo_reymann.mjml_support.bundle.MjmlBundle
 import de.timo_reymann.mjml_support.model.MjmlTagProvider
 
+const val HTML_LINE_BREAK = "<br />"
+
 class MjmlDocumentationProvider : DocumentationProvider {
     override fun generateDoc(element: PsiElement?, originalElement: PsiElement?): String? {
 
@@ -87,14 +89,14 @@ class MjmlDocumentationProvider : DocumentationProvider {
         // Description
         buf
             .append(DocumentationMarkup.CONTENT_START)
-            .append(StringUtil.capitalize(mjmlTag.description.replace("\n", "<br />")))
+            .append(StringUtil.capitalize(mjmlTag.description.replace("\n", HTML_LINE_BREAK)))
             .append(DocumentationMarkup.CONTENT_END)
 
         if (mjmlTag.notes.isNotEmpty()) {
             buf.append(DocumentationMarkup.CONTENT_START)
-                .append("<br />")
+                .append(HTML_LINE_BREAK)
                 .append("<b>Notes</b>")
-                .append("<br />")
+                .append(HTML_LINE_BREAK)
                 .append("<ul>")
 
             for (note in mjmlTag.notes) {

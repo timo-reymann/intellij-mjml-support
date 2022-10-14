@@ -83,4 +83,8 @@ data class MjmlTagInformation(
         result = 31 * result + allowedParentTags.hashCode()
         return result
     }
+
+    override fun toString(): String {
+        return "MjmlTagInformation(tagName='$tagName', description='$description', allowedParentTags=$allowedParentTags, notes=${notes.contentToString()}, attributes=${attributes.contentToString()}, definedCssClasses=${definedCssClasses.contentToString()}, canHaveChildren=$canHaveChildren)"
+    }
 }

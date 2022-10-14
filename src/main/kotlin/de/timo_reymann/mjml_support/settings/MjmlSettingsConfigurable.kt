@@ -138,7 +138,9 @@ class MjmlSettingsConfigurable(project: Project) : Configurable, Disposable {
     override fun isModified(): Boolean = panel.isModified()
     override fun reset() = panel.reset()
     override fun getDisplayName(): String = "MJML Settings"
-    override fun dispose() {}
+    override fun dispose() {
+        // not used
+    }
 
     override fun apply() {
         val renderingScriptPath = comboBox.selectedItem as String

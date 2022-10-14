@@ -17,7 +17,9 @@ class MjmlTagDescriptor(private val tagName: String, private val xmlTag: XmlTag)
 
     override fun getName(): String = tagName
 
-    override fun init(element: PsiElement?) {}
+    override fun init(element: PsiElement?) {
+        // not used
+    }
 
     override fun getQualifiedName() = tagName
 

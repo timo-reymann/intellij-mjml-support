@@ -13,7 +13,6 @@ import com.intellij.util.CommonProcessors
 import com.intellij.util.indexing.FileBasedIndex
 import de.timo_reymann.mjml_support.index.MjmlClassDefinition
 import de.timo_reymann.mjml_support.index.MjmlClassDefinitionIndex
-import de.timo_reymann.mjml_support.index.MjmlIncludeIndex
 import de.timo_reymann.mjml_support.index.getFilesWithIncludesFor
 import de.timo_reymann.mjml_support.lang.MjmlHtmlFileType
 

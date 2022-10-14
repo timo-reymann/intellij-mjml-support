@@ -8,7 +8,6 @@ import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.psi.xml.XmlToken
 import com.intellij.util.indexing.FileBasedIndex
 import de.timo_reymann.mjml_support.index.MjmlClassUsageIndex
-import de.timo_reymann.mjml_support.index.MjmlIncludeIndex
 import de.timo_reymann.mjml_support.index.getFilesWithIncludesFor
 import de.timo_reymann.mjml_support.util.isSameFile
 

@@ -120,10 +120,14 @@ class MjmlPreviewFileEditor(private val project: Project, private val virtualFil
 
     override fun getComponent(): JComponent = htmlPanelWrapper
     override fun getName(): String = MjmlBundle.message("mjml_preview.name")
-    override fun setState(state: FileEditorState) {}
+    override fun setState(state: FileEditorState) {
+        // not used
+    }
     override fun isModified(): Boolean = false
     override fun isValid(): Boolean = true
-    override fun deselectNotify() {}
+    override fun deselectNotify() {
+        // not used
+    }
     override fun addPropertyChangeListener(listener: PropertyChangeListener) {}
     override fun removePropertyChangeListener(listener: PropertyChangeListener) {}
     override fun getBackgroundHighlighter(): BackgroundEditorHighlighter? = null
@@ -338,7 +342,9 @@ class MjmlPreviewFileEditor(private val project: Project, private val virtualFil
         })
 
         divider?.addMouseListener(object : MouseListener {
-            override fun mouseClicked(e: MouseEvent?) {}
+            override fun mouseClicked(e: MouseEvent?) {
+                // not used
+            }
             override fun mousePressed(e: MouseEvent?) {
                 updatePreviewWidth(0)
                 setPreviewWidth(null)
@@ -349,8 +355,12 @@ class MjmlPreviewFileEditor(private val project: Project, private val virtualFil
                 togglePreviewTextVisibility(false)
             }
 
-            override fun mouseEntered(e: MouseEvent?) {}
-            override fun mouseExited(e: MouseEvent?) {}
+            override fun mouseEntered(e: MouseEvent?) {
+                // not used
+            }
+            override fun mouseExited(e: MouseEvent?) {
+                // not used
+            }
         })
     }
 

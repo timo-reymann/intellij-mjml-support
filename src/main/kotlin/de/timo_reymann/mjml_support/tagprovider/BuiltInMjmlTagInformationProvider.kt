@@ -7,6 +7,8 @@ import de.timo_reymann.mjml_support.api.MjmlTagInformation
 import de.timo_reymann.mjml_support.api.MjmlTagInformationProvider
 import de.timo_reymann.mjml_support.model.*
 
+const val TAG_MJML_BODY = "mj-body"
+
 class BuiltInMjmlTagInformationProvider : MjmlTagInformationProvider() {
     private var tags: MutableMap<String, MjmlTagInformation> = mutableMapOf()
 
@@ -48,7 +50,7 @@ class BuiltInMjmlTagInformationProvider : MjmlTagInformationProvider() {
                 allowedParentTags = PARENT_TOP_LEVEL_ONLY
             ),
             MjmlTagInformation(
-                "mj-body",
+                TAG_MJML_BODY,
                 "This is the starting point of your email.",
                 notes = arrayOf(
                     "mj-body replaces the couple mj-body and mj-container of MJML v3."
@@ -969,7 +971,7 @@ class BuiltInMjmlTagInformationProvider : MjmlTagInformationProvider() {
                         "center"
                     )
                 ),
-                allowedParentTags = listOf("mj-body", "mj-wrapper")
+                allowedParentTags = listOf(TAG_MJML_BODY, "mj-wrapper")
             ),
             MjmlTagInformation(
                 "mj-social",
@@ -1302,7 +1304,7 @@ class BuiltInMjmlTagInformationProvider : MjmlTagInformationProvider() {
                         "center"
                     )
                 ),
-                allowedParentTags = listOf("mj-body", "mj-column", "mj-hero", "mj-wrapper")
+                allowedParentTags = listOf(TAG_MJML_BODY, "mj-column", "mj-hero", "mj-wrapper")
             )
         )
     }

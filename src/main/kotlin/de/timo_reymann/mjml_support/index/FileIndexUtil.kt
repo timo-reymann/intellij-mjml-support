@@ -27,7 +27,6 @@ object FileIndexUtil {
         fileTypes: Set<FileType>,
         invocationCount: Int
     ): MutableSet<String> {
-        val resultNames: MutableSet<String> = TreeSet()
         val results: MutableSet<String> = mutableSetOf()
         val scope = ProjectScope.getProjectScope(project)
         val files = mutableListOf<PsiFile>()
@@ -72,6 +71,7 @@ object FileIndexUtil {
                     ContainerUtil.process(contributor.getNames(project, false), processor)
                 }
             } catch (_: Exception) {
+                // ignore resolve error and discard silently
             }
         }
     }

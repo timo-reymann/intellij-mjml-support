@@ -34,11 +34,11 @@ class MjmlDefinedClassReferenceImpl(
 
         return when (mjmlClassDefinition.type) {
             MjmlClassDefinitionType.MJ_STYLE -> getFromMjStyle(project, psi)
-            MjmlClassDefinitionType.MJML_CLASS -> getFromMjClass(project, psi)
+            MjmlClassDefinitionType.MJML_CLASS -> getFromMjClass(psi)
         }
     }
 
-    private fun getFromMjClass(project: Project, psi: PsiFile): PsiElement? {
+    private fun getFromMjClass(psi: PsiFile): PsiElement? {
         return psi.findElementAt(mjmlClassDefinition.textOffset)?.parent
     }
 
