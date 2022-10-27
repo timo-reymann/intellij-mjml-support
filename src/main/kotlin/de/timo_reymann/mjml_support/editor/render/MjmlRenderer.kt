@@ -48,7 +48,7 @@ class MjmlRenderer(
     }
 
     private val mjmlRenderParameters =
-        MjmlRenderParameters(basePath.toString(), "", MjmlRenderParametersOptions(mjmlSettings.mjmlConfigFile))
+        MjmlRenderParameters(basePath.toString(), "", MjmlRenderParametersOptions(mjmlSettings.mjmlConfigFile), virtualFile.path)
 
     private fun updateTempFile(content: String) {
         mjmlRenderParameters.content = content
