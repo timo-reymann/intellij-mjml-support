@@ -5,7 +5,7 @@ try {
     const fs = require('fs');
     const stdin = fs.readFileSync(0, 'utf-8');
 
-    const {directory, content, options: { mjmlConfigPath }} = JSON.parse(stdin)
+    const {directory, content, options: { mjmlConfigPath }, filePath} = JSON.parse(stdin)
 
     let {html, errors} = mjml2html(content, {
         useMjmlConfigOptions: true,

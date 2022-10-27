@@ -2,3 +2,4 @@ build/
 .gradle/
 testing/
 .idea/php.xml
+.idea
