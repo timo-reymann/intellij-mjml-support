@@ -60,6 +60,7 @@ Simply use the extension point `de.timo_reymann.intellij-mjml-support.tagInforma
     {
       "directory": "absolute path to project root, this might be different from the current file location",
       "content": "file editor content to render",
+      "filePath": "absolute path to file",
       "options": {
         "mjmlConfigPath": "mjml config path or empty string"
       }

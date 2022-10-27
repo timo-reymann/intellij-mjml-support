@@ -38,6 +38,12 @@
         ]]></description>
     <change-notes><![CDATA[
         <ul>
+            <li>2.3.0
+                <ul>
+                    <li>Add filePath to render script parameters (<a
+                            href="https://github.com/timo-reymann/intellij-mjml-support/pull/138">#138</a>)</li>
+                </ul>
+            </li>
             <li>2.2.0
                 <ul>
                     <li>Support template data language mjml for mj-includes (<a
