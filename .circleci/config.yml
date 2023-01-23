@@ -1,7 +1,7 @@
 version: '2.1'
 
 orbs:
-  github-release: timo-reymann/github-release@1.1.0
+  github-cli: circleci/github-cli@2.2.0
 
 executors:
   gradle:
@@ -112,6 +112,20 @@ jobs:
           name: Publish plugin
           command: ./gradlew publishPlugin
 
+  create_github_release:
+    executor: gradle
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
+          name: Retrieve plugin file
+      - github-cli/install:
+          version: "2.21.2"
+      - run:
+          name: Publish release
+          command: |
+            gh release create ${CIRCLE_TAG} --generate-notes build/distributions/*
+
 workflows:
   continious:
     jobs:
@@ -135,11 +149,7 @@ workflows:
               ignore: /.*/
             tags:
               only: /.*/
-      - github-release/create-release-with-files:
-          file_pattern: 'build/distributions/*'
-          attach-workspace: true
-          requires:
-            - build
+      - create_github_release:
           filters:
             branches:
               ignore: /.*/
