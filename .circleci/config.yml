@@ -67,13 +67,6 @@ jobs:
       - run:
           name: Build plugin
           command: ./gradlew buildPlugin
-      - store_artifacts:
-          path: build/distributions
-      - persist_to_workspace:
-          name: Persist plugin file
-          root: .
-          paths:
-            - build/distributions
       - create_or_update_cache
 
   build_and_publish_snapshot:
@@ -124,7 +117,7 @@ jobs:
       - run:
           name: Publish release
           command: |
-            gh release create ${CIRCLE_TAG} --generate-notes build/distributions/*
+            gh release create ${CIRCLE_TAG} --generate-notes
 
 workflows:
   continious:
