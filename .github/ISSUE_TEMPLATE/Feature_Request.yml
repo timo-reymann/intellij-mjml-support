@@ -11,6 +11,8 @@ body:
     attributes:
       label: Description
       description: Please leave a helpful description of the feature request here.
+    validations:
+      required: true
   - type: textarea
     id: references
     attributes:
