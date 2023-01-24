@@ -9,6 +9,7 @@ body:
   - type: textarea
     id: description
     attributes:
+      label: Description
       description: Please leave a helpful description of the feature request here.
   - type: textarea
     id: references
