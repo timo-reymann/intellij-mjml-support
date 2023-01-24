@@ -50,8 +50,8 @@ body:
         - Rider
         - Rubymine
         - WebStorm
-     validations:
-      required: true
+       validations:
+        required: true
   - type: textarea
     id: problem
     attributes:
