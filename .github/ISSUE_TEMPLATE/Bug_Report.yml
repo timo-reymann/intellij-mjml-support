@@ -93,7 +93,7 @@ body:
   - type: checkboxes
     id: terms
     attributes:
-      label: check
+      label: I read and aggree to the contribution guidelines
       description: By submitting this issue, you read and agree to the [contribution guidelines](https://github.com/timo-reymann/intellij-mjml-support/blob/main/CONTRIBUTING.md)
       options:
         - label: I read and aggree to the contribution guidelines
