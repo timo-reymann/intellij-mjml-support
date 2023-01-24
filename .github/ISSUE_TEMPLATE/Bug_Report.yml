@@ -7,7 +7,7 @@ assignees:
 body:
   - type: markdown
     attributes:
-      placeholder: |
+      value: |
         Thanks for taking the time to fill out this bug report!
   - type: textarea
     id: what-happened
@@ -77,6 +77,7 @@ body:
     attributes:
       label: Steps to Reproduce
       description: Please list the steps required to reproduce the issue.
+      value: ""
     validations:
       required: true
   - type: markdown
@@ -84,12 +85,13 @@ body:
     attributes:
       label: Important Factoids
       description: Is there anything atypical special about your setup or example?
+      value: ""
   - type: textarea
     id: references
     attributes:
       label: References
       description: Are there any other GitHub issues (open or closed) or pull requests that should be linked here? Vendor documentation?
-      placeholder: You can reference issues with #
+      placeholder: "You can reference issues with #"
   - type: checkboxes
     id: terms
     attributes:
