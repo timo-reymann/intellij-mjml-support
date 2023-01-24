@@ -5,7 +5,7 @@ labels: ["bug"]
 assignees:
   - timo-reymann
 body:
-  - type: markdown
+  - type: textarea
     attributes:
       value: |
         Thanks for taking the time to fill out this bug report!
@@ -70,9 +70,10 @@ body:
     attributes:
       label: Actual  behaviour
       description: What actually happened?
+      value: ""
     validations:
       required: true
-  - type: markdown
+  - type: textarea
     id: reproduce
     attributes:
       label: Steps to Reproduce
@@ -80,7 +81,7 @@ body:
       value: ""
     validations:
       required: true
-  - type: markdown
+  - type: textarea
     id: more-info
     attributes:
       label: Important Factoids
