@@ -1,12 +1,13 @@
 ---
 name: 🚀 Feature Request
-about: "I have a suggestion (and might want to implement myself \U0001F642)!"
+description: "I have a suggestion (and might want to implement myself \U0001F642)!"
 labels: 
   - enhancement
 assignees:
   - timo-reymann
 body:
-  - type: markdown
+  - type: textarea
+    id: description
     attributes:
       description: Please leave a helpful description of the feature request here.
   - type: textarea
