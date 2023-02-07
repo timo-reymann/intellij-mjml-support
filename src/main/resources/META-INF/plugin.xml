@@ -388,7 +388,7 @@
         </ul>
         ]]></change-notes>
 
-    <idea-version since-build="213.6777.52"/>
+    <idea-version since-build="223.8617.56"/>
     <depends>com.intellij.modules.platform</depends>
     <depends>com.intellij.modules.lang</depends>
     <depends>com.intellij.modules.xml</depends>
