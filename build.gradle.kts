@@ -84,24 +84,23 @@ tasks {
 
     runPluginVerifier {
         ideVersions.set(
-            // Top 3 used IDEs with latest 5 versions
             // Generated with https://github.com/timo-reymann/script-shelve/blob/master/jetbrains/query_ide_versions_for_verifier.py
             listOf(
                 // PS - PhpStorm
-                "PS-212.5457.49", // 2021.2.3
-                "PS-211.7628.25", // 2021.1.4
+                "PS-223.8617.59", // 2022.3.2
+                "PS-222.4345.15", // 2022.2.3
 
                 // IU - IntelliJ IDEA Ultimate
-                "IU-212.5457.46", // 2021.2.3
-                "IU-211.7628.21", // 2021.1.3
+                "IU-223.8617.56", // 2022.3.2
+                "IU-222.4345.14", // 2022.2.3
 
                 // IC - IntelliJ IDEA Community Edition
-                "IC-212.5457.46", // 2021.2.3
-                "IC-211.7628.21", // 2021.1.3
+                "IC-223.8617.56", // 2022.3.2
+                "IC-222.4345.14", // 2022.2.3
 
                 // WS - WebStorm
-                "WS-212.5457.55", // 2021.2.3
-                "WS-211.7628.25" // 2021.1.3
+                "WS-223.8617.44", // 2022.3.2
+                "WS-222.4345.14", // 2022.2.3
             )
         )
         failureLevel.set(
