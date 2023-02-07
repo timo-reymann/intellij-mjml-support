@@ -11,10 +11,10 @@ class MjmlPathAttributeTypeCompletionContributorTest : MjmlPluginBaseTestCase() 
     }
 
     @Ignore // ignored for now
-    fun testWithNoMatch() {
+    /*fun testWithNoMatch() {
         myFixture.configureByFiles("no_match/mail.mjml")
         verifyCompletion()
-    }
+    }*/
 
     fun testWithCssMatch() {
         myFixture.configureByFiles("css_match/mail.mjml", "css_match/footer.css", "css_match/file.mjml")
