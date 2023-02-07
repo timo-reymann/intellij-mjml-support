@@ -29,7 +29,7 @@ object FileIndexUtil {
     ): MutableSet<String> {
         val results: MutableSet<String> = mutableSetOf()
         val scope = ProjectScope.getProjectScope(project)
-        val files = mutableListOf<PsiFile>()
+        val files = mutableListOf<VirtualFile>()
 
         val fileTypeMatcher = fileTypes.flatMap {
             FileTypeManager.getInstance().getAssociations(it)
@@ -48,9 +48,7 @@ object FileIndexUtil {
             true
         }
 
-        for (psiFile in files) {
-            // ProgressManager.checkCanceled()
-            val virtualFile: VirtualFile = psiFile.virtualFile ?: continue
+        for (virtualFile in files) {
             if (virtualFile == rootFile) {
                 continue
             }
@@ -82,18 +80,17 @@ object FileIndexUtil {
         fileTypeMatcher: List<FileNameMatcher>,
         fileName: String,
         invocationCount: Int
-    ): Array<PsiFile> {
+    ): Array<VirtualFile> {
         return when {
             invocationCount > 2 || isFileTypeMatch(fileName, fileTypeMatcher) -> {
-                FilenameIndex.getFilesByName(project, fileName, scope)
+                FilenameIndex.getVirtualFilesByName(fileName, scope)
+                    .toTypedArray()
             }
             else -> {
-                FilenameIndex.getFilesByName(project, fileName, scope)
+                FilenameIndex.getVirtualFilesByName(fileName, scope)
                     .filter {
-                        TemplateLanguageFileUtil.getTemplateDataLanguage(
-                            project,
-                            it.virtualFile
-                        ) == MjmlHtmlLanguage.INSTANCE
+                        TemplateLanguageFileUtil
+                            .getTemplateDataLanguage(project, it) == MjmlHtmlLanguage.INSTANCE
                     }.toTypedArray()
             }
         }

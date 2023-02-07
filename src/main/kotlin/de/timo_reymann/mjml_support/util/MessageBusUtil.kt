@@ -5,11 +5,10 @@ import de.timo_reymann.mjml_support.bundle.MjmlBundle
 import java.util.*
 
 object MessageBusUtil {
-    private val GROUP_ID = MjmlBundle.message("notification_group")
-    val NOTIFICATION_GROUP: NotificationGroup = NotificationGroupManager.getInstance().getNotificationGroup(GROUP_ID)
+    val NOTIFICATION_GROUP = MjmlBundle.message("notification_group")
 
     fun showMessage(type: NotificationType, title: String, message: String): Notification {
-        val notification = Notification(GROUP_ID + " (" + capitalize(type.name) + ")", title, message, type)
+        val notification = Notification(NOTIFICATION_GROUP + " (" + capitalize(type.name) + ")", title, message, type)
         Notifications.Bus.notify(notification)
         return notification
     }

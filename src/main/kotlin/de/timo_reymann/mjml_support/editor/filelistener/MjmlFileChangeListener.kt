@@ -3,6 +3,7 @@ package de.timo_reymann.mjml_support.editor.filelistener
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.diagnostic.logger
 import com.intellij.openapi.externalSystem.autoimport.AsyncFileChangeListenerBase
+import com.intellij.openapi.externalSystem.autoimport.changes.vfs.VirtualFileChangesListener
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.openapi.vfs.newvfs.events.VFileEvent
 import com.intellij.util.messages.Topic
@@ -20,7 +21,7 @@ interface MjmlFileChangedListener {
     fun onFilesChanged(files : Set<VirtualFile>)
 }
 
-open class MjmlFileChangeListener : AsyncFileChangeListenerBase() {
+open class MjmlFileChangeListener : VirtualFileChangesListener {
     private lateinit var mjmlFiles: MutableSet<VirtualFile>
     private val logger = logger<MjmlFileChangeListener>()
 

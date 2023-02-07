@@ -10,27 +10,21 @@ import com.intellij.execution.process.ProcessOutputType.STDOUT
 import com.intellij.javascript.nodejs.interpreter.NodeCommandLineConfigurator
 import com.intellij.javascript.nodejs.interpreter.NodeJsInterpreterRef
 import com.intellij.notification.Notification
-import com.intellij.notification.NotificationListener
 import com.intellij.notification.NotificationType
-import com.intellij.openapi.fileEditor.FileEditorManager
-import com.intellij.openapi.fileEditor.OpenFileDescriptor
+import com.intellij.notification.Notifications
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.Key
-import com.intellij.openapi.vfs.VfsUtil
 import com.intellij.openapi.vfs.VirtualFile
-import com.jetbrains.rd.util.error
 import com.jetbrains.rd.util.getLogger
 import com.jetbrains.rd.util.warn
 import de.timo_reymann.mjml_support.bundle.MjmlBundle
 import de.timo_reymann.mjml_support.settings.MjmlSettings
 import de.timo_reymann.mjml_support.util.FilePluginUtil
 import de.timo_reymann.mjml_support.util.MessageBusUtil
-import jnr.ffi.provider.converters.StringResultConverter
 import org.jsoup.Jsoup
 import java.io.File
 import java.nio.charset.StandardCharsets
 import java.util.*
-import javax.swing.event.HyperlinkEvent
 
 class MjmlRenderer(
     private val project: Project,
@@ -48,7 +42,12 @@ class MjmlRenderer(
     }
 
     private val mjmlRenderParameters =
-        MjmlRenderParameters(basePath.toString(), "", MjmlRenderParametersOptions(mjmlSettings.mjmlConfigFile), virtualFile.path)
+        MjmlRenderParameters(
+            basePath.toString(),
+            "",
+            MjmlRenderParametersOptions(mjmlSettings.mjmlConfigFile),
+            virtualFile.path
+        )
 
     private fun updateTempFile(content: String) {
         mjmlRenderParameters.content = content
@@ -189,25 +188,13 @@ class MjmlRenderer(
             "<code${result.stdout}</code>"
         }
 
+        val notification = Notification(
+            MessageBusUtil.NOTIFICATION_GROUP,
+            "<html><strong>${MjmlBundle.message("mjml_preview.render_failed")}</strong>${errorDetails}</html>",
+            "<html>\n${message}</html>",
+            NotificationType.WARNING
+        )
 
-        MessageBusUtil.NOTIFICATION_GROUP
-            .createNotification(
-                "<html><strong>${MjmlBundle.message("mjml_preview.render_failed")}</strong>${errorDetails}</html>",
-                "<html>\n${message}</html>",
-                NotificationType.WARNING
-            )
-            .setListener { _, event ->
-                run {
-                    if (event.eventType != HyperlinkEvent.EventType.ACTIVATED) {
-                        return@run
-                    }
-
-                    val fields = event.description.split(":")
-                    val file = VfsUtil.findFile(File(fields[0]).toPath(), true)
-                    FileEditorManager.getInstance(project)
-                        .openTextEditor(OpenFileDescriptor(project, file!!, fields[1].toInt(), 0), true)
-                }
-            }
-            .notify(project)
+        Notifications.Bus.notify(notification)
     }
 }

@@ -1,5 +1,3 @@
-@file:Suppress("UnstableApiUsage")
-
 package de.timo_reymann.mjml_support.settings
 
 import com.intellij.icons.AllIcons
@@ -15,7 +13,6 @@ import com.intellij.ui.CollectionComboBoxModel
 import com.intellij.ui.components.fields.ExtendableTextComponent
 import com.intellij.ui.components.fields.ExtendableTextField
 import com.intellij.ui.dsl.builder.*
-import com.intellij.ui.dsl.gridLayout.HorizontalAlign
 import de.timo_reymann.mjml_support.editor.render.BuiltinRenderResourceProvider
 import de.timo_reymann.mjml_support.editor.render.MjmlPreviewStartupActivity
 import de.timo_reymann.mjml_support.util.FilePluginUtil
@@ -76,7 +73,7 @@ class MjmlSettingsConfigurable(project: Project) : Configurable, Disposable {
                     textFieldWithBrowseButton(fileChooserDescriptor = FileChooserDescriptorFactory.createSingleFileOrFolderDescriptor()) { file -> file.toNioPath().toString() }
                         .bindText(state::mjmlConfigFile)
                         .gap(RightGap.COLUMNS)
-                        .horizontalAlign(HorizontalAlign.FILL)
+                        .align(Align.FILL)
                         .label("Config file")
                         .comment("Path or directory of .mjmlconfig file (leave blank for default, will search in same folder as the mjml file)")
                 }.layout(RowLayout.PARENT_GRID)
@@ -84,7 +81,7 @@ class MjmlSettingsConfigurable(project: Project) : Configurable, Disposable {
                     comboBox(CollectionComboBoxModel<String>(), null)
                         .label("Rendering script")
                         .gap(RightGap.COLUMNS)
-                        .horizontalAlign(HorizontalAlign.FILL)
+                        .align(Align.FILL)
                         .bindItem(state::renderScriptPath)
                         .columns(COLUMNS_MEDIUM)
                         .also {
