@@ -9,9 +9,7 @@ import com.intellij.ui.jcef.JCEFHtmlPanel
 import org.apache.commons.lang.math.RandomUtils.nextInt
 import org.cef.browser.CefBrowser
 import org.cef.browser.CefFrame
-import org.cef.handler.*
-import org.cef.misc.BoolRef
-import org.cef.network.CefRequest
+import org.cef.handler.CefLoadHandlerAdapter
 
 class MjmlJCEFHtmlPanel : JCEFHtmlPanel(getClassUrl()) {
 
@@ -63,7 +61,7 @@ class MjmlJCEFHtmlPanel : JCEFHtmlPanel(getClassUrl()) {
 
     private fun createQuery(): JBCefJSQuery {
         jbCefClient.setProperty(JBCefClient.Properties.JS_QUERY_POOL_SIZE, 20)
-        val query = JBCefJSQuery.create(this as JBCefBrowserBase)!!
+        val query = JBCefJSQuery.create(this as JBCefBrowserBase)
         Disposer.register(ApplicationManager.getApplication(), query)
         return query
     }
