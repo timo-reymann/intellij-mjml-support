@@ -38,6 +38,11 @@
         ]]></description>
     <change-notes><![CDATA[
         <ul>
+            <li>2.3.1
+                <ul>
+                    <li>Replace deprecations with new features to make plugin work in future versions</li>
+                </ul>
+            </li>
             <li>2.3.0
                 <ul>
                     <li>Add filePath to render script parameters (<a
