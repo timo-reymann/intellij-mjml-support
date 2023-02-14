@@ -6,9 +6,11 @@ import de.timo_reymann.mjml_support.api.MjmlTagInformation
 import de.timo_reymann.mjml_support.model.PARENT_ANY
 import de.timo_reymann.mjml_support.tagprovider.custom.JSES6ComponentMjmlTagInformationProvider
 import org.junit.Assert
+import org.junit.Test
 
 class JSES6ComponentMjmlTagInformationProviderTest : MjmlPluginBaseTestCase() {
-    fun testResolveVanillaJSComponent() {
+    @Test
+    fun `test find plain js components`() {
         myFixture.copyFileToProject("es6/TestComponent.js")
         val provider = JSES6ComponentMjmlTagInformationProvider()
         val tagInfo = provider.getByTagName(myFixture.project, "test-component")
@@ -25,7 +27,8 @@ class JSES6ComponentMjmlTagInformationProviderTest : MjmlPluginBaseTestCase() {
         verifyAttribute(tagInfo, "text", MjmlAttributeType.STRING, null)
     }
 
-    fun testResolveTypeScriptDecorator() {
+    @Test
+    fun `test resolve typescript decorator based components`() {
         myFixture.copyFileToProject("ts/CustomText.ts")
         val provider = JSES6ComponentMjmlTagInformationProvider()
         val tagInfo = provider.getByTagName(myFixture.project, "custom-text")

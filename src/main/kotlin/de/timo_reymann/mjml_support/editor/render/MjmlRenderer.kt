@@ -21,7 +21,6 @@ import de.timo_reymann.mjml_support.bundle.MjmlBundle
 import de.timo_reymann.mjml_support.settings.MjmlSettings
 import de.timo_reymann.mjml_support.util.FilePluginUtil
 import de.timo_reymann.mjml_support.util.MessageBusUtil
-import org.jsoup.Jsoup
 import java.io.File
 import java.nio.charset.StandardCharsets
 import java.util.*
@@ -41,6 +40,7 @@ class MjmlRenderer(
         File(virtualFile.path).parentFile
     }
 
+    private val postProcessor = MjmlPostProcessor(basePath, mjmlSettings)
     private val mjmlRenderParameters =
         MjmlRenderParameters(
             basePath.toString(),
@@ -99,6 +99,14 @@ class MjmlRenderer(
         return renderResult
     }
 
+    private fun getRendererScript(): String {
+        var script = DEFAULT_RENDERER_SCRIPT
+        if (!mjmlSettings.useBuiltInRenderer) {
+            script = mjmlSettings.renderScriptPath
+        }
+        return script
+    }
+
     fun render(text: String): String {
         updateTempFile(text)
         val commandLine = generateCommandLine()
@@ -107,16 +115,13 @@ class MjmlRenderer(
             MjmlBundle.message("mjml_preview.unavailable")
         )
 
-        var script = DEFAULT_RENDERER_SCRIPT
-        if (!mjmlSettings.useBuiltInRenderer) {
-            script = mjmlSettings.renderScriptPath
-        }
-        commandLine.withParameters(script)
+        val rendererScript = getRendererScript()
+        commandLine.withParameters(rendererScript)
 
         val (exitCode, output) = captureOutput(commandLine)
 
         if (exitCode != 0) {
-            if (!File(script).exists()) {
+            if (!File(rendererScript).exists()) {
                 return renderError(
                     MjmlBundle.message(if (mjmlSettings.useBuiltInRenderer) "mjml_preview.renderer_copying" else "mjml_preview.renderer_missing"),
                     "<pre>${MjmlBundle.message("mjml_preview.renderer_preview_will_reload")}</pre>"
@@ -144,31 +149,17 @@ class MjmlRenderer(
             propagateErrorsToUser(renderResult)
         }
 
-        if (mjmlSettings.resolveLocalImages) {
-            try {
-                return convertRelativeImagePathsToAbsolute(renderResult.html!!)
-            } catch (e: Exception) {
-                getLogger<MjmlRenderer>().log(
-                    com.jetbrains.rd.util.LogLevel.Warn,
-                    "Failed to replace image paths, returning unmodified html",
-                    e
-                )
-            }
+        try {
+            return postProcessor.process(renderResult.html!!)
+        } catch (e: Exception) {
+            getLogger<MjmlRenderer>().log(
+                com.jetbrains.rd.util.LogLevel.Warn,
+                "Failed to replace image paths with post processor, returning unmodified html",
+                e
+            )
         }
 
         return renderResult.html ?: ""
-    }
-
-    private fun convertRelativeImagePathsToAbsolute(html: String): String {
-        val htmlDoc = Jsoup.parse(html)
-        val imgTags = htmlDoc.getElementsByTag("img")
-        imgTags.forEach {
-            val source = it.attr("src")
-            if (source != "") {
-                it.attr("src", "file://$basePath/$source")
-            }
-        }
-        return htmlDoc.html()
     }
 
     private fun propagateErrorsToUser(result: MjmlRenderResult) {
@@ -176,10 +167,11 @@ class MjmlRenderer(
             .filter { it.formattedMessage != null }
             .joinToString("\n<br />") {
                 """
-                            <a href="${virtualFile.path}:${it.line ?: 0}">${
-                    virtualFile.toNioPath().toFile().relativeTo(File(project.basePath!!))
-                }:${it.line ?: 0}</a>: ${it.message ?: "no error message available"}
-                        """.trimIndent()
+                <a href="${virtualFile.path}:${it.line ?: 0}">
+                    ${virtualFile.toNioPath().toFile().relativeTo(File(project.basePath!!))}:${it.line ?: 0}
+                </a>: 
+                ${it.message ?: "no error message available"}
+                """.trimIndent()
             }
 
         val errorDetails = if (result.stdout == null) {

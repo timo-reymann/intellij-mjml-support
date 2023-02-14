@@ -1,12 +1,12 @@
 package de.timo_reymann.mjml_support.injection
 
 import de.timo_reymann.mjml_support.MjmlPluginBaseTestCase
-import de.timo_reymann.mjml_support.lang.MjmlHtmlFileType
+import org.junit.Test
 
 // if completion works for css properties it is properly detected
 class MjStyleCssInjectorTest : MjmlPluginBaseTestCase() {
-
-    fun testInMjStyle() {
+    @Test
+    fun `test It should inject CSS into mj-style tags`() {
         configureByMjmlText(
             """
             <mj-style>
@@ -19,8 +19,9 @@ class MjStyleCssInjectorTest : MjmlPluginBaseTestCase() {
         verifyCompletion("red", "green", "blue")
     }
 
-    fun testInStyleAttribute() {
-        configureByMjmlText( "<mj-section style='color: <caret>'></mj-section")
+    @Test
+    fun `test It should inject CSS into inline style attributes`() {
+        configureByMjmlText("<mj-section style='color: <caret>'></mj-section")
         verifyCompletion("red", "green", "blue")
     }
 }

@@ -5,15 +5,19 @@ import org.junit.Test
 
 
 class MjmlColorAttributeTypeCompletionContributorTest : MjmlPluginBaseTestCase() {
-    fun testWithPrefixedCharacter() =
+    @Test
+    fun `test with color prefix`() =
         checkBasicCompletion("<mj-section background-color=\"r<caret>\"", "red", "royalblue")
 
-    fun testBlank() =
+    @Test
+    fun `test with no input`() =
         checkBasicCompletion("<mj-section background-color=\"<caret>\"", "red", "blue", "green")
 
-    fun testOnInvalidTag() =
+    @Test
+    fun `test not suggest on invalid mjml tags`() =
         checkBasicCompletion("<some-random-tag background-color=\"<caret>\"")
 
-    fun testNonMatching() =
+    @Test
+    fun `test not suggest any color if there is no match`() =
         checkBasicCompletion("<mj-section background-color=\"someDefinitelyNotExistingColorGoesHere<caret>\"")
 }

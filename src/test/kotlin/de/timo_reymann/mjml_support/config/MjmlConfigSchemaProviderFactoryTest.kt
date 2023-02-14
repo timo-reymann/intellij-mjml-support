@@ -4,10 +4,12 @@ import com.intellij.json.JsonFileType
 import com.jetbrains.jsonSchema.ide.JsonSchemaService
 import com.jetbrains.jsonSchema.impl.JsonSchemaServiceImpl
 import de.timo_reymann.mjml_support.MjmlPluginBaseTestCase
+import org.junit.Test
 
 
 class MjmlConfigSchemaProviderFactoryTest : MjmlPluginBaseTestCase() {
-    fun testFileGetsDetected() {
+    @Test
+    fun `test pick up and use the mjmlconfig file`() {
         myFixture.configureByFiles(".mjmlconfig")
         assertTrue(myFixture.file.fileType == JsonFileType.INSTANCE)
         val providers =
