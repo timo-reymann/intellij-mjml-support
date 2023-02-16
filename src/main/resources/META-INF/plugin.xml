@@ -38,7 +38,7 @@
         ]]></description>
     <change-notes><![CDATA[
         <ul>
-            <li>2.4.ß
+            <li>2.4.0
                 <ul>
                     <li>Fix local image rewrite would break remote images</li>
                     <li>Add support for css inline images, e.g. in mj-hero (<a href="https://github.com/timo-reymann/intellij-mjml-support/issues/145"></a>)</li>
