@@ -125,3 +125,7 @@ you an idea why implementations are as they are.
 ./gradlew runPluginVerifier
 ```
 
+### Build
+```shell
+./gradlew buildPlugin
+```
