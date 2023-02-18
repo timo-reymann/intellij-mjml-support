@@ -29,7 +29,7 @@ intellij-mjml-support
 1. Press (Ctrl+Alt+S/⌘/) to open the IDE settings and select Plugins.
 2. Search for `MJML Support` in the Marketplace and click Install.
 
-## You live on the edge?
+### You live on the edge?
 There is also the channel `snapshot` (https://plugins.jetbrains.com/plugins/snapshot/list) available, for more details
 about set up please
 see [JetBrains Marketplace Docs](https://plugins.jetbrains.com/docs/marketplace/custom-release-channels.html#configuring-a-custom-channel-in-intellij-platform-based-ides)
