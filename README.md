@@ -9,40 +9,57 @@ intellij-mjml-support
 [![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=timo-reymann_intellij-mjml-support&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=timo-reymann_intellij-mjml-support)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Ftimo-reymann%2Fintellij-mjml-support.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Ftimo-reymann%2Fintellij-mjml-support?ref=badge_shield)
 
-
 <p align="center">
 	<img width="300" src="./src/main/resources/META-INF/pluginIcon.svg">
+	<br />
+    MJML support for the IntelliJ Platform.
 </p>
 
-<p align="center">
-	MJML support for the IntelliJ Platform.
-</p>
+## Features
+- Syntax highlighting
+- Inspections for your MJML code
+- Powerful Live-Preview and tooling
+- Autocompletion for color codes, tags, attributes etc.
+- Support for custom MJML components
 
-> You are missing something or something is broken? - Feel free to file a PR/issue or open a discussion on GitHub!
+## Requirements
+- IDEA-based IDE compatible with the plugin
 
-## What's in the box?
+## Installation
+1. Press (Ctrl+Alt+S/⌘/) to open the IDE settings and select Plugins.
+2. Search for `MJML Support` in the Marketplace and click Install.
 
-Fore more details please look up the plugin description in the marketplace or directly in
-the [plugin.xml](./src/main/resources/META-INF/plugin.xml).
-
-## How can I use it?
-
-1. Install it from the plugin repository
-4. You are done, enjoy the magic!
-
-The generated HTML can be viewed by clicking on the "Show HTML" button in the toolbar of the tool window.
-
-### You live on the edge?
-
+## You live on the edge?
 There is also the channel `snapshot` (https://plugins.jetbrains.com/plugins/snapshot/list) available, for more details
 about set up please
 see [JetBrains Marketplace Docs](https://plugins.jetbrains.com/docs/marketplace/custom-release-channels.html#configuring-a-custom-channel-in-intellij-platform-based-ides)
 
 The versioning used there is not based on semantic versioning, but rather: `YYYY.MM.DD-BUILDNUM` and is on
 
-## Extension
+## Usage
+- MJML files are automatically picked, you can also find some
+  screenshots in the marketplace.
 
-### Custom mjml resolution
+## Motivation
+I wanted MJML Support for my beloved JetBrains IDEs.
+
+## Contributing
+I love your input! I want to make contributing to this project as easy and transparent as possible, whether it's:
+
+- Reporting a bug
+- Discussing the current state of the configuration
+- Submitting a fix
+- Proposing new features
+- Becoming a maintainer
+
+To get started please read the [Contribution Guidelines](./CONTRIBUTING.md).
+
+## Documentation
+### Extending plugin functionality with additional plugins
+If you want to support custom functionality or resolving maybe specific
+to the needs your company, there are some entrypoints available.
+
+#### Custom mjml resolution
 
 You want to add custom mjml tags or custom resolving to match your needs?
 
@@ -78,17 +95,33 @@ Simply use the extension point `de.timo_reymann.intellij-mjml-support.tagInforma
           "message":  "string|null",
           "tagName": "string|null",
           "formattedMessage": "string|null"
-        } 
+        }
       ]
     }
   ```
   where errors can be empty, but can never be omitted!
 
-## Notes about implementation
+### Notes about implementation
 
 - The preview editor support is adapted from the official markdown plugin
 - Preview uses bundled node_modules for mjml rendering currently, support for custom rendering is currently in
   development
 
+### Architecture Decision Records
 For [architecture decision records](https://adr.github.io/) please take a look at [docs/adr](./docs/adr), this will give
 you an idea why implementations are as they are.
+
+## Development
+
+### Requirements
+- [Java](https://openjdk.org/)
+
+### Test
+```shell
+# To run unit tests
+./gradlew test
+
+# To run plugin verifier to check compability
+./gradlew runPluginVerifier
+```
+

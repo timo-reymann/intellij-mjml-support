@@ -11,7 +11,7 @@ I love your input! I want to make contributing to this project as easy and trans
 I use github to host code, to track issues and feature requests, as well as accept pull requests.
 
 ## I Use [CircleCI](https://circleci.com/product/), So All Code Changes Happen Through Pull Requests
-Pull requests are the best way to propose changes to the codebase (we use [CircleCI](https://circleci.com/product/)). I actively welcome your pull requests:
+Pull requests are the best way to propose changes to the codebase (I use [CircleCI](https://circleci.com/product/)). I actively welcome your pull requests:
 
 1. Fork the repo and create your branch from `main`.
 2. If you've added code that should be tested, add tests.
@@ -21,7 +21,7 @@ Pull requests are the best way to propose changes to the codebase (we use [Circl
 6. Issue that pull request!
 
 ## Any contributions you make will be under the Climate Strike License
-In short, when you submit code changes, your submissions are understood to be under the same ["Climate Strike" License Version 1.0](https://github.com/timo-reymann/intellij-mjml-support/blob/main/LICENSE) that covers the project. Feel free to contact the maintainers if that's a concern.
+In short, when you submit code changes, your submissions are understood to be under the same ["Climate Strike" License Version 1.0 (Draft)](https://github.com/timo-reymann//blob/main/LICENSE) that covers the project. Feel free to contact the maintainers if that's a concern.
 
 ## Report bugs using Github's issues
 I use GitHub issues to track public bugs. Report a bug by opening a new issue, it's that easy!
@@ -45,4 +45,5 @@ To make your life easier there is also a handy template available so feel free t
 > ATTENTION: If you DONT provide steps to reproduce the ticket will be closed WITHOUT FURTHER NOTICE!
 
 ## License
-By contributing, you agree that your contributions will be licensed under its "Climate Strike" License Version 1.0.
+By contributing, you agree that your contributions will be licensed under its "Climate Strike" License Version 1.0 (Draft).
+
