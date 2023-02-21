@@ -526,7 +526,5 @@
 
 
         <fileBasedIndex implementation="de.timo_reymann.mjml_support.index.MjmlIncludeIndex"/>
-
-        <errorHandler implementation="de.timo_reymann.mjml_support.error_reporting.MjmlPluginErrorSubmitter"/>
     </extensions>
 </idea-plugin>
