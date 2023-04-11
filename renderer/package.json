@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
-    "mjml": "4.13.0"
+    "mjml": "4.14.1"
   },
   "scripts": {
     "build": "zip -FSr ../src/main/resources/node/renderer.zip ."
