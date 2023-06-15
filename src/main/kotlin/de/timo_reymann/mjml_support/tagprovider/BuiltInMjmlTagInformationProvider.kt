@@ -738,7 +738,7 @@ class BuiltInMjmlTagInformationProvider : MjmlTagInformationProvider() {
                     ),
                     ATTRIBUTE_WIDTH
                 ),
-                allowedParentTags = PARENT_ANY,
+                allowedParentTags = listOf("mj-section", "mj-attributes", "mj-column", "mj-hero"),
                 canHaveChildren = false
             ),
             MjmlTagInformation(
