@@ -38,6 +38,11 @@
         ]]></description>
     <change-notes><![CDATA[
         <ul>
+            <li>2.4.1
+                <ul>
+                    <li>Fix allowed parent tags for mj-image</li>
+                </ul>
+            </li>
             <li>2.4.0
                 <ul>
                     <li>Fix local image rewrite would break remote images</li>
