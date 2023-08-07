@@ -38,6 +38,11 @@
         ]]></description>
     <change-notes><![CDATA[
         <ul>
+            <li>2.4.2
+                <ul>
+                    <li>Fix exception with MJML settings configurable (repoted by Stefan Kilp via Mail)</li>
+                </ul>
+            </li>
             <li>2.4.1
                 <ul>
                     <li>Fix allowed parent tags for mj-image</li>
@@ -522,6 +527,7 @@
 
         <projectConfigurable id="de.timo_reymann.mjml_support.settings.MjmlSettingsConfigurable"
                              groupId="tools"
+                             displayName="MJML Settings"
                              instance="de.timo_reymann.mjml_support.settings.MjmlSettingsConfigurable"/>
         <projectService serviceImplementation="de.timo_reymann.mjml_support.settings.MjmlSettings"/>
 
