@@ -10,6 +10,7 @@ import com.intellij.openapi.options.ConfigurationException
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.ComboBox
 import com.intellij.ui.CollectionComboBoxModel
+import com.intellij.ui.MutableCollectionComboBoxModel
 import com.intellij.ui.components.fields.ExtendableTextComponent
 import com.intellij.ui.components.fields.ExtendableTextField
 import com.intellij.ui.dsl.builder.*
@@ -78,11 +79,14 @@ class MjmlSettingsConfigurable(project: Project) : Configurable, Disposable {
                         .comment("Path or directory of .mjmlconfig file (leave blank for default, will search in same folder as the mjml file)")
                 }.layout(RowLayout.PARENT_GRID)
                 row {
-                    comboBox(CollectionComboBoxModel<String>(), null)
+                    comboBox(MutableCollectionComboBoxModel<String>(), null)
                         .label("Rendering script")
                         .gap(RightGap.COLUMNS)
                         .align(Align.FILL)
-                        .bindItem(state::renderScriptPath)
+                        // TODO Find better alternative for bindItem
+                        .onChanged {
+                            state.renderScriptPath = comboBox.selectedItem.toString()
+                        }
                         .columns(COLUMNS_MEDIUM)
                         .also {
                             comboBox = it.component
