@@ -38,6 +38,11 @@
         ]]></description>
     <change-notes><![CDATA[
         <ul>
+            <li>SNAPSHOT
+                <ul>
+                    <li>Add validation for creating new MJML file</li>
+                </ul>
+            </li>
             <li>2.4.2
                 <ul>
                     <li>Fix exception with MJML settings configurable (repoted by Stefan Kilp via Mail)</li>
