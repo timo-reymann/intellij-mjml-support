@@ -38,10 +38,11 @@
         ]]></description>
     <change-notes><![CDATA[
         <ul>
-            <li>SNAPSHOT
+            <li>3.0.0
                 <ul>
                     <li>Add validation for creating new MJML file</li>
                     <li>Fix editor creation with IntelliJ 233.*+ (<a href="https://github.com/timo-reymann/intellij-mjml-support/issues/161">#161</a>)</li>
+                    <li>Set required version to IntelliJ 232.9921.47 to use new experimental APIs required for <a href="https://github.com/timo-reymann/intellij-mjml-support/issues/161">#161</a></li>
                 </ul>
             </li>
             <li>2.4.2
