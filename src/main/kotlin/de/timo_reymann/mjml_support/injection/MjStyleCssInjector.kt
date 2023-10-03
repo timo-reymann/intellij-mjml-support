@@ -6,17 +6,13 @@ import com.intellij.lang.injection.MultiHostRegistrar
 import com.intellij.psi.ElementManipulators
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiLanguageInjectionHost
-import com.intellij.psi.xml.XmlAttribute
-import com.intellij.psi.xml.XmlAttributeValue
-import com.intellij.psi.xml.XmlTag
-import com.intellij.psi.xml.XmlText
-import com.intellij.util.containers.ContainerUtil
+import com.intellij.psi.xml.*
 import de.timo_reymann.mjml_support.lang.MjmlHtmlLanguage
 
 class MjStyleCssInjector : MultiHostInjector {
     override fun getLanguagesToInject(registrar: MultiHostRegistrar, context: PsiElement) {
         // Prevent style injection to be called outside of mjml context
-        if(context.language != MjmlHtmlLanguage.INSTANCE) {
+        if (context.language != MjmlHtmlLanguage.INSTANCE) {
             return
         }
 
@@ -51,5 +47,5 @@ class MjStyleCssInjector : MultiHostInjector {
     }
 
     override fun elementsToInjectIn(): List<Class<out PsiElement>> =
-        ContainerUtil.immutableList(XmlText::class.java, XmlAttributeValue::class.java)
+        listOf(XmlText::class.java, XmlAttributeValue::class.java)
 }
