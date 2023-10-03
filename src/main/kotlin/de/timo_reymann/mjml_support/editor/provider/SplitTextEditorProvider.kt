@@ -1,17 +1,19 @@
 package de.timo_reymann.mjml_support.editor.provider
 
+import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.fileEditor.*
+import com.intellij.openapi.progress.runBlockingMaybeCancellable
+import com.intellij.openapi.progress.runWithModalProgressBlocking
 import com.intellij.openapi.project.DumbAware
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
+import de.timo_reymann.mjml_support.bundle.MjmlBundle
 import de.timo_reymann.mjml_support.editor.ui.MjmlFileEditorState
 import org.jdom.Element
 
 abstract class SplitTextEditorProvider(
-    private val myFirstProvider: FileEditorProvider,
-    private val mySecondProvider: FileEditorProvider
-) :
-    AsyncFileEditorProvider, DumbAware {
+    private val myFirstProvider: FileEditorProvider, private val mySecondProvider: FileEditorProvider
+) : AsyncFileEditorProvider, DumbAware {
     private val myEditorTypeId: String =
         "split-provider[" + myFirstProvider.editorTypeId + ";" + mySecondProvider.editorTypeId + "]"
 
@@ -52,7 +54,7 @@ abstract class SplitTextEditorProvider(
 
         val layout = try {
             TextEditorWithPreview.Layout.valueOf(layoutName.uppercase())
-        } catch(e : Exception) {
+        } catch (e: Exception) {
             TextEditorWithPreview.Layout.SHOW_EDITOR_AND_PREVIEW
         }
 
@@ -88,22 +90,34 @@ abstract class SplitTextEditorProvider(
         private const val SECOND_EDITOR = "second_editor"
         private const val SPLIT_LAYOUT = "split_layout"
 
+        private fun runsInProjectView() = !ApplicationManager.getApplication().isDispatchThread
+        private fun runsInEDT() = ApplicationManager.getApplication().isWriteAccessAllowed
+
         fun getBuilderFromEditorProvider(
-            provider: FileEditorProvider,
-            project: Project,
-            file: VirtualFile
+            provider: FileEditorProvider, project: Project, file: VirtualFile
         ): AsyncFileEditorProvider.Builder {
-            return if (provider is AsyncFileEditorProvider) {
-                provider.createEditorAsync(project, file)
-            } else {
-                object : AsyncFileEditorProvider.Builder() {
+            // in case the provider doesn't provide async functionality -> wrap and create editor
+            if (provider !is AsyncFileEditorProvider) {
+                return object : AsyncFileEditorProvider.Builder() {
                     override fun build(): FileEditor {
                         return provider.createEditor(project, file)
                     }
                 }
             }
+
+            // called with write context
+            if (runsInProjectView() || runsInEDT()) {
+                return runBlockingMaybeCancellable {
+                    provider.createEditorBuilder(project, file)
+                }
+            }
+
+            // called from a context without write lock
+            return runWithModalProgressBlocking(
+                project, MjmlBundle.message("mjml_preview.opening_editor", file.name)
+            ) {
+                provider.createEditorBuilder(project, file)
+            }
         }
     }
-
 }
-

@@ -17,11 +17,11 @@ class NewMjmlFileNameValidator(private val project: Project) : InputValidatorEx 
 
     override fun getErrorText(inputString: String): String? {
         if (inputString.trim().isEmpty()) {
-            return MjmlBundle.message("action.new.file.error.empty.name")
+            return MjmlBundle.message("create_action.error.empty.name")
         }
 
         if (Files.exists(Path.of(project.basePath, "$inputString.mjml"))) {
-            return MjmlBundle.message("action.new.file.error.file.exists", inputString)
+            return MjmlBundle.message("create_action.error.file.exists", inputString)
         }
 
         return null

@@ -41,6 +41,7 @@
             <li>SNAPSHOT
                 <ul>
                     <li>Add validation for creating new MJML file</li>
+                    <li>Fix editor creation with IntelliJ 233.*+ (<a href="https://github.com/timo-reymann/intellij-mjml-support/issues/161">#161</a>)</li>
                 </ul>
             </li>
             <li>2.4.2

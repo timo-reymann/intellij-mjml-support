@@ -9,10 +9,12 @@ when {
         version = properties["snapshotVersion"]!!
         releaseChannels = arrayOf("snapshot")
     }
+
     gitInfo.isCleanTag -> {
         version = gitInfo.lastTag
         releaseChannels = arrayOf("default")
     }
+
     else -> {
         version = gitInfo.version
         releaseChannels = arrayOf("local")
@@ -86,21 +88,10 @@ tasks {
         ideVersions.set(
             // Generated with https://github.com/timo-reymann/script-shelve/blob/master/jetbrains/query_ide_versions_for_verifier.py
             listOf(
-                // PS - PhpStorm
-                "PS-223.8617.59", // 2022.3.2
-                "PS-222.4345.15", // 2022.2.3
-
-                // IU - IntelliJ IDEA Ultimate
-                "IU-223.8617.56", // 2022.3.2
-                "IU-222.4345.14", // 2022.2.3
-
-                // IC - IntelliJ IDEA Community Edition
-                "IC-223.8617.56", // 2022.3.2
-                "IC-222.4345.14", // 2022.2.3
-
-                // WS - WebStorm
-                "WS-223.8617.44", // 2022.3.2
-                "WS-222.4345.14", // 2022.2.3
+                "RD-232.9921.83", // 2023.2.2
+                "WS-232.9921.42", // 2023.2.2
+                "IU-232.9921.47", // 2023.2.2
+                "PS-232.9921.55", // 2023.2.2
             )
         )
         failureLevel.set(
