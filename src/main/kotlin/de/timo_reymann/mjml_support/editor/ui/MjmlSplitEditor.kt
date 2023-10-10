@@ -2,6 +2,7 @@ package de.timo_reymann.mjml_support.editor.ui
 
 import com.intellij.icons.AllIcons
 import com.intellij.openapi.actionSystem.*
+import com.intellij.openapi.actionSystem.ActionUpdateThread.*
 import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.fileEditor.FileEditorState
 import com.intellij.openapi.fileEditor.FileEditorStateLevel
@@ -47,7 +48,7 @@ open class MjmlSplitEditor(private val mainEditor: TextEditor, val secondEditor:
         }
     }
 
-    override fun isShowFloatingToolbar() : Boolean {
+    override fun isShowFloatingToolbar(): Boolean {
         return false;
     }
 
@@ -60,18 +61,24 @@ open class MjmlSplitEditor(private val mainEditor: TextEditor, val secondEditor:
         showEditorAndPreviewAction,
         showPreviewAction,
         Separator.create(),
-        object : AnAction("Refresh", "Refresh the preview", AllIcons.Actions.Refresh) {
+        object : AnAction(
+            MjmlBundle.message("split_editor.action.refresh.text"),
+            MjmlBundle.message("split_editor.action.refresh.description"),
+            AllIcons.Actions.Refresh,
+        ) {
             override fun actionPerformed(e: AnActionEvent) {
                 secondEditor.forceRerender()
             }
         },
         Separator.create(),
         object : ToggleAction(
-            "Keep Scroll Position",
-            "Keep scroll position on rerendering",
-            AllIcons.Actions.SynchronizeScrolling
+            MjmlBundle.message("split_editor.action.keep_scroll_position.text"),
+            MjmlBundle.message("split_editor.action.keep_scroll_position.description"),
+            AllIcons.Actions.SynchronizeScrolling,
         ) {
             override fun isSelected(e: AnActionEvent): Boolean = secondEditor.isScrollSync()
+
+            override fun getActionUpdateThread(): ActionUpdateThread = BGT
 
             override fun setSelected(e: AnActionEvent, state: Boolean) {
                 secondEditor.setScrollSync(state)
@@ -79,6 +86,8 @@ open class MjmlSplitEditor(private val mainEditor: TextEditor, val secondEditor:
         },
         object : ToggleAction("Show HTML", "", AllIcons.FileTypes.Html) {
             override fun isSelected(e: AnActionEvent): Boolean = secondEditor.isHtmlPreview()
+
+            override fun getActionUpdateThread(): ActionUpdateThread = BGT
 
             override fun setSelected(e: AnActionEvent, show: Boolean) {
                 if (show) {
@@ -111,6 +120,8 @@ open class MjmlSplitEditor(private val mainEditor: TextEditor, val secondEditor:
                 select()
             }
         }
+
+        override fun getActionUpdateThread(): ActionUpdateThread = EDT
     }
 }
 
