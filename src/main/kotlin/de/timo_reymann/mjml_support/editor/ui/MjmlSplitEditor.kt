@@ -12,7 +12,9 @@ import com.intellij.openapi.project.DumbAware
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.pom.Navigatable
 import de.timo_reymann.mjml_support.bundle.MjmlBundle
+import de.timo_reymann.mjml_support.icons.EditorIcons
 import de.timo_reymann.mjml_support.mock.AnActionEventMock
+import javax.swing.Icon
 
 open class MjmlSplitEditor(private val mainEditor: TextEditor, val secondEditor: MjmlPreviewFileEditor) :
     TextEditorWithPreview(mainEditor, secondEditor, "TextEditorWithPreview", Layout.SHOW_EDITOR),
@@ -84,6 +86,37 @@ open class MjmlSplitEditor(private val mainEditor: TextEditor, val secondEditor:
                 secondEditor.setScrollSync(state)
             }
         },
+        object : ToggleAction(
+            MjmlBundle.message("split_editor.action.background_mode.text"),
+            MjmlBundle.message("split_editor.action.background_mode.description"),
+            EditorIcons.SUN,
+        ) {
+            override fun isSelected(e: AnActionEvent): Boolean = secondEditor.isDarkMode()
+
+            override fun getActionUpdateThread(): ActionUpdateThread = BGT
+
+            override fun setSelected(e: AnActionEvent, state: Boolean) {
+                lateinit var backgroundMode: MjmlJCEFHtmlPanel.BackgroundMode
+                lateinit var icon: Icon
+
+                when (secondEditor.isDarkMode()) {
+                    true -> {
+                        backgroundMode = MjmlJCEFHtmlPanel.BackgroundMode.Light
+                        icon = EditorIcons.SUN
+                    }
+
+                    false -> {
+                        backgroundMode = MjmlJCEFHtmlPanel.BackgroundMode.Dark
+                        icon = EditorIcons.MOON
+
+                    }
+                }
+                secondEditor.setBackgroundMode(backgroundMode)
+
+                e.presentation.icon = icon
+            }
+        },
+        Separator.create(),
         object : ToggleAction("Show HTML", "", AllIcons.FileTypes.Html) {
             override fun isSelected(e: AnActionEvent): Boolean = secondEditor.isHtmlPreview()
 

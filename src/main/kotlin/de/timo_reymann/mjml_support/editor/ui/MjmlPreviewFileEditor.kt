@@ -123,11 +123,13 @@ class MjmlPreviewFileEditor(private val project: Project, private val virtualFil
     override fun setState(state: FileEditorState) {
         // not used
     }
+
     override fun isModified(): Boolean = false
     override fun isValid(): Boolean = true
     override fun deselectNotify() {
         // not used
     }
+
     override fun addPropertyChangeListener(listener: PropertyChangeListener) {}
     override fun removePropertyChangeListener(listener: PropertyChangeListener) {}
     override fun getBackgroundHighlighter(): BackgroundEditorHighlighter? = null
@@ -274,6 +276,10 @@ class MjmlPreviewFileEditor(private val project: Project, private val virtualFil
 
     fun isScrollSync(): Boolean = htmlPanel?.syncScroll ?: false
 
+    fun setBackgroundMode(mode: MjmlJCEFHtmlPanel.BackgroundMode) = htmlPanel?.setBackgroundMode(mode)
+
+    fun isDarkMode() = htmlPanel?.getBackgroundMode() == MjmlJCEFHtmlPanel.BackgroundMode.Dark
+
     fun setScrollSync(toggle: Boolean) {
         htmlPanel?.syncScroll = toggle
     }
@@ -345,6 +351,7 @@ class MjmlPreviewFileEditor(private val project: Project, private val virtualFil
             override fun mouseClicked(e: MouseEvent?) {
                 // not used
             }
+
             override fun mousePressed(e: MouseEvent?) {
                 updatePreviewWidth(0)
                 setPreviewWidth(null)
@@ -358,6 +365,7 @@ class MjmlPreviewFileEditor(private val project: Project, private val virtualFil
             override fun mouseEntered(e: MouseEvent?) {
                 // not used
             }
+
             override fun mouseExited(e: MouseEvent?) {
                 // not used
             }

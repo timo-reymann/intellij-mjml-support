@@ -2,13 +2,16 @@ package de.timo_reymann.mjml_support.editor.ui
 
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.util.Disposer
+import com.intellij.ui.JBColor
 import com.intellij.ui.jcef.JBCefBrowserBase
 import com.intellij.ui.jcef.JBCefClient
 import com.intellij.ui.jcef.JBCefJSQuery
 import com.intellij.ui.jcef.JCEFHtmlPanel
+import kotlinx.coroutines.selects.select
 import org.cef.browser.CefBrowser
 import org.cef.browser.CefFrame
 import org.cef.handler.CefLoadHandlerAdapter
+import java.awt.Color
 import kotlin.random.Random.Default.nextInt
 
 class MjmlJCEFHtmlPanel : JCEFHtmlPanel(getClassUrl()) {
@@ -28,8 +31,12 @@ class MjmlJCEFHtmlPanel : JCEFHtmlPanel(getClassUrl()) {
 
     }
 
-    private val loadHandler = object : CefLoadHandlerAdapter() {
+    enum class BackgroundMode {
+        Light,
+        Dark,
+    }
 
+    private val loadHandler = object : CefLoadHandlerAdapter() {
         override fun onLoadEnd(browser: CefBrowser?, frame: CefFrame?, httpStatusCode: Int) {
             executeJavaScript(
                 // language=JavaScript
@@ -47,16 +54,17 @@ class MjmlJCEFHtmlPanel : JCEFHtmlPanel(getClassUrl()) {
             )
         }
     }
-
     internal var syncScroll: Boolean = true
-    val query = createQuery()
+    private val query = createQuery()
     private var scrollOffset = 0
+    private var backgroundMode: BackgroundMode = BackgroundMode.Light
 
     init {
         query.addHandler {
             scrollOffset = it.toInt()
             null
         }
+        setBackgroundMode(backgroundMode)
     }
 
     private fun createQuery(): JBCefJSQuery {
@@ -77,5 +85,15 @@ class MjmlJCEFHtmlPanel : JCEFHtmlPanel(getClassUrl()) {
         if (this.syncScroll) {
             jbCefClient.addLoadHandler(loadHandler, this.cefBrowser)
         }
+    }
+
+    fun getBackgroundMode(): BackgroundMode = this.backgroundMode
+
+    fun setBackgroundMode(mode: BackgroundMode) {
+        this.component.background = when (mode) {
+            BackgroundMode.Light -> JBColor(Color.WHITE, Color.WHITE)
+            BackgroundMode.Dark -> JBColor(Color.DARK_GRAY, Color.DARK_GRAY)
+        }
+        this.backgroundMode = mode
     }
 }

@@ -38,11 +38,21 @@
         ]]></description>
     <change-notes><![CDATA[
         <ul>
+            <li>3.1.0
+                <ul>
+                    <li>Add support for light and dark theme switcher (<a
+                            href="https://github.com/timo-reymann/intellij-mjml-support/issues/169">#169</a>)
+                    </li>
+                </ul>
+            </li>
             <li>3.0.0
                 <ul>
                     <li>Add validation for creating new MJML file</li>
-                    <li>Fix editor creation with IntelliJ 233.*+ (<a href="https://github.com/timo-reymann/intellij-mjml-support/issues/161">#161</a>)</li>
-                    <li>Set required version to IntelliJ 232.9921.47 to use new experimental APIs required for <a href="https://github.com/timo-reymann/intellij-mjml-support/issues/161">#161</a></li>
+                    <li>Fix editor creation with IntelliJ 233.*+ (<a
+                            href="https://github.com/timo-reymann/intellij-mjml-support/issues/161">#161</a>)
+                    </li>
+                    <li>Set required version to IntelliJ 232.9921.47 to use new experimental APIs required for <a
+                            href="https://github.com/timo-reymann/intellij-mjml-support/issues/161">#161</a></li>
                 </ul>
             </li>
             <li>2.4.2
@@ -58,7 +68,9 @@
             <li>2.4.0
                 <ul>
                     <li>Fix local image rewrite would break remote images</li>
-                    <li>Add support for css inline images, e.g. in mj-hero (<a href="https://github.com/timo-reymann/intellij-mjml-support/issues/145"></a>)</li>
+                    <li>Add support for css inline images, e.g. in mj-hero (<a
+                            href="https://github.com/timo-reymann/intellij-mjml-support/issues/145"></a>)
+                    </li>
                 </ul>
             </li>
             <li>2.3.2
@@ -69,13 +81,15 @@
             <li>2.3.0
                 <ul>
                     <li>Add filePath to render script parameters (<a
-                            href="https://github.com/timo-reymann/intellij-mjml-support/pull/138">#138</a>)</li>
+                            href="https://github.com/timo-reymann/intellij-mjml-support/pull/138">#138</a>)
+                    </li>
                 </ul>
             </li>
             <li>2.2.0
                 <ul>
                     <li>Support template data language mjml for mj-includes (<a
-                            href="https://github.com/timo-reymann/intellij-mjml-support/issues/120">#120</a>)</li>
+                            href="https://github.com/timo-reymann/intellij-mjml-support/issues/120">#120</a>)
+                    </li>
                 </ul>
             </li>
             <li>2.1.0
@@ -84,7 +98,8 @@
                             href="https://github.com/timo-reymann/intellij-mjml-support/issues/111">#111</a>)
                     </li>
                     <li>
-                        Allow custom mjmlconfig files (<a  href="https://github.com/timo-reymann/intellij-mjml-support/issues/112">#112</a>)
+                        Allow custom mjmlconfig files (<a
+                            href="https://github.com/timo-reymann/intellij-mjml-support/issues/112">#112</a>)
                     </li>
                 </ul>
             </li>
