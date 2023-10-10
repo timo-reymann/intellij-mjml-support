@@ -1,8 +1,15 @@
 package de.timo_reymann.mjml_support.icons
 
 import com.intellij.openapi.util.IconLoader
+import javax.swing.Icon
+
+fun loadIcon(name: String): Icon {
+    return IconLoader.getIcon("/icons/editor/$name.svg", EditorIcons::class.java)
+}
 
 object EditorIcons {
-    val SMARTPHONE = IconLoader.getIcon("/icons/editor/smartphone.svg", EditorIcons::class.java)
-    val DESKTOP = IconLoader.getIcon("/icons/editor/desktop.svg", EditorIcons::class.java)
+    val SMARTPHONE = loadIcon("smartphone")
+    val DESKTOP = loadIcon("desktop")
+    val MOON = loadIcon("moon")
+    val SUN = loadIcon("sun")
 }
