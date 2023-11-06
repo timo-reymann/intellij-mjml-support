@@ -257,7 +257,7 @@ class MjmlPreviewFileEditor(private val project: Project, private val virtualFil
                 sourceViewer!!.document.setText(myLastRenderedHtml)
             }
         } else if (htmlPanel != null) {
-            htmlPanel!!.setHtml(myLastRenderedHtml)
+            htmlPanel!!.setHtml(myLastRenderedHtml.fixWindowsLineBreaks())
         }
     }
 
@@ -289,7 +289,7 @@ class MjmlPreviewFileEditor(private val project: Project, private val virtualFil
         updatePreviewWidth(800)
 
         htmlPanelWrapper.removeAll()
-        val document = EditorFactory.getInstance().createDocument(myLastRenderedHtml)
+        val document = EditorFactory.getInstance().createDocument(myLastRenderedHtml.fixWindowsLineBreaks())
 
         // Create source viewer with html snippet
         sourceViewer = EditorTextField(document, project, HtmlFileType.INSTANCE, true, false)
@@ -459,4 +459,8 @@ class MjmlPreviewFileEditor(private val project: Project, private val virtualFil
         }
         forceRerender()
     }
+}
+
+fun String.fixWindowsLineBreaks(): String {
+    return this.replace("\\r\\n", "\n")
 }
