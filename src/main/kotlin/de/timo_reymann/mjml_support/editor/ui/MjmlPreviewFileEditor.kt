@@ -462,5 +462,5 @@ class MjmlPreviewFileEditor(private val project: Project, private val virtualFil
 }
 
 fun String.fixWindowsLineBreaks(): String {
-    return this.replace("\\r\\n", "\n")
+    return this.replace("\r\n", "\n")
 }
