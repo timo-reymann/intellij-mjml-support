@@ -54,6 +54,17 @@ open class MjmlSplitEditor(private val mainEditor: TextEditor, val secondEditor:
         return false;
     }
 
+    override fun isVerticalSplit(): Boolean {
+        return false
+    }
+
+    override fun setVerticalSplit(verticalSplit: Boolean) {
+        super.setVerticalSplit(verticalSplit)
+        if (verticalSplit) {
+            this.secondEditor.setPreviewWidth(null)
+        }
+    }
+
     override fun getState(level: FileEditorStateLevel): FileEditorState {
         return MjmlFileEditorState(super.getLayout(), myEditor.getState(level), myPreview.getState(level))
     }
@@ -144,7 +155,8 @@ open class MjmlSplitEditor(private val mainEditor: TextEditor, val secondEditor:
 
         override fun isSelected(e: AnActionEvent): Boolean = myPreviewWidthStatus == secondEditor.previewWidthStatus
                 && !secondEditor.isHtmlPreview()
-                && layout != Layout.SHOW_EDITOR
+                && layout == Layout.SHOW_EDITOR_AND_PREVIEW
+                && !isVerticalSplit
 
         private fun select() = secondEditor.setPreviewWidth(myPreviewWidthStatus)
 
