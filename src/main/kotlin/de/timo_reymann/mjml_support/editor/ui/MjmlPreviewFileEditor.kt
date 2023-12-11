@@ -42,7 +42,6 @@ import de.timo_reymann.mjml_support.index.getFilesWithIncludesFor
 import de.timo_reymann.mjml_support.settings.MJML_SETTINGS_CHANGED_TOPIC
 import de.timo_reymann.mjml_support.settings.MjmlSettings
 import de.timo_reymann.mjml_support.settings.MjmlSettingsChangedListener
-import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.jsoup.Jsoup
@@ -353,8 +352,6 @@ class MjmlPreviewFileEditor(private val project: Project, private val virtualFil
             }
 
             override fun mousePressed(e: MouseEvent?) {
-                updatePreviewWidth(0)
-                setPreviewWidth(null)
                 togglePreviewTextVisibility(true)
             }
 
