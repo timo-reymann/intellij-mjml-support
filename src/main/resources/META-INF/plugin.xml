@@ -38,6 +38,14 @@
         ]]></description>
     <change-notes><![CDATA[
         <ul>
+            <li>3.2.0
+                <ul>
+                    <li>Add support for vertical preview split (<a
+                            href="https://github.com/timo-reymann/intellij-mjml-support/issues/173">#173</a>)</li>
+                    <li>Fix collapse preview on click in view (<a
+                            href="https://github.com/timo-reymann/intellij-mjml-support/issues/173">#173</a>)</li>
+                </ul>
+            </li>
             <li>3.1.1
                 <ul>
                     <li>Fix windows CRLF linebreaks in HTML source editor crashing the editor (<a
