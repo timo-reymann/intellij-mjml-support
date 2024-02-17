@@ -234,3 +234,15 @@ val ATTRIBUTE_MJ_CLASS = MjmlAttributeInformation(
     MjmlAttributeType.CLASS,
     "mj-class"
 )
+
+val ATTRIBUTE_BACKGROUND_POSITION_X = MjmlAttributeInformation(
+    "background-position-x",
+    MjmlAttributeType.COMPLEX,
+    "css background position x"
+)
+
+val ATTRIBUTE_BACKGROUND_POSITION_Y = MjmlAttributeInformation(
+    "background-position-y",
+    MjmlAttributeType.COMPLEX,
+    "css background position y"
+)
