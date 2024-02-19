@@ -40,6 +40,12 @@ class BuiltInMjmlTagInformationProvider : MjmlTagInformationProvider() {
                         "owa",
                         MjmlAttributeType.STRING,
                         "if set to \"desktop\", switch force desktop version for older (self-hosted) version of Outlook.com that doesn't support media queries (cf. this issue)"
+                    ),
+                    MjmlAttributeInformation(
+                        "dir",
+                        MjmlAttributeType.STRING,
+                        "used as <html dir=\"\"> attribute",
+                        "auto"
                     )
                 ),
                 allowedParentTags = PARENT_NONE
@@ -356,6 +362,11 @@ class BuiltInMjmlTagInformationProvider : MjmlTagInformationProvider() {
                         "center"
                     ),
                     ATTRIBUTE_BACKGROUND_COLOR,
+                    MjmlAttributeInformation(
+                        "container-background-color",
+                        MjmlAttributeType.COLOR,
+                        "column background color"
+                    ),
                     ATTRIBUTE_BORDER_RADIUS,
                     ATTRIBUTE_CSS_CLASS,
                     ATTRIBUTE_MJ_CLASS,
@@ -638,6 +649,7 @@ class BuiltInMjmlTagInformationProvider : MjmlTagInformationProvider() {
                         "width of the image used",
                         "parent element width"
                     ),
+                    ATTRIBUTE_BORDER_RADIUS,
                     ATTRIBUTE_CSS_CLASS,
                     ATTRIBUTE_MJ_CLASS,
                     ATTRIBUTE_HEIGHT,
@@ -690,8 +702,16 @@ class BuiltInMjmlTagInformationProvider : MjmlTagInformationProvider() {
                     ),
                     ATTRIBUTE_ALT,
                     ATTRIBUTE_BORDER,
+                    ATTRIBUTE_BORDER_TOP,
+                    ATTRIBUTE_BORDER_BOTTOM,
+                    ATTRIBUTE_BORDER_LEFT,
+                    ATTRIBUTE_BORDER_RIGHT,
                     ATTRIBUTE_BORDER_RADIUS,
-                    ATTRIBUTE_CONTAINER_BACKGROUND_COLOR,
+                    MjmlAttributeInformation(
+                        "container-background-color",
+                        MjmlAttributeType.COLOR,
+                        "inner element background color"
+                    ),
                     ATTRIBUTE_CSS_CLASS,
                     ATTRIBUTE_MJ_CLASS,
                     MjmlAttributeInformation(
@@ -701,6 +721,11 @@ class BuiltInMjmlTagInformationProvider : MjmlTagInformationProvider() {
                     ),
                     ATTRIBUTE_HEIGHT,
                     ATTRIBUTE_HREF,
+                    MjmlAttributeInformation(
+                        "name",
+                        MjmlAttributeType.STRING,
+                        "specify the link name attribute"
+                    ),
                     MjmlAttributeInformation(
                         "padding",
                         MjmlAttributeType.COMPLEX,
@@ -712,6 +737,11 @@ class BuiltInMjmlTagInformationProvider : MjmlTagInformationProvider() {
                     ATTRIBUTE_PADDING_RIGHT,
                     ATTRIBUTE_PADDING_TOP,
                     ATTRIBUTE_REL,
+                    MjmlAttributeInformation(
+                        "sizes",
+                        MjmlAttributeType.COMPLEX,
+                        "set width based on query"
+                    ),
                     MjmlAttributeInformation(
                         "src",
                         MjmlAttributeType.URL,
@@ -867,6 +897,11 @@ class BuiltInMjmlTagInformationProvider : MjmlTagInformationProvider() {
                     ATTRIBUTE_FONT_WEIGHT,
                     ATTRIBUTE_HREF,
                     MjmlAttributeInformation(
+                        "letter-spacing",
+                        MjmlAttributeType.PIXEL,
+                        "letter-spacing",
+                    ),
+                    MjmlAttributeInformation(
                         "line-height",
                         MjmlAttributeType.PIXEL,
                         "space between the lines",
@@ -922,6 +957,14 @@ class BuiltInMjmlTagInformationProvider : MjmlTagInformationProvider() {
                 ),
                 attributes = arrayOf(
                     ATTRIBUTE_BACKGROUND_COLOR,
+                    MjmlAttributeInformation(
+                        "background-position",
+                        MjmlAttributeType.COMPLEX,
+                        "css background position (see outlook limitations below)",
+                        "top center"
+                    ),
+                    ATTRIBUTE_BACKGROUND_POSITION_X,
+                    ATTRIBUTE_BACKGROUND_POSITION_Y,
                     MjmlAttributeInformation(
                         "background-repeat",
                         MjmlAttributeType.STRING,
@@ -987,7 +1030,11 @@ class BuiltInMjmlTagInformationProvider : MjmlTagInformationProvider() {
                     ATTRIBUTE_COLOR,
                     ATTRIBUTE_CSS_CLASS,
                     ATTRIBUTE_MJ_CLASS,
-                    ATTRIBUTE_CONTAINER_BACKGROUND_COLOR,
+                    MjmlAttributeInformation(
+                        "container-background-color",
+                        MjmlAttributeType.COLOR,
+                        "inner element background color"
+                    ),
                     ATTRIBUTE_FONT_FAMILY,
                     ATTRIBUTE_FONT_SIZE,
                     ATTRIBUTE_FONT_STYLE,
@@ -1098,11 +1145,22 @@ class BuiltInMjmlTagInformationProvider : MjmlTagInformationProvider() {
                         "4px 4px 4px 0"
                     ),
                     MjmlAttributeInformation(
+                        "sizes",
+                        MjmlAttributeType.COMPLEX,
+                        "set width based on query"
+                    ),
+                    MjmlAttributeInformation(
                         "src",
                         MjmlAttributeType.URL,
                         "image source",
                         "Each social name has its own default+"
                     ),
+                    MjmlAttributeInformation(
+                        "srcset",
+                        MjmlAttributeType.COMPLEX,
+                        "set a different image source based on the viewport",
+                    ),
+                    ATTRIBUTE_REL,
                     ATTRIBUTE_TARGET,
                     ATTRIBUTE_TITLE,
                     MjmlAttributeInformation(
@@ -1125,7 +1183,11 @@ class BuiltInMjmlTagInformationProvider : MjmlTagInformationProvider() {
                 "mj-spacer",
                 "Displays a blank space.",
                 attributes = arrayOf(
-                    ATTRIBUTE_CONTAINER_BACKGROUND_COLOR,
+                    MjmlAttributeInformation(
+                        "color-background-color",
+                        MjmlAttributeType.COLOR,
+                        "inner element background color"
+                    ),
                     ATTRIBUTE_CSS_CLASS,
                     ATTRIBUTE_MJ_CLASS,
                     ATTRIBUTE_HEIGHT,
@@ -1164,7 +1226,11 @@ class BuiltInMjmlTagInformationProvider : MjmlTagInformationProvider() {
                         "space between cell and border"
                     ),
                     ATTRIBUTE_COLOR,
-                    ATTRIBUTE_CONTAINER_BACKGROUND_COLOR,
+                    MjmlAttributeInformation(
+                        "container-background-color",
+                        MjmlAttributeType.COLOR,
+                        "inner element background color"
+                    ),
                     ATTRIBUTE_CSS_CLASS,
                     ATTRIBUTE_MJ_CLASS,
                     ATTRIBUTE_FONT_FAMILY,
@@ -1186,6 +1252,17 @@ class BuiltInMjmlTagInformationProvider : MjmlTagInformationProvider() {
                     ATTRIBUTE_PADDING_LEFT,
                     ATTRIBUTE_PADDING_RIGHT,
                     ATTRIBUTE_PADDING_TOP,
+                    MjmlAttributeInformation(
+                        "role",
+                        MjmlAttributeType.COMPLEX,
+                        "specify the role attribute"
+                    ),
+                    MjmlAttributeInformation(
+                        "table-layout",
+                        MjmlAttributeType.STRING,
+                        "sets the table layout.",
+                        "auto"
+                    ),
                     MjmlAttributeInformation(
                         "width",
                         MjmlAttributeType.STRING,
@@ -1235,7 +1312,11 @@ class BuiltInMjmlTagInformationProvider : MjmlTagInformationProvider() {
                         "left/right/center/justify",
                         "left"
                     ),
-                    ATTRIBUTE_CONTAINER_BACKGROUND_COLOR,
+                    MjmlAttributeInformation(
+                        "container-background-color",
+                        MjmlAttributeType.COLOR,
+                        "inner element background color"
+                    ),
                     MjmlAttributeInformation(
                         "padding",
                         MjmlAttributeType.COMPLEX,
@@ -1261,6 +1342,14 @@ class BuiltInMjmlTagInformationProvider : MjmlTagInformationProvider() {
                 ),
                 attributes = arrayOf(
                     ATTRIBUTE_BACKGROUND_COLOR,
+                    MjmlAttributeInformation(
+                        "background-position",
+                        MjmlAttributeType.COMPLEX,
+                        "css background position (see outlook limitations in mj-section doc)",
+                        "top center"
+                    ),
+                    ATTRIBUTE_BACKGROUND_POSITION_X,
+                    ATTRIBUTE_BACKGROUND_POSITION_Y,
                     MjmlAttributeInformation(
                         "background-repeat",
                         MjmlAttributeType.STRING,
