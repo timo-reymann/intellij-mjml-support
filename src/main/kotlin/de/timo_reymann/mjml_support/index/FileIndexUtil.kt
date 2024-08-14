@@ -8,7 +8,6 @@ import com.intellij.openapi.fileTypes.FileTypeManager
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.io.FileUtilRt
 import com.intellij.openapi.vfs.VirtualFile
-import com.intellij.psi.PsiFile
 import com.intellij.psi.search.FilenameIndex
 import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.psi.search.ProjectScope
@@ -18,7 +17,6 @@ import com.intellij.util.indexing.FindSymbolParameters
 import com.intellij.webcore.template.TemplateLanguageFileUtil
 import de.timo_reymann.mjml_support.lang.MjmlHtmlLanguage
 import java.io.File
-import java.util.*
 
 object FileIndexUtil {
     fun getMatchesForAutoComplete(

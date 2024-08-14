@@ -6,7 +6,10 @@ import com.intellij.lang.injection.MultiHostRegistrar
 import com.intellij.psi.ElementManipulators
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiLanguageInjectionHost
-import com.intellij.psi.xml.*
+import com.intellij.psi.xml.XmlAttribute
+import com.intellij.psi.xml.XmlAttributeValue
+import com.intellij.psi.xml.XmlTag
+import com.intellij.psi.xml.XmlText
 import de.timo_reymann.mjml_support.lang.MjmlHtmlLanguage
 
 class MjStyleCssInjector : MultiHostInjector {

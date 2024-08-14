@@ -1,6 +1,8 @@
 package de.timo_reymann.mjml_support.util
 
-import com.intellij.notification.*
+import com.intellij.notification.Notification
+import com.intellij.notification.NotificationType
+import com.intellij.notification.Notifications
 import de.timo_reymann.mjml_support.bundle.MjmlBundle
 import java.util.*
 

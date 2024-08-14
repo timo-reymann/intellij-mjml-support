@@ -2,8 +2,8 @@ package de.timo_reymann.mjml_support.editor.render
 
 import de.timo_reymann.mjml_support.MjmlPluginBaseTestCase
 import de.timo_reymann.mjml_support.settings.MjmlSettings
-import org.hamcrest.CoreMatchers.*
-import org.hamcrest.MatcherAssert.*
+import org.hamcrest.CoreMatchers.containsString
+import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Test
 import java.io.File
 

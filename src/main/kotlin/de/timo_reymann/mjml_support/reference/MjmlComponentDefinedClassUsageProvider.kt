@@ -4,8 +4,8 @@ import com.intellij.psi.PsiElement
 import com.intellij.psi.css.CssClass
 import com.intellij.psi.css.CssSelectorSuffix
 import com.intellij.psi.css.usages.CssClassOrIdReferenceBasedUsagesProvider
-import de.timo_reymann.mjml_support.util.isCssBlockInMjmlFile
 import de.timo_reymann.mjml_support.model.MjmlTagProvider
+import de.timo_reymann.mjml_support.util.isCssBlockInMjmlFile
 
 class MjmlComponentDefinedClassUsageProvider : CssClassOrIdReferenceBasedUsagesProvider() {
     override fun acceptElement(candidate: PsiElement): Boolean {
