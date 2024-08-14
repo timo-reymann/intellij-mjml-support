@@ -23,12 +23,15 @@ when {
 
 repositories {
     mavenCentral()
+    intellijPlatform {
+        defaultRepositories()
+    }
 }
 
 plugins {
     id("java")
     kotlin("jvm") version "2.0.10"
-    id("org.jetbrains.intellij") version "1.17.4"
+    id("org.jetbrains.intellij.platform") version "2.0.1"
     id("com.palantir.git-version") version "3.0.0"
     id("com.adarshr.test-logger") version "4.0.0"
 }
@@ -36,33 +39,42 @@ plugins {
 dependencies {
     implementation(kotlin("reflect"))
     testImplementation("junit", "junit", "4.13.2")
+    intellijPlatform {
+        intellijIdeaUltimate(providers.gradleProperty("idea-version"))
+        pluginVerifier()
+        zipSigner()
+        instrumentationTools()
+        bundledPlugins(listOf(
+            "com.intellij.css",
+            "HtmlTools",
+            "JavaScript",
+        ))
+    }
 }
 
 // See https://github.com/JetBrains/gradle-intellij-plugin/
-intellij {
-    version.set(properties["idea-version"] as String)
-    updateSinceUntilBuild.set(false)
-    downloadSources.set(true)
-    pluginName.set("MJML Support")
-    plugins.set(
-        listOf(
-            "com.intellij.css",
-            "HtmlTools",
-            "JavaScript"
-        )
-    )
+intellijPlatform {
+    pluginConfiguration {
+        name = "MJML Support"
+    }
+
+    pluginVerification {
+        ides {
+            recommended()
+        }
+    }
+
+    publishing {
+        token.set(System.getenv("JB_TOKEN"))
+        channels.set(releaseChannels.toList())
+    }
+}
+
+kotlin {
+    jvmToolchain(17)
 }
 
 tasks {
-    compileKotlin {
-        kotlinOptions.jvmTarget = JavaVersion.VERSION_17.toString()
-    }
-
-    compileJava {
-        sourceCompatibility = JavaVersion.VERSION_17.toString()
-        targetCompatibility = JavaVersion.VERSION_17.toString()
-    }
-
     test {
         testLogging {
             exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
@@ -72,32 +84,5 @@ tasks {
 
         // Prevent "File access outside allowed roots" in multi-module tests, because modules each have an .iml
         environment("NO_FS_ROOTS_ACCESS_CHECK", "1")
-    }
-
-    patchPluginXml {
-        setVersion(project.version)
-    }
-
-    publishPlugin {
-        dependsOn("patchPluginXml")
-        token.set(System.getenv("JB_TOKEN"))
-        channels.set(releaseChannels.toList())
-    }
-
-    runPluginVerifier {
-        ideVersions.set(
-            // Generated with https://github.com/timo-reymann/script-shelve/blob/master/jetbrains/query_ide_versions_for_verifier.py
-            listOf(
-                "RD-232.9921.83", // 2023.2.2
-                "WS-232.9921.42", // 2023.2.2
-                "IU-232.9921.47", // 2023.2.2
-                "PS-232.9921.55", // 2023.2.2
-            )
-        )
-        failureLevel.set(
-            listOf(
-                org.jetbrains.intellij.tasks.RunPluginVerifierTask.FailureLevel.INVALID_PLUGIN
-            )
-        )
     }
 }
