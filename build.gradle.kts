@@ -60,8 +60,12 @@ dependencies {
 
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellijPlatform {
+
     pluginConfiguration {
         name = "MJML Support"
+        ideaVersion {
+            untilBuild = ""
+        }
     }
 
     pluginVerification {
