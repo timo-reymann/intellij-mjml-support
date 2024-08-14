@@ -12,8 +12,11 @@ class InvalidUrlAttributeInspectionTest : MjmlPluginBaseTestCase() {
     fun testTel() =
         checkHighlighting(InvalidUrlAttributeInspection())
 
+    fun testInvalidUrl() =
+        checkHighlighting(InvalidUrlAttributeInspection())
+
     fun testMail() =
         checkHighlighting(InvalidUrlAttributeInspection())
 
-    override fun getTestDataPath(): String = super.getTestDataPath() +"inspection/url"
+    override fun getTestDataPath(): String = super.getTestDataPath() + "inspection/url"
 }
