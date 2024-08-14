@@ -71,8 +71,8 @@ intellijPlatform {
     }
 
     publishing {
-        token.set(System.getenv("JB_TOKEN"))
-        channels.set(releaseChannels.toList())
+        token = System.getenv("JB_TOKEN")
+        channels = releaseChannels.toList()
     }
 }
 

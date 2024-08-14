@@ -51,7 +51,7 @@ jobs:
           command: ./gradlew test
       - run:
           name: Run pluginVerifier
-          command: ./gradlew runPluginVerifier
+          command: ./gradlew verifyPlugin
           no_output_timeout: 20m
       - store_test_results:
           path: build/test-results/test
