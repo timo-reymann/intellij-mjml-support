@@ -1,3 +1,5 @@
+import org.jetbrains.intellij.platform.gradle.TestFrameworkType
+
 fun getVersionDetails(): com.palantir.gradle.gitversion.VersionDetails =
     (extra["versionDetails"] as groovy.lang.Closure<*>)() as com.palantir.gradle.gitversion.VersionDetails
 
@@ -44,12 +46,16 @@ dependencies {
         pluginVerifier()
         zipSigner()
         instrumentationTools()
-        bundledPlugins(listOf(
-            "com.intellij.css",
-            "HtmlTools",
-            "JavaScript",
-        ))
+        bundledPlugins(
+            listOf(
+                "com.intellij.css",
+                "HtmlTools",
+                "JavaScript",
+            )
+        )
+        testFramework(TestFrameworkType.Platform)
     }
+
 }
 
 // See https://github.com/JetBrains/gradle-intellij-plugin/
