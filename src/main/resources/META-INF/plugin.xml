@@ -466,6 +466,7 @@
     <depends optional="true" config-file="css-plugin.xml">com.intellij.css</depends>
     <depends optional="true" config-file="javascript-plugin.xml">JavaScript</depends>
     <depends optional="true" config-file="php-plugin.xml">com.jetbrains.php</depends>
+    <depends optional="true" config-file="json-plugin.xml">com.intellij.modules.json</depends>
 
     <extensionPoints>
         <extensionPoint name="tagInformationProvider"
