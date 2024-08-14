@@ -9,7 +9,7 @@ import de.timo_reymann.mjml_support.api.MjmlAttributeType
 import de.timo_reymann.mjml_support.bundle.MjmlBundle
 import de.timo_reymann.mjml_support.model.getMjmlTagFromAttribute
 import de.timo_reymann.mjml_support.settings.MjmlSettings
-import java.net.URL
+import io.ktor.http.*
 
 class InvalidUrlAttributeInspection : HtmlLocalInspectionTool() {
     override fun checkAttribute(attribute: XmlAttribute, holder: ProblemsHolder, isOnTheFly: Boolean) {
@@ -30,7 +30,8 @@ class InvalidUrlAttributeInspection : HtmlLocalInspectionTool() {
         // Validate url
         var isValidUrl = true
         try {
-            URL(attribute.value)
+            val uriString = attribute.value.toString()
+            Url(uriString)
         } catch (e: Exception) {
             isValidUrl = false
         }
