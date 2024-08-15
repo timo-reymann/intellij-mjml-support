@@ -40,6 +40,12 @@
     <!-- language=html -->
     <change-notes><![CDATA[
         <ul>
+            <li>3.4.0
+                <ul>
+                    <li>Make plugin compatible with upcoming 2024.3</li>
+                    <li>Use icons from New UI for the preview controls</li>
+                </ul>
+            </li>
             <li>3.3.1
                 <ul>
                     <li>Add missing tag attributes based on MJML documentation (<a
@@ -458,7 +464,7 @@
         </ul>
         ]]></change-notes>
 
-    <idea-version since-build="232.9921.47"/>
+    <idea-version since-build="242.*"/>
     <depends>com.intellij.modules.platform</depends>
     <depends>com.intellij.modules.lang</depends>
     <depends>com.intellij.modules.xml</depends>
