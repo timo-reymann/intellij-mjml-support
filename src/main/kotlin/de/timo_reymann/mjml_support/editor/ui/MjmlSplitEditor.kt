@@ -78,7 +78,7 @@ open class MjmlSplitEditor(private val mainEditor: TextEditor, val secondEditor:
         object : AnAction(
             MjmlBundle.message("split_editor.action.refresh.text"),
             MjmlBundle.message("split_editor.action.refresh.description"),
-            AllIcons.Actions.Refresh,
+            EditorIcons.REFRESH,
         ) {
             override fun actionPerformed(e: AnActionEvent) {
                 secondEditor.forceRerender()
@@ -88,7 +88,7 @@ open class MjmlSplitEditor(private val mainEditor: TextEditor, val secondEditor:
         object : ToggleAction(
             MjmlBundle.message("split_editor.action.keep_scroll_position.text"),
             MjmlBundle.message("split_editor.action.keep_scroll_position.description"),
-            AllIcons.Actions.SynchronizeScrolling,
+            EditorIcons.SYNCHRONIZE_SCROLLING,
         ) {
             override fun isSelected(e: AnActionEvent): Boolean = secondEditor.isScrollSync()
 
@@ -101,7 +101,7 @@ open class MjmlSplitEditor(private val mainEditor: TextEditor, val secondEditor:
         object : ToggleAction(
             MjmlBundle.message("split_editor.action.background_mode.text"),
             MjmlBundle.message("split_editor.action.background_mode.description"),
-            EditorIcons.SUN,
+            EditorIcons.LIGHT_THEME,
         ) {
             override fun isSelected(e: AnActionEvent): Boolean = secondEditor.isDarkMode()
 
@@ -114,12 +114,12 @@ open class MjmlSplitEditor(private val mainEditor: TextEditor, val secondEditor:
                 when (secondEditor.isDarkMode()) {
                     true -> {
                         backgroundMode = MjmlJCEFHtmlPanel.BackgroundMode.Light
-                        icon = EditorIcons.SUN
+                        icon = EditorIcons.LIGHT_THEME
                     }
 
                     false -> {
                         backgroundMode = MjmlJCEFHtmlPanel.BackgroundMode.Dark
-                        icon = EditorIcons.MOON
+                        icon = EditorIcons.DARK_THEME
 
                     }
                 }
@@ -129,7 +129,7 @@ open class MjmlSplitEditor(private val mainEditor: TextEditor, val secondEditor:
             }
         },
         Separator.create(),
-        object : ToggleAction("Show HTML", "", AllIcons.FileTypes.Html) {
+        object : ToggleAction("Show HTML", "", EditorIcons.HTML) {
             override fun isSelected(e: AnActionEvent): Boolean = secondEditor.isHtmlPreview()
 
             override fun getActionUpdateThread(): ActionUpdateThread = BGT
