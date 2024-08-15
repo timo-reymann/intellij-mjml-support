@@ -8,8 +8,11 @@ fun loadIcon(name: String): Icon {
 }
 
 object EditorIcons {
-    val SMARTPHONE = loadIcon("smartphone")
+    val MULTIPLATFORM_MOBILE = loadIcon("multiplatformMobile")
     val DESKTOP = loadIcon("desktop")
-    val MOON = loadIcon("moon")
-    val SUN = loadIcon("sun")
+    val DARK_THEME = loadIcon("darkTheme")
+    val LIGHT_THEME = loadIcon("lightTheme")
+    val HTML = loadIcon("html")
+    val REFRESH = loadIcon("refresh")
+    val SYNCHRONIZE_SCROLLING = loadIcon("synchronizeScrolling")
 }
