@@ -40,7 +40,7 @@
     <!-- language=html -->
     <change-notes><![CDATA[
         <ul>
-            <li>3.5.0
+            <li>3.4.0
                 <ul>
                     <li>Make plugin compatible with upcoming 2024.3</li>
                     <li>Use icons from New UI for the preview controls</li>
