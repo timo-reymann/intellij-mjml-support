@@ -40,6 +40,12 @@
     <!-- language=html -->
     <change-notes><![CDATA[
         <ul>
+            <li>3.6.0
+                <ul>
+                    <li>Add support for rendering incomplete MJML fragments by wrapping them in MJML body (<a
+                            href="https://github.com/timo-reymann/intellij-mjml-support/pull/209">#209</a>)</li>
+                </ul>
+            </li>
             <li>3.4.0
                 <ul>
                     <li>Make plugin compatible with upcoming 2024.3</li>
