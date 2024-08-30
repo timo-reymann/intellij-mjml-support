@@ -42,10 +42,9 @@ import de.timo_reymann.mjml_support.index.getFilesWithIncludesFor
 import de.timo_reymann.mjml_support.settings.MJML_SETTINGS_CHANGED_TOPIC
 import de.timo_reymann.mjml_support.settings.MjmlSettings
 import de.timo_reymann.mjml_support.settings.MjmlSettingsChangedListener
+import de.timo_reymann.mjml_support.util.HtmlUtil
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import org.jsoup.Jsoup
-import org.jsoup.nodes.Entities
 import java.awt.Dimension
 import java.awt.GridBagConstraints
 import java.awt.GridBagLayout
@@ -198,31 +197,35 @@ class MjmlPreviewFileEditor(private val project: Project, private val virtualFil
 
         previousText = currentText
 
-        val isValidMjml = MjmlSettings.getInstance(project).skipMjmlValidation || isValidMjmlDocument()
+        val mjmlSettings = MjmlSettings.getInstance(project)
 
-        val html = if (isValidMjml) {
-            val doc = Jsoup.parse(mjmlRenderer.render(currentText))
-            doc.outputSettings().escapeMode(Entities.EscapeMode.base)
-            doc.outputSettings().charset("ASCII")
-            doc.html()
+        val html = if (isValidMjmlDocument()) {
+            HtmlUtil.escape(mjmlRenderer.render(currentText))
+        } else if (!currentText.trimStart().startsWith("<mjml>") && mjmlSettings.tryWrapMjmlFragment) {
+            HtmlUtil.escape(mjmlRenderer.renderFragment(currentText))
+        } else if (mjmlSettings.skipMjmlValidation) {
+            HtmlUtil.escape(mjmlRenderer.render(currentText))
         } else {
-            lateinit var includes: Collection<VirtualFile>
-            // While indexing still runs the editor might already be open
-            if (DumbService.isDumb(project)) {
-                includes = listOf()
-            } else {
-                ReadAction.run<Exception> {
-                    includes = getFilesWithIncludesFor(virtualFile, project)
-                }
-            }
-
             renderError(
                 MjmlBundle.message("mjml_preview.unavailable"),
-                MjmlBundle.message(if (includes.isEmpty()) "mjml_preview.invalid_file_standalone" else "mjml_preview.invalid_file_include")
+                MjmlBundle.message(if (getMjmlIncludes().isEmpty()) "mjml_preview.invalid_file_standalone" else "mjml_preview.invalid_file_include")
             )
         }
 
         scheduleHtmlUpdate(html, force)
+    }
+
+    private fun getMjmlIncludes(): Collection<VirtualFile> {
+        lateinit var includes: Collection<VirtualFile>
+        // While indexing still runs the editor might already be open
+        if (DumbService.isDumb(project)) {
+            includes = listOf()
+        } else {
+            ReadAction.run<Exception> {
+                includes = getFilesWithIncludesFor(virtualFile, project)
+            }
+        }
+        return includes
     }
 
     private fun scheduleHtmlUpdate(html: String, force: Boolean) {

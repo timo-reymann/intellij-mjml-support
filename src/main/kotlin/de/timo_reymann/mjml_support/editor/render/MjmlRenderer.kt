@@ -107,6 +107,8 @@ class MjmlRenderer(
         return script
     }
 
+    fun renderFragment(text: String) = render("<mjml><mj-body>$text</mj-body></mjml>")
+
     fun render(text: String): String {
         updateTempFile(text)
         val commandLine = generateCommandLine()
