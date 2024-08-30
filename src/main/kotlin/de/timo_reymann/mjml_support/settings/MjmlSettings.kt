@@ -10,6 +10,7 @@ class MjmlSettings : PersistentStateComponent<MjmlSettings>, BaseState() {
     val useBuiltInRenderer: Boolean
         get() = renderScriptPath == BUILT_IN || renderScriptPath.isBlank()
     var skipMjmlValidation by property(false)
+    var tryWrapMjmlFragment by property(false)
     var mjmlConfigFile by nonNullString("")
 
     private fun nonNullString(initialValue: String = "") = property(initialValue) { it == initialValue }
@@ -22,5 +23,4 @@ class MjmlSettings : PersistentStateComponent<MjmlSettings>, BaseState() {
         fun getInstance(project: Project) = project.service<MjmlSettings>()
         const val BUILT_IN = "Bundled"
     }
-
 }

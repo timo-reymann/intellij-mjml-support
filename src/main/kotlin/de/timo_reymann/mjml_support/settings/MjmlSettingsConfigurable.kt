@@ -69,6 +69,12 @@ class MjmlSettingsConfigurable(project: Project) : Configurable, Disposable {
                     .comment("Do not validate if MJML files contain a root tag and body. " +
                             "This allows you to use custom rendering scripts that do this on their own.")
             }.layout(RowLayout.PARENT_GRID)
+            row {
+                checkBox("Try rendering partial MJML")
+                    .bindSelected(state::tryWrapMjmlFragment)
+                    .comment("Enable this option so the plugin tries to wrap mjml files without a proper " +
+                            "structure in a mjml skeleton and sends them to the render script.")
+            }.layout(RowLayout.PARENT_GRID)
             panel {
                 row {
                     textFieldWithBrowseButton(fileChooserDescriptor = FileChooserDescriptorFactory.createSingleFileOrFolderDescriptor()) { file -> file.toNioPath().toString() }
