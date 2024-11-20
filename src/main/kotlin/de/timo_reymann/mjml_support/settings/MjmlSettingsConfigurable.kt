@@ -9,6 +9,7 @@ import com.intellij.openapi.options.Configurable
 import com.intellij.openapi.options.ConfigurationException
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.ComboBox
+import com.intellij.openapi.util.io.FileUtil
 import com.intellij.ui.CollectionComboBoxModel
 import com.intellij.ui.MutableCollectionComboBoxModel
 import com.intellij.ui.components.fields.ExtendableTextComponent
@@ -29,6 +30,7 @@ class MjmlSettingsConfigurable(project: Project) : Configurable, Disposable {
 
     private var state = MjmlSettings.getInstance(project)
     private lateinit var comboBox: ComboBox<String>
+    private var renderScriptChanged: Boolean = false
     private val browseExtension = ExtendableTextComponent.Extension.create(
         AllIcons.General.OpenDisk, AllIcons.General.OpenDiskHover,
         "Select custom rendering script"
@@ -89,9 +91,9 @@ class MjmlSettingsConfigurable(project: Project) : Configurable, Disposable {
                         .label("Rendering script")
                         .gap(RightGap.COLUMNS)
                         .align(Align.FILL)
-                        // TODO Find better alternative for bindItem
                         .onChanged {
-                            state.renderScriptPath = comboBox.selectedItem.toString()
+                            renderScriptChanged = true
+                            state.renderScriptPath = comboBox.selectedItem?.toString() ?: ""
                         }
                         .columns(COLUMNS_MEDIUM)
                         .also {
@@ -142,7 +144,7 @@ class MjmlSettingsConfigurable(project: Project) : Configurable, Disposable {
     }
 
     override fun createComponent(): JComponent = panel
-    override fun isModified(): Boolean = panel.isModified()
+    override fun isModified(): Boolean = panel.isModified()  || renderScriptChanged
     override fun reset() = panel.reset()
     override fun getDisplayName(): String = "MJML Settings"
     override fun dispose() {
@@ -152,10 +154,20 @@ class MjmlSettingsConfigurable(project: Project) : Configurable, Disposable {
     override fun apply() {
         val renderingScriptPath = comboBox.selectedItem as String
 
-        if (renderingScriptPath.trim() != "" && !File(renderingScriptPath).exists() && renderingScriptPath != MjmlSettings.BUILT_IN) {
-            throw ConfigurationException("Custom rendering script does not exist")
+        if (renderingScriptPath.trim() == "") {
+            throw ConfigurationException("Custom rendering script can not be blank")
         }
 
+        if(renderingScriptPath != MjmlSettings.BUILT_IN) {
+            val renderingScriptPathFile = File(renderingScriptPath)
+
+            if (!renderingScriptPathFile.exists()) {
+                throw ConfigurationException("Custom rendering script does not exist")
+            }
+
+            // Make sure path is OS indecent so on Windows path variables are replaced properly
+            comboBox.selectedItem = FileUtil.toSystemIndependentName(renderingScriptPath)
+        }
         panel.apply()
 
         ApplicationManager.getApplication()
