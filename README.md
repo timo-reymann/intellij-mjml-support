@@ -10,7 +10,7 @@ intellij-mjml-support
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Ftimo-reymann%2Fintellij-mjml-support.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Ftimo-reymann%2Fintellij-mjml-support?ref=badge_shield)
 
 <p align="center">
-	<img width="300" src="./src/main/resources/META-INF/pluginIcon.svg">
+	<img width="800" src="./.github/images/feature_gallery.gif">
 	<br />
     MJML support for the IntelliJ Platform.
 </p>
