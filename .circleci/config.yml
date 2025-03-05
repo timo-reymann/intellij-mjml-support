@@ -126,8 +126,6 @@ workflows:
           filters:
             branches:
               only: /.*/
-            tags:
-              only: /.*/
       - build_and_publish_snapshot:
           requires:
             - test
