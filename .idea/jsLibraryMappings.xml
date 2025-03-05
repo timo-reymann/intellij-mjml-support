@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="JavaScriptLibraryMappings">
+    <excludedPredefinedLibrary name="intellij-mjml-support/build/idea-sandbox/IU-2023.3.7/plugins/mjml-support/renderer/node_modules" />
+  </component>
+</project>
