@@ -14,7 +14,7 @@ import java.awt.Color
 
 class MjmlColorAttributeTypeElementColorProvider : ElementColorProvider {
     override fun getColorFrom(element: PsiElement): Color? {
-        if (element.containingFile.language != MjmlHtmlLanguage.INSTANCE || element !is XmlToken || element.elementType != XmlElementType.XML_NAME || element.parent !is XmlAttribute) {
+        if (element.containingFile.language != MjmlHtmlLanguage.INSTANCE || element !is XmlToken || element.parent !is XmlAttribute) {
             return null
         }
         val xmlAttribute = element.parent as XmlAttribute
