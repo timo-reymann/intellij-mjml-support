@@ -42,17 +42,13 @@ open class MjmlSplitEditor(private val mainEditor: TextEditor, val secondEditor:
             }
 
             // Trigger manual click, this is necessary because we don't have access to the underlying layout directly
-            val event = AnActionEventMock()
+            val event = AnActionEventMock.create()
             when (state.splitLayout) {
                 Layout.SHOW_EDITOR -> showEditorAction.setSelected(event, true)
                 Layout.SHOW_PREVIEW -> showPreviewAction.setSelected(event, true)
                 else -> showEditorAndPreviewAction.setSelected(event, true)
             }
         }
-    }
-
-    override fun isShowFloatingToolbar(): Boolean {
-        return false;
     }
 
     override fun isVerticalSplit(): Boolean {
@@ -156,8 +152,8 @@ open class MjmlSplitEditor(private val mainEditor: TextEditor, val secondEditor:
 
         override fun isSelected(e: AnActionEvent): Boolean = myPreviewWidthStatus == secondEditor.previewWidthStatus
                 && !secondEditor.isHtmlPreview()
-                && layout == Layout.SHOW_EDITOR_AND_PREVIEW
-                && !isVerticalSplit
+                && getLayout() == Layout.SHOW_EDITOR_AND_PREVIEW
+                && !isVerticalSplit()
 
         private fun select() = secondEditor.setPreviewWidth(myPreviewWidthStatus)
 

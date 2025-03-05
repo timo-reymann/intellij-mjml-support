@@ -74,7 +74,7 @@ abstract class SplitTextEditorProvider(
             targetElement.addContent(child)
         }
 
-        targetElement.setAttribute(SPLIT_LAYOUT, state.splitLayout.name)
+        targetElement.setAttribute(SPLIT_LAYOUT, state.splitLayout!!.name)
     }
 
     protected abstract fun createSplitEditor(firstEditor: FileEditor, secondEditor: FileEditor): FileEditor

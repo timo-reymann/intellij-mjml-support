@@ -4,7 +4,7 @@ import com.intellij.openapi.fileEditor.FileEditorState
 import com.intellij.openapi.fileEditor.FileEditorStateLevel
 import com.intellij.openapi.fileEditor.TextEditorWithPreview
 
-class MjmlFileEditorState(val splitLayout: TextEditorWithPreview.Layout, val firstState: FileEditorState?, val secondState: FileEditorState?) :
+class MjmlFileEditorState(val splitLayout: TextEditorWithPreview.Layout?, val firstState: FileEditorState?, val secondState: FileEditorState?) :
     FileEditorState {
 
     override fun canBeMergedWith(otherState: FileEditorState, level: FileEditorStateLevel): Boolean {
