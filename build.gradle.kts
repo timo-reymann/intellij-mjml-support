@@ -45,7 +45,6 @@ dependencies {
         intellijIdeaUltimate(providers.gradleProperty("idea-version"))
         pluginVerifier()
         zipSigner()
-        instrumentationTools()
         bundledPlugins(
             listOf(
                 "com.intellij.css",
@@ -64,7 +63,7 @@ intellijPlatform {
     pluginConfiguration {
         name = "MJML Support"
         ideaVersion {
-            sinceBuild = "243.*"
+            sinceBuild = "243"
             untilBuild = provider { null }
         }
     }
