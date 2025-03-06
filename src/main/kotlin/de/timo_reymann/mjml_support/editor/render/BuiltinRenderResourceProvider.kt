@@ -27,8 +27,8 @@ object BuiltinRenderResourceProvider {
         try {
             FileLockUtil.runWithLock(lockFile) {
                 FilePluginUtil.copyFile("node", MjmlJCEFHtmlPanel.RENDERER_ARCHIVE_NAME)
-                Decompressor.Zip(rendererZip)
-                    .extract(FilePluginUtil.getFile("renderer"))
+                Decompressor.Zip(rendererZip.toPath())
+                    .extract(FilePluginUtil.getFile("renderer").toPath())
 
                 extractMjmlVersion()
 
