@@ -123,6 +123,8 @@ workflows:
   continious:
     jobs:
       - test:
+          requires:
+            - build
           filters:
             branches:
               only: /.*/
@@ -133,8 +135,6 @@ workflows:
             branches:
               only: main
       - build:
-          requires:
-            - test
           filters:
             branches:
               ignore: /.*/
