@@ -40,6 +40,11 @@
     <!-- language=html -->
     <change-notes><![CDATA[
         <ul>
+            <li>4.0.1
+                <ul>
+                    <li>Refactor internal API and improve file watcher performance for triggering rerender of MJML preview</li>
+                </ul>
+            </li>
             <li>4.0.0
                 <ul>
                     <li>Minor adjustments making sure the plugin works with build 252+</li>
