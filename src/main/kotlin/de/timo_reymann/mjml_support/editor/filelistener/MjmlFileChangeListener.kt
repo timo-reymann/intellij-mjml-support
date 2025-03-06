@@ -4,6 +4,7 @@ import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.diagnostic.logger
 import com.intellij.openapi.externalSystem.autoimport.changes.vfs.VirtualFileChangesListener
 import com.intellij.openapi.vfs.VirtualFile
+import com.intellij.openapi.vfs.newvfs.BulkFileListener
 import com.intellij.openapi.vfs.newvfs.events.VFileEvent
 import com.intellij.util.messages.Topic
 import de.timo_reymann.mjml_support.lang.MjmlHtmlFileType
@@ -17,17 +18,22 @@ interface MjmlFileChangedListener {
     /**
      * Gets called when mjml files changed on disk
      */
-    fun onFilesChanged(files : Set<VirtualFile>)
+    fun onFilesChanged(files: Set<VirtualFile>)
 }
 
-open class MjmlFileChangeListener : VirtualFileChangesListener {
-    private lateinit var mjmlFiles: MutableSet<VirtualFile>
+open class MjmlFileChangeListener : BulkFileListener {
     private val logger = logger<MjmlFileChangeListener>()
 
-    override fun apply() {
+    override fun after(events: MutableList<out VFileEvent>) {
+        val mjmlFiles = events
+            .filter(::isRelevant)
+            .map { e -> e.file!! }
+            .toSet()
+
         if (mjmlFiles.isEmpty()) {
             return
         }
+
         logger.debug("Changed files: $mjmlFiles")
 
         ApplicationManager.getApplication()
@@ -36,15 +42,7 @@ open class MjmlFileChangeListener : VirtualFileChangesListener {
             .onFilesChanged(mjmlFiles)
     }
 
-    override fun init() {
-        mjmlFiles = HashSet()
-    }
-
-    override fun updateFile(file: VirtualFile, event: VFileEvent) {
-        mjmlFiles.add(file)
-    }
-
-    override fun isRelevant(file: VirtualFile, event: VFileEvent): Boolean {
+    fun isRelevant(event: VFileEvent): Boolean {
         return event.file != null &&
                 !event.file!!.isDirectory &&
                 event.file!!.fileType == MjmlHtmlFileType.INSTANCE
