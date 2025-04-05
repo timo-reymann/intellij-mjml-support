@@ -1,5 +1,6 @@
 package de.timo_reymann.mjml_support.editor.render
 
+import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.intellij.execution.configurations.GeneralCommandLine
 import com.intellij.execution.process.OSProcessHandler
@@ -38,6 +39,10 @@ class MjmlRenderer(
     private val objectMapper = jacksonObjectMapper()
     private val basePath by lazy {
         File(virtualFile.path).parentFile
+    }
+
+    init {
+        objectMapper.registerModules(KotlinModule.Builder().build())
     }
 
     private val postProcessor = MjmlPostProcessor(basePath, mjmlSettings)
@@ -87,7 +92,7 @@ class MjmlRenderer(
         val mapper = jacksonObjectMapper()
         var renderResult: MjmlRenderResult
         try {
-            renderResult = mapper.readValue(rawJson, MjmlRenderResult::class.java)
+            renderResult = objectMapper.readValue(rawJson, MjmlRenderResult::class.java)
         } catch (e: Throwable) {
             getLogger<MjmlRenderer>().warn {
                 MjmlBundle.message("mjml_preview.render_parsing_failed", rawJson) + e.stackTraceToString()
