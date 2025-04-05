@@ -136,8 +136,6 @@ workflows:
               only: main
       - build:
           filters:
-            branches:
-              ignore: /.*/
             tags:
               only: /.*/
       - create_github_release:
