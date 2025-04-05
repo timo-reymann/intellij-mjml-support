@@ -89,7 +89,6 @@ class MjmlRenderer(
     }
 
     private fun parseResult(rawJson: String): MjmlRenderResult {
-        val mapper = jacksonObjectMapper()
         var renderResult: MjmlRenderResult
         try {
             renderResult = objectMapper.readValue(rawJson, MjmlRenderResult::class.java)
