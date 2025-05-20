@@ -40,6 +40,12 @@
     <!-- language=html -->
     <change-notes><![CDATA[
         <ul>
+            <li>SNAPSHOT
+                <ul>
+                    <li>Don't decode rendered HTML output (<a
+                            href="https://github.com/timo-reymann/intellij-mjml-support/issues/256">#256</a>)</li>
+                </ul>
+            </li>
             <li>4.0.2
                 <ul>
                     <li>Fix error parsing for syntax errors in MJML preview (<a

@@ -200,11 +200,11 @@ class MjmlPreviewFileEditor(private val project: Project, private val virtualFil
         val mjmlSettings = MjmlSettings.getInstance(project)
 
         val html = if (isValidMjmlDocument()) {
-            HtmlUtil.escape(mjmlRenderer.render(currentText))
+            mjmlRenderer.render(currentText)
         } else if (!currentText.trimStart().startsWith("<mjml>") && mjmlSettings.tryWrapMjmlFragment) {
-            HtmlUtil.escape(mjmlRenderer.renderFragment(currentText))
+            mjmlRenderer.renderFragment(currentText)
         } else if (mjmlSettings.skipMjmlValidation) {
-            HtmlUtil.escape(mjmlRenderer.render(currentText))
+            mjmlRenderer.render(currentText)
         } else {
             renderError(
                 MjmlBundle.message("mjml_preview.unavailable"),
