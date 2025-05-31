@@ -16,6 +16,7 @@ intellij-mjml-support
 </p>
 
 ## Features
+
 - Syntax highlighting
 - Inspections for your MJML code
 - Powerful Live-Preview and tooling
@@ -23,13 +24,16 @@ intellij-mjml-support
 - Support for custom MJML components
 
 ## Requirements
+
 - IDEA-based IDE compatible with the plugin
 
 ## Installation
+
 1. Press (Ctrl+Alt+S/⌘/) to open the IDE settings and select Plugins.
 2. Search for `MJML Support` in the Marketplace and click Install.
 
 ### You live on the edge?
+
 There is also the channel `snapshot` (https://plugins.jetbrains.com/plugins/snapshot/list) available, for more details
 about set up please
 see [JetBrains Marketplace Docs](https://plugins.jetbrains.com/docs/marketplace/custom-release-channels.html#configuring-a-custom-channel-in-intellij-platform-based-ides)
@@ -37,13 +41,16 @@ see [JetBrains Marketplace Docs](https://plugins.jetbrains.com/docs/marketplace/
 The versioning used there is not based on semantic versioning, but rather: `YYYY.MM.DD-BUILDNUM` and is on
 
 ## Usage
+
 - MJML files are automatically picked, you can also find some
   screenshots in the marketplace.
 
 ## Motivation
+
 I wanted MJML Support for my beloved JetBrains IDEs.
 
 ## Contributing
+
 I love your input! I want to make contributing to this project as easy and transparent as possible, whether it's:
 
 - Reporting a bug
@@ -55,17 +62,20 @@ I love your input! I want to make contributing to this project as easy and trans
 To get started please read the [Contribution Guidelines](./CONTRIBUTING.md).
 
 ## Documentation
+
 ### Extending plugin functionality with additional plugins
+
 If you want to support custom functionality or resolving maybe specific
-to the needs your company, there are some entrypoints available.
+to the needs of your company, there are some entrypoints available.
 
 #### Custom mjml resolution
 
 You want to add custom mjml tags or custom resolving to match your needs?
 
-Simply use the extension point `de.timo_reymann.intellij-mjml-support.tagInformationProvider`:
+Use the extension point `de.timo_reymann.intellij-mjml-support.tagInformationProvider`:
 
 ```xml
+
 <extensions defaultExtensionNs="de.timo_reymann.intellij-mjml-support">
     <tagInformationProvider implementation="my.company.OurCustomTaginformationProvider"/>
 </extensions>
@@ -103,20 +113,28 @@ Simply use the extension point `de.timo_reymann.intellij-mjml-support.tagInforma
 
 ### Notes about implementation
 
-- The preview editor support is adapted from the official markdown plugin
-- Preview uses bundled node_modules for mjml rendering currently, support for custom rendering is currently in
-  development
+- The preview editor support is adapted from the official Markdown plugin
+- Preview for rendering is available
+    - using Node.js with bundled node_modules for MJML rendering, with the possibility to use custom mjml config and
+      specify custom node scripts
+    - bundled MRML for MJML rendering, with the possibility to use custom WASI implementations
 
 ### Architecture Decision Records
-For [architecture decision records](https://adr.github.io/) please take a look at [docs/adr](./docs/adr), this will give
+
+For [architecture decision records](https://adr.github.io/) please take a look at [docs/adr;](./docs/adr) this will give
 you an idea why implementations are as they are.
 
 ## Development
 
 ### Requirements
+
 - [Java](https://openjdk.org/)
+- [Gradle](https://gradle.org/)
+- [Node.js](https://nodejs.org/en/download)
+- [Rust](https://www.rust-lang.org/tools/install)
 
 ### Test
+
 ```shell
 # To run unit tests
 ./gradlew test
@@ -126,6 +144,7 @@ you an idea why implementations are as they are.
 ```
 
 ### Build
+
 ```shell
 ./gradlew buildPlugin
 ```
