@@ -37,15 +37,15 @@ commands:
       - save_cache:
           paths:
             - ~/.gradle/wrapper
-          key: v1-gradle-wrapper-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
+          key: v2-gradle-wrapper-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
       - save_cache:
           paths:
             - ~/.gradle/caches
-          key: v1-gradle-cache-{{ checksum "build.gradle.kts" }}
+          key: v2-gradle-cache-{{ checksum "build.gradle.kts" }}
       - save_cache:
           paths:
             - ~/.pluginVerifier
-          key: v1-plugin-verifier-cache-{{ checksum "build.gradle.kts" }}
+          key: v2-plugin-verifier-cache-{{ checksum "build.gradle.kts" }}
 
 jobs:
   test-node-renderer:
