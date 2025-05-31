@@ -7,8 +7,12 @@
     "mjml": "4.15.3"
   },
   "scripts": {
-    "build": "zip -FSr ../main/resources/node/renderer.zip ."
+    "build": "zip -FSr ../main/resources/node/renderer.zip .",
+    "test": "jest"
   },
   "author": "",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
 }
