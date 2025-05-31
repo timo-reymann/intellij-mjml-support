@@ -87,7 +87,7 @@ Use the extension point `de.timo_reymann.intellij-mjml-support.tagInformationPro
 - Input from stdin:
   ```json
     {
-      "directory": "absolute path to project root, this might be different from the current file location",
+      "directory": "Absolute path to the parent directory of the file to render",
       "content": "file editor content to render",
       "filePath": "absolute path to file",
       "options": {
