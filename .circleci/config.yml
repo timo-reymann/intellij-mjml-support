@@ -2,12 +2,20 @@ version: '2.1'
 
 orbs:
   github-cli: circleci/github-cli@2.7.0
+  node: circleci/node@7.1.0
+  rust: circleci/rust@1.7.0
 
 executors:
   gradle:
     working_directory: ~/workspace
     docker:
       - image: cimg/openjdk:17.0.14
+  node:
+    docker:
+      - image: cimg/node:lts
+  rust:
+    docker:
+      - image: cimg/rust:1.87.0
 
 commands:
   check-changed-files-or-halt:
@@ -40,7 +48,17 @@ commands:
           key: v1-plugin-verifier-cache-{{ checksum "build.gradle.kts" }}
 
 jobs:
-  test:
+  test-node-renderer:
+    executor: node
+    steps:
+      - checkout
+      - node/install-packages:
+          app-dir: src/node-mjml-renderer
+      - run:
+          name: Run tests
+          command: cd src/node-mjml-renderer && npm run test
+
+  test-plugin:
     resource_class: large
     executor: gradle
     steps:
@@ -58,6 +76,13 @@ jobs:
       - store_artifacts:
           path: build/test-results/test
       - create_or_update_cache
+
+  test-wasi-renderer:
+    executor: rust
+    steps:
+      - checkout
+      - rust/test:
+          working_directory: ~/project/src/wasm-mrml-renderer
 
   build:
     executor: gradle
@@ -122,18 +147,28 @@ jobs:
 workflows:
   continious:
     jobs:
-      - test:
+      - test-plugin:
           requires:
             - build
           filters:
             branches:
               only: /.*/
-      - build_and_publish_snapshot:
-          requires:
-            - test
+      - test-node-renderer:
           filters:
             branches:
-              only: main
+              only: /.*/
+      - test-wasi-renderer:
+          filters:
+            branches:
+              only: /.*/
+      - build_and_publish_snapshot:
+          requires:
+            - test-plugin
+            - test-node-renderer
+            - test-wasi-renderer
+          filters:
+            branches:
+              only: /.*/
       - build:
           filters:
             tags:
