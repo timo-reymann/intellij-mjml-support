@@ -7,7 +7,7 @@
     "mjml": "4.15.3"
   },
   "scripts": {
-    "build": "zip -FSr ../src/main/resources/node/renderer.zip ."
+    "build": "zip -FSr ../main/resources/node/renderer.zip ."
   },
   "author": "",
   "license": "MIT"
