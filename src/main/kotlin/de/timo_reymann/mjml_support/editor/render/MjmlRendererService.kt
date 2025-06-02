@@ -1,10 +1,12 @@
 package de.timo_reymann.mjml_support.editor.render
 
 import com.intellij.ide.plugins.PluginManagerCore
+import com.intellij.openapi.components.Service
 import com.intellij.openapi.components.service
 import com.intellij.openapi.extensions.PluginId
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
+import de.timo_reymann.mjml_support.settings.MjmlSettings
 
 object MjmlRendererServiceUtils {
     fun isJavaScriptPluginAvailable(): Boolean {
@@ -14,9 +16,20 @@ object MjmlRendererServiceUtils {
     }
 }
 
+@Service(Service.Level.PROJECT)
 class MjmlRendererService(private val project: Project) {
+    private fun shouldUseNodeRender(): Boolean {
+        return MjmlRendererServiceUtils.isJavaScriptPluginAvailable() &&
+                MjmlSettings.getInstance(project).rendererBackend == "node"
+    }
+
+    // TODO Rewrite to use shared instance and update whenever settings change is triggered
     fun getRenderer(virtualFile: VirtualFile): BaseMjmlRenderer {
-        return MjmlRenderer(project, virtualFile)
+        if (shouldUseNodeRender()) {
+            return NodeMjmlRenderer(project, virtualFile)
+        } else {
+            return WasiMjmlRenderer(project, virtualFile)
+        }
     }
 
     companion object {
