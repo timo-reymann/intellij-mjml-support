@@ -15,5 +15,10 @@ class MjmlPreviewStartupActivity : StartupActivity {
             .run(object : Task.Backgroundable(project, "Copy renderer files for mjml preview") {
                 override fun run(indicator: ProgressIndicator) = BuiltinRenderResourceProvider.copyResources()
             })
+            .run { object: Task.Backgroundable(project, "Get bundled WASI version") {
+                override fun run(indicator: ProgressIndicator) {
+                    BuiltinRenderResourceProvider.extractMrmlVersion()
+                }
+            } }
     }
 }

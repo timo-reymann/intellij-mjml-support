@@ -179,7 +179,7 @@ class MjmlSettingsConfigurable(project: Project) : Configurable, Disposable {
                             }
                         }
                     }
-                    .comment("""Bundled WASI uses MRML v${BuiltinRenderResourceProvider.getBundledMjmlVersion()}, For more information click <a href="https://plugins.jetbrains.com/plugin/16418-mjml-support/tutorials/custom-rendering-script">here</a>.""")
+                    .comment("""Bundled WASI uses MRML ${BuiltinRenderResourceProvider.getBundledMrmlVersion()}, For more information click <a href="https://plugins.jetbrains.com/plugin/16418-mjml-support/tutorials/custom-rendering-script">here</a>.""")
             }.layout(RowLayout.PARENT_GRID)
             buttonsGroup("Renderer backend to use", true) {
                 row {
