@@ -15,3 +15,4 @@ build: build-release build-debug ## Build all configurations
 
 copy-renderer:
 	cp target/wasm32-wasip1/release/wasm_mrml_renderer.wasm ../main/resources/wasi/mrml-render.wasm
+	cargo tree -i mrml | head -n1 | cut -d' ' -f2  > ../main/resources/wasi/mrml-render.version
