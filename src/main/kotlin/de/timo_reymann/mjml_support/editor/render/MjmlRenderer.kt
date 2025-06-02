@@ -26,18 +26,19 @@ import java.io.File
 import java.nio.charset.StandardCharsets
 import java.util.*
 
-class MjmlRenderer(
-    private val project: Project,
-    private val virtualFile: VirtualFile
+
+abstract class BaseMjmlRenderer(
+    internal val project: Project,
+    internal val virtualFile: VirtualFile
 ) {
     companion object {
         val DEFAULT_RENDERER_SCRIPT: String = FilePluginUtil.getFile("renderer/index.js").absolutePath
     }
 
-    private val mjmlSettings = MjmlSettings.getInstance(project)
-    private val tempFile = File.createTempFile(UUID.randomUUID().toString(), "json")
-    private val objectMapper = jacksonObjectMapper()
-    private val basePath by lazy {
+    internal val mjmlSettings: MjmlSettings
+        get() = MjmlSettings.getInstance(project)
+    internal val objectMapper = jacksonObjectMapper()
+    internal val basePath by lazy {
         File(virtualFile.path).parentFile
     }
 
@@ -45,8 +46,8 @@ class MjmlRenderer(
         objectMapper.registerModules(KotlinModule.Builder().build())
     }
 
-    private val postProcessor = MjmlPostProcessor(basePath, mjmlSettings)
-    private val mjmlRenderParameters =
+    internal val postProcessor = MjmlPostProcessor(basePath, mjmlSettings)
+    internal val mjmlRenderParameters =
         MjmlRenderParameters(
             basePath.toString(),
             "",
@@ -54,41 +55,8 @@ class MjmlRenderer(
             virtualFile.path
         )
 
-    private fun updateTempFile(content: String) {
-        mjmlRenderParameters.content = content
-        objectMapper.writeValue(tempFile, mjmlRenderParameters)
-    }
 
-    private fun generateCommandLine(): GeneralCommandLine? {
-        val nodeJsInterpreter = NodeJsInterpreterRef.createProjectRef().resolve(project) ?: return null
-        val commandLine = GeneralCommandLine("node")
-            .withInput(tempFile)
-            .withCharset(StandardCharsets.UTF_8)
-            .withWorkDirectory(basePath)
-        val commandLineConfigurator = NodeCommandLineConfigurator.find(nodeJsInterpreter)
-        commandLineConfigurator.configure(commandLine)
-        return commandLine
-    }
-
-    private fun captureOutput(commandLine: GeneralCommandLine): Pair<Int, String> {
-        val processHandler = OSProcessHandler(commandLine)
-        val buffer = StringBuffer()
-        processHandler.addProcessListener(object : ProcessAdapter() {
-            override fun onTextAvailable(event: ProcessEvent, outputType: Key<*>) {
-                when (outputType) {
-                    STDOUT -> buffer.append(event.text)
-                    // stderr may contain duplicates from errors (due to hard coded console.error in mjml code)
-                    STDERR -> getLogger<MjmlRenderer>().warn { event.text }
-                }
-            }
-        })
-
-        processHandler.startNotify()
-        processHandler.waitFor()
-        return Pair(processHandler.exitCode!!, buffer.toString())
-    }
-
-    private fun parseResult(rawJson: String): MjmlRenderResult {
+    internal fun parseResult(rawJson: String): MjmlRenderResult {
         var renderResult: MjmlRenderResult
         try {
             renderResult = objectMapper.readValue(rawJson, MjmlRenderResult::class.java)
@@ -103,17 +71,44 @@ class MjmlRenderer(
         return renderResult
     }
 
-    private fun getRendererScript(): String {
-        var script = DEFAULT_RENDERER_SCRIPT
-        if (!mjmlSettings.useBuiltInRenderer) {
-            script = mjmlSettings.renderScriptPath
-        }
-        return script
-    }
 
     fun renderFragment(text: String) = render("<mjml><mj-body>$text</mj-body></mjml>")
 
-    fun render(text: String): String {
+    abstract fun render(text: String): String;
+
+    internal fun propagateErrorsToUser(result: MjmlRenderResult) {
+        val message = result.errors
+            .filter { it.formattedMessage != null }
+            .joinToString("\n<br />") {
+                """
+                <a href="${virtualFile.path}:${it.line ?: 0}">
+                    ${virtualFile.toNioPath().toFile().relativeTo(File(project.basePath!!))}:${it.line ?: 0}
+                </a>: 
+                ${it.message ?: "no error message available"}
+                """.trimIndent()
+            }
+
+        val errorDetails = if (result.stdout == null) {
+            ""
+        } else {
+            "<code${result.stdout}</code>"
+        }
+
+        val notification = Notification(
+            MessageBusUtil.NOTIFICATION_GROUP,
+            "<html><strong>${MjmlBundle.message("mjml_preview.render_failed")}</strong>${errorDetails}</html>",
+            "<html>\n${message}</html>",
+            NotificationType.WARNING
+        )
+
+        Notifications.Bus.notify(notification)
+    }
+}
+
+class MjmlRenderer(project: Project, virtualFile: VirtualFile) : BaseMjmlRenderer(project, virtualFile) {
+    private val tempFile = File.createTempFile(UUID.randomUUID().toString(), "json")
+
+    override fun render(text: String): String {
         updateTempFile(text)
         val commandLine = generateCommandLine()
         commandLine ?: return renderError(
@@ -129,7 +124,7 @@ class MjmlRenderer(
         if (exitCode != 0) {
             if (!File(rendererScript).exists()) {
                 return renderError(
-                    MjmlBundle.message(if (mjmlSettings.useBuiltInRenderer) "mjml_preview.renderer_copying" else "mjml_preview.renderer_missing"),
+                    MjmlBundle.message(if (mjmlSettings.useBuiltInNodeRenderer) "mjml_preview.renderer_copying" else "mjml_preview.renderer_missing"),
                     "<pre>${MjmlBundle.message("mjml_preview.renderer_preview_will_reload")}</pre>"
                 )
             }
@@ -168,31 +163,45 @@ class MjmlRenderer(
         return renderResult.html ?: ""
     }
 
-    private fun propagateErrorsToUser(result: MjmlRenderResult) {
-        val message = result.errors
-            .filter { it.formattedMessage != null }
-            .joinToString("\n<br />") {
-                """
-                <a href="${virtualFile.path}:${it.line ?: 0}">
-                    ${virtualFile.toNioPath().toFile().relativeTo(File(project.basePath!!))}:${it.line ?: 0}
-                </a>: 
-                ${it.message ?: "no error message available"}
-                """.trimIndent()
+    private fun updateTempFile(content: String) {
+        mjmlRenderParameters.content = content
+        objectMapper.writeValue(tempFile, mjmlRenderParameters)
+    }
+
+    private fun generateCommandLine(): GeneralCommandLine? {
+        val nodeJsInterpreter = NodeJsInterpreterRef.createProjectRef().resolve(project) ?: return null
+        val commandLine = GeneralCommandLine("node")
+            .withInput(tempFile)
+            .withCharset(StandardCharsets.UTF_8)
+            .withWorkDirectory(basePath)
+        val commandLineConfigurator = NodeCommandLineConfigurator.find(nodeJsInterpreter)
+        commandLineConfigurator.configure(commandLine)
+        return commandLine
+    }
+
+    private fun captureOutput(commandLine: GeneralCommandLine): Pair<Int, String> {
+        val processHandler = OSProcessHandler(commandLine)
+        val buffer = StringBuffer()
+        processHandler.addProcessListener(object : ProcessAdapter() {
+            override fun onTextAvailable(event: ProcessEvent, outputType: Key<*>) {
+                when (outputType) {
+                    STDOUT -> buffer.append(event.text)
+                    // stderr may contain duplicates from errors (due to hard coded console.error in mjml code)
+                    STDERR -> getLogger<MjmlRenderer>().warn { event.text }
+                }
             }
+        })
 
-        val errorDetails = if (result.stdout == null) {
-            ""
-        } else {
-            "<code${result.stdout}</code>"
+        processHandler.startNotify()
+        processHandler.waitFor()
+        return Pair(processHandler.exitCode!!, buffer.toString())
+    }
+
+    private fun getRendererScript(): String {
+        var script = DEFAULT_RENDERER_SCRIPT
+        if (!mjmlSettings.useBuiltInNodeRenderer) {
+            script = mjmlSettings.renderScriptPath
         }
-
-        val notification = Notification(
-            MessageBusUtil.NOTIFICATION_GROUP,
-            "<html><strong>${MjmlBundle.message("mjml_preview.render_failed")}</strong>${errorDetails}</html>",
-            "<html>\n${message}</html>",
-            NotificationType.WARNING
-        )
-
-        Notifications.Bus.notify(notification)
+        return script
     }
 }

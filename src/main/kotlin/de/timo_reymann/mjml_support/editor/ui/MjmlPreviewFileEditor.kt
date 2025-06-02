@@ -34,15 +34,11 @@ import de.timo_reymann.mjml_support.bundle.MjmlBundle
 import de.timo_reymann.mjml_support.editor.filelistener.MJML_FILE_CHANGED_TOPIC
 import de.timo_reymann.mjml_support.editor.filelistener.MjmlFileChangedListener
 import de.timo_reymann.mjml_support.editor.provider.JCEFHtmlPanelProvider
-import de.timo_reymann.mjml_support.editor.render.MJML_PREVIEW_FORCE_RENDER_TOPIC
-import de.timo_reymann.mjml_support.editor.render.MjmlForceRenderListener
-import de.timo_reymann.mjml_support.editor.render.MjmlRenderer
-import de.timo_reymann.mjml_support.editor.render.renderError
+import de.timo_reymann.mjml_support.editor.render.*
 import de.timo_reymann.mjml_support.index.getFilesWithIncludesFor
 import de.timo_reymann.mjml_support.settings.MJML_SETTINGS_CHANGED_TOPIC
 import de.timo_reymann.mjml_support.settings.MjmlSettings
 import de.timo_reymann.mjml_support.settings.MjmlSettingsChangedListener
-import de.timo_reymann.mjml_support.util.HtmlUtil
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.awt.Dimension
@@ -65,7 +61,8 @@ class MjmlPreviewFileEditor(private val project: Project, private val virtualFil
     private val document: Document? = FileDocumentManager.getInstance().getDocument(virtualFile)
     private val htmlPanelWrapper: JPanel
     private val panelText: JLabel = JLabel("", SwingConstants.CENTER)
-    private val mjmlRenderer = MjmlRenderer(project, virtualFile)
+    private val mjmlRenderer: BaseMjmlRenderer
+        get() = MjmlRendererService.getInstance(project).getRenderer(virtualFile)
     private val pooledAlarm = Alarm(Alarm.ThreadToUse.POOLED_THREAD, this)
     private val swingAlarm = Alarm(Alarm.ThreadToUse.SWING_THREAD, this)
     private val requestsLock = Any()
