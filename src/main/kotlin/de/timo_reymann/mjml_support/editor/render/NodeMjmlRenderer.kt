@@ -22,22 +22,24 @@ import de.timo_reymann.mjml_support.bundle.MjmlBundle
 import de.timo_reymann.mjml_support.settings.MjmlSettings
 import de.timo_reymann.mjml_support.util.FilePluginUtil
 import de.timo_reymann.mjml_support.util.MessageBusUtil
+import de.timo_reymann.mjml_support.wasi.WasiLoader
+import de.timo_reymann.mjml_support.wasi.WasiLoaderOptions
 import java.io.File
 import java.nio.charset.StandardCharsets
 import java.util.*
+import kotlin.io.path.Path
+import kotlin.io.path.relativeTo
 
 
 abstract class BaseMjmlRenderer(
     internal val project: Project,
     internal val virtualFile: VirtualFile
 ) {
-    companion object {
-        val DEFAULT_RENDERER_SCRIPT: String = FilePluginUtil.getFile("renderer/index.js").absolutePath
-    }
-
     internal val mjmlSettings: MjmlSettings
         get() = MjmlSettings.getInstance(project)
     internal val objectMapper = jacksonObjectMapper()
+
+    // TODO Inline this
     internal val basePath by lazy {
         File(virtualFile.path).parentFile
     }
@@ -47,6 +49,7 @@ abstract class BaseMjmlRenderer(
     }
 
     internal val postProcessor = MjmlPostProcessor(basePath, mjmlSettings)
+    // TODO inline this
     internal val mjmlRenderParameters =
         MjmlRenderParameters(
             basePath.toString(),
@@ -55,13 +58,12 @@ abstract class BaseMjmlRenderer(
             virtualFile.path
         )
 
-
     internal fun parseResult(rawJson: String): MjmlRenderResult {
         var renderResult: MjmlRenderResult
         try {
             renderResult = objectMapper.readValue(rawJson, MjmlRenderResult::class.java)
         } catch (e: Throwable) {
-            getLogger<MjmlRenderer>().warn {
+            getLogger<NodeMjmlRenderer>().warn {
                 MjmlBundle.message("mjml_preview.render_parsing_failed", rawJson) + e.stackTraceToString()
             }
             renderResult = MjmlRenderResult()
@@ -72,9 +74,38 @@ abstract class BaseMjmlRenderer(
     }
 
 
-    fun renderFragment(text: String) = render("<mjml><mj-body>$text</mj-body></mjml>")
+    fun renderFragment(text: String) = renderHtml("<mjml><mj-body>$text</mj-body></mjml>")
 
-    abstract fun render(text: String): String;
+    internal abstract fun render(text: String): String
+
+    fun renderHtml(text: String): String {
+        val renderResult = parseResult(render(text))
+        if (renderResult.html == null) {
+            propagateErrorsToUser(renderResult)
+            return renderError(
+                MjmlBundle.message("mjml_preview.unavailable"),
+                MjmlBundle.message("mjml_preview.unavailable_crash")
+            )
+        }
+
+        val errors = renderResult.errors
+            .filter { it.formattedMessage != null }
+        if (errors.isNotEmpty()) {
+            propagateErrorsToUser(renderResult)
+        }
+
+        try {
+            return postProcessor.process(renderResult.html!!)
+        } catch (e: Exception) {
+            getLogger<NodeMjmlRenderer>().log(
+                com.jetbrains.rd.util.LogLevel.Warn,
+                "Failed to replace image paths with post processor, returning unmodified html",
+                e
+            )
+        }
+
+        return renderResult.html ?: ""
+    }
 
     internal fun propagateErrorsToUser(result: MjmlRenderResult) {
         val message = result.errors
@@ -105,7 +136,11 @@ abstract class BaseMjmlRenderer(
     }
 }
 
-class MjmlRenderer(project: Project, virtualFile: VirtualFile) : BaseMjmlRenderer(project, virtualFile) {
+class NodeMjmlRenderer(project: Project, virtualFile: VirtualFile) : BaseMjmlRenderer(project, virtualFile) {
+    companion object {
+        val DEFAULT_RENDERER_SCRIPT: String = FilePluginUtil.getFile("renderer/index.js").absolutePath
+    }
+
     private val tempFile = File.createTempFile(UUID.randomUUID().toString(), "json")
 
     override fun render(text: String): String {
@@ -134,33 +169,7 @@ class MjmlRenderer(project: Project, virtualFile: VirtualFile) : BaseMjmlRendere
                 "<pre>$output</pre>"
             )
         }
-
-        val renderResult = parseResult(output)
-        if (renderResult.html == null) {
-            propagateErrorsToUser(renderResult)
-            return renderError(
-                MjmlBundle.message("mjml_preview.unavailable"),
-                MjmlBundle.message("mjml_preview.unavailable_crash")
-            )
-        }
-
-        val errors = renderResult.errors
-            .filter { it.formattedMessage != null }
-        if (errors.isNotEmpty()) {
-            propagateErrorsToUser(renderResult)
-        }
-
-        try {
-            return postProcessor.process(renderResult.html!!)
-        } catch (e: Exception) {
-            getLogger<MjmlRenderer>().log(
-                com.jetbrains.rd.util.LogLevel.Warn,
-                "Failed to replace image paths with post processor, returning unmodified html",
-                e
-            )
-        }
-
-        return renderResult.html ?: ""
+        return output
     }
 
     private fun updateTempFile(content: String) {
@@ -187,7 +196,7 @@ class MjmlRenderer(project: Project, virtualFile: VirtualFile) : BaseMjmlRendere
                 when (outputType) {
                     STDOUT -> buffer.append(event.text)
                     // stderr may contain duplicates from errors (due to hard coded console.error in mjml code)
-                    STDERR -> getLogger<MjmlRenderer>().warn { event.text }
+                    STDERR -> getLogger<NodeMjmlRenderer>().warn { event.text }
                 }
             }
         })
@@ -203,5 +212,62 @@ class MjmlRenderer(project: Project, virtualFile: VirtualFile) : BaseMjmlRendere
             script = mjmlSettings.renderScriptPath
         }
         return script
+    }
+}
+
+class WasiMjmlRenderer(project: Project, virtualFile: VirtualFile) : BaseMjmlRenderer(project, virtualFile) {
+    val stringTerminator = "\u0000"
+
+    override fun render(text: String): String {
+        val loader = WasiLoader(
+            WasiLoaderOptions(
+                rootHostPath = Path(project.basePath!!)
+            )
+        )
+        val moduleBuilder = loader.createModuleBuilder(BuiltinRenderResourceProvider.getBuiltinWasiRenderer())
+        val instance = moduleBuilder.build()
+
+        val renderMjml = instance.export("render_mjml")
+        val freeString = instance.export("free_string")
+        val allocString = instance.export("alloc_string")
+        val memory = instance.memory()
+
+        mjmlRenderParameters.content = text
+        mjmlRenderParameters.directory =
+            "/" + Path(mjmlRenderParameters.directory).relativeTo(Path(project.basePath!!)).toString()
+        val raw = objectMapper.writeValueAsString(mjmlRenderParameters) + stringTerminator
+
+        // Allocate memory for raw and write into memory
+        val rawAllocPtr = allocString.apply(raw.length.toLong())
+        val rawPtr = rawAllocPtr[0].toInt()
+        memory.write(rawPtr, raw.toByteArray())
+
+        // Call render
+        val resultPtr = renderMjml.apply(rawPtr.toLong())
+
+        // Read characters until termination
+        var character = -1
+        val characters: MutableList<Byte?> = ArrayList<Byte?>()
+        var offset = resultPtr[0].toInt()
+        while (character != 0) {
+            character = memory.read(offset).toInt()
+            offset++
+            if (character != 0) {
+                characters.add(character.toByte())
+            }
+        }
+
+        // Free memory for the return pointer
+        freeString.apply(resultPtr[0])
+
+        // Free memory for the input pointer
+        freeString.apply(rawAllocPtr[0])
+
+        // Convert into the byte array
+        val byteArray = ByteArray(characters.size)
+        for (j in characters.indices) {
+            byteArray[j] = characters.get(j)!!
+        }
+        return String(byteArray, StandardCharsets.UTF_8)
     }
 }
