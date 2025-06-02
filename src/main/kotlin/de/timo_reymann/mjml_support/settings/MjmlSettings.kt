@@ -3,6 +3,7 @@ package de.timo_reymann.mjml_support.settings
 import com.intellij.openapi.components.*
 import com.intellij.openapi.project.Project
 
+@Service(Service.Level.PROJECT)
 @State(name = "de.timo_reymann.mjml_support.settings.MjmlSettings", storages = [Storage("mjmlSettings.xml")])
 class MjmlSettings : PersistentStateComponent<MjmlSettings>, BaseState() {
     var renderScriptPath: String by nonNullString(BUILT_IN)

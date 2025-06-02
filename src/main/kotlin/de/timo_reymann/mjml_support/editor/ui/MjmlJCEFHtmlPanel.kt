@@ -16,8 +16,6 @@ import kotlin.random.Random.Default.nextInt
 class MjmlJCEFHtmlPanel : JCEFHtmlPanel(getClassUrl()) {
 
     companion object {
-        internal const val RENDERER_ARCHIVE_NAME = "renderer.zip"
-
         private fun getClassUrl(): String {
             val url = try {
                 val cls = MjmlJCEFHtmlPanel::class.java

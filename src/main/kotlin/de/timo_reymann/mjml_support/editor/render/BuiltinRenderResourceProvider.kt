@@ -10,23 +10,32 @@ import de.timo_reymann.mjml_support.util.FileLockFailedException
 import de.timo_reymann.mjml_support.util.FileLockUtil
 import de.timo_reymann.mjml_support.util.FilePluginUtil
 import de.timo_reymann.mjml_support.util.MessageBusUtil
+import java.io.InputStreamReader
+import kotlin.io.path.Path
 
 object BuiltinRenderResourceProvider {
     private var mjmlVersion: String = "?"
+    private var mrmlVersion: String = "?"
+
     private val mapper = jacksonObjectMapper()
     private val logger = logger<BuiltinRenderResourceProvider>()
 
-    fun getBundledMjmlVersion(): String {
-        return mjmlVersion
+    fun getBundledMjmlVersion(): String = mjmlVersion
+    fun getBundledMrmlVersion(): String = mrmlVersion
+
+    fun getBuiltinWasiRenderer(): ByteArray {
+        val stream = FilePluginUtil.getResource(Path(FilePluginUtil.WASI_RENDERER_WASM_NAME))
+        return stream.readAllBytes()
     }
 
     fun copyResources() {
-        val rendererZip = FilePluginUtil.getFile(MjmlJCEFHtmlPanel.RENDERER_ARCHIVE_NAME)
-        val lockFile = FilePluginUtil.getFile(MjmlJCEFHtmlPanel.RENDERER_ARCHIVE_NAME + ".lock")
+        val rendererZip = FilePluginUtil.getFile(FilePluginUtil.NODE_RENDERER_ARCHIVE_NAME)
+        val lockFile = FilePluginUtil.getFile(FilePluginUtil.NODE_RENDERER_ARCHIVE_NAME + ".lock")
 
         try {
+            extractMrmlVersion()
             FileLockUtil.runWithLock(lockFile) {
-                FilePluginUtil.copyFile("node", MjmlJCEFHtmlPanel.RENDERER_ARCHIVE_NAME)
+                FilePluginUtil.copyFile("node", FilePluginUtil.NODE_RENDERER_ARCHIVE_NAME)
                 Decompressor.Zip(rendererZip.toPath())
                     .extract(FilePluginUtil.getFile("renderer").toPath())
 
@@ -40,7 +49,6 @@ object BuiltinRenderResourceProvider {
 
                 notifyRendererResourcesChanged()
             }
-
         } catch (e: FileLockFailedException) {
             logger.warn("Failed to get file lock to copy renderer resources", e)
             MessageBusUtil.showMessage(
@@ -66,6 +74,13 @@ object BuiltinRenderResourceProvider {
             mjmlVersion = "N/A"
             logger.warn("Failed to parse mjml version", e)
         }
+    }
+
+    fun extractMrmlVersion() {
+        val stream = FilePluginUtil.getResource(Path("wasi/mrml-render.version"))
+        val reader = InputStreamReader(stream)
+        val version = reader.readText().trim()
+        mrmlVersion = version;
     }
 
     private fun parseMjmlVersion(): String {

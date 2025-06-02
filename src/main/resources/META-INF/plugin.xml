@@ -629,8 +629,6 @@
                              groupId="tools"
                              displayName="MJML Settings"
                              instance="de.timo_reymann.mjml_support.settings.MjmlSettingsConfigurable"/>
-        <projectService serviceImplementation="de.timo_reymann.mjml_support.settings.MjmlSettings"/>
-        <projectService serviceImplementation="de.timo_reymann.mjml_support.editor.render.MjmlRendererService" />
 
         <psi.referenceContributor order="first"
                                   language="mjml"

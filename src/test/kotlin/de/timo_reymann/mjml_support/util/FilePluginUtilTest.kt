@@ -8,13 +8,13 @@ class FilePluginUtilTest : MjmlPluginBaseTestCase() {
     fun testCopyFile() {
         FileUtils.deleteDirectory(FilePluginUtil.getFile(""))
 
-        val file = FilePluginUtil.getFile(MjmlJCEFHtmlPanel.RENDERER_ARCHIVE_NAME)
+        val file = FilePluginUtil.getFile(FilePluginUtil.NODE_RENDERER_ARCHIVE_NAME)
 
         // File should not exist now
         assertFalse(file.exists())
 
         // After copy file should be present
-        FilePluginUtil.copyFile("node", MjmlJCEFHtmlPanel.RENDERER_ARCHIVE_NAME)
+        FilePluginUtil.copyFile("node", FilePluginUtil.NODE_RENDERER_ARCHIVE_NAME)
         assertTrue(file.exists())
     }
 }
