@@ -39,8 +39,13 @@ plugins {
 }
 
 dependencies {
-    implementation(kotlin("reflect"))
+    implementation("com.dylibso.chicory","runtime","1.4.0")
+    implementation("com.dylibso.chicory","wasi","1.4.0")
+    implementation("com.dylibso.chicory","compiler","1.4.0")
+
     testImplementation("junit", "junit", "4.13.2")
+
+    implementation(kotlin("reflect"))
     intellijPlatform {
         intellijIdeaUltimate(providers.gradleProperty("idea-version"))
         pluginVerifier()
@@ -59,7 +64,6 @@ dependencies {
 
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellijPlatform {
-
     pluginConfiguration {
         name = "MJML Support"
         ideaVersion {
