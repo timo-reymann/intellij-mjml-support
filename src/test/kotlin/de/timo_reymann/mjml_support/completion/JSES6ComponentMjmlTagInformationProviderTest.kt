@@ -3,7 +3,7 @@ package de.timo_reymann.mjml_support.completion
 import de.timo_reymann.mjml_support.MjmlPluginBaseTestCase
 import de.timo_reymann.mjml_support.api.MjmlAttributeType
 import de.timo_reymann.mjml_support.api.MjmlTagInformation
-import de.timo_reymann.mjml_support.model.PARENT_ANY
+import de.timo_reymann.mjml_support.lang.model.PARENT_ANY
 import de.timo_reymann.mjml_support.tagprovider.custom.JSES6ComponentMjmlTagInformationProvider
 import org.junit.Assert
 import org.junit.Test
