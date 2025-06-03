@@ -5,14 +5,14 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
 import org.jsoup.select.Evaluator.AttributeWithValueMatching
-import java.io.File
+import java.nio.file.Path
 import java.util.regex.Pattern
 
 private val BACKGROUND_IMAGE_URL_MATCHER = Pattern.compile("url\\('(.*)'\\)")
 private val BACKGROUND_IMAGE_EVALUATOR = AttributeWithValueMatching("style", BACKGROUND_IMAGE_URL_MATCHER)
 
 class MjmlPostProcessor(
-    private val basePath: File,
+    private val basePath: Path,
     private val mjmlSettings: MjmlSettings,
 ) {
     private lateinit var htmlDoc: Document
