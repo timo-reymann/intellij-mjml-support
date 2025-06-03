@@ -6,6 +6,7 @@ import org.hamcrest.CoreMatchers.containsString
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Test
 import java.io.File
+import kotlin.io.path.Path
 
 class MjmlPostProcessorTest : MjmlPluginBaseTestCase() {
     fun createSettings(enableImages: Boolean): MjmlSettings {
@@ -16,7 +17,7 @@ class MjmlPostProcessorTest : MjmlPluginBaseTestCase() {
 
     @Test
     fun `test update local images in inline style`() {
-        val postProcessor = MjmlPostProcessor(File("tmp"), createSettings(true))
+        val postProcessor = MjmlPostProcessor(Path("tmp"), createSettings(true))
         val html = postProcessor.process(
             "<html>\n" +
                     " <head></head>\n" +
@@ -32,7 +33,7 @@ class MjmlPostProcessorTest : MjmlPluginBaseTestCase() {
 
     @Test
     fun `test not update remote images in inline style`() {
-        val postProcessor = MjmlPostProcessor(File("tmp"), createSettings(true))
+        val postProcessor = MjmlPostProcessor(Path("tmp"), createSettings(true))
         val html = postProcessor.process(
             "<html>\n" +
                     " <head></head>\n" +
@@ -48,7 +49,7 @@ class MjmlPostProcessorTest : MjmlPluginBaseTestCase() {
 
     @Test
     fun `test update local images in image tags`() {
-        val postProcessor = MjmlPostProcessor(File("tmp"), createSettings(true))
+        val postProcessor = MjmlPostProcessor(Path("tmp"), createSettings(true))
         val html = postProcessor.process(
             "<html>\n" +
                     " <head></head>\n" +
@@ -62,7 +63,7 @@ class MjmlPostProcessorTest : MjmlPluginBaseTestCase() {
 
     @Test
     fun `test not update remote images in image tags`() {
-        val postProcessor = MjmlPostProcessor(File("tmp"), createSettings(true))
+        val postProcessor = MjmlPostProcessor(Path("tmp"), createSettings(true))
         val html = postProcessor.process(
             "<html>\n" +
                     " <head></head>\n" +
