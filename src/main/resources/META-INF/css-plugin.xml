@@ -20,12 +20,6 @@
         <psi.referenceContributor language="mjml"
                                   implementation="de.timo_reymann.mjml_support.reference.MjmlPathAttributeTypeReferenceContributor"/>
 
-        <localInspection implementationClass="de.timo_reymann.mjml_support.inspection.InvalidPathAttributeInspection"
-                         language="mjml"
-                         enabledByDefault="true"
-                         groupName="MJML"
-                         displayName="Invalid value for mjml attribute of type path"/>
-
         <completion.contributor language="mjml"
                                 order="first"
                                 implementationClass="de.timo_reymann.mjml_support.completion.MjmlPathAttributeTypeCompletionContributor"/>

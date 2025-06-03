@@ -1,14 +1,23 @@
 <idea-plugin>
     <extensions defaultExtensionNs="com.intellij">
         <codeInsight.lineMarkerProvider language="mjml"
-                                        implementationClass="de.timo_reymann.mjml_support.marker.CustomComponentLineMarkerProvider" />
+                                        implementationClass="de.timo_reymann.mjml_support.marker.CustomComponentLineMarkerProvider"/>
     </extensions>
 
     <extensions defaultExtensionNs="de.timo_reymann.intellij-mjml-support">
-        <tagInformationProvider implementation="de.timo_reymann.mjml_support.tagprovider.custom.JSES6ComponentMjmlTagInformationProvider" />
+        <tagInformationProvider
+                implementation="de.timo_reymann.mjml_support.tagprovider.custom.JSES6ComponentMjmlTagInformationProvider"/>
     </extensions>
 
     <extensions defaultExtensionNs="JavaScript.JsonSchema">
         <ProviderFactory implementation="de.timo_reymann.mjml_support.config.MjmlConfigSchemaProviderFactory"/>
+    </extensions>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <localInspection implementationClass="de.timo_reymann.mjml_support.inspection.InvalidPathAttributeInspection"
+                         language="mjml"
+                         enabledByDefault="true"
+                         groupName="MJML"
+                         displayName="Invalid value for mjml attribute of type path"/>
     </extensions>
 </idea-plugin>
