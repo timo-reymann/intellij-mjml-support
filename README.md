@@ -81,35 +81,9 @@ Use the extension point `de.timo_reymann.intellij-mjml-support.tagInformationPro
 </extensions>
 ```
 
-### Custom rendering
+### [Custom rendering](https://plugins.jetbrains.com/plugin/16418-mjml-support/tutorials/custom-rendering-script)
 
-- Execution context: parent folder for file to render
-- Input from stdin:
-  ```json
-    {
-      "directory": "Absolute path to the parent directory of the file to render",
-      "content": "file editor content to render",
-      "filePath": "absolute path to file",
-      "options": {
-        "mjmlConfigPath": "mjml config path or empty string"
-      }
-    }
-  ```
-- Output to stdout must be in json in this format for:
-  ```json
-    {
-      "html": "string|null",
-      "errors": [
-        {
-          "line": "integr|null",
-          "message":  "string|null",
-          "tagName": "string|null",
-          "formattedMessage": "string|null"
-        }
-      ]
-    }
-  ```
-  where errors can be empty, but can never be omitted!
+You can provide custom rendering backend implementations following the [Tutorial](https://plugins.jetbrains.com/plugin/16418-mjml-support/tutorials/custom-rendering-script)
 
 ### Notes about implementation
 
