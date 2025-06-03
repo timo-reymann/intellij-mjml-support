@@ -51,6 +51,11 @@
                                 href="https://github.com/timo-reymann/intellij-mjml-support/issues/254">#254</a>)
                     </li>
                     <li>Improve performance on preview width change, avoiding lagging preview</li>
+                    <li>Settings UI has been reworked and moved to <code>Settings > Languages and Frameworks >
+                        MJML</code></li>
+                    <li>Updated documentation for <a
+                            href="https://plugins.jetbrains.com/plugin/16418-mjml-support/tutorials/custom-rendering-script">custom
+                        rendering backend</a></li>
                 </ul>
             </li>
             <li>4.0.2
@@ -633,8 +638,8 @@
         <postStartupActivity implementation="de.timo_reymann.mjml_support.editor.render.MjmlPreviewStartupActivity"/>
 
         <projectConfigurable id="de.timo_reymann.mjml_support.settings.MjmlSettingsConfigurable"
-                             groupId="tools"
-                             displayName="MJML Settings"
+                             parentId="language"
+                             displayName="MJML"
                              instance="de.timo_reymann.mjml_support.settings.MjmlSettingsConfigurable"/>
 
         <psi.referenceContributor order="first"
