@@ -564,9 +564,9 @@
         <lang.documentationProvider language="mjml"
                                     implementationClass="de.timo_reymann.mjml_support.documentation.MjmlDocumentationProvider"/>
 
-        <xml.tagNameProvider implementation="de.timo_reymann.mjml_support.xml.MjmlTagNameProvider"/>
-        <xml.elementDescriptorProvider implementation="de.timo_reymann.mjml_support.xml.MjmlTagNameProvider"/>
-        <xml.xmlExtension implementation="de.timo_reymann.mjml_support.xml.MjmlXmlExtension"
+        <xml.tagNameProvider implementation="de.timo_reymann.mjml_support.lang.xml.MjmlTagNameProvider"/>
+        <xml.elementDescriptorProvider implementation="de.timo_reymann.mjml_support.lang.xml.MjmlTagNameProvider"/>
+        <xml.xmlExtension implementation="de.timo_reymann.mjml_support.lang.xml.MjmlXmlExtension"
                           order="first"/>
 
 
@@ -626,7 +626,7 @@
 
         <createFromTemplateHandler implementation="de.timo_reymann.mjml_support.actions.MjmlCreateFromTemplateHandler"/>
 
-        <postStartupActivity implementation="de.timo_reymann.mjml_support.editor.render.MjmlPreviewStartupActivity"/>
+        <postStartupActivity implementation="de.timo_reymann.mjml_support.editor.rendering.MjmlPreviewStartupActivity"/>
 
         <projectConfigurable id="de.timo_reymann.mjml_support.settings.MjmlSettingsConfigurable"
                              parentId="language"
@@ -641,6 +641,6 @@
 
         <fileEditorProvider implementation="de.timo_reymann.mjml_support.editor.provider.MjmlPreviewSplitEditorProvider" />
         <postStartupActivity implementation="de.timo_reymann.mjml_support.editor.filelistener.MjmlFileChangeListenerStartupActivity"/>
-        <projectService serviceImplementation="de.timo_reymann.mjml_support.editor.render.MjmlRendererService" />
+        <projectService serviceImplementation="de.timo_reymann.mjml_support.editor.rendering.MjmlRendererService" />
     </extensions>
 </idea-plugin>

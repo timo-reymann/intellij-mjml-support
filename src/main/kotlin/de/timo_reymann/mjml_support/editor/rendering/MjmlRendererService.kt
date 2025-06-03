@@ -1,4 +1,4 @@
-package de.timo_reymann.mjml_support.editor.render
+package de.timo_reymann.mjml_support.editor.rendering
 
 import com.intellij.ide.plugins.PluginManagerCore
 import com.intellij.openapi.Disposable
@@ -6,11 +6,9 @@ import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.components.service
 import com.intellij.openapi.extensions.PluginId
 import com.intellij.openapi.project.Project
-import de.timo_reymann.mjml_support.nodejs.NodeMjmlRenderer
 import de.timo_reymann.mjml_support.settings.MJML_SETTINGS_CHANGED_TOPIC
 import de.timo_reymann.mjml_support.settings.MjmlSettings
 import de.timo_reymann.mjml_support.settings.MjmlSettingsChangedListener
-import de.timo_reymann.mjml_support.wasi.WasiMjmlRenderer
 
 object MjmlRendererServiceUtils {
     fun isJavaScriptPluginAvailable(): Boolean {

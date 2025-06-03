@@ -2,13 +2,11 @@ package de.timo_reymann.mjml_support.completion
 
 import com.intellij.openapi.editor.ElementColorProvider
 import com.intellij.psi.PsiElement
-import com.intellij.psi.util.elementType
 import com.intellij.psi.xml.XmlAttribute
-import com.intellij.psi.xml.XmlElementType
 import com.intellij.psi.xml.XmlToken
 import de.timo_reymann.mjml_support.api.MjmlAttributeType
 import de.timo_reymann.mjml_support.lang.MjmlHtmlLanguage
-import de.timo_reymann.mjml_support.model.getMjmlInfoFromAttribute
+import de.timo_reymann.mjml_support.lang.model.getMjmlInfoFromAttribute
 import de.timo_reymann.mjml_support.util.ColorUtil
 import java.awt.Color
 

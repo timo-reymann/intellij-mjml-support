@@ -1,4 +1,4 @@
-package de.timo_reymann.mjml_support.model
+package de.timo_reymann.mjml_support.lang.model
 
 import de.timo_reymann.mjml_support.api.MjmlAttributeInformation
 import de.timo_reymann.mjml_support.api.MjmlAttributeType

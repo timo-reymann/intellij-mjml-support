@@ -1,4 +1,4 @@
-package de.timo_reymann.mjml_support.editor.render
+package de.timo_reymann.mjml_support.editor.rendering
 
 import com.intellij.openapi.progress.ProgressIndicator
 import com.intellij.openapi.progress.ProgressManager
@@ -15,10 +15,12 @@ class MjmlPreviewStartupActivity : StartupActivity {
             .run(object : Task.Backgroundable(project, "Copy renderer files for mjml preview") {
                 override fun run(indicator: ProgressIndicator) = BuiltinRenderResourceProvider.copyResources()
             })
-            .run { object: Task.Backgroundable(project, "Get bundled WASI version") {
-                override fun run(indicator: ProgressIndicator) {
-                    BuiltinRenderResourceProvider.extractMrmlVersion()
+            .run {
+                object : Task.Backgroundable(project, "Get bundled WASI version") {
+                    override fun run(indicator: ProgressIndicator) {
+                        BuiltinRenderResourceProvider.extractMrmlVersion()
+                    }
                 }
-            } }
+            }
     }
 }

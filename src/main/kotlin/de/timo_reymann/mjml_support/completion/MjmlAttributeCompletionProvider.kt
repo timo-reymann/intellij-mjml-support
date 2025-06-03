@@ -7,7 +7,7 @@ import com.intellij.util.ProcessingContext
 import de.timo_reymann.mjml_support.api.MjmlAttributeInformation
 import de.timo_reymann.mjml_support.api.MjmlAttributeType
 import de.timo_reymann.mjml_support.api.MjmlTagInformation
-import de.timo_reymann.mjml_support.model.getMjmlInfoFromAttributeValue
+import de.timo_reymann.mjml_support.lang.model.getMjmlInfoFromAttributeValue
 
 abstract class MjmlAttributeCompletionProvider(private val attributeType: MjmlAttributeType) :
     CompletionProvider<CompletionParameters>() {

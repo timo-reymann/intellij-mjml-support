@@ -1,4 +1,4 @@
-package de.timo_reymann.mjml_support.xml
+package de.timo_reymann.mjml_support.lang.xml
 
 import com.intellij.codeInsight.daemon.impl.analysis.XmlHighlightVisitor
 import com.intellij.psi.PsiElement
@@ -8,7 +8,7 @@ import com.intellij.psi.xml.XmlTag
 import com.intellij.xml.XmlAttributeDescriptor
 import com.intellij.xml.XmlElementDescriptor
 import com.intellij.xml.impl.schema.AnyXmlAttributeDescriptor
-import de.timo_reymann.mjml_support.model.MjmlTagProvider
+import de.timo_reymann.mjml_support.lang.model.MjmlTagProvider
 
 class MjmlTagDescriptor(private val tagName: String, private val xmlTag: XmlTag) : XmlElementDescriptor {
     override fun getDeclaration() = xmlTag

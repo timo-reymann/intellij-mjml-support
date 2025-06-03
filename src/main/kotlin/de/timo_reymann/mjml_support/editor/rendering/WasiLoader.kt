@@ -1,4 +1,4 @@
-package de.timo_reymann.mjml_support.wasi
+package de.timo_reymann.mjml_support.editor.rendering
 
 import com.dylibso.chicory.compiler.InterpreterFallback
 import com.dylibso.chicory.compiler.MachineFactoryCompiler

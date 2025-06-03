@@ -1,11 +1,10 @@
-package de.timo_reymann.mjml_support.editor.render
+package de.timo_reymann.mjml_support.editor.rendering
 
 import de.timo_reymann.mjml_support.MjmlPluginBaseTestCase
 import de.timo_reymann.mjml_support.settings.MjmlSettings
 import org.hamcrest.CoreMatchers.containsString
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Test
-import java.io.File
 import kotlin.io.path.Path
 
 class MjmlPostProcessorTest : MjmlPluginBaseTestCase() {

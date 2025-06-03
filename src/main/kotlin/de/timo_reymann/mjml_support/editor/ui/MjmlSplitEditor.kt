@@ -1,6 +1,5 @@
 package de.timo_reymann.mjml_support.editor.ui
 
-import com.intellij.icons.AllIcons
 import com.intellij.openapi.actionSystem.*
 import com.intellij.openapi.actionSystem.ActionUpdateThread.BGT
 import com.intellij.openapi.actionSystem.ActionUpdateThread.EDT

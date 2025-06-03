@@ -8,7 +8,7 @@ import com.intellij.psi.PsiElement
 import com.intellij.psi.xml.XmlAttribute
 import com.intellij.psi.xml.XmlTag
 import de.timo_reymann.mjml_support.bundle.MjmlBundle
-import de.timo_reymann.mjml_support.model.MjmlTagProvider
+import de.timo_reymann.mjml_support.lang.model.MjmlTagProvider
 
 const val HTML_LINE_BREAK = "<br />"
 

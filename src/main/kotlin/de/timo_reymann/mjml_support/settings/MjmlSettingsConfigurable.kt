@@ -16,9 +16,9 @@ import com.intellij.ui.components.fields.ExtendableTextComponent
 import com.intellij.ui.components.fields.ExtendableTextField
 import com.intellij.ui.dsl.builder.*
 import de.timo_reymann.mjml_support.bundle.MjmlBundle
-import de.timo_reymann.mjml_support.editor.render.BuiltinRenderResourceProvider
-import de.timo_reymann.mjml_support.editor.render.MjmlPreviewStartupActivity
-import de.timo_reymann.mjml_support.editor.render.MjmlRendererServiceUtils
+import de.timo_reymann.mjml_support.editor.rendering.BuiltinRenderResourceProvider
+import de.timo_reymann.mjml_support.editor.rendering.MjmlPreviewStartupActivity
+import de.timo_reymann.mjml_support.editor.rendering.MjmlRendererServiceUtils
 import de.timo_reymann.mjml_support.util.FilePluginUtil
 import de.timo_reymann.mjml_support.util.UiTimerUtil
 import java.awt.Desktop

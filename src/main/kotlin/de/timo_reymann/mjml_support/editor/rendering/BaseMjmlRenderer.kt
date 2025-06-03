@@ -1,4 +1,4 @@
-package de.timo_reymann.mjml_support.editor.render
+package de.timo_reymann.mjml_support.editor.rendering
 
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
@@ -7,6 +7,7 @@ import com.intellij.notification.NotificationType
 import com.intellij.notification.Notifications
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
+import com.jetbrains.rd.util.LogLevel
 import com.jetbrains.rd.util.getLogger
 import com.jetbrains.rd.util.warn
 import de.timo_reymann.mjml_support.bundle.MjmlBundle
@@ -14,12 +15,11 @@ import de.timo_reymann.mjml_support.settings.MjmlSettings
 import de.timo_reymann.mjml_support.util.MessageBusUtil
 import java.io.File
 
-
 abstract class BaseMjmlRenderer(
     internal val project: Project
 ) {
     internal val mjmlSettings: MjmlSettings
-        get() = MjmlSettings.getInstance(project)
+        get() = MjmlSettings.Companion.getInstance(project)
     internal val objectMapper = jacksonObjectMapper()
 
     init {
@@ -67,7 +67,7 @@ abstract class BaseMjmlRenderer(
             return postProcessor.process(renderResult.html!!)
         } catch (e: Exception) {
             getLogger<BaseMjmlRenderer>().log(
-                com.jetbrains.rd.util.LogLevel.Warn,
+                LogLevel.Warn,
                 "Failed to replace image paths with post processor, returning unmodified html",
                 e
             )

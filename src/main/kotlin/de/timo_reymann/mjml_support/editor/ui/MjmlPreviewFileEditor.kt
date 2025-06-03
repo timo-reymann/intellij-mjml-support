@@ -34,7 +34,7 @@ import de.timo_reymann.mjml_support.bundle.MjmlBundle
 import de.timo_reymann.mjml_support.editor.filelistener.MJML_FILE_CHANGED_TOPIC
 import de.timo_reymann.mjml_support.editor.filelistener.MjmlFileChangedListener
 import de.timo_reymann.mjml_support.editor.provider.JCEFHtmlPanelProvider
-import de.timo_reymann.mjml_support.editor.render.*
+import de.timo_reymann.mjml_support.editor.rendering.*
 import de.timo_reymann.mjml_support.index.getFilesWithIncludesFor
 import de.timo_reymann.mjml_support.settings.MJML_SETTINGS_CHANGED_TOPIC
 import de.timo_reymann.mjml_support.settings.MjmlSettings

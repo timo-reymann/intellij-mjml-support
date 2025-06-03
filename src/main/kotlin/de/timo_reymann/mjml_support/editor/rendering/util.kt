@@ -1,4 +1,4 @@
-package de.timo_reymann.mjml_support.editor.render
+package de.timo_reymann.mjml_support.editor.rendering
 
 import com.intellij.openapi.editor.colors.EditorColorsManager
 import de.timo_reymann.mjml_support.util.ColorUtil

@@ -1,6 +1,6 @@
 package de.timo_reymann.mjml_support.api
 
-import de.timo_reymann.mjml_support.model.PARENT_ANY
+import de.timo_reymann.mjml_support.lang.model.PARENT_ANY
 
 /**
  * Information about mjml tag

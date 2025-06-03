@@ -1,4 +1,4 @@
-package de.timo_reymann.mjml_support.editor.render
+package de.timo_reymann.mjml_support.editor.rendering
 
 import de.timo_reymann.mjml_support.settings.MjmlSettings
 import org.jsoup.Jsoup

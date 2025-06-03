@@ -1,4 +1,4 @@
-package de.timo_reymann.mjml_support.model
+package de.timo_reymann.mjml_support.lang.model
 
 import com.intellij.openapi.project.Project
 import com.intellij.psi.xml.XmlTag

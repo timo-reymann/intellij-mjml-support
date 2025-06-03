@@ -1,4 +1,4 @@
-package de.timo_reymann.mjml_support.model
+package de.timo_reymann.mjml_support.lang.model
 
 import com.intellij.psi.PsiElement
 import com.intellij.psi.util.parentOfType

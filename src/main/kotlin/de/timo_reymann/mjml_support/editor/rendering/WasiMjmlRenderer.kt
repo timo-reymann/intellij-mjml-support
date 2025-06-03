@@ -1,14 +1,9 @@
-package de.timo_reymann.mjml_support.wasi
+package de.timo_reymann.mjml_support.editor.rendering
 
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
-import de.timo_reymann.mjml_support.editor.render.BaseMjmlRenderer
-import de.timo_reymann.mjml_support.editor.render.BuiltinRenderResourceProvider
-import de.timo_reymann.mjml_support.editor.render.MjmlRenderParameters
-import de.timo_reymann.mjml_support.editor.render.MjmlRenderParametersOptions
 import okio.Path.Companion.toPath
 import java.nio.charset.StandardCharsets
-import java.util.ArrayList
 import kotlin.io.path.Path
 import kotlin.io.path.readBytes
 import kotlin.io.path.relativeTo

@@ -1,4 +1,4 @@
-package de.timo_reymann.mjml_support.xml
+package de.timo_reymann.mjml_support.lang.xml
 
 import com.intellij.psi.PsiFile
 import com.intellij.psi.xml.XmlTag

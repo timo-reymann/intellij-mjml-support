@@ -3,7 +3,6 @@ package de.timo_reymann.mjml_support.util
 import com.intellij.openapi.application.PathManager
 import com.intellij.util.ResourceUtil
 import de.timo_reymann.mjml_support.bundle.MjmlBundle
-import de.timo_reymann.mjml_support.editor.ui.MjmlJCEFHtmlPanel
 import java.io.File
 import java.io.InputStream
 import java.nio.file.Files

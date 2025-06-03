@@ -1,4 +1,4 @@
-package de.timo_reymann.mjml_support.xml
+package de.timo_reymann.mjml_support.lang.xml
 
 import com.intellij.codeInsight.completion.XmlTagInsertHandler
 import com.intellij.codeInsight.lookup.LookupElement
@@ -13,7 +13,7 @@ import com.intellij.xml.XmlElementDescriptor
 import com.intellij.xml.XmlTagNameProvider
 import de.timo_reymann.mjml_support.api.MjmlTagInformation
 import de.timo_reymann.mjml_support.isInMjmlFile
-import de.timo_reymann.mjml_support.model.MjmlTagProvider
+import de.timo_reymann.mjml_support.lang.model.MjmlTagProvider
 
 const val ROOT_TAG = "mjml"
 

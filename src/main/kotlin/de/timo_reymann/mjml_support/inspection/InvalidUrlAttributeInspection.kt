@@ -7,7 +7,7 @@ import com.intellij.openapi.paths.GlobalPathReferenceProvider
 import com.intellij.psi.xml.XmlAttribute
 import de.timo_reymann.mjml_support.api.MjmlAttributeType
 import de.timo_reymann.mjml_support.bundle.MjmlBundle
-import de.timo_reymann.mjml_support.model.getMjmlTagFromAttribute
+import de.timo_reymann.mjml_support.lang.model.getMjmlTagFromAttribute
 import de.timo_reymann.mjml_support.settings.MjmlSettings
 import io.ktor.http.*
 

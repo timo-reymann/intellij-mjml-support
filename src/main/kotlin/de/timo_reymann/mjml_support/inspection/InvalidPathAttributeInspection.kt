@@ -22,7 +22,7 @@ import de.timo_reymann.mjml_support.api.MjmlAttributeType
 import de.timo_reymann.mjml_support.bundle.MjmlBundle
 import de.timo_reymann.mjml_support.lang.MjmlHtmlFileType
 import de.timo_reymann.mjml_support.lang.MjmlHtmlLanguage
-import de.timo_reymann.mjml_support.model.MjmlTagProvider
+import de.timo_reymann.mjml_support.lang.model.MjmlTagProvider
 import de.timo_reymann.mjml_support.util.MessageBusUtil
 import java.io.IOException
 

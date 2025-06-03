@@ -8,7 +8,7 @@ import com.intellij.codeInspection.htmlInspections.HtmlLocalInspectionTool
 import com.intellij.openapi.project.Project
 import com.intellij.psi.xml.XmlAttribute
 import de.timo_reymann.mjml_support.bundle.MjmlBundle
-import de.timo_reymann.mjml_support.model.getMjmlTagFromAttribute
+import de.timo_reymann.mjml_support.lang.model.getMjmlTagFromAttribute
 
 class UnknownAttributeInspection : HtmlLocalInspectionTool() {
     override fun checkAttribute(attribute: XmlAttribute, holder: ProblemsHolder, isOnTheFly: Boolean) {

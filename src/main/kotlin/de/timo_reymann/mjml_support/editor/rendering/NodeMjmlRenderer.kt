@@ -1,4 +1,4 @@
-package de.timo_reymann.mjml_support.nodejs
+package de.timo_reymann.mjml_support.editor.rendering
 
 import com.intellij.execution.configurations.GeneralCommandLine
 import com.intellij.execution.process.OSProcessHandler
@@ -13,15 +13,11 @@ import com.intellij.openapi.vfs.VirtualFile
 import com.jetbrains.rd.util.getLogger
 import com.jetbrains.rd.util.warn
 import de.timo_reymann.mjml_support.bundle.MjmlBundle
-import de.timo_reymann.mjml_support.editor.render.BaseMjmlRenderer
-import de.timo_reymann.mjml_support.editor.render.MjmlRenderParameters
-import de.timo_reymann.mjml_support.editor.render.MjmlRenderParametersOptions
-import de.timo_reymann.mjml_support.editor.render.renderError
 import de.timo_reymann.mjml_support.util.FilePluginUtil
 import okio.Path.Companion.toPath
 import java.io.File
 import java.nio.charset.StandardCharsets
-import java.util.UUID
+import java.util.*
 
 class NodeMjmlRenderer(project: Project) : BaseMjmlRenderer(project) {
     companion object {

@@ -9,7 +9,8 @@ import com.intellij.lang.javascript.psi.JSProperty
 import de.timo_reymann.mjml_support.api.MjmlAttributeInformation
 import de.timo_reymann.mjml_support.api.MjmlAttributeType
 import de.timo_reymann.mjml_support.api.MjmlTagInformation
-import de.timo_reymann.mjml_support.model.PARENT_ANY
+import de.timo_reymann.mjml_support.lang.model.PARENT_ANY
+
 import de.timo_reymann.mjml_support.tagprovider.camelToKebabCase
 
 object ES6BodyComponentParser {

@@ -5,7 +5,7 @@ import de.timo_reymann.mjml_support.api.MjmlAttributeInformation
 import de.timo_reymann.mjml_support.api.MjmlAttributeType
 import de.timo_reymann.mjml_support.api.MjmlTagInformation
 import de.timo_reymann.mjml_support.api.MjmlTagInformationProvider
-import de.timo_reymann.mjml_support.model.*
+import de.timo_reymann.mjml_support.lang.model.*
 
 const val TAG_MJML_BODY = "mj-body"
 
