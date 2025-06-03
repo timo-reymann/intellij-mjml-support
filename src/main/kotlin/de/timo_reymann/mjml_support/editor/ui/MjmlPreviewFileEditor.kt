@@ -98,11 +98,15 @@ class MjmlPreviewFileEditor(private val project: Project, private val virtualFil
 
 
     private fun updatePreviewWidth(width: Int) {
-        val size = Dimension(width + PREVIEW_PADDING, 300)
+        val size = Dimension(width + PREVIEW_PADDING, htmlPanel?.component?.size?.height ?: 300)
         getSplitter()?.proportion = 1f
         // Set panel wrapper width, minimum size is used by splitter
         htmlPanelWrapper.minimumSize = size
         htmlPanel?.component?.size = size
+        // Avoid layout shifting
+        htmlPanelWrapper.revalidate()
+        htmlPanelWrapper.repaint()
+
     }
 
     override fun getPreferredFocusedComponent(): JComponent? = htmlPanel?.component
