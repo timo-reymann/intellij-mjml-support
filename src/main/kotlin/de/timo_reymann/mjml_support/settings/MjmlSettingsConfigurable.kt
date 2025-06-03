@@ -40,7 +40,7 @@ class MjmlSettingsConfigurable(project: Project) : Configurable, Disposable {
         MjmlBundle.message("settings.select_rendering_script_dialog.title")
     ) {
         val result = FileChooserFactory.getInstance()
-            .createFileChooser(FileChooserDescriptorFactory.createSingleFileDescriptor(), project, null)
+            .createFileChooser(FileChooserDescriptorFactory.singleFile(), project, null)
             .choose(project)
         if (result.isEmpty()) {
             return@create
@@ -55,7 +55,7 @@ class MjmlSettingsConfigurable(project: Project) : Configurable, Disposable {
         MjmlBundle.message("settings.select_wasi_binary_dialog.title")
     ) {
         val result = FileChooserFactory.getInstance()
-            .createFileChooser(FileChooserDescriptorFactory.createSingleFileDescriptor(), project, null)
+            .createFileChooser(FileChooserDescriptorFactory.singleFile(), project, null)
             .choose(project)
         if (result.isEmpty()) {
             return@create

@@ -67,7 +67,7 @@ intellijPlatform {
     pluginConfiguration {
         name = "MJML Support"
         ideaVersion {
-            sinceBuild = "243"
+            sinceBuild = "251"
             untilBuild = provider { null }
         }
     }
