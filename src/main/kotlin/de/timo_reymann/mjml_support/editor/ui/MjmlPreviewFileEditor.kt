@@ -62,7 +62,7 @@ class MjmlPreviewFileEditor(private val project: Project, private val virtualFil
     private val htmlPanelWrapper: JPanel
     private val panelText: JLabel = JLabel("", SwingConstants.CENTER)
     private val mjmlRenderer: BaseMjmlRenderer
-        get() = MjmlRendererService.getInstance(project).getRenderer(virtualFile)
+        get() = MjmlRendererService.getInstance(project).getRenderer()
     private val pooledAlarm = Alarm(Alarm.ThreadToUse.POOLED_THREAD, this)
     private val swingAlarm = Alarm(Alarm.ThreadToUse.SWING_THREAD, this)
     private val requestsLock = Any()
@@ -197,11 +197,11 @@ class MjmlPreviewFileEditor(private val project: Project, private val virtualFil
         val mjmlSettings = MjmlSettings.getInstance(project)
 
         val html = if (isValidMjmlDocument()) {
-            mjmlRenderer.renderHtml(currentText)
+            mjmlRenderer.renderToHtml(virtualFile, currentText)
         } else if (!currentText.trimStart().startsWith("<mjml>") && mjmlSettings.tryWrapMjmlFragment) {
-            mjmlRenderer.renderFragment(currentText)
+            mjmlRenderer.renderFragmentToHtml(virtualFile, currentText)
         } else if (mjmlSettings.skipMjmlValidation) {
-            mjmlRenderer.renderHtml(currentText)
+            mjmlRenderer.renderToHtml(virtualFile, currentText)
         } else {
             renderError(
                 MjmlBundle.message("mjml_preview.unavailable"),

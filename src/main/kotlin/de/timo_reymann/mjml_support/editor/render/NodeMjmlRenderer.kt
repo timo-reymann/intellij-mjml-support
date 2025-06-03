@@ -4,8 +4,8 @@ import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.intellij.execution.configurations.GeneralCommandLine
 import com.intellij.execution.process.OSProcessHandler
-import com.intellij.execution.process.ProcessAdapter
 import com.intellij.execution.process.ProcessEvent
+import com.intellij.execution.process.ProcessListener
 import com.intellij.execution.process.ProcessOutputType.STDERR
 import com.intellij.execution.process.ProcessOutputType.STDOUT
 import com.intellij.javascript.nodejs.interpreter.NodeCommandLineConfigurator
@@ -24,6 +24,7 @@ import de.timo_reymann.mjml_support.util.FilePluginUtil
 import de.timo_reymann.mjml_support.util.MessageBusUtil
 import de.timo_reymann.mjml_support.wasi.WasiLoader
 import de.timo_reymann.mjml_support.wasi.WasiLoaderOptions
+import okio.Path.Companion.toPath
 import java.io.File
 import java.nio.charset.StandardCharsets
 import java.util.*
@@ -32,31 +33,15 @@ import kotlin.io.path.relativeTo
 
 
 abstract class BaseMjmlRenderer(
-    internal val project: Project,
-    internal val virtualFile: VirtualFile
+    internal val project: Project
 ) {
     internal val mjmlSettings: MjmlSettings
         get() = MjmlSettings.getInstance(project)
     internal val objectMapper = jacksonObjectMapper()
 
-    // TODO Inline this
-    internal val basePath by lazy {
-        File(virtualFile.path).parentFile
-    }
-
     init {
         objectMapper.registerModules(KotlinModule.Builder().build())
     }
-
-    internal val postProcessor = MjmlPostProcessor(basePath, mjmlSettings)
-    // TODO inline this
-    internal val mjmlRenderParameters =
-        MjmlRenderParameters(
-            basePath.toString(),
-            "",
-            MjmlRenderParametersOptions(mjmlSettings.mjmlConfigFile),
-            virtualFile.path
-        )
 
     internal fun parseResult(rawJson: String): MjmlRenderResult {
         var renderResult: MjmlRenderResult
@@ -73,15 +58,15 @@ abstract class BaseMjmlRenderer(
         return renderResult
     }
 
+    fun renderFragmentToHtml(virtualFile: VirtualFile, text: String) =
+        renderToHtml(virtualFile, "<mjml><mj-body>$text</mj-body></mjml>")
 
-    fun renderFragment(text: String) = renderHtml("<mjml><mj-body>$text</mj-body></mjml>")
+    internal abstract fun render(virtualFile: VirtualFile, text: String): String
 
-    internal abstract fun render(text: String): String
-
-    fun renderHtml(text: String): String {
-        val renderResult = parseResult(render(text))
+    fun renderToHtml(virtualFile: VirtualFile, text: String): String {
+        val renderResult = parseResult(render(virtualFile, text))
         if (renderResult.html == null) {
-            propagateErrorsToUser(renderResult)
+            propagateErrorsToUser(virtualFile, renderResult)
             return renderError(
                 MjmlBundle.message("mjml_preview.unavailable"),
                 MjmlBundle.message("mjml_preview.unavailable_crash")
@@ -91,9 +76,10 @@ abstract class BaseMjmlRenderer(
         val errors = renderResult.errors
             .filter { it.formattedMessage != null }
         if (errors.isNotEmpty()) {
-            propagateErrorsToUser(renderResult)
+            propagateErrorsToUser(virtualFile, renderResult)
         }
 
+        val postProcessor = MjmlPostProcessor(virtualFile.parent.toNioPath(), mjmlSettings)
         try {
             return postProcessor.process(renderResult.html!!)
         } catch (e: Exception) {
@@ -107,7 +93,7 @@ abstract class BaseMjmlRenderer(
         return renderResult.html ?: ""
     }
 
-    internal fun propagateErrorsToUser(result: MjmlRenderResult) {
+    internal fun propagateErrorsToUser(virtualFile: VirtualFile, result: MjmlRenderResult) {
         val message = result.errors
             .filter { it.formattedMessage != null }
             .joinToString("\n<br />") {
@@ -136,16 +122,23 @@ abstract class BaseMjmlRenderer(
     }
 }
 
-class NodeMjmlRenderer(project: Project, virtualFile: VirtualFile) : BaseMjmlRenderer(project, virtualFile) {
+class NodeMjmlRenderer(project: Project) : BaseMjmlRenderer(project) {
     companion object {
         val DEFAULT_RENDERER_SCRIPT: String = FilePluginUtil.getFile("renderer/index.js").absolutePath
     }
 
     private val tempFile = File.createTempFile(UUID.randomUUID().toString(), "json")
 
-    override fun render(text: String): String {
-        updateTempFile(text)
-        val commandLine = generateCommandLine()
+    override fun render(virtualFile: VirtualFile, text: String): String {
+        val mjmlRenderParameters = MjmlRenderParameters(
+            virtualFile.path.toPath().parent.toString(),
+            text,
+            MjmlRenderParametersOptions(mjmlSettings.mjmlConfigFile),
+            virtualFile.path
+        )
+
+        objectMapper.writeValue(tempFile, mjmlRenderParameters)
+        val commandLine = generateCommandLine(virtualFile)
         commandLine ?: return renderError(
             MjmlBundle.message("mjml_preview.node_not_configured"),
             MjmlBundle.message("mjml_preview.unavailable")
@@ -172,17 +165,12 @@ class NodeMjmlRenderer(project: Project, virtualFile: VirtualFile) : BaseMjmlRen
         return output
     }
 
-    private fun updateTempFile(content: String) {
-        mjmlRenderParameters.content = content
-        objectMapper.writeValue(tempFile, mjmlRenderParameters)
-    }
-
-    private fun generateCommandLine(): GeneralCommandLine? {
+    private fun generateCommandLine(virtualFile: VirtualFile): GeneralCommandLine? {
         val nodeJsInterpreter = NodeJsInterpreterRef.createProjectRef().resolve(project) ?: return null
         val commandLine = GeneralCommandLine("node")
             .withInput(tempFile)
             .withCharset(StandardCharsets.UTF_8)
-            .withWorkDirectory(basePath)
+            .withWorkDirectory(virtualFile.parent.toNioPath().toFile())
         val commandLineConfigurator = NodeCommandLineConfigurator.find(nodeJsInterpreter)
         commandLineConfigurator.configure(commandLine)
         return commandLine
@@ -191,7 +179,7 @@ class NodeMjmlRenderer(project: Project, virtualFile: VirtualFile) : BaseMjmlRen
     private fun captureOutput(commandLine: GeneralCommandLine): Pair<Int, String> {
         val processHandler = OSProcessHandler(commandLine)
         val buffer = StringBuffer()
-        processHandler.addProcessListener(object : ProcessAdapter() {
+        processHandler.addProcessListener(object : ProcessListener {
             override fun onTextAvailable(event: ProcessEvent, outputType: Key<*>) {
                 when (outputType) {
                     STDOUT -> buffer.append(event.text)
@@ -215,26 +203,32 @@ class NodeMjmlRenderer(project: Project, virtualFile: VirtualFile) : BaseMjmlRen
     }
 }
 
-class WasiMjmlRenderer(project: Project, virtualFile: VirtualFile) : BaseMjmlRenderer(project, virtualFile) {
-    val stringTerminator = "\u0000"
-
-    override fun render(text: String): String {
+class WasiMjmlRenderer(project: Project) : BaseMjmlRenderer(project) {
+    private val stringTerminator = "\u0000"
+    private val wasiInstance by lazy {
         val loader = WasiLoader(
             WasiLoaderOptions(
                 rootHostPath = Path(project.basePath!!)
             )
         )
         val moduleBuilder = loader.createModuleBuilder(BuiltinRenderResourceProvider.getBuiltinWasiRenderer())
-        val instance = moduleBuilder.build()
+        moduleBuilder.build()
+    }
 
-        val renderMjml = instance.export("render_mjml")
-        val freeString = instance.export("free_string")
-        val allocString = instance.export("alloc_string")
-        val memory = instance.memory()
 
-        mjmlRenderParameters.content = text
-        mjmlRenderParameters.directory =
-            "/" + Path(mjmlRenderParameters.directory).relativeTo(Path(project.basePath!!)).toString()
+    override fun render(virtualFile: VirtualFile, text: String): String {
+        val mjmlRenderParameters = MjmlRenderParameters(
+            "/" + virtualFile.toNioPath().parent.relativeTo(Path(project.basePath!!)).toString(),
+            text,
+            MjmlRenderParametersOptions(mjmlSettings.mjmlConfigFile),
+            virtualFile.path
+        )
+
+        val renderMjml = wasiInstance.export("render_mjml")
+        val freeString = wasiInstance.export("free_string")
+        val allocString = wasiInstance.export("alloc_string")
+        val memory = wasiInstance.memory()
+
         val raw = objectMapper.writeValueAsString(mjmlRenderParameters) + stringTerminator
 
         // Allocate memory for raw and write into memory
