@@ -20,6 +20,7 @@ object MjmlRendererServiceUtils {
 
 class MjmlRendererService(private val project: Project) : Disposable, MjmlSettingsChangedListener {
     private var renderer: BaseMjmlRenderer
+    private val packageName = MjmlRendererService::class.java.packageName
 
     init {
         ApplicationManager.getApplication()
@@ -36,10 +37,16 @@ class MjmlRendererService(private val project: Project) : Disposable, MjmlSettin
 
     fun getRenderer(): BaseMjmlRenderer = renderer
 
-    fun createRenderer(): BaseMjmlRenderer = if (shouldUseNodeRender()) {
-        NodeMjmlRenderer(project)
-    } else {
-        WasiMjmlRenderer(project)
+    fun createRenderer(): BaseMjmlRenderer {
+        val className = if (shouldUseNodeRender()) {
+            "NodeMjmlRenderer"
+        } else {
+            "WasiMjmlRenderer"
+        }
+        return Class
+            .forName("$packageName.$className")
+            .getDeclaredConstructor(Project::class.java)
+            .newInstance(project) as BaseMjmlRenderer
     }
 
     override fun dispose() {}
