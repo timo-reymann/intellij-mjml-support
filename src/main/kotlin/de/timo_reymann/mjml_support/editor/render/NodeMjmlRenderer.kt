@@ -29,6 +29,7 @@ import java.io.File
 import java.nio.charset.StandardCharsets
 import java.util.*
 import kotlin.io.path.Path
+import kotlin.io.path.readBytes
 import kotlin.io.path.relativeTo
 
 
@@ -211,10 +212,20 @@ class WasiMjmlRenderer(project: Project) : BaseMjmlRenderer(project) {
                 rootHostPath = Path(project.basePath!!)
             )
         )
-        val moduleBuilder = loader.createModuleBuilder(BuiltinRenderResourceProvider.getBuiltinWasiRenderer())
+        val moduleBuilder = loader.createModuleBuilder(getRendererWASI())
         moduleBuilder.build()
     }
 
+    private fun getRendererWASI(): ByteArray {
+        if (mjmlSettings.useBuiltinWASIRenderer) {
+            return BuiltinRenderResourceProvider.getBuiltinWasiRenderer()
+        }
+
+        return mjmlSettings.rendererWASIPath
+            .toPath(true)
+            .toNioPath()
+            .readBytes()
+    }
 
     override fun render(virtualFile: VirtualFile, text: String): String {
         val mjmlRenderParameters = MjmlRenderParameters(
