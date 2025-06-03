@@ -41,7 +41,7 @@
     <!-- language=html -->
     <change-notes><![CDATA[
         <ul>
-            <li>SNAPSHOT
+            <li>5.0.0
                 <ul>
                     <li>Don't decode rendered HTML output (<a
                             href="https://github.com/timo-reymann/intellij-mjml-support/issues/256">#256</a>)
