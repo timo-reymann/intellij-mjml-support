@@ -634,7 +634,10 @@
                                   language="mjml"
                                   implementation="de.timo_reymann.mjml_support.reference.component.MjmlComponentReferenceProvider"/>
 
-
         <fileBasedIndex implementation="de.timo_reymann.mjml_support.index.MjmlIncludeIndex"/>
+
+        <fileEditorProvider implementation="de.timo_reymann.mjml_support.editor.provider.MjmlPreviewSplitEditorProvider" />
+        <postStartupActivity implementation="de.timo_reymann.mjml_support.editor.filelistener.MjmlFileChangeListenerStartupActivity"/>
+        <projectService serviceImplementation="de.timo_reymann.mjml_support.editor.render.MjmlRendererService" />
     </extensions>
 </idea-plugin>

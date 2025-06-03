@@ -3,7 +3,6 @@ package de.timo_reymann.mjml_support.editor.render
 import com.intellij.ide.plugins.PluginManagerCore
 import com.intellij.openapi.Disposable
 import com.intellij.openapi.application.ApplicationManager
-import com.intellij.openapi.components.Service
 import com.intellij.openapi.components.service
 import com.intellij.openapi.extensions.PluginId
 import com.intellij.openapi.project.Project
@@ -19,7 +18,6 @@ object MjmlRendererServiceUtils {
     }
 }
 
-@Service(Service.Level.PROJECT)
 class MjmlRendererService(private val project: Project) : Disposable, MjmlSettingsChangedListener {
     private var renderer: BaseMjmlRenderer
 
