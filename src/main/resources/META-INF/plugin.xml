@@ -17,7 +17,7 @@
             <li>Url references</li>
             <li>Color annotation and detection for attributes</li>
             <li>Code inspections to highlight common errors</li>
-            <li>Mjml live preview (if you have javascript support enabled + node.js setup locally)</li>
+            <li>Mjml live preview (Node.js or WASI)</li>
             <li>Inspections to detect and prevent common errors and pitfalls</li>
             <li>Support for custom components using ES6 syntax or <a
                     href="https://github.com/timo-reymann/mjml-custom-component-decorator">mjml-custom-component-decorator</a>
@@ -34,7 +34,8 @@
         </ul>
         <h3>Implementations/Libs</h3>
         <ul>
-            <li>MJML preview logic is based on the official markdown plugin</li>
+            <li>MJML Node.js preview logic is based on the official markdown plugin</li>
+            <li>MRML is used for the WASI-based rendering by default</li>
         </ul>
         ]]></description>
     <!-- language=html -->
@@ -43,7 +44,13 @@
             <li>SNAPSHOT
                 <ul>
                     <li>Don't decode rendered HTML output (<a
-                            href="https://github.com/timo-reymann/intellij-mjml-support/issues/256">#256</a>)</li>
+                            href="https://github.com/timo-reymann/intellij-mjml-support/issues/256">#256</a>)
+                    </li>
+                    <li>Add support for WASI-rendering. This not only enables faster previews but also community IDEs
+                        without JavaScript support to use the preview. (<a
+                                href="https://github.com/timo-reymann/intellij-mjml-support/issues/254">#254</a>)
+                    </li>
+                    <li>Improve performance on preview width change, avoiding lagging preview</li>
                 </ul>
             </li>
             <li>4.0.2
