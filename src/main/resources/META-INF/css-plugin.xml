@@ -16,5 +16,14 @@
 
         <fileBasedIndex implementation="de.timo_reymann.mjml_support.index.MjmlClassUsageIndex"/>
         <fileBasedIndex implementation="de.timo_reymann.mjml_support.index.MjmlClassDefinitionIndex"/>
+
+        <psi.referenceContributor language="mjml"
+                                  implementation="de.timo_reymann.mjml_support.reference.MjmlPathAttributeTypeReferenceContributor"/>
+
+        <localInspection implementationClass="de.timo_reymann.mjml_support.inspection.InvalidPathAttributeInspection"
+                         language="mjml"
+                         enabledByDefault="true"
+                         groupName="MJML"
+                         displayName="Invalid value for mjml attribute of type path"/>
     </extensions>
 </idea-plugin>
