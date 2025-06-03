@@ -569,9 +569,7 @@
         <xml.xmlExtension implementation="de.timo_reymann.mjml_support.xml.MjmlXmlExtension"
                           order="first"/>
 
-        <completion.contributor language="mjml"
-                                order="first"
-                                implementationClass="de.timo_reymann.mjml_support.completion.MjmlPathAttributeTypeCompletionContributor"/>
+
 
         <psi.referenceContributor language="mjml"
                                   implementation="de.timo_reymann.mjml_support.reference.MjmlUrlAttributeTypeReferenceContributor"/>
