@@ -15,6 +15,7 @@ import com.intellij.ui.MutableCollectionComboBoxModel
 import com.intellij.ui.components.fields.ExtendableTextComponent
 import com.intellij.ui.components.fields.ExtendableTextField
 import com.intellij.ui.dsl.builder.*
+import de.timo_reymann.mjml_support.bundle.MjmlBundle
 import de.timo_reymann.mjml_support.editor.render.BuiltinRenderResourceProvider
 import de.timo_reymann.mjml_support.editor.render.MjmlPreviewStartupActivity
 import de.timo_reymann.mjml_support.editor.render.MjmlRendererServiceUtils
@@ -36,7 +37,7 @@ class MjmlSettingsConfigurable(project: Project) : Configurable, Disposable {
     private val nodeScriptBrowseExtension = ExtendableTextComponent.Extension.create(
         AllIcons.General.OpenDisk,
         AllIcons.General.OpenDiskHover,
-        "Select rendering script"
+        MjmlBundle.message("settings.select_rendering_script_dialog.title")
     ) {
         val result = FileChooserFactory.getInstance()
             .createFileChooser(FileChooserDescriptorFactory.createSingleFileDescriptor(), project, null)
@@ -51,7 +52,7 @@ class MjmlSettingsConfigurable(project: Project) : Configurable, Disposable {
     private val wasiDialogBrowseExtension = ExtendableTextComponent.Extension.create(
         AllIcons.General.OpenDisk,
         AllIcons.General.OpenDiskHover,
-        "Select WASI binary"
+        MjmlBundle.message("settings.select_wasi_binary_dialog.title")
     ) {
         val result = FileChooserFactory.getInstance()
             .createFileChooser(FileChooserDescriptorFactory.createSingleFileDescriptor(), project, null)
@@ -74,33 +75,24 @@ class MjmlSettingsConfigurable(project: Project) : Configurable, Disposable {
     }
 
     private val panel = panel {
-        group("Rendering Preprocessing") {
+        group(MjmlBundle.message("settings.group.rendering_preprocessing")) {
             row {
-                checkBox("Resolve local image paths")
+                checkBox(MjmlBundle.message("settings.resolve_local_images.text"))
                     .bindSelected(state::resolveLocalImages)
-                    .comment(
-                        "While mails can not use local paths, the plugin can resolve them for you in the preview. " +
-                                "If you use a lot of local images this might impact preview update performance!"
-                    )
+                    .comment(MjmlBundle.message("settings.resolve_local_images.help"))
             }.layout(RowLayout.PARENT_GRID)
             row {
-                checkBox("Skip MJML validation")
+                checkBox(MjmlBundle.message("settings.skip_mjml_validation.text"))
                     .bindSelected(state::skipMjmlValidation)
-                    .comment(
-                        "Do not validate if MJML files contain a root tag and body. " +
-                                "This allows you to use custom rendering scripts that do this on their own."
-                    )
+                    .comment(MjmlBundle.message("settings.skip_mjml_validation.help"))
             }.layout(RowLayout.PARENT_GRID)
             row {
-                checkBox("Try rendering partial MJML")
+                checkBox(MjmlBundle.message("settings.render_partials.text"))
                     .bindSelected(state::tryWrapMjmlFragment)
-                    .comment(
-                        "Enable this option so the plugin tries to wrap mjml files without a proper " +
-                                "structure in a mjml skeleton and sends them to the render script."
-                    )
+                    .comment(MjmlBundle.message("settings.render_partials.help"))
             }.layout(RowLayout.PARENT_GRID)
         }
-        group("Rendering Backend") {
+        group(MjmlBundle.message("settings.group.render_backend")) {
             row {
                 textFieldWithBrowseButton(fileChooserDescriptor = FileChooserDescriptorFactory.createSingleFileOrFolderDescriptor()) { file ->
                     file.toNioPath().toString()
@@ -108,12 +100,12 @@ class MjmlSettingsConfigurable(project: Project) : Configurable, Disposable {
                     .bindText(state::mjmlConfigFile)
                     .gap(RightGap.COLUMNS)
                     .align(Align.FILL)
-                    .label("Config file")
-                    .comment("Path or directory of .mjmlconfig file (leave blank for default, will search in same folder as the mjml file)")
+                    .label(MjmlBundle.message("settings.config_file.text"))
+                    .comment(MjmlBundle.message("settings.config_file.help"))
             }.layout(RowLayout.PARENT_GRID)
             row {
                 comboBox(MutableCollectionComboBoxModel<String>(), null)
-                    .label("Node.js script")
+                    .label(MjmlBundle.message("settings.node_script.text"))
                     .gap(RightGap.COLUMNS)
                     .align(Align.FILL)
                     .onChanged {
@@ -143,11 +135,16 @@ class MjmlSettingsConfigurable(project: Project) : Configurable, Disposable {
                             }
                         }
                     }
-                    .comment("""Bundled script uses MJML v${BuiltinRenderResourceProvider.getBundledMjmlVersion()}, For more information click <a href="https://plugins.jetbrains.com/plugin/16418-mjml-support/tutorials/custom-rendering-script">here</a>.""")
+                    .comment(
+                        MjmlBundle.message(
+                            "settings.node_script.help",
+                            BuiltinRenderResourceProvider.getBundledMjmlVersion()
+                        )
+                    )
             }.layout(RowLayout.PARENT_GRID)
             row {
                 comboBox(MutableCollectionComboBoxModel<String>(), null)
-                    .label("WASI binary")
+                    .label(MjmlBundle.message("settings.wasi_binary.text"))
                     .gap(RightGap.COLUMNS)
                     .align(Align.FILL)
                     .onChanged {
@@ -159,9 +156,9 @@ class MjmlSettingsConfigurable(project: Project) : Configurable, Disposable {
                         wasiRenderercomboBox = it.component
 
                         if (state.useBuiltinWASIRenderer) {
-                            setComboBoxModelRenderer(wasiRenderercomboBox,null)
+                            setComboBoxModelRenderer(wasiRenderercomboBox, null)
                         } else {
-                            setComboBoxModelRenderer(wasiRenderercomboBox,state::rendererWASIPath.get())
+                            setComboBoxModelRenderer(wasiRenderercomboBox, state::rendererWASIPath.get())
                         }
 
                         //comboBox.preferredSize = Dimension(400, comboBox.preferredSize.height)
@@ -177,14 +174,21 @@ class MjmlSettingsConfigurable(project: Project) : Configurable, Disposable {
                             }
                         }
                     }
-                    .comment("""Bundled WASI uses MRML ${BuiltinRenderResourceProvider.getBundledMrmlVersion()}, For more information click <a href="https://plugins.jetbrains.com/plugin/16418-mjml-support/tutorials/custom-rendering-script">here</a>.""")
+                    .comment(
+                        MjmlBundle.message(
+                            "setting.wasi_binary.help",
+                            BuiltinRenderResourceProvider.getBundledMrmlVersion()
+                        )
+                    )
             }.layout(RowLayout.PARENT_GRID)
-            buttonsGroup("Renderer backend to use", true) {
+            buttonsGroup(MjmlBundle.message("settings.render_backend_select.text"), true) {
                 row {
-                    radioButton("Node.js", "node").comment("Only available in IDEs with JavaScript plugin")
+                    radioButton(MjmlBundle.message("settings.render_backend_select.node.text"), "node")
+                        .comment(MjmlBundle.message("settings.render_backend.select.node.help"))
                 }
                 row {
-                    radioButton("WASI", "wasi").comment("Always available, faster but potentially differing output")
+                    radioButton(MjmlBundle.message("settings.render_backend.select.wasi.text"), "wasi")
+                        .comment(MjmlBundle.message("settings.render_backend.select.wasi.help"))
                 }
             }
                 .bind(state::rendererBackend)
@@ -192,13 +196,13 @@ class MjmlSettingsConfigurable(project: Project) : Configurable, Disposable {
         }
 
 
-        collapsibleGroup("Trouble Shooting") {
+        collapsibleGroup(MjmlBundle.message("settings.group_troubleshooting")) {
             row {
-                button("Open plugin folder") {
+                button(MjmlBundle.message("settings.troubleshooting_open_folder")) {
                     Desktop.getDesktop().open(FilePluginUtil.getFile("."))
                 }
 
-                button("Copy files for preview from plugin") { e ->
+                button(MjmlBundle.message("settings.troubleshooting.copy_resources")) { e ->
                     MjmlPreviewStartupActivity().runActivity(project)
                     with(e.source as JButton) {
                         isEnabled = false
@@ -237,6 +241,26 @@ class MjmlSettingsConfigurable(project: Project) : Configurable, Disposable {
             // Make sure path is OS indecent so on Windows path variables are replaced properly
             nodeRenderercomboBox.selectedItem = FileUtil.toSystemIndependentName(renderingScriptPath)
         }
+
+        // Validate WASI only if it is possible to configure
+        if (MjmlRendererServiceUtils.isJavaScriptPluginAvailable()) {
+            val wasiBinaryPath = wasiRenderercomboBox.selectedItem as String
+            if (wasiBinaryPath.trim() == "") {
+                throw ConfigurationException("Custom WASI binary can not be blank")
+            }
+
+            if (wasiBinaryPath != MjmlSettings.BUILT_IN) {
+                val wasiPathFile = File(wasiBinaryPath)
+
+                if (!wasiPathFile.exists()) {
+                    throw ConfigurationException("Custom WASI bianry does not exist")
+                }
+
+                // Make sure path is OS indecent so on Windows path variables are replaced properly
+                wasiRenderercomboBox.selectedItem = FileUtil.toSystemIndependentName(renderingScriptPath)
+            }
+        }
+
         panel.apply()
 
         ApplicationManager.getApplication()
