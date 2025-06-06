@@ -45,11 +45,12 @@ class WasiMjmlRenderer(project: Project) : BaseMjmlRenderer(project) {
         val memory = wasiInstance.memory()
 
         val raw = objectMapper.writeValueAsString(mjmlRenderParameters) + stringTerminator
+        val rawBytes = raw.toByteArray()
 
         // Allocate memory for raw and write into memory
-        val rawAllocPtr = allocString.apply(raw.length.toLong())
+        val rawAllocPtr = allocString.apply(rawBytes.size.toLong())
         val rawPtr = rawAllocPtr[0].toInt()
-        memory.write(rawPtr, raw.toByteArray())
+        memory.write(rawPtr, rawBytes)
 
         // Call render
         val resultPtr = renderMjml.apply(rawPtr.toLong())

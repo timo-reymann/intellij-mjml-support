@@ -41,6 +41,13 @@
     <!-- language=html -->
     <change-notes><![CDATA[
         <ul>
+            <li>5.0.1
+                <ul>
+                    <li>Fix memory allocation for special UTF-8 characters in WASI renderer (<a
+                            href="https://github.com/timo-reymann/intellij-mjml-support/issues/261">#261</a>)
+                    </li>
+                </ul>
+            </li>
             <li>5.0.0
                 <ul>
                     <li>Don't decode rendered HTML output (<a
