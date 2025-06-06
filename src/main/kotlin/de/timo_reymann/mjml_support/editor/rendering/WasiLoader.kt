@@ -28,6 +28,7 @@ class WasiLoader(private val options: WasiLoaderOptions) {
         val options = WasiOptions.builder()
             .withStdout(options.stdout)
             .withStderr(options.stderr)
+            .withEnvironment("RUST_BACKTRACE", "1")
             .withDirectory("/", options.rootHostPath.absolute())
             .build()
 
