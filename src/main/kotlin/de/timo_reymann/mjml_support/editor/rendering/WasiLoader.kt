@@ -46,8 +46,6 @@ class WasiLoader(private val options: WasiLoaderOptions) {
         val module = Parser.parse(raw)
         val builder = Instance.builder(module)
             .withImportValues(store.toImportValues())
-            // limit heap pages to 16MB
-            .withMemoryLimits(MemoryLimits(100, 256))
             .withMachineFactory(
                 MachineFactoryCompiler
                     .builder(module)
