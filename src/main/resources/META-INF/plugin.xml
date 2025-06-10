@@ -41,6 +41,14 @@
     <!-- language=html -->
     <change-notes><![CDATA[
         <ul>
+            <li>SNAPSHOT
+                <ul>
+                    <li>Create ad-hoc WASI instance per render to avoid memory ouf of bounds with WASI renderer (<a
+                            href="https://github.com/timo-reymann/intellij-mjml-support/issues/263">#263</a>)
+                    </li>
+                    <li>Fix directory and filePath parameter for WASI renderer to be always absolute to root</li>
+                </ul>
+            </li>
             <li>5.0.1
                 <ul>
                     <li>Fix memory allocation for special UTF-8 characters in WASI renderer (<a
