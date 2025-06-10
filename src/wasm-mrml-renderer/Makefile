@@ -13,6 +13,6 @@ build-debug: ## Build debug artifact
 
 build: build-release build-debug ## Build all configurations
 
-copy-renderer:
+copy-renderer: ## Copy renderer to plugin resources
 	cp target/wasm32-wasip1/release/wasm_mrml_renderer.wasm ../main/resources/wasi/mrml-render.wasm
 	cargo tree -i mrml | head -n1 | cut -d' ' -f2  > ../main/resources/wasi/mrml-render.version
