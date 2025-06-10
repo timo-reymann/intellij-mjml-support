@@ -4,9 +4,12 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
 import okio.Path.Companion.toPath
 import java.nio.charset.StandardCharsets
+import java.nio.file.Paths
 import kotlin.io.path.Path
 import kotlin.io.path.readBytes
 import kotlin.io.path.relativeTo
+
+class WasiMjmlRendererException(message: String): Exception(message)
 
 class WasiMjmlRenderer(project: Project) : BaseMjmlRenderer(project) {
     private val stringTerminator = "\u0000"
@@ -33,7 +36,7 @@ class WasiMjmlRenderer(project: Project) : BaseMjmlRenderer(project) {
 
     override fun render(virtualFile: VirtualFile, text: String): String {
         val mjmlRenderParameters = MjmlRenderParameters(
-            "/" + virtualFile.toNioPath().parent.relativeTo(Path(project.basePath!!)).toString(),
+            "/" + Paths.get(virtualFile.parent.path).relativeTo(Path(project.basePath!!)).toString(),
             text,
             MjmlRenderParametersOptions(mjmlSettings.mjmlConfigFile),
             virtualFile.path
@@ -50,15 +53,22 @@ class WasiMjmlRenderer(project: Project) : BaseMjmlRenderer(project) {
         // Allocate memory for raw and write into memory
         val rawAllocPtr = allocString.apply(rawBytes.size.toLong())
         val rawPtr = rawAllocPtr[0].toInt()
+        if(rawPtr == 0) {
+            throw WasiMjmlRendererException("Received null pointer for alloc string")
+        }
         memory.write(rawPtr, rawBytes)
 
         // Call render
-        val resultPtr = renderMjml.apply(rawPtr.toLong())
+        val resultPtrs = renderMjml.apply(rawPtr.toLong())
+        val resultPtr = resultPtrs[0].toInt()
+        if(resultPtr == 0) {
+            throw WasiMjmlRendererException("Received null pointer for render result")
+        }
 
         // Read characters until termination
         var character = -1
-        val characters: MutableList<Byte?> = ArrayList<Byte?>()
-        var offset = resultPtr[0].toInt()
+        val characters: MutableList<Byte?> = ArrayList()
+        var offset = resultPtr
         while (character != 0) {
             character = memory.read(offset).toInt()
             offset++
@@ -68,7 +78,7 @@ class WasiMjmlRenderer(project: Project) : BaseMjmlRenderer(project) {
         }
 
         // Free memory for the return pointer
-        freeString.apply(resultPtr[0])
+        freeString.apply(resultPtr.toLong())
 
         // Free memory for the input pointer
         freeString.apply(rawAllocPtr[0])
