@@ -1,0 +1,159 @@
+<mjml lang="fr">
+    <mj-head>
+        <mj-title>Rapport de présence : 2024-2025 - 11 pour Notre Dame de Lourdes</mj-title>
+        <mj-preview />
+        <mj-attributes>
+            <mj-class name="body"
+                      font-family="Helvetica, Helvetica, Arial, sans-serif"
+                      font-size="18px"
+                      background-color="#FFF" />
+            <mj-class name="page-title"
+                      color="#000"
+                      padding="15px"
+                      font-size="24px"
+                      text-align="center" />
+            <mj-class name="lead"
+                      color="#fff"
+                      font-size="20px"
+                      font-weight="bold" />
+            <mj-class name="btn-primary"
+                      color="#FFF"
+                      background-color="#0066dc"
+                      padding="15px"
+                      font-size="16px" />
+            <mj-class name="btn-warning"
+                      color="#FFF"
+                      background-color="#f25f4a"
+                      padding="15px"
+                      font-size="16px" />
+            <mj-accordion border="1px" padding="1px" />
+            <mj-accordion-title background-color="#fff"
+                                color="#031017" padding="15px" font-size="18px"/>
+            <mj-accordion-text background-color="#fafafa" padding="15px"
+                               color="#505050" font-size="14px"/>
+            <mj-class name="navigation"
+                      align="center" />
+            <mj-class name="header"
+                      background-color="#ffdd00"
+                      align="center" />
+        </mj-attributes>
+</mj-head>
+    <mj-body>
+        <mj-wrapper css-class="header">
+            <mj-section css-class="image">
+                <mj-column width="300px">
+                    <mj-image src="https://placehold.co/600x400?text=Logo"
+                              alt="Logo de la mairie de Tourcoing"
+                              align="center"
+                              width="300px"
+                              css-class="top-image" />
+                </mj-column>
+            </mj-section>
+            <mj-section css-class="header-company">
+                <mj-column>
+                    <mj-text align="center" font-size="18px">
+
+                    </mj-text>
+                </mj-column>
+            </mj-section>
+        </mj-wrapper>
+        <mj-section>
+            <mj-column>
+                <mj-text>
+                    <h1>
+                        Rapport de présence : 2024-2025 - 11 pour Notre Dame de Lourdes
+                    </h1>
+                </mj-text>
+            </mj-column>
+        </mj-section>
+        <mj-section mj-class="lead">
+            <mj-column>
+                <p>Merci de trouver ci-joint le rapport initial de présence des enfants à la cantine scolaire de votre établissement.</p>
+            </mj-column>
+        </mj-section>
+        <mj-section>
+            <mj-column>
+                <mj-accordion>
+                    <mj-accordion-element>
+                        <mj-accordion-title>École</mj-accordion-title>
+                        <mj-accordion-text>
+                            <mj-text>
+                                <dl class="row">
+                                    <dt>École</dt>
+                                    <dd></dd>
+                                </dl>
+                                <dl class="row">
+                                    <dt>Adresse</dt>
+                                    <dd></dd>
+                                </dl>
+                                <dl class="row">
+                                    <dt>Nom de la banque</dt>
+                                    <dd>Inconnu</dd>
+                                </dl>
+                                <dl class="row">
+                                    <dt>Numéro de compte</dt>
+                                    <dd>Inconnu</dd>
+                                </dl>
+                                <dl class="row">
+                                    <dt>Représentant de l'école</dt>
+                                    <dd></dd>
+                                </dl>
+                                <dl class="row">
+                                    <dt>Secrétaire</dt>
+                                    <dd>Inconnu</dd>
+                                </dl>
+                            </mj-text>
+
+                        </mj-accordion-text>
+                    </mj-accordion-element>
+                    <mj-accordion-element>
+                        <mj-accordion-title>Rapport</mj-accordion-title>
+                        <mj-accordion-text>
+                            <h3>Année scolaire et mois</h3>
+                            <p>2024-2025 - novembre</p>
+                            <h3>Résumé</h3>
+                            <dl class="row">
+                                <dt>Nombre d'enfants</dt>
+                                <dd>107</dd>
+                            </dl>
+                            <dl class="row">
+                                <dt>Nombre de repas</dt>
+                                <dd>210</dd>
+                            </dl>
+                            <dl class="row">
+                                <dt>Montant total</dt>
+                                <dd>395,47 €</dd>
+                            </dl>
+                        </mj-accordion-text>
+                    </mj-accordion-element>
+                </mj-accordion>
+            </mj-column>
+        </mj-section>
+
+        <mj-section mj-class="navigation">
+            <mj-column>
+                <mj-button mj-class="btn-warning"
+                           href="https://example.com/app/rapport/9/approuver/">
+                    Approuver le rapport de présences
+                </mj-button>
+
+            </mj-column>
+        </mj-section>
+
+        <mj-section css-class="signature">
+            <mj-column>
+                <mj-text>
+
+                    <address>Direction des Écoles et des familles<br>Tél: <a href="tel:+33320948101">03 20 94 81 01</a></address>
+
+                </mj-text>
+            </mj-column>
+        </mj-section>
+
+        <mj-section css-class="footer">
+            <mj-column>
+                <mj-text align="center">Copyright 2025 frague59</mj-text>
+            </mj-column>
+        </mj-section>
+    </mj-body>
+</mjml>

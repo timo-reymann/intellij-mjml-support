@@ -1,0 +1,18 @@
+<mjml>
+    <mj-head>
+        <mj-style inline="inline">
+            /* paste your CSS file content here */
+            .my-class {
+                color: blue;
+                font-weight: bold;
+            }
+        </mj-style>
+    </mj-head>
+    <mj-body>
+        <mj-section>
+            <mj-column>
+                <mj-text css-class="my-class">Text with local CSS</mj-text>
+            </mj-column>
+        </mj-section>
+    </mj-body>
+</mjml>

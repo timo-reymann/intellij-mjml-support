@@ -1,0 +1,7 @@
+<mj-section background-color="#333333" padding="20px">
+    <mj-column>
+        <mj-text color="#ffffff" font-size="20px" font-weight="bold">
+            Header Section
+        </mj-text>
+    </mj-column>
+</mj-section>
