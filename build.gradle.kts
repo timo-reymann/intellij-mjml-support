@@ -39,7 +39,7 @@ plugins {
 }
 
 dependencies {
-    implementation("com.dylibso.chicory","runtime","1.4.1")
+    implementation("com.dylibso.chicory","runtime","1.5.0")
     implementation("com.dylibso.chicory","wasi","1.5.0")
     implementation("com.dylibso.chicory","compiler","1.4.1")
 
