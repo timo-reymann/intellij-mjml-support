@@ -1,7 +1,7 @@
 version: '2.1'
 
 orbs:
-  github-cli: circleci/github-cli@2.7.1
+  github-cli: circleci/github-cli@2.7.2
   node: circleci/node@7.1.1
   rust: circleci/rust@1.7.0
 
