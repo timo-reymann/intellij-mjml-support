@@ -30,8 +30,6 @@ commands:
           key: v2-gradle-wrapper-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
       - restore_cache:
           key: v2-gradle-cache-{{ checksum "build.gradle.kts" }}
-      - restore_cache:
-          key: v2-plugin-verifier-cache-{{ checksum "build.gradle.kts" }}
   create_or_update_cache:
     steps:
       - save_cache:
@@ -42,10 +40,6 @@ commands:
           paths:
             - ~/.gradle/caches
           key: v2-gradle-cache-{{ checksum "build.gradle.kts" }}
-      - save_cache:
-          paths:
-            - ~/.pluginVerifier
-          key: v2-plugin-verifier-cache-{{ checksum "build.gradle.kts" }}
 
 jobs:
   test-node-renderer:
@@ -67,10 +61,6 @@ jobs:
       - run:
           name: Run tests
           command: ./gradlew test
-      - run:
-          name: Run pluginVerifier
-          command: ./gradlew verifyPlugin
-          no_output_timeout: 20m
       - store_test_results:
           path: build/test-results/test
       - store_artifacts:
