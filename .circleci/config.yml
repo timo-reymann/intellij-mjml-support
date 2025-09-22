@@ -15,7 +15,7 @@ executors:
       - image: cimg/node:lts
   rust:
     docker:
-      - image: cimg/rust:1.89.0
+      - image: cimg/rust:1.90.0
 
 commands:
   check-changed-files-or-halt:
