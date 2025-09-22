@@ -4,10 +4,10 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
-    "mjml": "4.15.3"
+    "mjml": "4.16.1"
   },
   "scripts": {
-    "build": "zip -FSr ../main/resources/node/renderer.zip .",
+    "build": "deterministic-zip -r ../main/resources/node/renderer.zip .",
     "test": "jest"
   },
   "author": "",
