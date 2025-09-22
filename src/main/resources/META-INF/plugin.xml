@@ -41,6 +41,15 @@
     <!-- language=html -->
     <change-notes><![CDATA[
         <ul>
+            <li>5.1.0
+                <ul>
+                    <li>Upgrade bundled MJML to <a
+                            href="https://github.com/mjmlio/mjml/releases/tag/v4.16.1">v4.16.1</a></li>
+                    <li>Add support for tags added in 4.16.1 (<a
+                            href="https://github.com/timo-reymann/intellij-mjml-support/issues/294">#294</a>)
+                    </li>
+                </ul>
+            </li>
             <li>5.0.2
                 <ul>
                     <li>Create ad-hoc WASI instance per render to avoid memory ouf of bounds with WASI renderer (<a
