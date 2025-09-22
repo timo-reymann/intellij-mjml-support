@@ -215,7 +215,8 @@ class BuiltInMjmlTagInformationProvider : MjmlTagInformationProvider() {
                     ATTRIBUTE_PADDING_BOTTOM,
                     ATTRIBUTE_PADDING_LEFT,
                     ATTRIBUTE_PADDING_RIGHT,
-                    ATTRIBUTE_PADDING_TOP
+                    ATTRIBUTE_PADDING_TOP,
+                    ATTRIBUTE_FONT_WEIGHT,
                 ),
                 allowedParentTags = listOf("mj-accordion", "mj-accordion-element"),
                 canHaveChildren = false
@@ -1174,6 +1175,12 @@ class BuiltInMjmlTagInformationProvider : MjmlTagInformationProvider() {
                         MjmlAttributeType.STRING,
                         "top/middle/bottom",
                         "middle"
+                    ),
+                    MjmlAttributeInformation(
+                        "icon-position",
+                        MjmlAttributeType.STRING,
+                        "left/right",
+                        "left",
                     )
                 ),
                 allowedParentTags = listOf("mj-social"),
@@ -1236,6 +1243,7 @@ class BuiltInMjmlTagInformationProvider : MjmlTagInformationProvider() {
                     ATTRIBUTE_FONT_FAMILY,
                     ATTRIBUTE_FONT_SIZE,
                     ATTRIBUTE_FONT_STYLE,
+                    ATTRIBUTE_WIDTH,
                     MjmlAttributeInformation(
                         "line-height",
                         MjmlAttributeType.PIXEL,
