@@ -40,7 +40,7 @@ plugins {
 
 dependencies {
     implementation("com.dylibso.chicory","runtime","1.5.0")
-    implementation("com.dylibso.chicory","wasi","1.5.0")
+    implementation("com.dylibso.chicory","wasi","1.5.2")
     implementation("com.dylibso.chicory","compiler","1.5.0")
 
     testImplementation("junit", "junit", "4.13.2")
