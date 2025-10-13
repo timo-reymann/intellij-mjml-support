@@ -41,6 +41,11 @@
     <!-- language=html -->
     <change-notes><![CDATA[
         <ul>
+            <li>5.2.0
+                <ul>
+                    <li>Upgrade to Java 21</li>
+                </ul>
+            </li>
             <li>5.1.0
                 <ul>
                     <li>Upgrade bundled MJML to <a
