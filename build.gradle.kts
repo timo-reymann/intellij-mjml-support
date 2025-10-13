@@ -47,7 +47,7 @@ dependencies {
 
     implementation(kotlin("reflect"))
     intellijPlatform {
-        intellijIdeaUltimate(providers.gradleProperty("idea-version"))
+        create(providers.gradleProperty("platform-type").get(),providers.gradleProperty("platform-version").get()) {}
         pluginVerifier()
         zipSigner()
         bundledPlugins(
@@ -85,7 +85,7 @@ intellijPlatform {
 }
 
 kotlin {
-    jvmToolchain(17)
+    jvmToolchain(21)
 }
 
 tasks {
