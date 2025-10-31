@@ -9,7 +9,7 @@ executors:
   gradle:
     working_directory: ~/workspace
     docker:
-      - image: cimg/openjdk:21.0
+      - image: cimg/openjdk:21.0.9
   node:
     docker:
       - image: cimg/node:lts
