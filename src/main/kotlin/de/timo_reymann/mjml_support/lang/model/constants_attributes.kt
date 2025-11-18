@@ -246,3 +246,9 @@ val ATTRIBUTE_BACKGROUND_POSITION_Y = MjmlAttributeInformation(
     MjmlAttributeType.COMPLEX,
     "css background position y"
 )
+
+val ATTRIBUTE_GAP = MjmlAttributeInformation(
+    "gap",
+    MjmlAttributeType.PIXEL,
+    "vertical gap between child sections"
+)
