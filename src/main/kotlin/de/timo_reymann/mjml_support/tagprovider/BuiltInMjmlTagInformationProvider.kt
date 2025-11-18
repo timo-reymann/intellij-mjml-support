@@ -1384,6 +1384,7 @@ class BuiltInMjmlTagInformationProvider : MjmlTagInformationProvider() {
                         MjmlAttributeType.STRING,
                         "make the wrapper full-width"
                     ),
+                    ATTRIBUTE_GAP,
                     MjmlAttributeInformation(
                         "padding",
                         MjmlAttributeType.COMPLEX,
