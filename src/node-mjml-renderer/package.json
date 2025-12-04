@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
-    "mjml": "4.17.1"
+    "mjml": "4.17.2"
   },
   "scripts": {
     "build": "deterministic-zip -r ../main/resources/node/renderer.zip .",
