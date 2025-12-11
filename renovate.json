@@ -7,8 +7,10 @@
     {
       "groupName": "Chicory",
       "groupSlug": "chicory",
-      "matchPackagePatterns": [
-        "com\/.dylibso\/.chicory.*"
+      "matchPackageNames": [
+        "com.dylibso.chicory:wasi",
+        "com.dylibso.chicory:runtime",
+        "com.dylibso.chicory:compiler"
       ]
     }
   ]
