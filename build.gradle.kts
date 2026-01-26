@@ -33,7 +33,7 @@ repositories {
 plugins {
     id("java")
     kotlin("jvm") version "2.3.0"
-    id("org.jetbrains.intellij.platform") version "2.10.5"
+    id("org.jetbrains.intellij.platform") version "2.11.0"
     id("com.palantir.git-version") version "3.3.0"
     id("com.adarshr.test-logger") version "4.0.0"
 }
