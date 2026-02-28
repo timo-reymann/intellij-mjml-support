@@ -1,0 +1,17 @@
+resolutions:
+  issues:
+    - message: "No Maven model available for 'Maven:bundledPlugin:.*"
+      reason: "CANT_FIX_ISSUE"
+      comment: >
+        Bundled IntelliJ plugins are local IDE artifacts without Maven models.
+        They are not redistributed and not relevant for license compliance.
+    - message: "No Maven model available for 'Maven:bundledModule:.*"
+      reason: "CANT_FIX_ISSUE"
+      comment: >
+        Bundled IntelliJ modules are local IDE artifacts without Maven models.
+        They are not redistributed and not relevant for license compliance.
+    - message: "No Maven model available for 'Maven:idea:.*"
+      reason: "CANT_FIX_ISSUE"
+      comment: >
+        IntelliJ Platform SDK artifacts are local IDE artifacts without Maven models.
+        They are not redistributed and not relevant for license compliance.
