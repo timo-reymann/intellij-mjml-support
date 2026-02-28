@@ -1,0 +1,8 @@
+resolutions:
+  issues:
+    - message: "Gradle Inspector failed to resolve dependencies for path 'build.gradle.kts'.*"
+      reason: "CANT_FIX_ISSUE"
+      comment: >
+        ORT's GradleModelExtensions.kt calls UrlArtifactRepository.url.toString() without null-safety.
+        The IntelliJ Platform Gradle Plugin's defaultRepositories() adds repositories with null URLs,
+        triggering a NullPointerException. This is an upstream ORT bug.
