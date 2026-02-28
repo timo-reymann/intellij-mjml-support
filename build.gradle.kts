@@ -1,3 +1,4 @@
+import org.gradle.api.artifacts.repositories.IvyArtifactRepository
 import org.jetbrains.intellij.platform.gradle.TestFrameworkType
 
 fun getVersionDetails(): com.palantir.gradle.gitversion.VersionDetails =
@@ -27,6 +28,15 @@ repositories {
     mavenCentral()
     intellijPlatform {
         defaultRepositories()
+    }
+
+    // Workaround for ORT Gradle Inspector NPE: localPlatformArtifacts() creates an Ivy repo with
+    // absolute patterns but no URL, causing UrlArtifactRepository.getUrl() to return null.
+    // Setting a placeholder URL does not affect resolution since the patterns are absolute paths.
+    forEach {
+        if (it is IvyArtifactRepository && it.url == null) {
+            it.setUrl(layout.buildDirectory.dir("tmp/ivy-placeholder"))
+        }
     }
 }
 
