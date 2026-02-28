@@ -1,3 +1,16 @@
+excludes:
+  scopes:
+    - pattern: ".*[Ii]ntellij.*"
+      reason: "DEV_DEPENDENCY_OF"
+      comment: >
+        IntelliJ Platform SDK dependencies are development-time only.
+        They are not redistributed and not relevant for license compliance.
+    - pattern: ".*[Bb]undled.*"
+      reason: "DEV_DEPENDENCY_OF"
+      comment: >
+        Bundled IntelliJ IDE plugins and modules are development-time only.
+        They are not redistributed and not relevant for license compliance.
+
 resolutions:
   issues:
     - message: "No Maven model available for 'Maven:bundledPlugin:.*"
@@ -14,4 +27,24 @@ resolutions:
       reason: "CANT_FIX_ISSUE"
       comment: >
         IntelliJ Platform SDK artifacts are local IDE artifacts without Maven models.
+        They are not redistributed and not relevant for license compliance.
+    - message: ".*bundledPlugin.*"
+      reason: "CANT_FIX_ISSUE"
+      comment: >
+        Bundled IntelliJ plugins are local IDE artifacts.
+        They are not redistributed and not relevant for license compliance.
+    - message: ".*bundledModule.*"
+      reason: "CANT_FIX_ISSUE"
+      comment: >
+        Bundled IntelliJ modules are local IDE artifacts.
+        They are not redistributed and not relevant for license compliance.
+    - message: ".*idea:ideaIU.*"
+      reason: "CANT_FIX_ISSUE"
+      comment: >
+        IntelliJ Platform SDK artifacts are local IDE artifacts.
+        They are not redistributed and not relevant for license compliance.
+    - message: ".*idea:idea:.*"
+      reason: "CANT_FIX_ISSUE"
+      comment: >
+        IntelliJ Platform SDK artifacts are local IDE artifacts.
         They are not redistributed and not relevant for license compliance.
