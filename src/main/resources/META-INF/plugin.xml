@@ -41,6 +41,11 @@
     <!-- language=html -->
     <change-notes><![CDATA[
         <ul>
+            <li>5.5.0
+                <ul>
+                    <li>Add license information section to settings dialog to view LICENSE and NOTICE files</li>
+                </ul>
+            </li>
             <li>5.4.0
                 <ul>
                     <li>Upgrade bundled MJML to <a href="https://github.com/mjmlio/mjml/releases/tag/v4.17.2">v4.17.2</a></li>
