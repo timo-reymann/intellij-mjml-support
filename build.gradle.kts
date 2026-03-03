@@ -99,6 +99,13 @@ kotlin {
 }
 
 tasks {
+    val copyLicenseFiles by registering(Copy::class) {
+        from(rootDir) {
+            include("LICENSE", "NOTICE")
+        }
+        into(layout.buildDirectory.dir("generated/resources/license"))
+    }
+
     test {
         testLogging {
             exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
@@ -108,5 +115,11 @@ tasks {
 
         // Prevent "File access outside allowed roots" in multi-module tests, because modules each have an .iml
         environment("NO_FS_ROOTS_ACCESS_CHECK", "1")
+    }
+}
+
+sourceSets {
+    main {
+        resources.srcDir(tasks.named("copyLicenseFiles").map { (it as Copy).destinationDir })
     }
 }
