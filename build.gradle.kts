@@ -49,9 +49,9 @@ plugins {
 }
 
 dependencies {
-    implementation("com.dylibso.chicory","runtime","1.7.2")
-    implementation("com.dylibso.chicory","wasi","1.7.2")
-    implementation("com.dylibso.chicory","compiler","1.7.2")
+    implementation("com.dylibso.chicory","runtime","1.7.3")
+    implementation("com.dylibso.chicory","wasi","1.7.3")
+    implementation("com.dylibso.chicory","compiler","1.7.3")
 
     testImplementation("junit", "junit", "4.13.2")
 
