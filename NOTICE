@@ -12428,7 +12428,7 @@ Software.
 
 ----
 
-Package: com.dylibso.chicory:compiler:1.7.2
+Package: com.dylibso.chicory:compiler:1.7.3
 
 This package contains the file LICENSE with the following contents:
 
@@ -12635,7 +12635,7 @@ This package contains the file LICENSE with the following contents:
 
 ----
 
-Package: com.dylibso.chicory:log:1.7.2
+Package: com.dylibso.chicory:log:1.7.3
 
 This package contains the file LICENSE with the following contents:
 
@@ -12842,7 +12842,7 @@ This package contains the file LICENSE with the following contents:
 
 ----
 
-Package: com.dylibso.chicory:runtime:1.7.2
+Package: com.dylibso.chicory:runtime:1.7.3
 
 This package contains the file LICENSE with the following contents:
 
@@ -13049,7 +13049,7 @@ This package contains the file LICENSE with the following contents:
 
 ----
 
-Package: com.dylibso.chicory:wasi:1.7.2
+Package: com.dylibso.chicory:wasi:1.7.3
 
 This package contains the file LICENSE with the following contents:
 
@@ -13256,7 +13256,7 @@ This package contains the file LICENSE with the following contents:
 
 ----
 
-Package: com.dylibso.chicory:wasm:1.7.2
+Package: com.dylibso.chicory:wasm:1.7.3
 
 This package contains the file LICENSE with the following contents:
 
