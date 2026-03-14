@@ -75,6 +75,7 @@ jobs:
           working_directory: ~/project/src/wasm-mrml-renderer
 
   build:
+    resource_class: large
     executor: gradle
     steps:
       - checkout
