@@ -337,6 +337,7 @@ class BuiltInMjmlTagInformationProvider : MjmlTagInformationProvider() {
                         MjmlAttributeType.STRING,
                         "text transform for button link"
                     ),
+                    ATTRIBUTE_TITLE,
                     MjmlAttributeInformation(
                         "vertical-align",
                         MjmlAttributeType.STRING,
