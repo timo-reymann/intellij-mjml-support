@@ -41,6 +41,12 @@
     <!-- language=html -->
     <change-notes><![CDATA[
         <ul>
+            <li>5.5.2
+                <ul>
+                    <li>Add missing title attribute for mj-button to analysis (<a
+                            href="https://github.com/timo-reymann/intellij-mjml-support/issues/354">#354</a>)</li>
+                </ul>
+            </li>
             <li>5.5.1
                 <ul>
                     <li>Fix preview broken on IntelliJ 2026.1 due to missing okio dependency (<a
