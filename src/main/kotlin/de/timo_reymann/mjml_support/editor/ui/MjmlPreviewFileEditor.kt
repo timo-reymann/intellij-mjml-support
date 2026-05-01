@@ -380,6 +380,9 @@ class MjmlPreviewFileEditor(private val project: Project, private val virtualFil
     }
 
     private fun updateHtmlPooled(force: Boolean = false) {
+        // selectNotify() can fire from FileEditorManager after the editor was disposed,
+        // which would otherwise trigger "Already disposed" from Alarm.addRequest.
+        if (isDisposed || pooledAlarm.isDisposed) return
         pooledAlarm.cancelAllRequests()
         pooledAlarm.addRequest({ updateHtml(force) }, 0)
     }
