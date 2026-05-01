@@ -11,7 +11,10 @@ import java.nio.file.StandardCopyOption
 
 object FilePluginUtil {
     private val PLUGIN_HOME: File = File(PathManager.getPluginsPath(), MjmlBundle.message("technical_name"))
-    const val NODE_RENDERER_ARCHIVE_NAME = "renderer.zip"
+    const val NODE_RENDERER_V4_ARCHIVE_NAME = "renderer-v4.zip"
+    const val NODE_RENDERER_V5_ARCHIVE_NAME = "renderer-v5.zip"
+    const val NODE_RENDERER_V4_DIR = "renderer-v4"
+    const val NODE_RENDERER_V5_DIR = "renderer-v5"
     const val WASI_RENDERER_WASM_NAME = "wasi/mrml-render.wasm";
 
     fun copyFile(path: String, fileName: String) {

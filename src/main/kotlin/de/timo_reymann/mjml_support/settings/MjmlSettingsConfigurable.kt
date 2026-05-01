@@ -147,13 +147,30 @@ class MjmlSettingsConfigurable(project: Project) : Configurable, Disposable {
                             }
                         }
                     }
-                    .comment(
-                        MjmlBundle.message(
-                            "settings.node_script.help",
-                            BuiltinRenderResourceProvider.getBundledMjmlVersion()
-                        )
-                    )
+                    .comment(MjmlBundle.message("settings.node_script.help"))
             }.layout(RowLayout.PARENT_GRID)
+            buttonsGroup(MjmlBundle.message("settings.mjml_version.text"), true) {
+                row {
+                    radioButton(
+                        MjmlBundle.message(
+                            "settings.mjml_version.v4.text",
+                            BuiltinRenderResourceProvider.getBundledMjmlVersion(MjmlVersion.V4)
+                        ),
+                        MjmlVersion.V4.id
+                    ).comment(MjmlBundle.message("settings.mjml_version.v4.help"))
+                }
+                row {
+                    radioButton(
+                        MjmlBundle.message(
+                            "settings.mjml_version.v5.text",
+                            BuiltinRenderResourceProvider.getBundledMjmlVersion(MjmlVersion.V5)
+                        ),
+                        MjmlVersion.V5.id
+                    ).comment(MjmlBundle.message("settings.mjml_version.v5.help"))
+                }
+            }
+                .bind(state::mjmlVersion)
+                .visible(MjmlRendererServiceUtils.isJavaScriptPluginAvailable())
             row {
                 comboBox(MutableCollectionComboBoxModel<String>(), null)
                     .label(MjmlBundle.message("settings.wasi_binary.text"))

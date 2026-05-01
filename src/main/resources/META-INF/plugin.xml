@@ -41,6 +41,31 @@
     <!-- language=html -->
     <change-notes><![CDATA[
         <ul>
+            <li>6.0.0
+                <ul>
+                    <li>Bundle MJML v5 alongside v4 (<a
+                            href="https://github.com/timo-reymann/intellij-mjml-support/issues/362">#362</a>)
+                        <ul>
+                            <li>v4 remains the default for backwards compatibility and is now in maintenance mode (critical fixes only)</li>
+                            <li>Opt into v5 under <b>Settings &gt; Tools &gt; MJML Settings &gt; Bundled MJML version</b></li>
+                            <li>v5 requires Node.js 20 or newer; the preview shows a clear error if the project Node interpreter is older</li>
+                            <li>v5 enables <code>mj-include</code> automatically by passing <code>includePath</code> to <code>mjml2html()</code>, including the project root so parent-directory includes (e.g. <code>../layout/header.mjml</code>) work without extra configuration</li>
+                            <li>See <a href="https://github.com/mjmlio/mjml/releases/tag/v5.0.0">MJML 5 release notes</a> for behavior changes (new minifier, mj-body driven body tag, removed migration helper)</li>
+                        </ul>
+                    </li>
+                    <li>Update built-in attribute analysis for MJML v5 changes:
+                        <ul>
+                            <li>Add <code>id</code> attribute on <code>mj-body</code></li>
+                            <li>Allow free-form CSS values for <code>border-radius</code> / <code>inner-border-radius</code> across all components (was pixel-only on <code>mj-column</code>/<code>mj-image</code>)</li>
+                        </ul>
+                    </li>
+                    <li>Quiet noisy <code>[MJML security]</code> stderr lines from MJML v5 in the IDE log (now logged at debug level)</li>
+                    <li>Fix preview occasionally showing HTML from a different editor when several MJML files are rendered concurrently</li>
+                    <li>Fix preview web view going blank after startup while the source view still showed the rendered HTML</li>
+                    <li>Fix transient <code>Cannot find module</code> errors during the first render after IDE start by extracting the bundled renderer atomically</li>
+                    <li>Fix sporadic <code>Already disposed</code> exception logged when switching tabs as an MJML preview was being closed</li>
+                </ul>
+            </li>
             <li>5.5.2
                 <ul>
                     <li>Add missing title attribute for mj-button to analysis (<a

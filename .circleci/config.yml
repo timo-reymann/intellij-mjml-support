@@ -42,15 +42,25 @@ commands:
           key: v2-gradle-cache-{{ checksum "build.gradle.kts" }}
 
 jobs:
-  test-node-renderer:
+  test-node-renderer-v4:
     executor: node
     steps:
       - checkout
       - node/install-packages:
-          app-dir: src/node-mjml-renderer
+          app-dir: src/node-mjml-renderer-v4
       - run:
           name: Run tests
-          command: cd src/node-mjml-renderer && npm run test
+          command: cd src/node-mjml-renderer-v4 && npm run test
+
+  test-node-renderer-v5:
+    executor: node
+    steps:
+      - checkout
+      - node/install-packages:
+          app-dir: src/node-mjml-renderer-v5
+      - run:
+          name: Run tests
+          command: cd src/node-mjml-renderer-v5 && npm run test
 
   test-plugin:
     resource_class: large
@@ -145,7 +155,11 @@ workflows:
           filters:
             branches:
               only: /.*/
-      - test-node-renderer:
+      - test-node-renderer-v4:
+          filters:
+            branches:
+              only: /.*/
+      - test-node-renderer-v5:
           filters:
             branches:
               only: /.*/
@@ -156,7 +170,8 @@ workflows:
       - build_and_publish_snapshot:
           requires:
             - test-plugin
-            - test-node-renderer
+            - test-node-renderer-v4
+            - test-node-renderer-v5
             - test-wasi-renderer
           filters:
             branches:
