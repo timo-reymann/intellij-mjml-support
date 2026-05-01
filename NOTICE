@@ -14940,7 +14940,7 @@ This package contains the file LICENSE.txt with the following contents:
 
 ----
 
-Package: org.jetbrains.kotlin:abi-tools:2.3.20
+Package: org.jetbrains.kotlin:abi-tools:2.3.21
 
 The following copyrights and licenses were found in the source code of this package:
 
@@ -15166,7 +15166,7 @@ in this Software without prior written authorization of the copyright holder.
 
 ----
 
-Package: org.jetbrains.kotlin:abi-tools-api:2.3.20
+Package: org.jetbrains.kotlin:abi-tools-api:2.3.21
 
 The following copyrights and licenses were found in the source code of this package:
 
@@ -15392,7 +15392,7 @@ in this Software without prior written authorization of the copyright holder.
 
 ----
 
-Package: org.jetbrains.kotlin:kotlin-build-tools-api:2.3.20
+Package: org.jetbrains.kotlin:kotlin-build-tools-api:2.3.21
 
 The following copyrights and licenses were found in the source code of this package:
 
@@ -15618,7 +15618,7 @@ in this Software without prior written authorization of the copyright holder.
 
 ----
 
-Package: org.jetbrains.kotlin:kotlin-build-tools-compat:2.3.20
+Package: org.jetbrains.kotlin:kotlin-build-tools-compat:2.3.21
 
 The following copyrights and licenses were found in the source code of this package:
 
@@ -15844,7 +15844,7 @@ in this Software without prior written authorization of the copyright holder.
 
 ----
 
-Package: org.jetbrains.kotlin:kotlin-build-tools-cri-impl:2.3.20
+Package: org.jetbrains.kotlin:kotlin-build-tools-cri-impl:2.3.21
 
 The following copyrights and licenses were found in the source code of this package:
 
@@ -16070,7 +16070,7 @@ in this Software without prior written authorization of the copyright holder.
 
 ----
 
-Package: org.jetbrains.kotlin:kotlin-build-tools-impl:2.3.20
+Package: org.jetbrains.kotlin:kotlin-build-tools-impl:2.3.21
 
 The following copyrights and licenses were found in the source code of this package:
 
@@ -16296,7 +16296,7 @@ in this Software without prior written authorization of the copyright holder.
 
 ----
 
-Package: org.jetbrains.kotlin:kotlin-compiler-embeddable:2.3.20
+Package: org.jetbrains.kotlin:kotlin-compiler-embeddable:2.3.21
 
 The following copyrights and licenses were found in the source code of this package:
 
@@ -16522,7 +16522,7 @@ in this Software without prior written authorization of the copyright holder.
 
 ----
 
-Package: org.jetbrains.kotlin:kotlin-compiler-runner:2.3.20
+Package: org.jetbrains.kotlin:kotlin-compiler-runner:2.3.21
 
 The following copyrights and licenses were found in the source code of this package:
 
@@ -16748,7 +16748,7 @@ in this Software without prior written authorization of the copyright holder.
 
 ----
 
-Package: org.jetbrains.kotlin:kotlin-daemon-client:2.3.20
+Package: org.jetbrains.kotlin:kotlin-daemon-client:2.3.21
 
 The following copyrights and licenses were found in the source code of this package:
 
@@ -16974,7 +16974,7 @@ in this Software without prior written authorization of the copyright holder.
 
 ----
 
-Package: org.jetbrains.kotlin:kotlin-daemon-embeddable:2.3.20
+Package: org.jetbrains.kotlin:kotlin-daemon-embeddable:2.3.21
 
 The following copyrights and licenses were found in the source code of this package:
 
@@ -17200,7 +17200,7 @@ in this Software without prior written authorization of the copyright holder.
 
 ----
 
-Package: org.jetbrains.kotlin:kotlin-klib-abi-reader:2.3.20
+Package: org.jetbrains.kotlin:kotlin-klib-abi-reader:2.3.21
 
 The following copyrights and licenses were found in the source code of this package:
 
@@ -17426,7 +17426,7 @@ in this Software without prior written authorization of the copyright holder.
 
 ----
 
-Package: org.jetbrains.kotlin:kotlin-klib-commonizer-embeddable:2.3.20
+Package: org.jetbrains.kotlin:kotlin-klib-commonizer-embeddable:2.3.21
 
 The following copyrights and licenses were found in the source code of this package:
 
@@ -17652,7 +17652,7 @@ in this Software without prior written authorization of the copyright holder.
 
 ----
 
-Package: org.jetbrains.kotlin:kotlin-metadata-jvm:2.3.20
+Package: org.jetbrains.kotlin:kotlin-metadata-jvm:2.3.21
 
 The following copyrights and licenses were found in the source code of this package:
 
@@ -18104,7 +18104,7 @@ in this Software without prior written authorization of the copyright holder.
 
 ----
 
-Package: org.jetbrains.kotlin:kotlin-reflect:2.3.20
+Package: org.jetbrains.kotlin:kotlin-reflect:2.3.21
 
 The following copyrights and licenses were found in the source code of this package:
 
@@ -18330,7 +18330,7 @@ in this Software without prior written authorization of the copyright holder.
 
 ----
 
-Package: org.jetbrains.kotlin:kotlin-script-runtime:2.3.20
+Package: org.jetbrains.kotlin:kotlin-script-runtime:2.3.21
 
 The following copyrights and licenses were found in the source code of this package:
 
@@ -18556,7 +18556,7 @@ in this Software without prior written authorization of the copyright holder.
 
 ----
 
-Package: org.jetbrains.kotlin:kotlin-scripting-common:2.3.20
+Package: org.jetbrains.kotlin:kotlin-scripting-common:2.3.21
 
 The following copyrights and licenses were found in the source code of this package:
 
@@ -18782,7 +18782,7 @@ in this Software without prior written authorization of the copyright holder.
 
 ----
 
-Package: org.jetbrains.kotlin:kotlin-scripting-compiler-embeddable:2.3.20
+Package: org.jetbrains.kotlin:kotlin-scripting-compiler-embeddable:2.3.21
 
 The following copyrights and licenses were found in the source code of this package:
 
@@ -19008,7 +19008,7 @@ in this Software without prior written authorization of the copyright holder.
 
 ----
 
-Package: org.jetbrains.kotlin:kotlin-scripting-compiler-impl-embeddable:2.3.20
+Package: org.jetbrains.kotlin:kotlin-scripting-compiler-impl-embeddable:2.3.21
 
 The following copyrights and licenses were found in the source code of this package:
 
@@ -19234,7 +19234,7 @@ in this Software without prior written authorization of the copyright holder.
 
 ----
 
-Package: org.jetbrains.kotlin:kotlin-scripting-jvm:2.3.20
+Package: org.jetbrains.kotlin:kotlin-scripting-jvm:2.3.21
 
 The following copyrights and licenses were found in the source code of this package:
 
@@ -19460,7 +19460,7 @@ in this Software without prior written authorization of the copyright holder.
 
 ----
 
-Package: org.jetbrains.kotlin:kotlin-stdlib:2.3.20
+Package: org.jetbrains.kotlin:kotlin-stdlib:2.3.21
 
 The following copyrights and licenses were found in the source code of this package:
 
@@ -19686,7 +19686,7 @@ in this Software without prior written authorization of the copyright holder.
 
 ----
 
-Package: org.jetbrains.kotlin:kotlin-tooling-core:2.3.20
+Package: org.jetbrains.kotlin:kotlin-tooling-core:2.3.21
 
 The following copyrights and licenses were found in the source code of this package:
 
