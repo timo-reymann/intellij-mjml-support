@@ -65,6 +65,7 @@ class BuiltInMjmlTagInformationProvider : MjmlTagInformationProvider() {
                     ATTRIBUTE_BACKGROUND_COLOR,
                     ATTRIBUTE_CSS_CLASS,
                     ATTRIBUTE_MJ_CLASS,
+                    MjmlAttributeInformation("id", MjmlAttributeType.STRING, "id attribute placed on the rendered <body> tag (MJML v5+)"),
                     MjmlAttributeInformation("width", MjmlAttributeType.PIXEL, "email's width")
                 ),
                 allowedParentTags = PARENT_TOP_LEVEL_ONLY
@@ -510,7 +511,7 @@ class BuiltInMjmlTagInformationProvider : MjmlTagInformationProvider() {
                     ),
                     MjmlAttributeInformation(
                         "inner-border-radius",
-                        MjmlAttributeType.PIXEL,
+                        MjmlAttributeType.STRING,
                         "css border format ; requires a padding"
                     ),
                     ATTRIBUTE_WIDTH,

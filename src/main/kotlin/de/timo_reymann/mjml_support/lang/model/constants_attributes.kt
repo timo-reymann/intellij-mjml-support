@@ -133,7 +133,9 @@ val ATTRIBUTE_BORDER = MjmlAttributeInformation(
 
 val ATTRIBUTE_BORDER_RADIUS = MjmlAttributeInformation(
     "border-radius",
-    MjmlAttributeType.PIXEL,
+    // MJML accepts free-form CSS for border-radius across all components in v5
+    // (e.g. "8px", "8px 4px", "50%"); v4 already accepted strings on mj-button/mj-hero/mj-section.
+    MjmlAttributeType.STRING,
     "border radius"
 )
 
