@@ -5,7 +5,8 @@ data class MjmlRenderParameters(
     var directory: String,
     var content: String,
     var options: MjmlRenderParametersOptions,
-    var filePath: String
+    var filePath: String,
+    var projectRoot: String? = null
 )
 
 data class MjmlRenderParametersOptions(
