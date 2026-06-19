@@ -1,11 +1,13 @@
 package de.timo_reymann.mjml_support.editor.rendering
 
-import com.intellij.execution.configurations.GeneralCommandLine
-import com.intellij.execution.process.OSProcessHandler
+import com.intellij.execution.ExecutionException
+import com.intellij.execution.process.BaseProcessHandler
 import com.intellij.execution.process.ProcessEvent
+import com.intellij.execution.process.ProcessHandler
 import com.intellij.execution.process.ProcessListener
 import com.intellij.execution.process.ProcessOutputType
-import com.intellij.javascript.nodejs.interpreter.NodeCommandLineConfigurator
+import com.intellij.javascript.nodejs.execution.NodeTargetRun
+import com.intellij.javascript.nodejs.execution.NodeTargetRunOptions
 import com.intellij.javascript.nodejs.interpreter.NodeJsInterpreterRef
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.Key
@@ -19,7 +21,6 @@ import de.timo_reymann.mjml_support.settings.MjmlVersion
 import de.timo_reymann.mjml_support.util.FilePluginUtil
 import java.io.File
 import java.nio.charset.StandardCharsets
-import java.util.*
 
 class NodeMjmlRenderer(project: Project) : BaseMjmlRenderer(project) {
     private val nodeMajorVersionCache = mutableMapOf<String, Int?>()
@@ -33,69 +34,65 @@ class NodeMjmlRenderer(project: Project) : BaseMjmlRenderer(project) {
             project.basePath
         )
 
-        // One temp file per render. The renderer is project-scoped (single instance), so
-        // sharing a single file across concurrent renders from multiple editors caused one
-        // editor's preview to show another editor's HTML when their writes interleaved.
-        val tempFile = File.createTempFile("mjml-render-${UUID.randomUUID()}", ".json")
-        try {
-            objectMapper.writeValue(tempFile, mjmlRenderParameters)
-            val commandLine = generateCommandLine(virtualFile, tempFile)
-            commandLine ?: return renderError(
-                MjmlBundle.message("mjml_preview.node_not_configured"),
-                MjmlBundle.message("mjml_preview.unavailable")
-            )
+        // The render parameters are fed to the renderer process via stdin (the bundled JS reads
+        // fd 0). Each render starts its own process with its own stdin, so concurrent renders from
+        // multiple editors can no longer interleave onto a shared resource.
+        val paramsJson = objectMapper.writeValueAsString(mjmlRenderParameters)
+        val targetRun = createTargetRun(virtualFile) ?: return renderError(
+            MjmlBundle.message("mjml_preview.node_not_configured"),
+            MjmlBundle.message("mjml_preview.unavailable")
+        )
 
-            if (mjmlSettings.mjmlVersionEnum == MjmlVersion.V5) {
-                val versionError = checkNodeVersionForV5(virtualFile)
-                if (versionError != null) {
-                    return versionError
-                }
+        if (mjmlSettings.mjmlVersionEnum == MjmlVersion.V5) {
+            val versionError = checkNodeVersionForV5(virtualFile)
+            if (versionError != null) {
+                return versionError
             }
+        }
 
-            val rendererScript = getRendererScript()
-            commandLine.withParameters(rendererScript)
+        val rendererScript = getRendererScript()
+        targetRun.commandLineBuilder.addParameter(targetRun.path(rendererScript))
 
-            getLogger<NodeMjmlRenderer>().info {
-                val selected = mjmlSettings.mjmlVersionEnum
-                val bundled = BuiltinRenderResourceProvider.getBundledMjmlVersion(selected)
-                val origin = if (mjmlSettings.useBuiltInNodeRenderer) "bundled" else "custom"
-                "Rendering ${virtualFile.name} with MJML ${selected.id} ($origin, mjml=$bundled, script=$rendererScript)"
-            }
+        getLogger<NodeMjmlRenderer>().info {
+            val selected = mjmlSettings.mjmlVersionEnum
+            val bundled = BuiltinRenderResourceProvider.getBundledMjmlVersion(selected)
+            val origin = if (mjmlSettings.useBuiltInNodeRenderer) "bundled" else "custom"
+            "Rendering ${virtualFile.name} with MJML ${selected.id} ($origin, mjml=$bundled, script=$rendererScript)"
+        }
 
-            val (exitCode, output) = captureOutput(commandLine)
+        val (exitCode, output) = captureOutput(targetRun, paramsJson)
 
-            if (exitCode != 0) {
-                if (!File(rendererScript).exists()) {
-                    return renderError(
-                        MjmlBundle.message(if (mjmlSettings.useBuiltInNodeRenderer) "mjml_preview.renderer_copying" else "mjml_preview.renderer_missing"),
-                        "<pre>${MjmlBundle.message("mjml_preview.renderer_preview_will_reload")}</pre>"
-                    )
-                }
-
+        if (exitCode != 0) {
+            if (!File(rendererScript).exists()) {
                 return renderError(
-                    MjmlBundle.message("mjml_preview.render_failed"),
-                    "<pre>$output</pre>"
+                    MjmlBundle.message(if (mjmlSettings.useBuiltInNodeRenderer) "mjml_preview.renderer_copying" else "mjml_preview.renderer_missing"),
+                    "<pre>${MjmlBundle.message("mjml_preview.renderer_preview_will_reload")}</pre>"
                 )
             }
-            return output
-        } finally {
-            tempFile.delete()
+
+            return renderError(
+                MjmlBundle.message("mjml_preview.render_failed"),
+                "<pre>$output</pre>"
+            )
+        }
+        return output
+    }
+
+    private fun createTargetRun(virtualFile: VirtualFile): NodeTargetRun? {
+        val nodeJsInterpreter = NodeJsInterpreterRef.createProjectRef().resolve(project) ?: return null
+        return try {
+            val targetRun = NodeTargetRun(nodeJsInterpreter, project, null, NodeTargetRunOptions.of(false))
+            targetRun.commandLineBuilder.charset = StandardCharsets.UTF_8
+            targetRun.commandLineBuilder.setWorkingDirectory(virtualFile.parent.toNioPath().toString())
+            targetRun
+        } catch (e: ExecutionException) {
+            getLogger<NodeMjmlRenderer>().warn { "Failed to set up node process: ${e.message}" }
+            null
         }
     }
 
-    private fun generateCommandLine(virtualFile: VirtualFile, inputFile: File): GeneralCommandLine? {
-        val nodeJsInterpreter = NodeJsInterpreterRef.createProjectRef().resolve(project) ?: return null
-        val commandLine = GeneralCommandLine("node")
-            .withInput(inputFile)
-            .withCharset(StandardCharsets.UTF_8)
-            .withWorkDirectory(virtualFile.parent.toNioPath().toFile())
-        val commandLineConfigurator = NodeCommandLineConfigurator.find(nodeJsInterpreter)
-        commandLineConfigurator.configure(commandLine)
-        return commandLine
-    }
-
-    private fun captureOutput(commandLine: GeneralCommandLine): Pair<Int, String> {
-        val processHandler = OSProcessHandler(commandLine)
+    private fun captureOutput(targetRun: NodeTargetRun, input: String?): Pair<Int, String> {
+        val processHandler = targetRun.startProcess()
         val buffer = StringBuffer()
         processHandler.addProcessListener(object : ProcessListener {
             override fun onTextAvailable(event: ProcessEvent, outputType: Key<*>) {
@@ -117,8 +114,21 @@ class NodeMjmlRenderer(project: Project) : BaseMjmlRenderer(project) {
         })
 
         processHandler.startNotify()
+        // Feed the render parameters via stdin only after output draining has started, so a chatty
+        // process can never fill the stdout pipe and deadlock while we are still writing.
+        if (input != null) {
+            writeToStdin(processHandler, input)
+        }
         processHandler.waitFor()
         return Pair(processHandler.exitCode!!, buffer.toString())
+    }
+
+    private fun writeToStdin(processHandler: ProcessHandler, input: String) {
+        val stdin = (processHandler as? BaseProcessHandler<*>)?.processInput ?: return
+        stdin.use {
+            it.write(input.toByteArray(StandardCharsets.UTF_8))
+            it.flush()
+        }
     }
 
     private fun getRendererScript(): String {
@@ -143,14 +153,10 @@ class NodeMjmlRenderer(project: Project) : BaseMjmlRenderer(project) {
     }
 
     private fun detectNodeMajorVersion(virtualFile: VirtualFile): Int? {
-        val nodeJsInterpreter = NodeJsInterpreterRef.createProjectRef().resolve(project) ?: return null
-        val cmd = GeneralCommandLine("node")
-            .withCharset(StandardCharsets.UTF_8)
-            .withWorkDirectory(virtualFile.parent.toNioPath().toFile())
-        NodeCommandLineConfigurator.find(nodeJsInterpreter).configure(cmd)
-        cmd.withParameters("--version")
+        val targetRun = createTargetRun(virtualFile) ?: return null
+        targetRun.commandLineBuilder.addParameter("--version")
 
-        val (exitCode, output) = captureOutput(cmd)
+        val (exitCode, output) = captureOutput(targetRun, null)
         if (exitCode != 0) return null
         // Output is like "v22.5.1\n"
         val trimmed = output.trim().removePrefix("v")

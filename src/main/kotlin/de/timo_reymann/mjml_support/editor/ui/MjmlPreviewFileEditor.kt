@@ -5,7 +5,6 @@ import com.intellij.codeHighlighting.BackgroundEditorHighlighter
 import com.intellij.ide.highlighter.HtmlFileType
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.application.ModalityState
-import com.intellij.openapi.application.ReadAction
 import com.intellij.openapi.application.WriteAction
 import com.intellij.openapi.editor.Document
 import com.intellij.openapi.editor.Editor
@@ -161,10 +160,10 @@ class MjmlPreviewFileEditor(private val project: Project, private val virtualFil
         var hasRoot = false
         var hasBody = false
         var tags: Collection<XmlTag>? = null
-        ReadAction.run<Exception> {
+        ApplicationManager.getApplication().runReadAction {
             val psi = PsiManager.getInstance(project)
                 .findFile(virtualFile)
-            psi ?: return@run
+                ?: return@runReadAction
             tags = PsiTreeUtil.findChildrenOfType(psi, XmlTag::class.java)
         }
 
@@ -224,7 +223,7 @@ class MjmlPreviewFileEditor(private val project: Project, private val virtualFil
         if (DumbService.isDumb(project)) {
             includes = listOf()
         } else {
-            ReadAction.run<Exception> {
+            ApplicationManager.getApplication().runReadAction {
                 includes = getFilesWithIncludesFor(virtualFile, project)
             }
         }

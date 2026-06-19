@@ -8,7 +8,7 @@ enum class MjmlVersion(val id: String, val dirName: String) {
     V5("v5", "renderer-v5");
 
     companion object {
-        fun fromId(id: String): MjmlVersion = entries.firstOrNull { it.id == id } ?: V4
+        fun fromId(id: String): MjmlVersion = entries.firstOrNull { it.id == id } ?: V5
     }
 }
 
@@ -18,7 +18,7 @@ class MjmlSettings : PersistentStateComponent<MjmlSettings>, BaseState() {
     var renderScriptPath: String by nonNullString(BUILT_IN)
     var rendererWASIPath: String by nonNullString(BUILT_IN)
     var rendererBackend: String by nonNullString("node")
-    var mjmlVersion: String by nonNullString(MjmlVersion.V4.id)
+    var mjmlVersion: String by nonNullString(MjmlVersion.V5.id)
     val useBuiltInNodeRenderer: Boolean
         get() = renderScriptPath == BUILT_IN || renderScriptPath.isBlank()
     val useBuiltinWASIRenderer: Boolean

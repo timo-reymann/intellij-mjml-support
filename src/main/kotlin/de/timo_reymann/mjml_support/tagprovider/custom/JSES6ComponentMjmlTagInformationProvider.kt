@@ -8,6 +8,7 @@ import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiElement
 import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.psi.stubs.StubIndex
+import com.intellij.psi.stubs.StubIndexExtension
 import com.intellij.util.CommonProcessors
 import de.timo_reymann.mjml_support.api.MjmlTagInformation
 import de.timo_reymann.mjml_support.api.MjmlTagInformationProvider
@@ -40,7 +41,7 @@ class JSES6ComponentMjmlTagInformationProvider : MjmlTagInformationProvider() {
         val list = ArrayList<PsiElement>()
         StubIndex.getInstance()
             .processElements(
-                JSSuperClassIndex.KEY,
+                superClassIndexKey,
                 "BodyComponent",
                 project,
                 GlobalSearchScope.allScope(project),
@@ -63,4 +64,12 @@ class JSES6ComponentMjmlTagInformationProvider : MjmlTagInformationProvider() {
     }
 
     override fun getPriority() = 99
+
+    private companion object {
+        // Resolve the stub index key from the registered extension instead of the deprecated
+        // JSSuperClassIndex.KEY static field.
+        private val superClassIndexKey by lazy {
+            StubIndexExtension.EP_NAME.findExtensionOrFail(JSSuperClassIndex::class.java).key
+        }
+    }
 }

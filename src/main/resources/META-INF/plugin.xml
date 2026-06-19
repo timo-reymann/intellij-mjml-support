@@ -41,6 +41,18 @@
     <!-- language=html -->
     <change-notes><![CDATA[
         <ul>
+            <li>5.7.0
+                <ul>
+                    <li>The bundled MJML version now defaults to <b>v5</b> (was v4)
+                        <ul>
+                            <li>Projects using v4 &mdash; including those on the previous default &mdash; switch to v5 after updating. Note that v5 produces different HTML (new minifier, mj-body driven body tag) and requires Node.js 20 or newer</li>
+                            <li>To keep the old output, select v4 again under <b>Settings &gt; Tools &gt; MJML Settings &gt; Bundled MJML version</b>; v4 stays available in legacy/maintenance mode</li>
+                        </ul>
+                    </li>
+                    <li>Faster side-by-side preview: render parameters are now streamed to the Node renderer over stdin instead of being written to a temporary file on every render, removing per-keystroke temp-file disk I/O from the preview update path</li>
+                    <li>Updated to current IntelliJ Platform APIs for forward compatibility with newer IDE versions (no functional change)</li>
+                </ul>
+            </li>
             <li>5.6.0
                 <ul>
                     <li>Bundle MJML v5 alongside v4 (<a
