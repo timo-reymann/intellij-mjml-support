@@ -1,6 +1,6 @@
 package de.timo_reymann.mjml_support.editor.rendering
 
-import com.intellij.ide.plugins.PluginManagerCore
+import com.intellij.ide.plugins.PluginManager
 import com.intellij.openapi.Disposable
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.components.service
@@ -13,8 +13,9 @@ import de.timo_reymann.mjml_support.settings.MjmlSettingsChangedListener
 object MjmlRendererServiceUtils {
     fun isJavaScriptPluginAvailable(): Boolean {
         val jsPluginId = PluginId.getId("JavaScript")
-        val plugin = PluginManagerCore.getPlugin(jsPluginId)
-        return plugin != null && !PluginManagerCore.isDisabled(jsPluginId)
+        // findEnabledPlugin returns the descriptor only when the plugin is both installed and enabled,
+        // so it covers the previous null + !isDisabled checks in a single public-API call.
+        return PluginManager.getInstance().findEnabledPlugin(jsPluginId) != null
     }
 }
 

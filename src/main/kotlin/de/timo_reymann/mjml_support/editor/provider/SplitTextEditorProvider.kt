@@ -9,7 +9,7 @@ import org.jdom.Element
 
 abstract class SplitTextEditorProvider(
     private val myFirstProvider: FileEditorProvider, private val mySecondProvider: FileEditorProvider
-) : AsyncFileEditorProvider, DumbAware {
+) : FileEditorProvider, DumbAware {
     private val myEditorTypeId: String =
         "split-provider[" + myFirstProvider.editorTypeId + ";" + mySecondProvider.editorTypeId + "]"
 
@@ -17,19 +17,12 @@ abstract class SplitTextEditorProvider(
         myFirstProvider.accept(project, file) && mySecondProvider.accept(project, file)
 
     override fun createEditor(project: Project, file: VirtualFile): FileEditor =
-        createEditorAsync(project, file).build()
+        createSplitEditor(
+            myFirstProvider.createEditor(project, file),
+            mySecondProvider.createEditor(project, file)
+        )
 
     override fun getEditorTypeId(): String = myEditorTypeId
-
-    override fun createEditorAsync(project: Project, file: VirtualFile): AsyncFileEditorProvider.Builder {
-        val firstBuilder = getBuilderFromEditorProvider(myFirstProvider, project, file)
-        val secondBuilder = getBuilderFromEditorProvider(mySecondProvider, project, file)
-        return object : AsyncFileEditorProvider.Builder() {
-            override fun build(): FileEditor {
-                return createSplitEditor(firstBuilder.build(), secondBuilder.build())
-            }
-        }
-    }
 
     override fun readState(sourceElement: Element, project: Project, file: VirtualFile): FileEditorState {
         var child = sourceElement.getChild(FIRST_EDITOR)
@@ -85,15 +78,5 @@ abstract class SplitTextEditorProvider(
         private const val FIRST_EDITOR = "first_editor"
         private const val SECOND_EDITOR = "second_editor"
         private const val SPLIT_LAYOUT = "split_layout"
-
-        fun getBuilderFromEditorProvider(
-            provider: FileEditorProvider, project: Project, file: VirtualFile
-        ): AsyncFileEditorProvider.Builder {
-            return object : AsyncFileEditorProvider.Builder() {
-                override fun build(): FileEditor {
-                    return provider.createEditor(project, file)
-                }
-            }
-        }
     }
 }
