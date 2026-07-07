@@ -41,6 +41,11 @@
     <!-- language=html -->
     <change-notes><![CDATA[
         <ul>
+            <li>5.8.0
+                <ul>
+                    <li>Update bundled MJML v5 to v5.4.0(<a href="https://github.com/timo-reymann/intellij-mjml-support/pull/386">#386</a>)</li>
+                </ul>
+            </li>
             <li>5.7.0
                 <ul>
                     <li>The bundled MJML version now defaults to <b>v5</b> (was v4)
