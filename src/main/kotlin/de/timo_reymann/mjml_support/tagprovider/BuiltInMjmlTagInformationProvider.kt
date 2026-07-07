@@ -1001,6 +1001,11 @@ class BuiltInMjmlTagInformationProvider : MjmlTagInformationProvider() {
                         "make the section full-width"
                     ),
                     MjmlAttributeInformation(
+                        "gutter",
+                        MjmlAttributeType.COMPLEX,
+                        "spacing between columns"
+                    ),
+                    MjmlAttributeInformation(
                         "padding",
                         MjmlAttributeType.COMPLEX,
                         "supports up to 4 parameters",
@@ -1102,6 +1107,7 @@ class BuiltInMjmlTagInformationProvider : MjmlTagInformationProvider() {
                     ),
                     ATTRIBUTE_ALT,
                     ATTRIBUTE_BACKGROUND_COLOR,
+                    ATTRIBUTE_BORDER,
                     ATTRIBUTE_BORDER_RADIUS,
                     ATTRIBUTE_COLOR,
                     ATTRIBUTE_CSS_CLASS,
