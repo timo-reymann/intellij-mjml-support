@@ -24082,7 +24082,7 @@ OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 ----
 
-Package: babel-jest:30.5.0
+Package: babel-jest:30.5.1
 
 This package contains the file LICENSE with the following contents:
 
@@ -27574,7 +27574,7 @@ THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH RE
 
 ----
 
-Package: electron-to-chromium:1.5.416
+Package: electron-to-chromium:1.5.420
 
 This package contains the file LICENSE with the following contents:
 
@@ -27953,7 +27953,7 @@ OTHER DEALINGS IN THE SOFTWARE.
 
 ----
 
-Package: expect:30.5.0
+Package: expect:30.5.1
 
 This package contains the file LICENSE with the following contents:
 
@@ -29613,7 +29613,7 @@ software or this license, under any kind of legal claim._**
 
 ----
 
-Package: jest:30.5.0
+Package: jest:30.5.1
 
 This package contains the file LICENSE with the following contents:
 
@@ -29642,7 +29642,7 @@ SOFTWARE.
 
 ----
 
-Package: jest-changed-files:30.5.0
+Package: jest-changed-files:30.5.1
 
 This package contains the file LICENSE with the following contents:
 
@@ -29671,7 +29671,7 @@ SOFTWARE.
 
 ----
 
-Package: jest-circus:30.5.0
+Package: jest-circus:30.5.1
 
 This package contains the file LICENSE with the following contents:
 
@@ -29700,7 +29700,7 @@ SOFTWARE.
 
 ----
 
-Package: jest-cli:30.5.0
+Package: jest-cli:30.5.1
 
 This package contains the file LICENSE with the following contents:
 
@@ -29729,7 +29729,7 @@ SOFTWARE.
 
 ----
 
-Package: jest-config:30.5.0
+Package: jest-config:30.5.1
 
 This package contains the file LICENSE with the following contents:
 
@@ -29758,7 +29758,7 @@ SOFTWARE.
 
 ----
 
-Package: jest-diff:30.5.0
+Package: jest-diff:30.5.1
 
 This package contains the file LICENSE with the following contents:
 
@@ -29816,7 +29816,7 @@ SOFTWARE.
 
 ----
 
-Package: jest-each:30.5.0
+Package: jest-each:30.5.1
 
 This package contains the file LICENSE with the following contents:
 
@@ -29845,7 +29845,7 @@ SOFTWARE.
 
 ----
 
-Package: jest-environment-node:30.5.0
+Package: jest-environment-node:30.5.1
 
 This package contains the file LICENSE with the following contents:
 
@@ -29874,7 +29874,7 @@ SOFTWARE.
 
 ----
 
-Package: jest-haste-map:30.5.0
+Package: jest-haste-map:30.5.1
 
 This package contains the file LICENSE with the following contents:
 
@@ -29903,7 +29903,7 @@ SOFTWARE.
 
 ----
 
-Package: jest-leak-detector:30.5.0
+Package: jest-leak-detector:30.5.1
 
 This package contains the file LICENSE with the following contents:
 
@@ -29932,7 +29932,7 @@ SOFTWARE.
 
 ----
 
-Package: jest-matcher-utils:30.5.0
+Package: jest-matcher-utils:30.5.1
 
 This package contains the file LICENSE with the following contents:
 
@@ -29961,7 +29961,7 @@ SOFTWARE.
 
 ----
 
-Package: jest-message-util:30.5.0
+Package: jest-message-util:30.5.1
 
 This package contains the file LICENSE with the following contents:
 
@@ -29990,7 +29990,7 @@ SOFTWARE.
 
 ----
 
-Package: jest-mock:30.5.0
+Package: jest-mock:30.5.1
 
 This package contains the file LICENSE with the following contents:
 
@@ -30048,7 +30048,7 @@ SOFTWARE.
 
 ----
 
-Package: jest-resolve:30.5.0
+Package: jest-resolve:30.5.1
 
 This package contains the file LICENSE with the following contents:
 
@@ -30077,7 +30077,7 @@ SOFTWARE.
 
 ----
 
-Package: jest-resolve-dependencies:30.5.0
+Package: jest-resolve-dependencies:30.5.1
 
 This package contains the file LICENSE with the following contents:
 
@@ -30106,7 +30106,7 @@ SOFTWARE.
 
 ----
 
-Package: jest-runner:30.5.0
+Package: jest-runner:30.5.1
 
 This package contains the file LICENSE with the following contents:
 
@@ -30135,7 +30135,7 @@ SOFTWARE.
 
 ----
 
-Package: jest-runtime:30.5.0
+Package: jest-runtime:30.5.1
 
 This package contains the file LICENSE with the following contents:
 
@@ -30164,7 +30164,7 @@ SOFTWARE.
 
 ----
 
-Package: jest-snapshot:30.5.0
+Package: jest-snapshot:30.5.1
 
 This package contains the file LICENSE with the following contents:
 
@@ -30193,7 +30193,7 @@ SOFTWARE.
 
 ----
 
-Package: jest-util:30.5.0
+Package: jest-util:30.5.1
 
 This package contains the file LICENSE with the following contents:
 
@@ -30222,7 +30222,7 @@ SOFTWARE.
 
 ----
 
-Package: jest-validate:30.5.0
+Package: jest-validate:30.5.1
 
 This package contains the file LICENSE with the following contents:
 
@@ -30251,7 +30251,7 @@ SOFTWARE.
 
 ----
 
-Package: jest-watcher:30.5.0
+Package: jest-watcher:30.5.1
 
 This package contains the file LICENSE with the following contents:
 
@@ -30280,7 +30280,7 @@ SOFTWARE.
 
 ----
 
-Package: jest-worker:30.5.0
+Package: jest-worker:30.5.1
 
 This package contains the file LICENSE with the following contents:
 
@@ -35359,7 +35359,7 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 ----
 
-Package: pretty-format:30.5.0
+Package: pretty-format:30.5.1
 
 This package contains the file LICENSE with the following contents:
 
@@ -39563,7 +39563,7 @@ SOFTWARE.
 
 ----
 
-Package: @jest:console:30.5.0
+Package: @jest:console:30.5.1
 
 This package contains the file LICENSE with the following contents:
 
@@ -39592,7 +39592,7 @@ SOFTWARE.
 
 ----
 
-Package: @jest:core:30.5.0
+Package: @jest:core:30.5.1
 
 This package contains the file LICENSE with the following contents:
 
@@ -39650,7 +39650,7 @@ SOFTWARE.
 
 ----
 
-Package: @jest:environment:30.5.0
+Package: @jest:environment:30.5.1
 
 This package contains the file LICENSE with the following contents:
 
@@ -39679,7 +39679,7 @@ SOFTWARE.
 
 ----
 
-Package: @jest:expect:30.5.0
+Package: @jest:expect:30.5.1
 
 This package contains the file LICENSE with the following contents:
 
@@ -39708,7 +39708,7 @@ SOFTWARE.
 
 ----
 
-Package: @jest:expect-utils:30.5.0
+Package: @jest:expect-utils:30.5.1
 
 This package contains the file LICENSE with the following contents:
 
@@ -39737,7 +39737,7 @@ SOFTWARE.
 
 ----
 
-Package: @jest:fake-timers:30.5.0
+Package: @jest:fake-timers:30.5.1
 
 This package contains the file LICENSE with the following contents:
 
@@ -39795,7 +39795,7 @@ SOFTWARE.
 
 ----
 
-Package: @jest:globals:30.5.0
+Package: @jest:globals:30.5.1
 
 This package contains the file LICENSE with the following contents:
 
@@ -39853,7 +39853,7 @@ SOFTWARE.
 
 ----
 
-Package: @jest:reporters:30.5.0
+Package: @jest:reporters:30.5.1
 
 This package contains the file LICENSE with the following contents:
 
@@ -39911,7 +39911,7 @@ SOFTWARE.
 
 ----
 
-Package: @jest:snapshot-utils:30.5.0
+Package: @jest:snapshot-utils:30.5.1
 
 This package contains the file LICENSE with the following contents:
 
@@ -39969,7 +39969,7 @@ SOFTWARE.
 
 ----
 
-Package: @jest:test-result:30.5.0
+Package: @jest:test-result:30.5.1
 
 This package contains the file LICENSE with the following contents:
 
@@ -39998,7 +39998,7 @@ SOFTWARE.
 
 ----
 
-Package: @jest:test-sequencer:30.5.0
+Package: @jest:test-sequencer:30.5.1
 
 This package contains the file LICENSE with the following contents:
 
@@ -40027,7 +40027,7 @@ SOFTWARE.
 
 ----
 
-Package: @jest:transform:30.5.0
+Package: @jest:transform:30.5.1
 
 This package contains the file LICENSE with the following contents:
 
@@ -40056,7 +40056,7 @@ SOFTWARE.
 
 ----
 
-Package: @jest:types:30.5.0
+Package: @jest:types:30.5.1
 
 This package contains the file LICENSE with the following contents:
 
