@@ -1,2 +1,5 @@
-rootProject.name = "intellij-mjml-support"
+plugins {
+    id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
+}
 
+rootProject.name = "intellij-mjml-support"
