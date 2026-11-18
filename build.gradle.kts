@@ -44,7 +44,7 @@ plugins {
     id("java")
     kotlin("jvm") version "2.4.10"
     id("org.jetbrains.intellij.platform") version "2.20.0"
-    id("com.palantir.git-version") version "5.1.0"
+    id("com.palantir.git-version") version "5.2.0"
     id("com.adarshr.test-logger") version "4.0.0"
 }
 
